@@ -52,9 +52,11 @@ describe('Plug Poisoned', function () {
 	})
 
 	it('fail: claim(): spoofed natively', async function () {
-		const { contract, owner, notOwner } = await loadFixture(deploy)
+		const { contract, owner, notOwner, publicClient } =
+			await loadFixture(deploy)
 
-		await contract.write.claim()
+		const hash = await contract.write.claim()
+		publicClient.waitForTransactionReceipt({ hash })
 
 		const encodedTransaction = encodeFunctionData({
 			abi: contract.abi,
@@ -79,6 +81,7 @@ describe('Plug Poisoned', function () {
 				getAddress(notOwner.account.address)
 			])
 		).to.eq(0n)
+
 		expect(
 			await contract.read.balanceOf([getAddress(owner.account.address)])
 		).to.eq(1n)

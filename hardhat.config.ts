@@ -5,20 +5,20 @@ import 'tsconfig-paths/register'
 
 const config: HardhatUserConfig = {
 	solidity: {
-		version: '0.8.19',
-		settings: {
-			// viaIR: true,
-			// optimizer: {
-			// 	enabled: true,
-			// 	details: {
-			// 		yul: true,
-			// 		yulDetails: {
-			// 			stackAllocation: true,
-			// 			optimizerSteps: 'u'
-			// 		}
-			// 	}
-			// }
-		}
+		version: '0.8.19'
+		// settings: {
+		// 	viaIR: true,
+		// 	optimizer: {
+		// 		enabled: true,
+		// 		details: {
+		// 			yul: true,
+		// 			yulDetails: {
+		// 				stackAllocation: true,
+		// 				optimizerSteps: 'u'
+		// 			}
+		// 		}
+		// 	}
+		// }
 	},
 	paths: {
 		sources: './src/contracts',

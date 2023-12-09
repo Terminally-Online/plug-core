@@ -87,6 +87,12 @@ describe('Plug Factory', function () {
 		])
 		await publicClient.waitForTransactionReceipt({ hash })
 
+		const deploymentEvents = await contract.getEvents.SocketDeployed()
+		expect(deploymentEvents.length).to.eql(1)
+		// expect(deploymentEvents[0].args.implementation).to.eql(
+		// 	implementation.address
+		// )
+
 		await expect(
 			contract.write.deploy([
 				implementation.address,
