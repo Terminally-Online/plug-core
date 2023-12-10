@@ -8,6 +8,9 @@ dependencies:
   '@nftchance/plug-types':
     specifier: ^0.8.0
     version: 0.8.0(esbuild@0.19.8)(typescript@5.0.4)
+  '@prb/test':
+    specifier: ^0.6.4
+    version: 0.6.4
   abitype:
     specifier: ^0.10.3
     version: 0.10.3(typescript@5.0.4)(zod@3.22.4)
@@ -1632,6 +1635,10 @@ packages:
       '@nomicfoundation/solidity-analyzer-win32-ia32-msvc': 0.1.1
       '@nomicfoundation/solidity-analyzer-win32-x64-msvc': 0.1.1
     dev: true
+
+  /@prb/test@0.6.4:
+    resolution: {integrity: sha512-P0tTMsB6XQ0Wp61EYdXJYFhsOVGyZvcOFub2y9yk0sF+GYDusctR7DzEI+vOP0SILm3knFkEJASjewHEBppdRQ==}
+    dev: false
 
   /@rollup/rollup-android-arm-eabi@4.6.1:
     resolution: {integrity: sha512-0WQ0ouLejaUCRsL93GD4uft3rOmB8qoQMU05Kb8CmMtMBe7XUDLAltxVZI1q6byNqEtU7N1ZX1Vw5lIpgulLQA==}
