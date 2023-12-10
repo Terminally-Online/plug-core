@@ -9,8 +9,10 @@ env:
     FOUNDRY_PROFILE: ci
 
 jobs:
-    test:
-        name: 🧪 Test
+    build:
+        strategy:
+            fail-fast: true
+        name: 📦 Build
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -35,10 +37,7 @@ jobs:
                   forge --version
                   forge build --sizes
               id: build
-    build:
-        name: 📦 Build
-        runs-on: ubuntu-latest
-        steps:
+
             - name: 🧪 Run Forge tests
               run: |
                   forge test -vvv
