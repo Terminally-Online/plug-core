@@ -188,6 +188,11 @@ typechain-types
 cache
 artifacts
 
+# Forge Files
+--branch-coverage
+report
+lcov.info
+
 ./core
 ./contracts
 ${ignorePaths.join('/**\n')}/**

@@ -3,9 +3,11 @@
 pragma solidity 0.8.23;
 
 import {PlugSocket} from '../abstracts/Plug.Socket.sol';
+import {Receiver} from 'solady/src/accounts/Receiver.sol';
 import {Ownable} from 'solady/src/auth/Ownable.sol';
+import {LibZip} from 'solady/src/utils/LibZip.sol';
 
-contract PlugVaultSocket is PlugSocket, Ownable {
+contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
 	bool private initialized;
 
 	constructor() {
@@ -23,25 +25,11 @@ contract PlugVaultSocket is PlugSocket, Ownable {
 	 * @notice Initialize a new Plug Vault.
 	 * @param $owner The owner of the vault.
 	 */
-	function initialize(address $owner) public virtual initializer {
+	function initialize(address $owner) public payable virtual initializer {
 		/// @dev Initialize the owner.
 		_initializeOwner($owner);
 
 		/// @dev Initialize the Plug Socket.
 		_initializeSocket('PlugVaultSocket', '0.0.0');
-	}
-
-	/**
-	 * @notice Prevent the initializer from being called multiple times. 	
-	 * @return true if the initializer has already been called.
-	 */
-	function _guardInitializeOwner()
-		internal
-		pure
-		virtual
-		override
-		returns (bool)
-	{
-		return true;
 	}
 }

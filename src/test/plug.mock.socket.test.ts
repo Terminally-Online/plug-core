@@ -22,21 +22,6 @@
 // 		})
 // 	})
 //
-// 	it("pass: echo('hi')", async function () {
-// 		const { contract } = await loadFixture(deploy)
-// 		await contract.write.echo(['hi'])
-// 	})
-//
-// 	it('pass: emptyEcho()', async function () {
-// 		const { contract } = await loadFixture(deploy)
-// 		await contract.read.emptyEcho()
-// 	})
-//
-// 	it('fail: mutedEcho()', async function () {
-// 		const { contract } = await loadFixture(deploy)
-// 		await expect(contract.read.mutedEcho()).to.be.rejectedWith('EchoMuted')
-// 	})
-//
 // 	// * Run a test from start to finish for a LivePin.
 // 	it('pass: getLivePinSigner()', async function () {
 // 		const { util, contract, owner } = await loadFixture(deploy)
