@@ -14,12 +14,12 @@ import {LibClone} from "solady/src/utils/LibClone.sol";
 
 contract PlugFactorySocketTest is PRBTest, StdCheats, TestPlus  {
 	PlugVaultSocket internal implementation;
-    PlugFactorySocket internal factory;
+	PlugFactorySocket internal factory;
 
-    function setUp() public virtual {
+	function setUp() public virtual {
 		implementation = new PlugVaultSocket();
 		factory = new PlugFactorySocket('PlugMockSocket', '0.0.0');
-    }
+	}
 
 	function test_DeployDeterministic(uint256) public { 
 		vm.deal(address(this), 100 ether);	
@@ -57,20 +57,24 @@ contract PlugFactorySocketTest is PRBTest, StdCheats, TestPlus  {
 
 	function test_RepeatedDeployDeterministic(uint256) public { 
 		address owner = _randomNonZeroAddress();
-        bytes32 salt =
-            bytes32((_random() & uint256(type(uint96).max)) | (uint256(uint160(owner)) << 96));
-        address expectedInstance = factory.getAddress(address(implementation), salt);
-        address notOwner = _randomNonZeroAddress();
-        while (owner == notOwner) notOwner = _randomNonZeroAddress();
-        vm.expectRevert(LibClone.SaltDoesNotStartWith.selector);
-        factory.deploy{value: 123}(address(implementation), notOwner, salt);
-        (,address instance) = factory.deploy{value: 123}(address(implementation), owner, salt);
-        assertEq(instance.balance, 123);
-        vm.expectRevert(LibClone.SaltDoesNotStartWith.selector);
-        factory.deploy{value: 123}(address(implementation), notOwner, salt);
+		bytes32 salt =
+			bytes32((_random() & uint256(type(uint96).max)) | (uint256(uint160(owner)) << 96));
+		address expectedInstance = factory.getAddress(address(implementation), salt);
+		address notOwner = _randomNonZeroAddress();
+		while (owner == notOwner) notOwner = _randomNonZeroAddress();
+		vm.expectRevert(LibClone.SaltDoesNotStartWith.selector);
+		factory.deploy{value: 123}(address(implementation), notOwner, salt);
+		(,address instance) = factory.deploy{value: 123}(address(implementation), owner, salt);
+		assertEq(instance.balance, 123);
+		vm.expectRevert(LibClone.SaltDoesNotStartWith.selector);
+		factory.deploy{value: 123}(address(implementation), notOwner, salt);
 		(, address redeployedInstance) = factory.deploy{value: 456}(address(implementation), owner, salt);
-        assertEq(redeployedInstance, instance);
-        assertEq(instance.balance, 123 + 456);
-        assertEq(expectedInstance, instance);
+		assertEq(redeployedInstance, instance);
+		assertEq(instance.balance, 123 + 456);
+		assertEq(expectedInstance, instance);
+	}
+
+	function test_InitCodeHash() public view { 
+		factory.initCodeHash(address(implementation));
 	}
 }

@@ -22,45 +22,6 @@
 // 		})
 // 	})
 //
-// 	// * Run a test from start to finish for a LivePin.
-// 	it('pass: getLivePinSigner()', async function () {
-// 		const { util, contract, owner } = await loadFixture(deploy)
-//
-// 		hexToBytes(owner.account.address, { size: 32 })
-//
-// 		// * Create a Pin.
-// 		const pin = {
-// 			neutral: getAddress(owner.account.address),
-// 			live: BASE_AUTH,
-// 			fuses: [],
-// 			salt: BASE_AUTH,
-// 			forced: true
-// 		} as const
-//
-// 		// * Sign the pin to make it executable.
-// 		const signedPin = await util.sign(owner, 'Pin', pin)
-//
-// 		if (!signedPin) expect.fail('Live intent does not exist.')
-//
-// 		// * Retrieve the object that will be passed onchain.
-// 		const LivePin = signedPin.intent
-//
-// 		if (!LivePin) expect.fail('Plug could not be signed.')
-//
-// 		// * Make sure the intent signer matched the recovered signer.
-// 		expect(getAddress(owner.account.address)).to.eq(
-// 			await signedPin.address({})
-// 		)
-// 		expect(
-// 			await signedPin.verify({
-// 				address: getAddress(owner.account.address)
-// 			})
-// 		).to.be.true
-// 		expect(getAddress(owner.account.address)).to.eq(
-// 			await contract.read.getLivePinSigner([LivePin])
-// 		)
-// 	})
-//
 // 	// * Run a test from start to finish for a LivePlugs.
 // 	it('pass: getLivePlugsSigner(LivePlug memory signedPlug)', async function () {
 // 		const { util, contract, owner, notOwner } = await loadFixture(deploy)
