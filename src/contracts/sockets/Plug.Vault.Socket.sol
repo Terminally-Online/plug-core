@@ -11,8 +11,8 @@ contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
 	bool private initialized;
 
 	constructor() {
-		/// @dev Initialize the owner as an invalid address.
-		initialize(address(0xdead));
+		/// @dev Initialize the owner.
+		initialize(msg.sender);
 	}
 
 	modifier initializer() {
