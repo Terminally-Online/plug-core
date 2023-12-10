@@ -39,27 +39,4 @@ contract PlugVaultSocket is PlugSocket, Ownable {
 	{
 		return true;
 	}
-
-	/**
-	 * @notice Execute through the transaction on behalf of the owner.
-	 * @param $to The address to execute the transaction on.
-	 * @param $data The data to execute the transaction with.
-	 * @param $value The value to execute the transaction with.
-	 * @return $success The success of the transaction.
-	 * @return $returnData The data returned from the transaction.
-	 */
-	function execute(
-		address $to,
-		bytes calldata $data,
-		uint256 $value
-	)
-		public
-		payable
-		virtual
-		onlyOwner
-		returns (bool $success, bytes memory $returnData)
-	{
-		/// @dev Execute the transaction and bubble up the response.
-		($success, $returnData) = $to.call{value: $value}($data);
-	}
 }
