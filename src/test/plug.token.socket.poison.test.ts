@@ -1,7 +1,7 @@
 // * This test is in place to make sure that Plug is not exposed to the same issue that
 //   was discosed by OpenZeppelin here: https://blog.openzeppelin.com/arbitrary-address-spoofing-vulnerability-erc2771context-multicall-public-disclosure
-import { getChainId } from '../lib/functions/hardhat'
-import { loadFixture } from '@nomicfoundation/hardhat-toolbox/network-helpers'
+import { getChainId } from '@/lib/functions/hardhat'
+import { loadFixture } from '@nomicfoundation/hardhat-toolbox-viem/network-helpers'
 import hre, { network } from 'hardhat'
 
 import { expect } from 'chai'
@@ -52,9 +52,11 @@ describe('Plug Poisoned', function () {
 	})
 
 	it('fail: claim(): spoofed natively', async function () {
-		const { contract, owner, notOwner } = await loadFixture(deploy)
+		const { contract, owner, notOwner, publicClient } =
+			await loadFixture(deploy)
 
-		await contract.write.claim()
+		const hash = await contract.write.claim()
+		publicClient.waitForTransactionReceipt({ hash })
 
 		const encodedTransaction = encodeFunctionData({
 			abi: contract.abi,
@@ -79,6 +81,7 @@ describe('Plug Poisoned', function () {
 				getAddress(notOwner.account.address)
 			])
 		).to.eq(0n)
+
 		expect(
 			await contract.read.balanceOf([getAddress(owner.account.address)])
 		).to.eq(1n)

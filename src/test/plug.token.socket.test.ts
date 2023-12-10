@@ -1,5 +1,5 @@
-import { getChainId } from '../lib/functions/hardhat'
-import { loadFixture } from '@nomicfoundation/hardhat-toolbox/network-helpers'
+import { getChainId } from '@/lib/functions/hardhat'
+import { loadFixture } from '@nomicfoundation/hardhat-toolbox-viem/network-helpers'
 import hre, { network } from 'hardhat'
 
 import { expect } from 'chai'
@@ -68,7 +68,8 @@ describe('Plug Token', function () {
 	})
 
 	it('pass: plug(): claim()', async function () {
-		const { util, contract, owner, notOwner } = await loadFixture(deploy)
+		const { util, contract, owner, notOwner, publicClient } =
+			await loadFixture(deploy)
 
 		const encodedTransaction = encodeFunctionData({
 			abi: contract.abi,
@@ -104,7 +105,10 @@ describe('Plug Token', function () {
 		expect(
 			await contract.read.balanceOf([getAddress(owner.account.address)])
 		).to.eq(0n)
-		expect(await contract.write.plug([[LivePlugs]]))
+
+		const hash = await contract.write.plug([[LivePlugs]])
+		publicClient.waitForTransactionReceipt({ hash })
+
 		expect(
 			await contract.read.balanceOf([
 				getAddress(notOwner.account.address)
