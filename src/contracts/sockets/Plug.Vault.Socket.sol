@@ -6,19 +6,24 @@ import {PlugSocket} from '../abstracts/Plug.Socket.sol';
 import {Ownable} from 'solady/src/auth/Ownable.sol';
 
 contract PlugVaultSocket is PlugSocket, Ownable {
+	bool private initialized;
+
 	constructor() {
 		/// @dev Initialize the owner as an invalid address.
-		_initializeOwner(address(0xdead));
+		initialize(address(0xdead));
+	}
 
-		/// @dev The plug is not initialized here to prevent the
-		/// 	 any messages from being relayed through here.
+	modifier initializer() {
+		require(!initialized, 'PlugVaultSocket: already initialized');
+		_;
+		initialized = true;
 	}
 
 	/**
 	 * @notice Initialize a new Plug Vault.
 	 * @param $owner The owner of the vault.
 	 */
-	function initialize(address $owner) external virtual {
+	function initialize(address $owner) public virtual initializer {
 		/// @dev Initialize the owner.
 		_initializeOwner($owner);
 
