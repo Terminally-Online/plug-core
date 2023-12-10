@@ -8,7 +8,7 @@ import {Ownable} from 'solady/src/auth/Ownable.sol';
 contract PlugVaultSocket is PlugSocket, Ownable {
 	constructor() {
 		/// @dev Initialize the owner as zero.
-		_initializeOwner(address(0));
+		_initializeOwner(address(0xdead));
 
 		/// @dev The plug is not initialized here to prevent the
 		/// 	 any messages from being relayed through here.
