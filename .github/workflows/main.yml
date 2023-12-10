@@ -1,12 +1,16 @@
 name: '🤖 CI'
+
 on:
     push:
         branches:
             - '**'
 
+env:
+    FOUNDRY_PROFILE: ci
+
 jobs:
-    main:
-        name: 🧰 Main
+    test:
+        name: 🧪 Test
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
@@ -18,20 +22,23 @@ jobs:
                   node-version: 18
                   cache: 'pnpm'
 
-            - name: ✨ Install dependencies
+            - name: ✨ install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: ✨ Install Foundry
+            - name: ✨ install foundry
               uses: foundry-rs/foundry-toolchain@v1
               with:
                   version: nightly
 
-            - name: 🙏 Run Forge build
+            - name: 🙏 run forge build
               run: |
                   forge --version
                   forge build --sizes
               id: build
-
+    build:
+        name: 📦 Build
+        runs-on: ubuntu-latest
+        steps:
             - name: 🧪 Run Forge tests
               run: |
                   forge test -vvv
