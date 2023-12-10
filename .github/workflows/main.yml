@@ -15,24 +15,32 @@ jobs:
         name: 📦 Build
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v2
+            - name: 🛒 Checkout
+              uses: actions/checkout@v4
+
+            - name: ⚙️  Setup Action
+              uses: pnpm/action-setup@v2
               with:
                   version: 8
-            - uses: actions/setup-node@v4
+
+            - name: 📚 Setup Node
+              uses: actions/setup-node@v4
               with:
                   node-version: 18
                   cache: 'pnpm'
 
-            - name: ✨ install dependencies
+            - name: 🫙 Restore cache
+              uses: actions/cache@v3
+
+            - name: 📦 Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: ✨ install foundry
+            - name: ✨ Install Foundry
               uses: foundry-rs/foundry-toolchain@v1
               with:
                   version: nightly
 
-            - name: 🙏 run forge build
+            - name: 🙏 Run Forge Build
               run: |
                   forge --version
                   forge build --sizes
