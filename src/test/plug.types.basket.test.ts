@@ -1,6 +1,7 @@
 import { createWalletClient, getContract, http } from 'viem'
 
-import { PlugSDK } from '../core/sdk'
+import { PlugSDK } from '@/core/sdk'
+
 import { mainnet } from 'viem/chains'
 
 const RUN = false
