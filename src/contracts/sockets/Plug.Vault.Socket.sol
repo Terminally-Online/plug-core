@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.19;
+pragma solidity 0.8.19;
 
 import {PlugSocket} from '../abstracts/Plug.Socket.sol';
 import {Ownable} from 'solady/src/auth/Ownable.sol';
 
 contract PlugVaultSocket is PlugSocket, Ownable {
 	constructor() {
-		/// @dev Initialize the owner as zero.
+		/// @dev Initialize the owner as an invalid address.
 		_initializeOwner(address(0xdead));
 
 		/// @dev The plug is not initialized here to prevent the

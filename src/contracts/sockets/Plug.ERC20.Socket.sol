@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.19;
+pragma solidity 0.8.19;
 
 import {PlugSocket} from '../abstracts/Plug.Socket.sol';
 import {ERC20} from 'solady/src/tokens/ERC20.sol';
