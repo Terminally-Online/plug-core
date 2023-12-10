@@ -18,47 +18,47 @@ contract PlugMockSocketTest is PRBTest, StdCheats, TestPlus {
     uint256 internal signerPrivateKey;
 
     function setUp() public {
-	mock = new PlugMockSocket('PlugMockSocket', '0.0.0');
+		mock = new PlugMockSocket('PlugMockSocket', '0.0.0');
 
-	signerPrivateKey = 0xabc123;
-	signer = vm.addr(signerPrivateKey);
+		signerPrivateKey = 0xabc123;
+		signer = vm.addr(signerPrivateKey);
     }
 
     function test_Echo() public {
-	string memory expected = 'Hello World';
-	vm.expectEmit(address(mock));
-	emit PlugMockSocket.EchoInvoked(address(this), address(this), expected);
-	mock.echo(expected);
+		string memory expected = 'Hello World';
+		vm.expectEmit(address(mock));
+		emit PlugMockSocket.EchoInvoked(address(this), address(this), expected);
+		mock.echo(expected);
     }
 
     function test_EmptyEcho() public {
-	vm.expectEmit(address(mock));
-	emit PlugMockSocket.EchoInvoked(address(this), address(this), 'Hello World');
-	mock.emptyEcho();
+		vm.expectEmit(address(mock));
+		emit PlugMockSocket.EchoInvoked(address(this), address(this), 'Hello World');
+		mock.emptyEcho();
     }
 
     function testFail_MutedEcho() public { 
-	vm.expectRevert('EchoMuted');
-	mock.mutedEcho();
+		vm.expectRevert('EchoMuted');
+		mock.mutedEcho();
     }
 
     function test_GetLivePinSigner() public { 
-	PlugTypesLib.Fuse[] memory fuses = new PlugTypesLib.Fuse[](0);
-	PlugTypesLib.Pin memory pin = PlugTypesLib.Pin({
-	    neutral: signer,
-	    live: bytes32(0),
-	    fuses: fuses,
-	    salt: bytes32(0),
-	    forced: true
-	});
-	bytes32 digest = mock.getPinDigest(pin);
-	(uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPrivateKey, digest);
-	bytes memory signature = abi.encodePacked(r, s, v);
-	PlugTypesLib.LivePin memory livePin = PlugTypesLib.LivePin({
-	    pin: pin,
-	    signature: signature
-	});
-	address pinSigner = mock.getLivePinSigner(livePin);
-	assertEq(pinSigner, signer);
+	    PlugTypesLib.Fuse[] memory fuses = new PlugTypesLib.Fuse[](0);
+		PlugTypesLib.Pin memory pin = PlugTypesLib.Pin({
+			neutral: signer,
+			live: bytes32(0),
+			fuses: fuses,
+			salt: bytes32(0),
+			forced: true
+		});
+		bytes32 digest = mock.getPinDigest(pin);
+		(uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPrivateKey, digest);
+		bytes memory signature = abi.encodePacked(r, s, v);
+		PlugTypesLib.LivePin memory livePin = PlugTypesLib.LivePin({
+			pin: pin,
+			signature: signature
+		});
+		address pinSigner = mock.getLivePinSigner(livePin);
+		assertEq(pinSigner, signer);
     }
 }
