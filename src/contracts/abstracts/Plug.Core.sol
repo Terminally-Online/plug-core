@@ -94,7 +94,7 @@ abstract contract PlugCore is PlugTypes {
 		);
 
 		/// @dev If the Fuse failed and is not optional, bubble up the revert.
-		if ($success == false && $fuse.forced == true)
+		if (!$success && $fuse.forced)
 			$returnData.bubbleRevert();
 	}
 
@@ -122,7 +122,7 @@ abstract contract PlugCore is PlugTypes {
 		($success, errorMessage) = address($to).call{gas: $voltage}(full);
 
 		/// @dev If the call failed, bubble up the revert reason if possible.
-		if ($success == false) errorMessage.bubbleRevert();
+		if (!$success) errorMessage.bubbleRevert();
 	}
 
 	/**

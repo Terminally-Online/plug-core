@@ -35,9 +35,8 @@ contract NounsBidFuse is PlugFuse {
 
 		/// @dev Prevent the user from bidding on an auction that has
 		///      not yet been settled.
-		if ($settled == false && $endTime <= block.timestamp)
-			if ($settleUnsettled == false)
-				revert NounsBidLib.InsufficientSettlement();
+		if (!$settled && $endTime <= block.timestamp && !$settleUnsettled)
+			revert NounsBidLib.InsufficientSettlement();
 
 		/// @dev Make sure the user has enough money to bid.
 		if (balances[$bidder] < $bid) revert NounsBidLib.InsufficientBalance();

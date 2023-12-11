@@ -103,7 +103,7 @@ contract PlugNounsBidSocket is PlugSocket, NounsBidFuse, Ownable {
 
 		/// @dev If the auction has concluded and a new auction has not
 		///      been scheduled, then settle the active auction and create one.
-		if ($endTime <= block.timestamp && $settled == false) {
+		if ($endTime <= block.timestamp && !$settled) {
 			AUCTION_HOUSE.settleCurrentAndCreateNewAuction();
 
 			/// @dev Get the current state of the active auction.
