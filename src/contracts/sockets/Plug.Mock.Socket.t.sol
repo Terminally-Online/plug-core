@@ -108,7 +108,7 @@ contract PlugMockSocketTest is PRBTest, StdCheats, TestPlus {
         );
         PlugTypesLib.Current memory current = PlugTypesLib.Current({
             ground: address(mock),
-            voltage: 21000,
+            voltage: 0,
             data: encodedTransaction
         });
         PlugTypesLib.Plug memory Plug = PlugTypesLib.Plug({
@@ -134,9 +134,7 @@ contract PlugMockSocketTest is PRBTest, StdCheats, TestPlus {
         });
         address plugsSigner = mock.getLivePlugsSigner(livePlugs);
         assertEq(plugsSigner, signer);
-        PlugTypesLib.LivePlugs[] memory livePlugsArray = new PlugTypesLib.LivePlugs[](1);
-        livePlugsArray[0] = livePlugs;
-        mock.plug(livePlugsArray);
+        mock.plug(livePlugs);
     }
 
 
@@ -172,8 +170,6 @@ contract PlugMockSocketTest is PRBTest, StdCheats, TestPlus {
         });
         address plugsSigner = mock.getLivePlugsSigner(livePlugs);
         assertEq(plugsSigner, signer);
-        PlugTypesLib.LivePlugs[] memory livePlugsArray = new PlugTypesLib.LivePlugs[](1);
-        livePlugsArray[0] = livePlugs;
-        mock.plug(livePlugsArray);
+        mock.plug(livePlugs);
     }
 }

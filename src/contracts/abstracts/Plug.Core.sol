@@ -97,12 +97,14 @@ abstract contract PlugCore is PlugTypes {
 	 * @notice Execution a built transaction.
 	 * @param $to The address of the contract to execute.
 	 * @param $data The data to execute on the contract.
+	 * @param $voltage The value to send with the transaction.
 	 * @param $sender The address of the sender.
 	 * @return $result The return data of the transaction.
 	 */
 	function _execute(
 		address $to,
 		bytes memory $data,
+		uint256 $voltage,
 		address $sender
 	) internal returns (bytes memory $result) {
 		/// @dev Build the final call data.
@@ -112,22 +114,25 @@ abstract contract PlugCore is PlugTypes {
         bool success;
 
 		/// @dev Make the external call with a standard call.
-		(success, $result) = address($to).call{gas: gasleft()}(full);
+		(success, $result) = address($to).call{gas: gasleft(), value: $voltage}(full);
 
 		/// @dev If the call failed, bubble up the revert reason if possible.
 		if (!success) $result.bubbleRevert();
 	}
 
 	/**
-	 * @notice Execute a plugs of plugs
+	 * @notice Execute an array of plugs
 	 * @param $plugs The plugs of plugs to execute.
 	 * @param $sender The address of the sender.
-	 * @return $result The return data of the plugs.
+	 * @return $results The return data of the plugs.
 	 */
 	function _plug(
 		PlugTypesLib.Plug[] calldata $plugs,
 		address $sender
-	) internal returns (bytes memory $result) {
+	) internal returns (bytes[] memory $results) {
+        /// @dev Warm up the results array.
+        $results = new bytes[]($plugs.length);
+
 		/// @dev Load the stack.
 		uint256 i;
 		uint256 j;
@@ -198,12 +203,13 @@ abstract contract PlugCore is PlugTypes {
 			/// @dev Verify the delegate at the end of the pin chain is the signer.
 			require(canGrant == $sender, 'PlugCore:invalid-signer');
 
-			/// @dev Execute the transaction.
-			$result = _execute(
-				current.ground,
-				current.data,
-				intendedSender
-			);
+            /// @dev Execute the transaction.
+            $results[i] = _execute(
+                current.ground,
+                current.data,
+                current.voltage,
+                intendedSender
+            );
 		}
 	}
 }

@@ -17,43 +17,27 @@ import {PlugTypesLib} from './Plug.Types.sol';
  * @author @danfinlay (https://github.com/delegatable/delegatable-sol)
  * @author @KamesGeraghty (https://github.com/kamescg)
  */
-abstract contract PlugSocket is PlugSimulation, Receiver, IPlug {
+contract PlugSocket is PlugSimulation, Receiver, IPlug {
 	/**
 	 * See {IPlug-plug}.
 	 */
 	function plug(
-		PlugTypesLib.LivePlugs[] calldata $livePlugs
-	) external returns (bytes[] memory $results) {
-		/// @dev Load the stack.
-		uint256 i;
+		PlugTypesLib.LivePlugs calldata $livePlugs
+	) external payable returns (bytes[] memory $results) {
+        /// @dev Determine who signed the intent.
+        address intentSigner = getLivePlugsSigner($livePlugs);
 
-        /// @dev Initialize the results array.
-        $results = new bytes[]($livePlugs.length);
+        /// @dev Prevent random people from plugging.
+        _enforceSigner(intentSigner);
 
-		/// @dev Loop through the signed plugs.
-		for (i; i < $livePlugs.length; ) {
-			/// @dev Load the signed intent as a hot reference.
-			PlugTypesLib.LivePlugs calldata livePlugs = $livePlugs[i];
+        /// @dev Load the plugs as a hot reference.
+        PlugTypesLib.Plugs calldata plugs = $livePlugs.plugs;
 
-			/// @dev Determine who signed the intent.
-			address intentSigner = getLivePlugsSigner(livePlugs);
+        /// @dev Prevent replay attacks by enforcing replay protection.
+        _enforceBreaker(intentSigner, plugs.breaker);
 
-            /// @dev Prevent random people from plugging.
-            _enforceSigner(intentSigner);
-
-			/// @dev Load the plugs as a hot reference.
-			PlugTypesLib.Plugs calldata plugs = livePlugs.plugs;
-
-			/// @dev Prevent replay attacks by enforcing replay protection.
-			_enforceBreaker(intentSigner, plugs.breaker);
-
-			/// @dev Invoke the plugs.
-			$results[i] = _plug(plugs.plugs, intentSigner);
-
-			unchecked {
-				++i;
-			}
-		}
+        /// @dev Invoke the plugs.
+        $results = _plug(plugs.plugs, intentSigner);
 	}
 
 	/**
@@ -61,7 +45,7 @@ abstract contract PlugSocket is PlugSimulation, Receiver, IPlug {
 	 */
 	function plugContract(
 		PlugTypesLib.Plug[] calldata $plugs
-	) external returns (bytes memory $result) {
+	) external payable returns (bytes[] memory $result) {
 		$result = _plug($plugs, msg.sender);
 	}
 
