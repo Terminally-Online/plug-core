@@ -42,9 +42,8 @@ contract PlugMockSocketTest is PRBTest, StdCheats, TestPlus {
 		mock.emptyEcho();
     }
 
-    function testFail_MutedEcho() public {
-		vm.expectRevert('EchoMuted');
-		mock.mutedEcho();
+    function test_MutedEcho(uint256 $echo) public view {
+		mock.mutedEcho($echo);
     }
 
     function test_GetLivePlugsSigner() public {
