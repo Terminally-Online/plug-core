@@ -9,14 +9,14 @@
         "solady/=node_modules/solady/"
     ]
     auto_detect_solc = false
-    block_timestamp = 1_680_220_800 
+    block_timestamp = 1_680_220_800
     bytecode_hash = "none"
     evm_version = "paris"
     fuzz = { runs = 1_000 }
     gas_reports = ["*"]
     optimizer = true
     optimizer_runs = 10_000
-    script = "script"
+    script = "src/contracts/script"
     solc = "0.8.23"
 
 [profile.ci]

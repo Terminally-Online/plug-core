@@ -1,6 +1,4 @@
-import dedent from 'dedent'
-
-export const gitignore = (ignorePaths: Array<string>) => dedent`
+export const gitignore = (ignorePaths: Array<string>) => `
 # Generated file. Do not edit directly.
 # Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
 

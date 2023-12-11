@@ -1,6 +1,6 @@
 import { createWalletClient, getContract, http } from 'viem'
 
-import { PlugSDK } from '@/core/sdk'
+import { PlugSDK } from '@/src/core/sdk'
 
 import { mainnet } from 'viem/chains'
 
