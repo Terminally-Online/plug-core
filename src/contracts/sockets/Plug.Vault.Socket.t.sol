@@ -31,4 +31,12 @@ contract PlugFactorySocketTest is PRBTest, StdCheats, TestPlus  {
         vm.expectRevert('PlugVaultSocket:already-initialized');
         vault.initialize(address(this));
     }
+
+    function test_ToggleSigner(uint256) public {
+        assertEq(vault.isSigner(address(this)), true);
+        address nonZeroAddress = _randomNonZeroAddress();
+        assertEq(vault.isSigner(nonZeroAddress), false);
+        vault.toggleSigner(nonZeroAddress);
+        assertEq(vault.isSigner(nonZeroAddress), true);
+    }
 }
