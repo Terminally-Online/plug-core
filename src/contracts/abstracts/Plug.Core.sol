@@ -97,14 +97,12 @@ abstract contract PlugCore is PlugTypes {
 	 * @notice Execution a built transaction.
 	 * @param $to The address of the contract to execute.
 	 * @param $data The data to execute on the contract.
-	 * @param $voltage The gas limit for the transaction.
 	 * @param $sender The address of the sender.
 	 * @return $result The return data of the transaction.
 	 */
 	function _execute(
 		address $to,
 		bytes memory $data,
-		uint256 $voltage,
 		address $sender
 	) internal returns (bytes memory $result) {
 		/// @dev Build the final call data.
@@ -114,7 +112,7 @@ abstract contract PlugCore is PlugTypes {
         bool success;
 
 		/// @dev Make the external call with a standard call.
-		(success, $result) = address($to).call{gas: $voltage}(full);
+		(success, $result) = address($to).call{gas: gasleft()}(full);
 
 		/// @dev If the call failed, bubble up the revert reason if possible.
 		if (!success) $result.bubbleRevert();
@@ -204,7 +202,6 @@ abstract contract PlugCore is PlugTypes {
 			$result = _execute(
 				current.ground,
 				current.data,
-				current.voltage,
 				intendedSender
 			);
 		}
