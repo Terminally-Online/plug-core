@@ -19,22 +19,16 @@ import {PlugTypesLib} from './Plug.Types.sol';
  */
 abstract contract PlugSocket is PlugSimulation, Receiver, IPlug {
 	/**
-	 * See {IPlug-plugContract}.
-	 */
-	function plugContract(
-		PlugTypesLib.Plug[] calldata $plugs
-	) external returns (bool $success) {
-		$success = _plug($plugs, msg.sender);
-	}
-
-	/**
 	 * See {IPlug-plug}.
 	 */
 	function plug(
 		PlugTypesLib.LivePlugs[] calldata $livePlugs
-	) external returns (bool $success) {
+	) external returns (bytes[] memory $results) {
 		/// @dev Load the stack.
 		uint256 i;
+
+        /// @dev Initialize the results array.
+        $results = new bytes[]($livePlugs.length);
 
 		/// @dev Loop through the signed plugs.
 		for (i; i < $livePlugs.length; ) {
@@ -54,12 +48,21 @@ abstract contract PlugSocket is PlugSimulation, Receiver, IPlug {
 			_enforceBreaker(intentSigner, plugs.breaker);
 
 			/// @dev Invoke the plugs.
-			$success = _plug(plugs.plugs, intentSigner);
+			$results[i] = _plug(plugs.plugs, intentSigner);
 
 			unchecked {
 				++i;
 			}
 		}
+	}
+
+	/**
+	 * See {IPlug-plugContract}.
+	 */
+	function plugContract(
+		PlugTypesLib.Plug[] calldata $plugs
+	) external returns (bytes memory $result) {
+		$result = _plug($plugs, msg.sender);
 	}
 
     /**
