@@ -6,23 +6,36 @@ import {PlugSocket} from '../abstracts/Plug.Socket.sol';
 import {Ownable} from 'solady/src/auth/Ownable.sol';
 import {LibBitmap} from 'solady/src/utils/LibBitmap.sol';
 
+/**
+ * @title Plug Vault Socket
+ * @notice This contract represents an personal relay for a single owner, and
+ *         declared set of signers.
+ * @author @nftchance (chance@utc24.io)
+ */
 contract PlugVaultSocket is PlugSocket, Ownable {
 	using LibBitmap for LibBitmap.Bitmap;
 
+    /// @dev Whether or not the contract has been initialized.
 	bool private initialized;
 
 	/// @dev The signers of the contract.
 	LibBitmap.Bitmap internal signers;
 
+    /**
+     * @notice Initializes a new Plug Vault contract.
+     */
 	constructor() {
-		/// @dev Initialize the owner.
 		initialize(msg.sender);
 	}
 
+    /**
+     * @notice Modifier to ensure that the contract has not been initialized.
+     */
 	modifier initializer() {
 		require(!initialized, 'PlugVaultSocket:already-initialized');
-		_;
+
 		initialized = true;
+		_;
 	}
 
 	/**
