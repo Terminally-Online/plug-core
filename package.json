@@ -46,7 +46,7 @@
     "abitype": "^0.10.3",
     "solady": "^0.0.146",
     "solhint": "^4.0.0",
-    "viem": "^1.19.11"
+    "viem": "^1.19.13"
   },
   "repository": {
     "type": "git",
