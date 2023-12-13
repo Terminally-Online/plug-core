@@ -190,6 +190,7 @@ artifacts
 --branch-coverage
 report
 lcov.info
+create2crunch/
 
 ./core
 ./contracts

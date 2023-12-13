@@ -3,6 +3,7 @@ dist
 artifacts
 cache
 typechain-types
+create2crunch
 
 node_modules
 lib
