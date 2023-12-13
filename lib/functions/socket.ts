@@ -18,7 +18,7 @@ const initcodeHash = initcodeJson.initcodeHash
 
 const caller =
 	process.env.PLUG_CREATE2_CALLER ||
-	'0x62180042606624f02D8A130dA8A3171e9b33894d'
+	'0x0000000000000000000000000000000000000000'
 
 execa('git', ['clone', 'https://github.com/0age/create2crunch'])
 
@@ -212,3 +212,8 @@ abstract contract PlugSocket {
 
 	fs.writeFileSync('./src/contracts/abstracts/Plug.Socket.sol', socket)
 }, seconds * 1000)
+
+child.on('exit', () => {
+	clearInterval(interval)
+	bar.stop()
+})
