@@ -18,6 +18,9 @@ import {PlugErrors} from '../libraries/Plug.Errors.sol';
 abstract contract PlugCore is PlugTypes {
 	using PlugErrors for bytes;
 
+    /// @notice The address of the sender.
+    address public sender;
+
 	/// @notice Multi-dimensional account pin nonce management.
 	mapping(address => mapping(uint256 => uint256)) public nonce;
 
@@ -107,8 +110,11 @@ abstract contract PlugCore is PlugTypes {
 		uint256 $voltage,
 		address $sender
 	) internal returns (bytes memory $result) {
+        /// @dev Set the sender.
+        sender = $sender;
+
 		/// @dev Build the final call data.
-		bytes memory full = abi.encodePacked($data, $sender);
+		bytes memory full = abi.encodePacked($data);
 
 		/// @dev Warm up the slot for the return data.
         bool success;
@@ -118,6 +124,9 @@ abstract contract PlugCore is PlugTypes {
 
 		/// @dev If the call failed, bubble up the revert reason if possible.
 		if (!success) $result.bubbleRevert();
+
+        /// @dev Reset the sender.
+        delete sender;
 	}
 
 	/**
