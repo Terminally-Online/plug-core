@@ -2,17 +2,17 @@
 
 pragma solidity 0.8.23;
 
-import {PlugSocket} from '../abstracts/Plug.Socket.sol';
+import {PlugRouter} from './Plug.Router.sol';
 import {Ownable} from 'solady/src/auth/Ownable.sol';
 import {LibBitmap} from 'solady/src/utils/LibBitmap.sol';
 
 /**
- * @title Plug Vault Socket
+ * @title Plug Vault Router
  * @notice This contract represents an personal relay for a single owner, and
  *         declared set of signers.
  * @author @nftchance (chance@utc24.io)
  */
-contract PlugVaultSocket is PlugSocket, Ownable {
+contract PlugVaultRouter is PlugRouter, Ownable {
 	using LibBitmap for LibBitmap.Bitmap;
 
     /// @dev Whether or not the contract has been initialized.

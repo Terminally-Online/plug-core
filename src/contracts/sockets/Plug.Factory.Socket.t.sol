@@ -8,16 +8,16 @@ import { StdCheats } from "forge-std/StdCheats.sol";
 import { TestPlus } from "../tests/TestPlus.sol";
 
 import { PlugFactorySocket } from "./Plug.Factory.Socket.sol";
-import { PlugVaultSocket } from "./Plug.Vault.Socket.sol";
+import { PlugVaultRouter } from "../routers/Plug.Vault.Router.sol";
 
 import {LibClone} from "solady/src/utils/LibClone.sol";
 
 contract PlugFactorySocketTest is PRBTest, StdCheats, TestPlus  {
-	PlugVaultSocket internal implementation;
+	PlugVaultRouter internal implementation;
 	PlugFactorySocket internal factory;
 
 	function setUp() public virtual {
-		implementation = new PlugVaultSocket();
+		implementation = new PlugVaultRouter();
 		factory = new PlugFactorySocket('PlugMockSocket', '0.0.0');
 	}
 
@@ -39,7 +39,7 @@ contract PlugFactorySocketTest is PRBTest, StdCheats, TestPlus  {
 		}
 
 		assertEq(address(vault).balance, initialValue);
-		assertEq(PlugVaultSocket(payable(vault)).isSigner(owner), true);
+		assertEq(PlugVaultRouter(payable(vault)).isSigner(owner), true);
 	}
 
 	function test_RepeatedDeployDeterministic() public {

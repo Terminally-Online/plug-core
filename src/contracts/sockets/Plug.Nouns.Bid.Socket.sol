@@ -6,7 +6,6 @@ import {INounsSeeder, INounsToken} from '../interfaces/nouns/INounsToken.sol';
 
 import {Ownable} from 'solady/src/auth/Ownable.sol';
 
-import {PlugSocket} from '../abstracts/Plug.Socket.sol';
 import {NounsBidLib} from '../libraries/nouns/Nouns.Bid.Lib.sol';
 import {NounsBidFuse} from '../fuses/nouns/Nouns.Bid.Fuse.sol';
 
@@ -22,7 +21,7 @@ import {BytesLib} from '../libraries/BytesLib.sol';
  * @author @nftchance (chance@utc24.io)
  * @author @masonchain
  */
-contract PlugNounsBidSocket is PlugSocket, NounsBidFuse, Ownable {
+contract PlugNounsBidSocket is NounsBidFuse, Ownable {
 	using BytesLib for bytes;
 
 	/// @dev Accessible interface to the active Nouns Auction House.
@@ -53,12 +52,9 @@ contract PlugNounsBidSocket is PlugSocket, NounsBidFuse, Ownable {
 
 		/// @dev Initialize the owner.
 		_initializeOwner($owner);
-
-		/// @dev Initialize the Plug Socket.
-		_initializeSocket('NounsBidSocket', '0.0.1');
 	}
 
-	receive() external payable virtual override {
+	receive() external payable virtual {
 		_receive();
 	}
 
@@ -66,7 +62,7 @@ contract PlugNounsBidSocket is PlugSocket, NounsBidFuse, Ownable {
 	 * @dev Handle when ETH is received.
 	 */
 	function _receive() internal {
-		/// @dev Prevent receiving funds from anyone other than the Auction House.
+		/// @dev Handle receiving funds from the Auction House.
 		if (msg.sender == address(AUCTION_HOUSE)) {
 			/// @dev Determine who the last bidder was.
 			address bidder = bids[currentNoun];

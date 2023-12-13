@@ -23,7 +23,7 @@ contract PlugMockSocketTest is PRBTest, StdCheats, TestPlus {
     bytes32 internal digest;
 
     function setUp() public {
-		mock = new PlugMockSocket('PlugMockSocket', '0.0.0');
+		mock = new PlugMockSocket();
 
 		signerPrivateKey = 0xabc123;
 		signer = vm.addr(signerPrivateKey);

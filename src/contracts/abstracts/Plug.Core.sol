@@ -2,7 +2,6 @@
 
 pragma solidity 0.8.23;
 
-import {PlugContext} from './Plug.Context.sol';
 import {PlugTypes, PlugTypesLib} from './Plug.Types.sol';
 import {IFuse} from '../interfaces/IFuse.sol';
 import {PlugErrors} from '../libraries/Plug.Errors.sol';
@@ -14,18 +13,27 @@ import {PlugErrors} from '../libraries/Plug.Errors.sol';
  *         granular pin and execution paths.
  * @author @nftchance
  */
-abstract contract PlugCore is PlugContext, PlugTypes {
+abstract contract PlugCore is PlugTypes {
 	using PlugErrors for bytes;
 
     error Reentrancy();
-
-    error InvalidSignature();
-
     error InvalidNonce();
+    error InvalidSignature();
+    error InvalidSigner();
+    error InvalidTree();
 
+    /// @dev Mapping of nonces for replay protection.
+    mapping(address => mapping(uint256 => uint256)) nonce;
+
+    /**
+     * @notice Load the initial slot with the active reentrancy flag.
+     * @dev In this slot we will use bits 96-255 and for the active
+     *      address that is executing a transaction while saving the
+     *      last bit for the reentrancy flag.
+     */
     constructor() {
         assembly {
-            sstore(returndatasize(), 1)
+            sstore(0, 1)
         }
     }
 
@@ -35,10 +43,23 @@ abstract contract PlugCore is PlugContext, PlugTypes {
      */
     receive() external payable {
         assembly {
-            mstore(0x0c, sload(returndatasize()))
-            return(returndatasize(), 0x20)
+            mstore(0x0c, sload(0))
+            return(0, 0x20)
         }
     }
+
+	/**
+	 * @notice Update the nonce for a given account and queue.
+	 * @param $sender The address of the intended sender.
+	 * @param $protection The replay protection struct.
+	 */
+	function _enforceBreaker(
+		address $sender,
+		PlugTypesLib.Breaker memory $protection
+	) internal {
+        if($protection.nonce != ++nonce[$sender][$protection.queue])
+            revert InvalidNonce();
+	}
 
 	function _enforceFuse(
 		PlugTypesLib.Fuse memory $fuse,
@@ -161,19 +182,13 @@ abstract contract PlugCore is PlugContext, PlugTypes {
 
 					/// @dev Ensure the pin signer has authority to grant
 					///      the claimed pin.
-					require(
-						pinSigner == canGrant,
-						'PlugCore:invalid-pin-signer'
-					);
+                    if(pinSigner != canGrant) revert InvalidSigner();
 
 					/// @dev Warm up the pin reference.
 					pin = signedPin.pin;
 
 					/// @dev Ensure the pin is valid.
-					require(
-						pin.live == pinHash,
-						'PlugCore:invalid-authority-pin-link'
-					);
+                    if(pin.live != pinHash) revert InvalidTree();
 
 					/// @dev Retrieve the packet hash for the pin.
 					pinHash = getLivePinHash(signedPin);
@@ -185,8 +200,8 @@ abstract contract PlugCore is PlugContext, PlugTypes {
 				}
 			}
 
-			/// @dev Verify the delegate at the end of the pin chain is the signer.
-			require(canGrant == $sender, 'PlugCore:invalid-signer');
+			/// @dev Verify the granter of the pin is the builder of the execution.
+            if(canGrant != $sender) revert InvalidSigner();
 
             /// @dev Execute the transaction.
             $results[i] = _execute(

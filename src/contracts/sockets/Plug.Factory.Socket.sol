@@ -2,8 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import {PlugSocket} from '../abstracts/Plug.Socket.sol';
-import {PlugVaultSocket} from './Plug.Vault.Socket.sol';
+import {PlugVaultRouter} from '../routers/Plug.Vault.Router.sol';
 import {PlugFactorySocketLib} from '../libraries/Plug.Factory.Socket.Lib.sol';
 import {LibClone} from 'solady/src/utils/LibClone.sol';
 
@@ -17,18 +16,7 @@ import {LibClone} from 'solady/src/utils/LibClone.sol';
  * @author @nftchance (chance@utc24.io)
  * @author @vectorized (https://github.com/Vectorized/solady/blob/main/src/accounts/ERC4337Factory.sol)
  */
-contract PlugFactorySocket is PlugSocket {
-	/**
-	 * @notice Initializes a new Plug Vault contract.
-	 * @dev A vault is instantiated inside the factory in case funds are sent to the
-	 *      factory by mistake.
-	 * @param $name The name of the contract
-	 * @param $version The version of the contract
-	 */
-	constructor(string memory $name, string memory $version) {
-		_initializeSocket($name, $version);
-	}
-
+contract PlugFactorySocket {
 	/**
 	 * @notice Deploy a new Plug contract and initialize it.
 	 * @param $admin The admin of the vault.

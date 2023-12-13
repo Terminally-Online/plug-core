@@ -17,19 +17,6 @@ contract PlugMockSocket is PlugSocket {
 	event EchoInvoked(address $reality, address $perception, string $message);
 
 	/**
-	 * @notice Initializes a new Plug contract.
-	 * @param $name The name of the contract
-	 * @param $version The version of the contract
-	 */
-	constructor(
-		string memory $name,
-		string memory $version
-	) {
-		/// @dev Initialize the Plug Socket.
-		_initializeSocket($name, $version);
-	}
-
-	/**
 	 * @notice A mock function for testing the framework.
 	 * @param $message The message to echo.
 	 */
