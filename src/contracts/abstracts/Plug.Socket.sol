@@ -3,7 +3,6 @@
 pragma solidity 0.8.23;
 
 import {PlugSimulation} from './Plug.Simulation.sol';
-import {Receiver} from 'solady/src/accounts/Receiver.sol';
 import {IPlug} from '../interfaces/IPlug.sol';
 
 import {PlugTypesLib} from './Plug.Types.sol';
@@ -17,7 +16,7 @@ import {PlugTypesLib} from './Plug.Types.sol';
  * @author @danfinlay (https://github.com/delegatable/delegatable-sol)
  * @author @KamesGeraghty (https://github.com/kamescg)
  */
-contract PlugSocket is PlugSimulation, Receiver, IPlug {
+contract PlugSocket is PlugSimulation, IPlug {
 	/**
 	 * See {IPlug-plug}.
 	 */

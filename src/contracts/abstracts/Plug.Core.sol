@@ -2,6 +2,7 @@
 
 pragma solidity 0.8.23;
 
+import {PlugContext} from './Plug.Context.sol';
 import {PlugTypes, PlugTypesLib} from './Plug.Types.sol';
 import {IFuse} from '../interfaces/IFuse.sol';
 import {PlugErrors} from '../libraries/Plug.Errors.sol';
@@ -23,43 +24,6 @@ abstract contract PlugCore is PlugTypes {
 
 	/// @notice Multi-dimensional account pin nonce management.
 	mapping(address => mapping(uint256 => uint256)) public nonce;
-
-	/**
-	 * @notice Determine the address representing the message sender in the
-	 *         current context. This is important for pins, as the
-	 *         message sender may be the framework itself, in which case
-	 *         the sender must be extracted from the data.
-	 * @return $sender The address of the message sender.
-	 */
-	function _msgSender() internal view virtual returns (address $sender) {
-		/// @dev If the message sender is the framework, we need to extract the
-		///      sender from the data.
-		if (msg.sender == address(this)) {
-			/// @dev Load the data as a hot reference.
-			bytes memory array = msg.data;
-
-			/// @dev Load the length of the data as a hot reference.
-			uint256 index = array.length;
-
-			assembly {
-				/// @dev Load the sender from the data by applying a
-				///      bitwise AND operation to the data and the
-				///      maximum uint256 value, keeping only the last
-				///      20 bytes (160 bits) (address size).
-				$sender := and(
-					/// @dev Load the bytes at the computer pointer.
-					mload(
-						/// @dev Computes the sum of the starting address of array and index.
-						///      This effectively points to the end of array.
-						add(array, index)
-					),
-					0xffffffffffffffffffffffffffffffffffffffff
-				)
-			}
-		}
-		/// @dev Otherwise, the sender is the message sender.
-		else $sender = msg.sender;
-	}
 
 	/**
 	 * @notice Update the nonce for a given account and queue.

@@ -26,8 +26,8 @@ contract PlugLimitedCallsFuse is PlugFuse {
 		PlugTypesLib.Current calldata,
 		bytes32 $pinHash
 	) public override returns (bytes memory $callback) {
-		/// @dev Confirm the allowed limit has not yet been reached by the sender
-		///      of the declared pin.
+		/// @dev Confirm the allowed limit has not yet been reached by
+        ///      the sender of the declared pin.
 		require(
 			decode($live) >= callCounts[msg.sender][$pinHash]++,
 			'LimitedCallsEnforcer:limit-exceeded'
