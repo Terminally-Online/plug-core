@@ -1,7 +1,7 @@
 import { default as cliProgress } from 'cli-progress'
 import dotenv from 'dotenv'
 import { execa, execaSync } from 'execa'
-import { default as fs, readJsonSync } from 'fs-extra'
+import { existsSync, default as fs, readJsonSync } from 'fs-extra'
 
 import { version } from '../../package.json'
 
@@ -20,10 +20,14 @@ const caller =
 	process.env.PLUG_CREATE2_CALLER ||
 	'0x0000000000000000000000000000000000000000'
 
-execaSync('git', ['clone', 'https://github.com/0age/create2crunch'])
+if (process.env.PLUG_CREATE2_CACHE !== 'true')
+	if (existsSync('./create2crunch')) fs.removeSync('./create2crunch')
+
+if (!existsSync('./create2crunch'))
+	execaSync('git', ['clone', 'https://github.com/0age/create2crunch'])
 
 const seconds = parseInt(process.env.PLUG_CREATE2_MINING_DURATION || '60')
-console.log(`   
+console.log(`
    ◍ Plug Socket Crunching ${version}
    - Duration: ${seconds} seconds
    - Environments: .env
@@ -80,7 +84,7 @@ setTimeout(() => {
 	const salt = crunched![0]
 	const address = crunched![1]
 
-	console.log(`   
+	console.log(`
    ◍ Plug Socket Crunched ${version}
    - Crunched: ${efficientAddressesTxt.length}
    - Salt: ${salt}
