@@ -18,7 +18,7 @@ contract PlugFactorySocketTest is PRBTest, StdCheats, TestPlus  {
 
 	function setUp() public virtual {
 		implementation = new PlugVaultRouter();
-		factory = new PlugFactorySocket('PlugMockSocket', '0.0.0');
+		factory = new PlugFactorySocket();
 	}
 
 	function test_DeployDeterministic(uint256) public {
@@ -39,7 +39,7 @@ contract PlugFactorySocketTest is PRBTest, StdCheats, TestPlus  {
 		}
 
 		assertEq(address(vault).balance, initialValue);
-		assertEq(PlugVaultRouter(payable(vault)).isSigner(owner), true);
+		assertEq(PlugVaultRouter(payable(vault)).isSender(owner), true);
 	}
 
 	function test_RepeatedDeployDeterministic() public {

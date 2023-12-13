@@ -2,11 +2,11 @@
 
 pragma solidity 0.8.23;
 
-import {PlugSocket} from './Plug.Socket.sol';
-import {PlugTypesLib} from '../abstracts/Plug.Types.sol';
 import {IFuse} from '../interfaces/IFuse.sol';
+import {PlugSocket} from './Plug.Socket.sol';
+import {PlugTypes, PlugTypesLib} from '../abstracts/Plug.Types.sol';
 
-abstract contract PlugFuse is PlugSocket, IFuse {
+abstract contract PlugFuse is IFuse, PlugSocket, PlugTypes {
 	/**
 	 * See {IFuseEnforcer-enforceFuse}.
 	 */

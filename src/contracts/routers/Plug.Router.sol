@@ -7,10 +7,10 @@ import {PlugTypesLib} from '../abstracts/Plug.Types.sol';
 import {IPlug} from '../interfaces/IPlug.sol';
 
 /**
- * @title Plug
- * @notice The core contract for the Plug framework that enables
- *         counterfactual revokable pin of extremely
- *         granular pin and execution paths.
+ * @title Plug Router
+ * @notice The core interface for the Plug framework that enables
+ *         counterfactual revocation of extremely granular pin
+ *         intent declarations and execution paths.
  * @author @nftchance (chance@utc24.io)
  */
 contract PlugRouter is PlugCore, IPlug {

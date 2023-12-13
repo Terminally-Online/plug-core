@@ -33,10 +33,10 @@ contract PlugFactorySocketTest is PRBTest, StdCheats, TestPlus  {
     }
 
     function test_ToggleSigner(uint256) public {
-        assertEq(vault.isSigner(address(this)), true);
+        assertEq(vault.isSender(address(this)), true);
         address nonZeroAddress = _randomNonZeroAddress();
-        assertEq(vault.isSigner(nonZeroAddress), false);
-        vault.toggleSigner(nonZeroAddress);
-        assertEq(vault.isSigner(nonZeroAddress), true);
+        assertEq(vault.isSender(nonZeroAddress), false);
+        vault.toggleSender(nonZeroAddress);
+        assertEq(vault.isSender(nonZeroAddress), true);
     }
 }

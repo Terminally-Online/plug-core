@@ -48,6 +48,13 @@ abstract contract PlugCore is PlugTypes {
         }
     }
 
+    /**
+     * @notice Enforce limitations of execution upon the signer
+     *         of the plug based on the surrounding context.
+     * @param $sender The address of the message sender.
+     */
+    function _enforceSender(address $sender) internal view virtual {}
+
 	/**
 	 * @notice Update the nonce for a given account and queue.
 	 * @param $sender The address of the intended sender.
@@ -110,8 +117,8 @@ abstract contract PlugCore is PlugTypes {
             /// @dev If the call failed, bubble up the revert.
             if iszero(success) {
                 /// @dev Copy the revert data into memory at 0x00.
-                returndatacopy(0x00, 0x00, returndatasize())
-                revert(0x00, returndatasize())
+                returndatacopy(0x00, 0x00, 0)
+                revert(0x00, 0)
             }
         }
 	}
@@ -126,11 +133,13 @@ abstract contract PlugCore is PlugTypes {
 		PlugTypesLib.Plug[] calldata $plugs,
 		address $sender
 	) internal returns (bytes[] memory $results) {
+        _enforceSender($sender);
+
         assembly {
             /// @dev Ensure the contract is not reentrant.
-            if iszero(and(1, sload(returndatasize()))) {
+            if iszero(and(1, sload(0))) {
                 /// @dev Store the error being throw in memory at 0x00.
-                mstore(returndatasize(), 0xab143c06)
+                mstore(0, 0xab143c06)
                 /// @dev Throw with `Reentrancy()`.
                 revert(0x1c, 0x04)
             }
