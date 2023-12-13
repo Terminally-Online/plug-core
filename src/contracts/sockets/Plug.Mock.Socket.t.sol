@@ -7,6 +7,7 @@ import { console2 } from "forge-std/console2.sol";
 import { StdCheats } from "forge-std/StdCheats.sol";
 import { TestPlus } from "../tests/TestPlus.sol";
 
+import { PlugRouterEtcher } from "../routers/Plug.Router.Etcher.sol";
 import { PlugRouter } from "../routers/Plug.Router.sol";
 import { PlugMockSocket } from "./Plug.Mock.Socket.sol";
 import { PlugTypes, PlugTypesLib } from "../abstracts/Plug.Types.sol";
@@ -25,7 +26,7 @@ contract PlugMockSocketTest is PRBTest, StdCheats, TestPlus {
     bytes32 internal digest;
 
     function setUp() public {
-        router = new PlugRouter();
+        router = PlugRouterEtcher.router();
 		mock = new PlugMockSocket();
 
 		signerPrivateKey = 0xabc123;
