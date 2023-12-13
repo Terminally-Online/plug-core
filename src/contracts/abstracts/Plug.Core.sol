@@ -13,33 +13,32 @@ import {PlugErrors} from '../libraries/Plug.Errors.sol';
  *         counterfactual revokable pin of extremely
  *         granular pin and execution paths.
  * @author @nftchance
- * @author @danfinlay (https://github.com/delegatable/delegatable-sol)
- * @author @KamesGeraghty (https://github.com/kamescg)
  */
-abstract contract PlugCore is PlugTypes {
+abstract contract PlugCore is PlugContext, PlugTypes {
 	using PlugErrors for bytes;
 
-    /// @notice The address of the sender.
-    address public sender;
+    error Reentrancy();
 
-	/// @notice Multi-dimensional account pin nonce management.
-	mapping(address => mapping(uint256 => uint256)) public nonce;
+    error InvalidSignature();
 
-	/**
-	 * @notice Update the nonce for a given account and queue.
-	 * @param $intendedSender The address of the intended sender.
-	 * @param $protection The replay protection struct.
-	 */
-	function _enforceBreaker(
-		address $intendedSender,
-		PlugTypesLib.Breaker memory $protection
-	) internal {
-		/// @dev Ensure the nonce is in order.
-		require(
-			$protection.nonce == ++nonce[$intendedSender][$protection.queue],
-			'PlugCore:nonce2-out-of-order'
-		);
-	}
+    error InvalidNonce();
+
+    constructor() {
+        assembly {
+            sstore(returndatasize(), 1)
+        }
+    }
+
+    /**
+     * @dev Returns the signer passed into `plug` on this contract.
+     *      The value is always the zero address outside a transaction.
+     */
+    receive() external payable {
+        assembly {
+            mstore(0x0c, sload(returndatasize()))
+            return(returndatasize(), 0x20)
+        }
+    }
 
 	function _enforceFuse(
 		PlugTypesLib.Fuse memory $fuse,
@@ -74,23 +73,26 @@ abstract contract PlugCore is PlugTypes {
 		uint256 $voltage,
 		address $sender
 	) internal returns (bytes memory $result) {
-        /// @dev Set the sender.
-        sender = $sender;
-
-		/// @dev Build the final call data.
-		bytes memory full = abi.encodePacked($data);
-
-		/// @dev Warm up the slot for the return data.
-        bool success;
-
-		/// @dev Make the external call with a standard call.
-		(success, $result) = address($to).call{gas: gasleft(), value: $voltage}(full);
-
-		/// @dev If the call failed, bubble up the revert reason if possible.
-		if (!success) $result.bubbleRevert();
-
-        /// @dev Reset the sender.
-        delete sender;
+        assembly {
+            /// @dev Set the signer slot to the sender.
+            sstore(0, shl(96, $sender))
+            $result := mload(0x40)
+            let success := call(
+                gas(),
+                $to,
+                $voltage,
+                add($data, 0x20),
+                mload($data),
+                0x00, /// @dev Ignored because we will use returndatacopy() instead.
+                0x00  /// @dev ...
+            )
+            /// @dev If the call failed, bubble up the revert.
+            if iszero(success) {
+                /// @dev Copy the revert data into memory at 0x00.
+                returndatacopy(0x00, 0x00, returndatasize())
+                revert(0x00, returndatasize())
+            }
+        }
 	}
 
 	/**
@@ -103,6 +105,16 @@ abstract contract PlugCore is PlugTypes {
 		PlugTypesLib.Plug[] calldata $plugs,
 		address $sender
 	) internal returns (bytes[] memory $results) {
+        assembly {
+            /// @dev Ensure the contract is not reentrant.
+            if iszero(and(1, sload(returndatasize()))) {
+                /// @dev Store the error being throw in memory at 0x00.
+                mstore(returndatasize(), 0xab143c06)
+                /// @dev Throw with `Reentrancy()`.
+                revert(0x1c, 0x04)
+            }
+        }
+
         /// @dev Warm up the results array.
         $results = new bytes[]($plugs.length);
 
@@ -184,5 +196,10 @@ abstract contract PlugCore is PlugTypes {
                 intendedSender
             );
 		}
+
+        assembly {
+            /// @dev Clear the signer slot and retoggle reentrency.
+            sstore(0, 1)
+        }
 	}
 }
