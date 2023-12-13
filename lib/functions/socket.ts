@@ -1,6 +1,6 @@
 import { default as cliProgress } from 'cli-progress'
 import dotenv from 'dotenv'
-import { execa } from 'execa'
+import { execa, execaSync } from 'execa'
 import { default as fs, readJsonSync } from 'fs-extra'
 
 import { version } from '../../package.json'
@@ -20,7 +20,7 @@ const caller =
 	process.env.PLUG_CREATE2_CALLER ||
 	'0x0000000000000000000000000000000000000000'
 
-execa('git', ['clone', 'https://github.com/0age/create2crunch'])
+execaSync('git', ['clone', 'https://github.com/0age/create2crunch'])
 
 const seconds = parseInt(process.env.PLUG_CREATE2_MINING_DURATION || '60')
 console.log(`   
