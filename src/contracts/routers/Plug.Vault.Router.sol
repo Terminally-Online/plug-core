@@ -2,9 +2,9 @@
 
 pragma solidity 0.8.23;
 
-import {PlugRouter} from './Plug.Router.sol';
-import {Ownable} from 'solady/src/auth/Ownable.sol';
-import {LibBitmap} from 'solady/src/utils/LibBitmap.sol';
+import { PlugRouter } from "./Plug.Router.sol";
+import { Ownable } from "solady/src/auth/Ownable.sol";
+import { LibBitmap } from "solady/src/utils/LibBitmap.sol";
 
 /**
  * @title Plug Vault Router
@@ -14,42 +14,42 @@ import {LibBitmap} from 'solady/src/utils/LibBitmap.sol';
  */
 contract PlugVaultRouter is PlugRouter, Ownable {
     /// @dev Use bitmaps based on the uint-converted address.
-	using LibBitmap for LibBitmap.Bitmap;
+    using LibBitmap for LibBitmap.Bitmap;
 
     /// @dev Whether or not the contract has been initialized.
-	bool private initialized;
+    bool private initialized;
 
-	/// @dev The signers of the contract.
-	LibBitmap.Bitmap internal senders;
+    /// @dev The signers of the contract.
+    LibBitmap.Bitmap internal senders;
 
     /**
      * @notice Initializes a new Plug Vault contract.
      */
-	constructor() {
-		initialize(msg.sender);
-	}
+    constructor() {
+        initialize(msg.sender);
+    }
 
     /**
      * @notice Modifier to ensure that the contract has not been initialized.
      */
-	modifier initializer() {
-		require(!initialized, 'PlugVaultRouter:already-initialized');
+    modifier initializer() {
+        require(!initialized, "PlugVaultRouter:already-initialized");
 
-		initialized = true;
-		_;
-	}
+        initialized = true;
+        _;
+    }
 
-	/**
-	 * @notice Initialize a new Plug Vault.
-	 * @param $owner The owner of the vault.
-	 */
-	function initialize(address $owner) public payable virtual initializer {
+    /**
+     * @notice Initialize a new Plug Vault.
+     * @param $owner The owner of the vault.
+     */
+    function initialize(address $owner) public payable virtual initializer {
         /// @dev Initialize the owner.
         _initializeOwner($owner);
 
-		/// @dev Initialize the Plug Socket.
-		_initializeSocket('PlugVaultSocket', '0.0.0');
-	}
+        /// @dev Initialize the Plug Socket.
+        _initializeSocket("PlugVaultSocket", "0.0.0");
+    }
 
     /**
      * @notice Toggle a signer on or off.
@@ -60,21 +60,21 @@ contract PlugVaultRouter is PlugRouter, Ownable {
         senders.toggle(uint160($sender));
     }
 
-	/**
-	 * @notice Determine whether or not an address is a declared signer
+    /**
+     * @notice Determine whether or not an address is a declared signer
      *         or the implicit owner of the vault.
-	 * @param $isSender true if the address is a signer, false otherwise.
-	 */
-	function isSender(address $sender) public view returns (bool $isSender) {
-		$isSender = $sender == owner() || senders.get(uint160($sender));
-	}
+     * @param $isSender true if the address is a signer, false otherwise.
+     */
+    function isSender(address $sender) public view returns (bool $isSender) {
+        $isSender = $sender == owner() || senders.get(uint160($sender));
+    }
 
-	/**
-	 * @notice Prevent the contract from executing the transaction
-	 *         if the sender is not an approved signer.
-	 * @param $sender The address of the signer.
-	 */
-	function _enforceSender(address $sender) internal view override {
-		require(isSender($sender), 'PlugSigners:signer-invalid');
-	}
+    /**
+     * @notice Prevent the contract from executing the transaction
+     *         if the sender is not an approved signer.
+     * @param $sender The address of the signer.
+     */
+    function _enforceSender(address $sender) internal view override {
+        require(isSender($sender), "PlugSigners:signer-invalid");
+    }
 }

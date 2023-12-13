@@ -2,9 +2,9 @@
 
 pragma solidity 0.8.23;
 
-import {PlugCore} from '../abstracts/Plug.Core.sol';
-import {PlugTypesLib} from '../abstracts/Plug.Types.sol';
-import {IPlug} from '../interfaces/IPlug.sol';
+import { PlugCore } from "../abstracts/Plug.Core.sol";
+import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
+import { IPlug } from "../interfaces/IPlug.sol";
 
 /**
  * @title Plug Router
@@ -14,12 +14,10 @@ import {IPlug} from '../interfaces/IPlug.sol';
  * @author @nftchance (chance@utc24.io)
  */
 contract PlugRouter is PlugCore, IPlug {
-	/**
-	 * See {IPlug-plug}.
-	 */
-	function plug(
-		PlugTypesLib.LivePlugs calldata $livePlugs
-	) external payable returns (bytes[] memory $results) {
+    /**
+     * See {IPlug-plug}.
+     */
+    function plug(PlugTypesLib.LivePlugs calldata $livePlugs) external payable returns (bytes[] memory $results) {
         /// @dev Determine who signed the intent.
         address intentSigner = getLivePlugsSigner($livePlugs);
 
@@ -31,14 +29,12 @@ contract PlugRouter is PlugCore, IPlug {
 
         /// @dev Invoke the plugs.
         $results = _plug(plugs.plugs, intentSigner);
-	}
+    }
 
-	/**
-	 * See {IPlug-plugContract}.
-	 */
-	function plugContract(
-		PlugTypesLib.Plug[] calldata $plugs
-	) external payable returns (bytes[] memory $result) {
-		$result = _plug($plugs, msg.sender);
-	}
+    /**
+     * See {IPlug-plugContract}.
+     */
+    function plugContract(PlugTypesLib.Plug[] calldata $plugs) external payable returns (bytes[] memory $result) {
+        $result = _plug($plugs, msg.sender);
+    }
 }

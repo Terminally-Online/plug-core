@@ -15,9 +15,7 @@ abstract contract PlugSocket {
             let withSender := PLUG_ROUTER
             if eq(caller(), withSender) {
                 let success := staticcall(gas(), withSender, 0x00, 0x00, 0x20, 0x20)
-                if iszero(success) {
-                    revert(codesize(), codesize())
-                }
+                if iszero(success) { revert(codesize(), codesize()) }
                 $signer := mload(0x20)
             }
         }
