@@ -3,7 +3,7 @@
 pragma solidity 0.8.23;
 
 library PlugSocketLib {
-    address internal constant PLUG_ROUTER = 0x0000001Eae99E3B04d939AF65D5a65E00000Cd7D;
+    address internal constant PLUG_ROUTER = 0x0000001E00a10b9339C5de800048318DDdaB39b5;
 }
 
 /**
@@ -13,7 +13,7 @@ library PlugSocketLib {
  * @author nftchance (chance@utc24.io)
  **/
 abstract contract PlugSocket {
-    address internal constant PLUG_ROUTER = 0x0000001Eae99E3B04d939AF65D5a65E00000Cd7D;
+    address internal constant PLUG_ROUTER = 0x0000001E00a10b9339C5de800048318DDdaB39b5;
 
     function _msgSender() internal view returns (address $signer) {
         assembly {
