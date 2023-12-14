@@ -3,7 +3,7 @@
 pragma solidity 0.8.23;
 
 import { PlugTypes, PlugTypesLib } from "./Plug.Types.sol";
-import { IFuse } from "../interfaces/IFuse.sol";
+import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
 import { PlugErrors } from "../libraries/Plug.Errors.sol";
 
 /**
@@ -84,7 +84,7 @@ abstract contract PlugCore is PlugTypes {
 
         /// @dev Call the Fuse to determine if it is valid.
         (success, $through) = address($fuse.neutral).call(
-            abi.encodeWithSelector(IFuse($fuse.neutral).enforceFuse.selector, $fuse.live, $current, $pinHash)
+            abi.encodeWithSelector(PlugFuseInterface($fuse.neutral).enforceFuse.selector, $fuse.live, $current, $pinHash)
         );
 
         /// @dev If the Fuse failed and is not optional, bubble up the revert.

@@ -5,7 +5,7 @@ pragma solidity 0.8.23;
 /// @dev Shape declarations in the Plug framework.
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 
-interface IPlug {
+interface PlugSocketInterface {
     /**
      * @notice Allows anyone to submit a plugs of signed plugs for processing.
      * @param $livePlugs The plugs of signed plugs to process.
