@@ -4,6 +4,7 @@ pragma solidity 0.8.23;
 
 import { PlugSocket } from "../abstracts/Plug.Socket.sol";
 import { Ownable } from "solady/src/auth/Ownable.sol";
+import { Receiver } from "solady/src/accounts/Receiver.sol";
 import { LibBitmap } from "solady/src/utils/LibBitmap.sol";
 
 /**
@@ -12,7 +13,7 @@ import { LibBitmap } from "solady/src/utils/LibBitmap.sol";
  *         declared set of signers.
  * @author @nftchance (chance@utc24.io)
  */
-contract PlugVaultSocket is PlugSocket, Ownable {
+contract PlugVaultSocket is PlugSocket, Ownable, Receiver {
     using LibBitmap for LibBitmap.Bitmap;
 
     /// @dev Whether or not the contract has been initialized.
