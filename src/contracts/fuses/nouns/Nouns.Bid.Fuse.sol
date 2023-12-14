@@ -19,6 +19,7 @@ contract NounsBidFuse is PlugFuse {
     }
 
     function enforceFuse(
+        bytes calldata $pass,
         bytes calldata $live,
         PlugTypesLib.Current calldata,
         bytes32
@@ -26,7 +27,7 @@ contract NounsBidFuse is PlugFuse {
         public
         view
         override
-        returns (bytes memory $callback)
+        returns (bytes memory $through)
     {
         (bool $settleUnsettled, address $bidder, uint256 $bid) = decode($live);
 
@@ -50,7 +51,7 @@ contract NounsBidFuse is PlugFuse {
         ///		 the minimum bid.
 
         /// @dev Callback to transfer the fee to the protocol.
-        $callback = bytes("");
+        $through = $pass;
     }
 
     function decode(bytes calldata $live) public pure returns (bool $settleUnsettled, address $bidder, uint256 $bid) {

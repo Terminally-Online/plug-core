@@ -67,6 +67,7 @@ contract NounsTraitFuse is PlugFuse, Ownable {
      * See {Fuse-enforceFuse}.
      */
     function enforceFuse(
+        bytes calldata $pass,
         bytes calldata $live,
         PlugTypesLib.Current calldata,
         bytes32
@@ -74,13 +75,14 @@ contract NounsTraitFuse is PlugFuse, Ownable {
         public
         view
         override
-        returns (bytes memory $callback)
+        returns (bytes memory $through)
     {
         (bytes32 selector, bytes32 trait) = decode($live);
 
         require(nounTrait(selector) == trait, "NounsTraitFuse:invalid-trait");
 
-        $callback = bytes("");
+        /// @dev Continue the pass through.
+        $through = $pass;
     }
 
     /**

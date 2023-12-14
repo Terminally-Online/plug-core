@@ -33,6 +33,7 @@ contract NounsIdFuse is PlugFuse {
      * See {Fuse-enforceFuse}.
      */
     function enforceFuse(
+        bytes calldata $pass,
         bytes calldata $live,
         PlugTypesLib.Current calldata,
         bytes32
@@ -40,14 +41,15 @@ contract NounsIdFuse is PlugFuse {
         public
         view
         override
-        returns (bytes memory $callback)
+        returns (bytes memory $through)
     {
         /// @dev Get the current state of the auction.
         (uint256 nounId,,,,,) = AUCTION_HOUSE.auction();
 
         require(nounId == decode($live), "NounsTokenId:invalid-noun-id");
 
-        $callback = bytes("");
+        /// @dev Continue the pass through.
+        $through = $pass;
     }
 
     /**
