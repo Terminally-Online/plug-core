@@ -53,7 +53,7 @@ contract PlugNounsBidSocket is PlugSocket, NounsBidFuse, Ownable {
         _initializeSocket("NounsBidSocket", "0.0.1");
     }
 
-    receive() external payable virtual override {
+    receive() external payable virtual {
         _receive();
     }
 
