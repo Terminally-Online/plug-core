@@ -46,7 +46,7 @@ abstract contract PlugSimulation is PlugCore {
                 bytes32 pinHash = getLivePinHash(plug.pins[j]);
 
                 for (uint8 l; l < pin.fuses.length; l++) {
-                    (plug.current, $results[results.length - plugsLength--]) = simulate(
+                    (plug.current.data, $results[results.length - plugsLength--]) = simulate(
                         pinHash,
                         plug,
                         pin.fuses[l]
