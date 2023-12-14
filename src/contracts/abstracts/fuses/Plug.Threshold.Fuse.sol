@@ -2,20 +2,19 @@
 
 pragma solidity 0.8.23;
 
-import { PlugFuse } from "../../abstracts/Plug.Fuse.sol";
+import { PlugFuseInterface } from "../../interfaces/Plug.Fuse.Interface.sol";
 import { PlugTypesLib } from "../../abstracts/Plug.Types.sol";
 import { BytesLib } from "../../libraries/BytesLib.sol";
 
-abstract contract ThresholdFuse is PlugFuse {
+abstract contract ThresholdFuse is PlugFuseInterface {
     using BytesLib for bytes;
 
     /**
      * See {FuseEnforcer-enforceFuse}.
      */
     function enforceFuse(
-        bytes calldata $pass,
-        bytes calldata $terms,
-        PlugTypesLib.Current calldata,
+        bytes calldata $live,
+        PlugTypesLib.Current calldata $current,
         bytes32
     )
         public
@@ -24,7 +23,7 @@ abstract contract ThresholdFuse is PlugFuse {
         returns (bytes memory $through)
     {
         /// @dev Decode the terms to get the logic operator and threshold.
-        (uint256 $operator, uint256 $threshold) = decode($terms);
+        (uint256 $operator, uint256 $threshold) = decode($live);
 
         /// @dev Make sure the block number is before the threshold.
         if ($operator == 0) {
@@ -36,7 +35,7 @@ abstract contract ThresholdFuse is PlugFuse {
         }
 
         /// @dev Continue the pass through.
-        $through = $pass;
+        $through = $current.data;
     }
 
     /**

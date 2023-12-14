@@ -72,7 +72,6 @@ abstract contract PlugCore is PlugTypes {
     }
 
     function _enforceFuse(
-        bytes memory $pass,
         PlugTypesLib.Fuse memory $fuse,
         PlugTypesLib.Current memory $current,
         bytes32 $pinHash
@@ -85,7 +84,7 @@ abstract contract PlugCore is PlugTypes {
 
         /// @dev Call the Fuse to determine if it is valid.
         (success, $through) = address($fuse.neutral).call(
-            abi.encodeWithSelector(IFuse($fuse.neutral).enforceFuse.selector, $pass, $fuse.live, $current, $pinHash)
+            abi.encodeWithSelector(IFuse($fuse.neutral).enforceFuse.selector, $fuse.live, $current, $pinHash)
         );
 
         /// @dev If the Fuse failed and is not optional, bubble up the revert.
@@ -190,7 +189,7 @@ abstract contract PlugCore is PlugTypes {
                     ///      and ensure they are in a state of acceptable execution
                     ///      while building the pass through data based on the nodes.
                     for (k = 0; k < pin.fuses.length; k++) {
-                        current.data = _enforceFuse(current.data, pin.fuses[k], current, pinHash);
+                        current.data = _enforceFuse(pin.fuses[k], current, pinHash);
                     }
                 }
             }

@@ -4,11 +4,11 @@ pragma solidity 0.8.23;
 
 import { ERC20 } from "solady/src/tokens/ERC20.sol";
 
-import { PlugFuse } from "../abstracts/Plug.Fuse.sol";
+import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 import { BytesLib } from "../libraries/BytesLib.sol";
 
-contract PlugERC20AllowanceFuse is PlugFuse {
+contract PlugERC20AllowanceFuse is PlugFuseInterface {
     using BytesLib for bytes;
 
     /// @dev Function signature of the ERC20 `transfer` method.
@@ -22,7 +22,6 @@ contract PlugERC20AllowanceFuse is PlugFuse {
      * See {FuseEnforcer-enforceFuse}.
      */
     function enforceFuse(
-        bytes calldata $pass,
         bytes calldata $live,
         PlugTypesLib.Current calldata $current,
         bytes32 $pinHash
@@ -55,7 +54,7 @@ contract PlugERC20AllowanceFuse is PlugFuse {
         require(spent <= limit, "ERC20AllowanceEnforcer:allowance-exceeded");
 
         /// @dev Continue the pass through.
-        $through = $pass;
+        $through = $current.data;
     }
 
     /**

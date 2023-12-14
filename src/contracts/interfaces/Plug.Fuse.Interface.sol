@@ -5,7 +5,7 @@ pragma solidity 0.8.23;
 /// @dev Shape declarations in the Plug framework.
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 
-interface IFuse {
+interface PlugFuseInterface {
     /**
      * @notice Enforces a fuse on a transaction.
      * @param $live The live wire the fuse is regulating.
@@ -13,11 +13,10 @@ interface IFuse {
      * @param $pinHash The hash of the pin.
      */
     function enforceFuse(
-        bytes calldata $pass,
         bytes calldata $live,
         PlugTypesLib.Current calldata $current,
         bytes32 $pinHash
     )
         external
-        returns (bytes calldata $callback);
+        returns (bytes memory $through);
 }

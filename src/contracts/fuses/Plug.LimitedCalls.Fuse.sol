@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import { PlugFuse } from "../abstracts/Plug.Fuse.sol";
+import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 import { BytesLib } from "../libraries/BytesLib.sol";
 
@@ -11,7 +11,7 @@ import { BytesLib } from "../libraries/BytesLib.sol";
  * @notice This Fuse Enforcer powers the ability to limit the number of times
  *         a delegate can call a function with the same pin hash.
  */
-contract PlugLimitedCallsFuse is PlugFuse {
+contract PlugLimitedCallsFuse is PlugFuseInterface {
     /// @dev Use the BytesLib library for bytes manipulation.
     using BytesLib for bytes;
 
@@ -22,9 +22,8 @@ contract PlugLimitedCallsFuse is PlugFuse {
      * See {FuseEnforcer-enforceFuse}.
      */
     function enforceFuse(
-        bytes calldata $pass,
         bytes calldata $live,
-        PlugTypesLib.Current calldata,
+        PlugTypesLib.Current calldata $current,
         bytes32 $pinHash
     )
         public
@@ -36,7 +35,7 @@ contract PlugLimitedCallsFuse is PlugFuse {
         require(decode($live) >= callCounts[msg.sender][$pinHash]++, "LimitedCallsEnforcer:limit-exceeded");
 
         /// @dev Continue the pass through.
-        $through = $pass;
+        $through = $current.data;
     }
 
     /**

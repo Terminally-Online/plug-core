@@ -2,12 +2,12 @@
 
 pragma solidity 0.8.23;
 
-import { PlugFuse } from "../../abstracts/Plug.Fuse.sol";
+import { PlugFuseInterface } from "../../interfaces/Plug.Fuse.Interface.sol";
 import { PlugTypesLib } from "../../abstracts/Plug.Types.sol";
 import { INounsAuctionHouse } from "../../interfaces/nouns/INounsAuctionHouse.sol";
 import { NounsBidLib } from "../../libraries/nouns/Nouns.Bid.Lib.sol";
 
-contract NounsBidFuse is PlugFuse {
+contract NounsBidFuse is PlugFuseInterface {
     INounsAuctionHouse public immutable AUCTION_HOUSE;
 
     /// @dev Keep track of the balances of each user.
@@ -19,9 +19,8 @@ contract NounsBidFuse is PlugFuse {
     }
 
     function enforceFuse(
-        bytes calldata $pass,
         bytes calldata $live,
-        PlugTypesLib.Current calldata,
+        PlugTypesLib.Current calldata $current,
         bytes32
     )
         public
@@ -51,7 +50,7 @@ contract NounsBidFuse is PlugFuse {
         ///		 the minimum bid.
 
         /// @dev Callback to transfer the fee to the protocol.
-        $through = $pass;
+        $through = $current.data;
     }
 
     function decode(bytes calldata $live) public pure returns (bool $settleUnsettled, address $bidder, uint256 $bid) {

@@ -3,7 +3,7 @@
 pragma solidity 0.8.23;
 
 /// @dev Plug abstracts.
-import { PlugFuse } from "../abstracts/Plug.Fuse.sol";
+import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 import { PlugSocket } from "../abstracts/Plug.Socket.sol";
 
@@ -22,7 +22,7 @@ import { ECDSA } from "solady/src/utils/ECDSA.sol";
  * @author @danfinlay (https://github.com/delegatable/delegatable-sol)
  * @author @KamesGeraghty (https://github.com/kamescg)
  */
-contract PlugRevocationFuse is PlugFuse, PlugSocket {
+contract PlugRevocationFuse is PlugFuseInterface, PlugSocket {
     /// @notice Use the ECDSA library for signature verification.
     using ECDSA for bytes32;
 
@@ -37,9 +37,8 @@ contract PlugRevocationFuse is PlugFuse, PlugSocket {
      * See {FuseEnforcer-enforceFuse}.
      */
     function enforceFuse(
-        bytes calldata $pass,
         bytes calldata,
-        PlugTypesLib.Current calldata,
+        PlugTypesLib.Current calldata $current,
         bytes32 $pinHash
     )
         public
@@ -51,7 +50,7 @@ contract PlugRevocationFuse is PlugFuse, PlugSocket {
         require(!isRevoked[$pinHash], "RevocationEnforcer:revoked");
 
         /// @dev Continue the pass through.
-        $through = $pass;
+        $through = $current.data;
     }
 
     /**

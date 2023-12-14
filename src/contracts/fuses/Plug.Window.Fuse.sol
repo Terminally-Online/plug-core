@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import { PlugFuse } from "../abstracts/Plug.Fuse.sol";
+import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 import { BytesLib } from "../libraries/BytesLib.sol";
 
@@ -46,7 +46,7 @@ library WindowFuseLib {
  *    Solidity:
  *         ◉ `uint256 dateInSecs = block.timestamp;`
  */
-contract PlugWindowFuse is PlugFuse {
+contract PlugWindowFuse is PlugFuseInterface {
     using BytesLib for bytes;
 
     /// @dev The number of seconds in a day.
@@ -62,9 +62,8 @@ contract PlugWindowFuse is PlugFuse {
     uint256 private constant DAYS_OF_WEEK_SHIFT = 0;
 
     function enforceFuse(
-        bytes calldata $pass,
         bytes calldata $live,
-        PlugTypesLib.Current calldata,
+        PlugTypesLib.Current calldata $current,
         bytes32
     )
         public
@@ -79,7 +78,7 @@ contract PlugWindowFuse is PlugFuse {
         }
 
         /// @dev Continue the pass through.
-        $through = $pass;
+        $through = $current.data;
     }
 
     /**

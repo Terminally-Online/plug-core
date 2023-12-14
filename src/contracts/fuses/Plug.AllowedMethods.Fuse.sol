@@ -2,15 +2,14 @@
 
 pragma solidity 0.8.23;
 
-import { PlugFuse } from "../abstracts/Plug.Fuse.sol";
+import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 
-contract PlugAllowedMethodsFuse is PlugFuse {
+contract PlugAllowedMethodsFuse is PlugFuseInterface {
     /**
      * See {FuseEnforcer-enforceFuse}.
      */
     function enforceFuse(
-        bytes calldata $pass,
         bytes calldata $live,
         PlugTypesLib.Current calldata $current,
         bytes32
@@ -30,7 +29,7 @@ contract PlugAllowedMethodsFuse is PlugFuse {
             /// @dev Slice the next 4 bytes from the terms array.
             bytes4 allowedSig = bytes4($live[i:i + 4]);
             /// @dev If we have a match, return true.
-            if (allowedSig == targetSig) return $pass;
+            if (allowedSig == targetSig) return $current.data;
 
             /// @dev Go to the next 4 bytes.
             unchecked {

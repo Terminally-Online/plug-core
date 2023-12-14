@@ -4,7 +4,7 @@ pragma solidity 0.8.23;
 
 import { Ownable } from "solady/src/auth/Ownable.sol";
 
-import { PlugFuse } from "../../abstracts/Plug.Fuse.sol";
+import { PlugFuseInterface } from "../../interfaces/Plug.Fuse.Interface.sol";
 import { PlugTypesLib } from "../../abstracts/Plug.Types.sol";
 
 interface INoun {
@@ -37,7 +37,7 @@ interface INounsAuctionHouse {
  * @author @nftchance <chance@utc24.io>
  * @author @masonchain
  */
-contract NounsTraitFuse is PlugFuse, Ownable {
+contract NounsTraitFuse is PlugFuseInterface, Ownable {
     /// @dev Function hashes of the trait getters.
     bytes32 public constant BACKGROUND_SELECTOR = keccak256(abi.encodePacked("background(uint256 index)"));
     bytes32 public constant HEAD_SELECTOR = keccak256(abi.encodePacked("head(uint256 index)"));
@@ -67,9 +67,8 @@ contract NounsTraitFuse is PlugFuse, Ownable {
      * See {Fuse-enforceFuse}.
      */
     function enforceFuse(
-        bytes calldata $pass,
         bytes calldata $live,
-        PlugTypesLib.Current calldata,
+        PlugTypesLib.Current calldata $current,
         bytes32
     )
         public
@@ -82,7 +81,7 @@ contract NounsTraitFuse is PlugFuse, Ownable {
         require(nounTrait(selector) == trait, "NounsTraitFuse:invalid-trait");
 
         /// @dev Continue the pass through.
-        $through = $pass;
+        $through = $current.data;
     }
 
     /**

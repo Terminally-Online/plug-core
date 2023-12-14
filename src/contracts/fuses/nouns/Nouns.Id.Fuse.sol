@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import { PlugFuse } from "../../abstracts/Plug.Fuse.sol";
+import { PlugFuseInterface } from "../../interfaces/Plug.Fuse.Interface.sol";
 import { PlugTypesLib } from "../../abstracts/Plug.Types.sol";
 import { BytesLib } from "../../libraries/BytesLib.sol";
 
@@ -19,7 +19,7 @@ interface INounsAuctionHouse {
  *		   that you you would like to bid on, on a regular basis.
  * @author @nftchance <chance@utc24.io>
  */
-contract NounsIdFuse is PlugFuse {
+contract NounsIdFuse is PlugFuseInterface {
     using BytesLib for bytes;
 
     /// @dev The auction facilitator for Nouns.
@@ -33,9 +33,8 @@ contract NounsIdFuse is PlugFuse {
      * See {Fuse-enforceFuse}.
      */
     function enforceFuse(
-        bytes calldata $pass,
         bytes calldata $live,
-        PlugTypesLib.Current calldata,
+        PlugTypesLib.Current calldata $current,
         bytes32
     )
         public
@@ -49,7 +48,7 @@ contract NounsIdFuse is PlugFuse {
         require(nounId == decode($live), "NounsTokenId:invalid-noun-id");
 
         /// @dev Continue the pass through.
-        $through = $pass;
+        $through = $current.data;
     }
 
     /**
