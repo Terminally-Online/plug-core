@@ -24,9 +24,6 @@ contract PlugRevocationFuse is PlugFuseInterface, PlugLocalSocket {
     /// @notice Use the ECDSA library for signature verification.
     using ECDSA for bytes32;
 
-    /// @dev Mapping of revoked pins.
-    mapping(bytes32 => bool) public isRevoked;
-
     constructor() PlugLocalSocket() { }
 
     /**
@@ -35,15 +32,15 @@ contract PlugRevocationFuse is PlugFuseInterface, PlugLocalSocket {
     function enforceFuse(
         bytes calldata,
         PlugTypesLib.Current calldata $current,
-        bytes32 $pinHash
+        bytes32 $plugsHash
     )
         public
         view
         override
         returns (bytes memory $through)
     {
-        /// @dev Ensure the pin has not been revoked.
-        require(!isRevoked[$pinHash], "PlugRevocationFuse:revoked");
+        /// @dev Ensure the plug has not been revoked.
+        require(!isRevoked[$plugsHash], "PlugRevocationFuse:revoked");
 
         /// @dev Continue the pass through.
         $through = $current.data;
@@ -52,42 +49,42 @@ contract PlugRevocationFuse is PlugFuseInterface, PlugLocalSocket {
     /**
      * @notice Enables a Delegator to revoke the pins of a previously
      *         signed signature.
-     * @param $signedPin The signed pin to revoke.
-     * @param $domainHash The domain hash of the pin.
+     * @param $livePlugs The signed bundle of Plugs to revoke.
+     * @param $domainHash The domain hash of the Plugs bundle.
      */
     function revoke(
-        PlugTypesLib.LivePin calldata $signedPin,
+        PlugTypesLib.LivePlugs calldata $livePlugs,
         bytes32 $domainHash
     )
         public
     {
-        /// @dev Only allow signers of pins to revoke a signature.
-        ///      Of course, revocation itself could be delegated.
+        /// @dev Only allow the signer of a Plugs bundle to revoke a
+        ///      signature. Revocation itself uicould be plugged.
         require(
-            getSigner($signedPin, $domainHash) == _msgSender(),
+            getSigner($livePlugs, $domainHash) == _msgSender(),
             "PlugRevocationFuse:invalid-revoker"
         );
 
         /// @dev Determine the hash of the pin.
-        bytes32 pinHash = getLivePinHash($signedPin);
+        bytes32 plugsHash = getLivePlugsHash($livePlugs);
 
-        /// @dev Ensure the pin has not already been revoked.
-        require(!isRevoked[pinHash], "PlugRevocationFuse:already-revoked");
+        /// @dev Ensure the bundle of Plugs has not already been revoked.
+        require(!isRevoked[plugsHash], "PlugRevocationFuse:already-revoked");
 
-        /// @dev Mark the pin as revoked.
-        isRevoked[pinHash] = true;
+        /// @dev Mark the bundle of Plugs as revoked.
+        isRevoked[plugsHash] = true;
     }
 
     /**
      * @notice Determine the signer of a signed pin.
      * @dev We use custom functions here because the domain separator is
      *      different for each LivePin.
-     * @param $signedPin The signed pin to determine the signer of.
+     * @param $livePlugs The signed bundle of Plugs to execute.
      * @param $domainHash The domain hash of the pin.
      * @return $signer The address of the signer.
      */
     function getSigner(
-        PlugTypesLib.LivePin memory $signedPin,
+        PlugTypesLib.LivePlugs memory $livePlugs,
         bytes32 $domainHash
     )
         public
@@ -95,18 +92,19 @@ contract PlugRevocationFuse is PlugFuseInterface, PlugLocalSocket {
         returns (address $signer)
     {
         /// @dev Determine the digest of the pin and recover the signer.
-        $signer =
-            getDigest($signedPin.pin, $domainHash).recover($signedPin.signature);
+        $signer = getDigest($livePlugs.plugs, $domainHash).recover(
+            $livePlugs.signature
+        );
     }
 
     /**
      * @notice Determine the digest of a pin.
-     * @param $pin The pin to determine the digest of.
+     * @param $livePlugs The pin to determine the digest of.
      * @param $domainHash The domain hash of the pin.
      * @return $digest The digest of the pin.
      */
     function getDigest(
-        PlugTypesLib.Pin memory $pin,
+        PlugTypesLib.Plugs memory $livePlugs,
         bytes32 $domainHash
     )
         public
@@ -115,7 +113,7 @@ contract PlugRevocationFuse is PlugFuseInterface, PlugLocalSocket {
     {
         /// @dev Encode the pin and domain hash and hash them.
         $digest = keccak256(
-            abi.encodePacked("\x19\x01", $domainHash, getPinHash($pin))
+            abi.encodePacked("\x19\x01", $domainHash, getPlugsHash($livePlugs))
         );
     }
 

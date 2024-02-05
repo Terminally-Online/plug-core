@@ -30,26 +30,24 @@ contract PlugSocket is PlugSocketInterface, PlugSimulation {
         /// @dev Prevent random people from plugging.
         _enforceSigner(intentSigner);
 
-        /// @dev Prevent replay attacks by enforcing replay protection.
-        _enforceBreaker(intentSigner, $livePlugs.plugs.breaker);
-
         /// @dev Invoke the plugs.
-        $results = _plug($livePlugs.plugs.plugs, intentSigner);
+        $results = _plug($livePlugs, intentSigner);
     }
 
+    // TODO: Finish the implementation of this.
     /**
      * See {IPlug-plugContract}.
      */
-    function plugContract(PlugTypesLib.Plug[] calldata $plugs)
-        external
-        payable
-        returns (bytes[] memory $result)
-    {
-        /// @dev Prevent random contracts from plugging.
-        _enforceSigner(msg.sender);
-
-        $result = _plug($plugs, msg.sender);
-    }
+    // function plugContract(PlugTypesLib.Plug[] calldata $plugs)
+    //     external
+    //     payable
+    //     returns (bytes[] memory $result)
+    // {
+    //     /// @dev Prevent random contracts from plugging.
+    //     _enforceSigner(msg.sender);
+    //
+    //     $result = _plug($plugs, msg.sender);
+    // }
 
     /**
      * @notice Confirm that signer of the intent has permission to declare
