@@ -17,6 +17,14 @@ abstract contract PlugCore is PlugTypes {
     using PlugErrors for bytes;
 
     /**
+     * @notice Confirm that signer of the intent has permission to declare
+     *         the execution of an intent.
+     * @dev If you would like to limit the available signers override this
+     *      function in your contract with the additional logic.
+     */
+    function _enforceSigner(address $signer) internal view virtual { }
+
+    /**
      * @notice Enforce the fuse of the current plug to confirm
      *         the specified conditions have been met.
      * @param $fuse The fuse to enforce.
@@ -95,22 +103,25 @@ abstract contract PlugCore is PlugTypes {
 
     /**
      * @notice Execute an array of plugs
-     * @param $livePlugs The plugs of plugs to execute.
+     * @param $plugs The plugs to execute.
      * @param $sender The address of the sender.
      * @return $results The return data of the plugs.
      */
     function _plug(
-        PlugTypesLib.LivePlugs calldata $livePlugs,
+        PlugTypesLib.Plugs calldata $plugs,
         address $sender
     )
         internal
         returns (bytes[] memory $results)
     {
+        /// @dev Prevent random people from plugging.
+        _enforceSigner($sender);
+
         /// @dev Unique hash of the Plug bundle being executed.
-        bytes32 plugsHash = getPlugsHash($livePlugs.plugs);
+        bytes32 plugsHash = getPlugsHash($plugs);
 
         /// @dev Load the plugs from the live plugs.
-        PlugTypesLib.Plug[] memory plugs = $livePlugs.plugs.plugs;
+        PlugTypesLib.Plug[] memory plugs = $plugs.plugs;
 
         /// @dev Load the stack.
         PlugTypesLib.Plug memory plug;
