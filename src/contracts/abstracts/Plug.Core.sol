@@ -107,7 +107,7 @@ abstract contract PlugCore is PlugTypes {
         returns (bytes[] memory $results)
     {
         /// @dev Unique hash of the Plug bundle being executed.
-        bytes32 plugsHash = getLivePlugsHash($livePlugs);
+        bytes32 plugsHash = getPlugsHash($livePlugs.plugs);
 
         /// @dev Load the plugs from the live plugs.
         PlugTypesLib.Plug[] memory plugs = $livePlugs.plugs.plugs;
