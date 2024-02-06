@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.23;
 
@@ -117,9 +117,6 @@ abstract contract PlugCore is PlugTypes {
         /// @dev Prevent random people from plugging.
         _enforceSigner($sender);
 
-        /// @dev Unique hash of the Plug bundle being executed.
-        bytes32 plugsHash = getPlugsHash($plugs);
-
         /// @dev Load the plugs from the live plugs.
         PlugTypesLib.Plug[] memory plugs = $plugs.plugs;
 
@@ -129,6 +126,9 @@ abstract contract PlugCore is PlugTypes {
         uint256 ii;
         uint256 length = plugs.length;
         $results = new bytes[](length);
+
+        /// @dev Unique hash of the Plug bundle being executed.
+        bytes32 plugsHash = getPlugsHash($plugs);
 
         /// @dev Iterate over the plugs.
         for (i; i < length; i++) {
