@@ -12,8 +12,8 @@ dependencies:
     specifier: ^1.0.0
     version: 1.0.0(typescript@5.3.3)
   solady:
-    specifier: ^0.0.166
-    version: 0.0.166
+    specifier: ^0.0.167
+    version: 0.0.167
   viem:
     specifier: ^1.21.4
     version: 1.21.4(typescript@5.3.3)
@@ -5694,10 +5694,6 @@ packages:
       wcwidth: 1.0.1
       yargs: 15.4.1
     dev: true
-
-  /solady@0.0.166:
-    resolution: {integrity: sha512-M6/n9VlfGPzxHNvFFI4ZDsLrJR95VPEkm7+27BPBTVvqO4p2aNIaMR+GbR1h/sh36YcUChHJlO0ubxKGVvWdig==}
-    dev: false
 
   /solady@0.0.167:
     resolution: {integrity: sha512-YbHlYIYeC8YnWqr15YwDffgroqmVqD9RZ7/08cBD+r8EDH2NDkRcU4Y1CzQNT0fZQ25HjcclTG78MS3mHikkWA==}
