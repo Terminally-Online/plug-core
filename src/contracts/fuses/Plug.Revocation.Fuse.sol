@@ -53,7 +53,9 @@ contract PlugRevocationFuse is PlugFuseInterface, PlugLocalSocket {
         address sender = decode($live);
 
         /// @dev Ensure the plug has not been revoked.
-        require(isRevoked[sender][$plugsHash] == false, "PlugRevocationFuse:revoked");
+        require(
+            isRevoked[sender][$plugsHash] == false, "PlugRevocationFuse:revoked"
+        );
 
         /// @dev Continue the pass through.
         $through = $current.data;

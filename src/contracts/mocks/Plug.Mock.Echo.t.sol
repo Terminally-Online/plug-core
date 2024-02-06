@@ -38,8 +38,13 @@ contract PlugMockSocketTest is Test {
     }
 
     function etchRouterSocket() internal returns (PlugRouterSocket) {
-        vm.etch(0x00b09C89Ace100AB7A4Dc47ebfBd1E7997920062, address(new PlugRouterSocket()).code);
-        return PlugRouterSocket(payable(0x00b09C89Ace100AB7A4Dc47ebfBd1E7997920062));
+        vm.etch(
+            0x00b09C89Ace100AB7A4Dc47ebfBd1E7997920062,
+            address(new PlugRouterSocket()).code
+        );
+        return PlugRouterSocket(
+            payable(0x00b09C89Ace100AB7A4Dc47ebfBd1E7997920062)
+        );
     }
 
     function test_Echo() public {
@@ -75,12 +80,11 @@ contract PlugMockSocketTest is Test {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = PlugTypesLib.Plug({
             current: current,
-            fuses: new PlugTypesLib.Fuse[](0),
-            salt: bytes32(0)
+            fuses: new PlugTypesLib.Fuse[](0)
         });
 
         PlugTypesLib.Plugs memory plugs =
-            PlugTypesLib.Plugs({ plugs: plugsArray });
+            PlugTypesLib.Plugs({ plugs: plugsArray, salt: bytes32(0) });
 
         digest = router.getPlugsDigest(plugs);
         (v, r, s) = vm.sign(signerPrivateKey, digest);
@@ -107,13 +111,12 @@ contract PlugMockSocketTest is Test {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = PlugTypesLib.Plug({
             current: current,
-            fuses: new PlugTypesLib.Fuse[](0),
-            salt: bytes32(0)
+            fuses: new PlugTypesLib.Fuse[](0)
         });
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs =
-            PlugTypesLib.Plugs({ plugs: plugsArray });
+            PlugTypesLib.Plugs({ plugs: plugsArray, salt: bytes32(0) });
 
         /// @dev Sign the execution.
         digest = router.getPlugsDigest(plugs);
@@ -141,15 +144,14 @@ contract PlugMockSocketTest is Test {
         /// @dev There are no conditions in this plug meaning an executor can do anything.
         PlugTypesLib.Plug memory Plug = PlugTypesLib.Plug({
             current: current,
-            fuses: new PlugTypesLib.Fuse[](0),
-            salt: bytes32(0)
+            fuses: new PlugTypesLib.Fuse[](0)
         });
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = Plug;
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs =
-            PlugTypesLib.Plugs({ plugs: plugsArray });
+            PlugTypesLib.Plugs({ plugs: plugsArray, salt: bytes32(0) });
 
         /// @dev Sign the execution.
         digest = router.getPlugsDigest(plugs);
@@ -182,15 +184,14 @@ contract PlugMockSocketTest is Test {
         /// @dev There are no conditions in this plug meaning a user is executing their own intent.
         PlugTypesLib.Plug memory Plug = PlugTypesLib.Plug({
             current: current,
-            fuses: new PlugTypesLib.Fuse[](0),
-            salt: bytes32(0)
+            fuses: new PlugTypesLib.Fuse[](0)
         });
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = Plug;
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs =
-            PlugTypesLib.Plugs({ plugs: plugsArray });
+            PlugTypesLib.Plugs({ plugs: plugsArray, salt: bytes32(0) });
 
         /// @dev Sign the execution.
         digest = router.getPlugsDigest(plugs);

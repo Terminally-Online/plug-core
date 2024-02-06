@@ -36,8 +36,13 @@ contract PlugRevocationFuseTest is Test {
     }
 
     function etchRouterSocket() internal returns (PlugRouterSocket) {
-        vm.etch(0x00b09C89Ace100AB7A4Dc47ebfBd1E7997920062, address(new PlugRouterSocket()).code);
-        return PlugRouterSocket(payable(0x00b09C89Ace100AB7A4Dc47ebfBd1E7997920062));
+        vm.etch(
+            0x00b09C89Ace100AB7A4Dc47ebfBd1E7997920062,
+            address(new PlugRouterSocket()).code
+        );
+        return PlugRouterSocket(
+            payable(0x00b09C89Ace100AB7A4Dc47ebfBd1E7997920062)
+        );
     }
 
     function test_enforceFuse() public {
@@ -52,20 +57,15 @@ contract PlugRevocationFuseTest is Test {
         PlugTypesLib.Fuse[] memory fuses = new PlugTypesLib.Fuse[](1);
         fuses[0] = PlugTypesLib.Fuse({
             neutral: address(fuse),
-            live: fuse.encode(signer),
-            forced: true
+            live: fuse.encode(signer)
         });
 
         /// @dev Prepare the Plugs.
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
-        plugsArray[0] = PlugTypesLib.Plug({
-            current: current,
-            fuses: fuses,
-            salt: bytes32(0)
-        });
+        plugsArray[0] = PlugTypesLib.Plug({ current: current, fuses: fuses });
 
         PlugTypesLib.Plugs memory plugs =
-            PlugTypesLib.Plugs({ plugs: plugsArray });
+            PlugTypesLib.Plugs({ plugs: plugsArray, salt: bytes32(0) });
 
         /// @dev Sign the execution.
         digest = router.getPlugsDigest(plugs);
@@ -94,24 +94,20 @@ contract PlugRevocationFuseTest is Test {
         PlugTypesLib.Fuse[] memory fuses = new PlugTypesLib.Fuse[](1);
         PlugTypesLib.Fuse memory revocationFuse = PlugTypesLib.Fuse({
             neutral: address(fuse),
-            live: fuse.encode(signer),
-            forced: true
+            live: fuse.encode(signer)
         });
         fuses[0] = revocationFuse;
 
         bytes32 domainHash = router.domainHash();
 
-        PlugTypesLib.Plug memory Plug = PlugTypesLib.Plug({
-            current: current,
-            fuses: fuses,
-            salt: bytes32(0)
-        });
+        PlugTypesLib.Plug memory Plug =
+            PlugTypesLib.Plug({ current: current, fuses: fuses });
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = Plug;
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs =
-            PlugTypesLib.Plugs({ plugs: plugsArray });
+            PlugTypesLib.Plugs({ plugs: plugsArray, salt: bytes32(0) });
 
         /// @dev Sign the execution.
         digest = router.getPlugsDigest(plugs);
@@ -131,7 +127,8 @@ contract PlugRevocationFuseTest is Test {
         fuse.revoke(livePlugs, domainHash, true);
 
         /// @dev Make sure the pin is revoked.
-        bool revoked = fuse.isRevoked(signer, router.getPlugsHash(livePlugs.plugs));
+        bool revoked =
+            fuse.isRevoked(signer, router.getPlugsHash(livePlugs.plugs));
         assertTrue(revoked);
 
         /// @dev Make sure you can't double revoke.
