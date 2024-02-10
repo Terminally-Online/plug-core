@@ -14,7 +14,7 @@ interface PlugSocketInterface {
     function plug(PlugTypesLib.LivePlugs calldata $livePlugs)
         external
         payable
-        returns (bytes[] memory $results);
+        returns (bytes[] memory $results, uint256 $gasUsed);
 
     /**
      * @notice Allows a smart contract to submit a plugs of plugs for processing,

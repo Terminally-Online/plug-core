@@ -16,6 +16,8 @@ import { PlugErrors } from "../libraries/Plug.Errors.sol";
 abstract contract PlugCore is PlugTypes {
     using PlugErrors for bytes;
 
+    // bytes32 internal constant OUT_OF_GAS = keccak256(
+
     /**
      * @notice Confirm that signer of the intent has permission to declare
      *         the execution of an intent.
@@ -44,10 +46,10 @@ abstract contract PlugCore is PlugTypes {
         bool success;
 
         /// @dev Call the Fuse to determine if it is valid.
-        (success, $through) = $fuse.neutral.call(
+        (success, $through) = $fuse.target.call(
             abi.encodeWithSelector(
                 PlugFuseInterface.enforceFuse.selector,
-                $fuse.live,
+                $fuse.data,
                 $current,
                 $pinHash
             )
@@ -91,14 +93,61 @@ abstract contract PlugCore is PlugTypes {
         /// @dev Warm up the slot for the return data.
         bool success;
 
+        /// @dev Ensure the current gas is within the limit.
+        require(gasleft() >= $current.gasLimit, "Plug:current-out-of-gas");
+
         /// @dev Make the external call with a standard call.
-        (success, $result) = address($current.ground).call{
-            gas: gasleft(),
-            value: $current.voltage
+        (success, $result) = address($current.target).call{
+            gas: $current.gasLimit,
+            value: $current.value
         }(full);
 
         /// @dev If the call failed, bubble up the revert reason if possible.
         if (!success) $result.bubbleRevert();
+    }
+
+    /**
+     * @notice Pay the Executor for the gas used + fee earned.
+     * @param $to The address to compensate.
+     * @param $amount The amount to compensate.
+     */
+    function _compensate(address $to, uint256 $amount) internal {
+        (bool success,) = $to.call{ value: $amount }("");
+        require(success, "Plug:compensation-failed");
+    }
+
+    function _enforceBalance(
+        PlugTypesLib.Plug memory $plug,
+        address $sender
+    )
+        internal
+        view
+        returns (uint256 $gas)
+    {
+        /// @dev Confirm the gas values will not overflow.
+        /// TODO: Account for this -- All of these values should be declared on the Plug.
+        uint256 preVerificationGas = 0;
+        uint256 maxFeePerGas = 0;
+        uint256 maxPriorityFeePerGas = 0;
+        uint256 maxGas = preVerificationGas | $plug.gasLimit
+            | $plug.current.gasLimit | maxFeePerGas | maxPriorityFeePerGas;
+
+        /// @dev Ensure the gas values will not overflow.
+        require(maxGas <= type(uint120).max, "Plug:gas-overflow");
+
+        /// @dev Account for the increased cost when using a different sender.
+        $gas = msg.sender == $sender ? 1 : 3;
+        /// @dev Calculate the required base gas.
+        $gas =
+            preVerificationGas + $plug.gasLimit * $gas + $plug.current.gasLimit;
+        /// @dev Calculate the incentivized gas limit to ensure the transaction is prioritized.
+        $gas *= maxFeePerGas;
+
+        /// @dev Ensure the contract has sufficient value to operate.
+        require(
+            $plug.current.value + $gas < address(this).balance,
+            "Plug:insufficient-balance"
+        );
     }
 
     /**
@@ -112,28 +161,41 @@ abstract contract PlugCore is PlugTypes {
         address $sender
     )
         internal
-        returns (bytes[] memory $results)
+        returns (bytes[] memory $results, uint256 $gasUsed)
     {
-        /// @dev Prevent random people from plugging.
-        _enforceSigner($sender);
-
         /// @dev Load the plugs from the live plugs.
         PlugTypesLib.Plug[] memory plugs = $plugs.plugs;
 
         /// @dev Load the stack.
         PlugTypesLib.Plug memory plug;
+        uint256 gas;
+
+        uint256 allowedGas;
+        uint256 enforcementGas;
+        uint256 currentGas;
+
         uint256 i;
         uint256 ii;
         uint256 length = plugs.length;
         $results = new bytes[](length);
+
+        /// @dev Prevent random people from plugging.
+        _enforceSigner($sender);
 
         /// @dev Unique hash of the Plug bundle being executed.
         bytes32 plugsHash = getPlugsHash($plugs);
 
         /// @dev Iterate over the plugs.
         for (i; i < length; i++) {
+            /// @dev Snapshot how much gas is left.
+            gas = gasleft();
+
             /// @dev Load the plug from the plugs.
             plug = plugs[i];
+
+            /// @dev Ensure the balance is sufficient to cover the cost of gas + the
+            ///      the value needed for the current.
+            allowedGas = _enforceBalance(plug, $sender);
 
             /// @dev Iterate through all the execution fuses declared in the pin
             ///      and ensure they are in a state of acceptable execution
@@ -144,12 +206,44 @@ abstract contract PlugCore is PlugTypes {
             }
 
             /// @dev Confirm the current is within specification.
-            /// @dev This is not done sooner because a fuse may manipulate the
-            ///      the declaration of the current.
             _enforceCurrent(plug.current);
+
+            /// @dev Account for all the gas that was used in enforcement.
+            enforcementGas = gas - gasleft();
+
+            /// @dev Ensure the gas limit declared was not exceeded.
+            require(
+                enforcementGas < plug.gasLimit, "Plug:enforcement-exceeds-gas"
+            );
+
+            /// @dev Update the snapshot of how much gas is left.
+            gas = gasleft();
 
             /// @dev Execute the transaction.
             $results[i] = _execute(plug.current, $sender);
+
+            /// @dev Account for the gas used in the execution.
+            currentGas = gas - gasleft();
+
+            /// @dev Ensure the gas limit declared was not exceeded.
+            require(
+                currentGas < plug.current.gasLimit, "Plug:current-exceeds-gas"
+            );
+
+            /// @dev Add the gas used to the total gas used.
+            $gasUsed += enforcementGas + currentGas;
         }
+
+        /// @dev Calculate the gas price based on the current block.
+        uint256 gasPrice = $plugs.maxPriorityFeePerGas + block.basefee;
+        /// @dev Determine which gas price to use based on if it is a legacy
+        ///      transaction (on a chain that does not support it) or if the
+        ///      the transaction is submit post EIP-1559.
+        gasPrice = $plugs.maxFeePerGas == $plugs.maxPriorityFeePerGas
+            ? $plugs.maxFeePerGas
+            : $plugs.maxFeePerGas < gasPrice ? $plugs.maxFeePerGas : gasPrice;
+
+        /// @dev Reimburse the Executor for the gas used.
+        _compensate(msg.sender, $plugs.fee + $gasUsed * gasPrice);
     }
 }

@@ -16,7 +16,7 @@ import { ECDSA } from "solady/src/utils/ECDSA.sol";
  *      As an extensible base, all projects build on top of Pins
  *      and Plugs.
  * @author @nftchance
- * @author @nftchance/plug-types (2024-02-06)
+ * @author @nftchance/plug-types (2024-02-10)
  * @author @danfinlay (https://github.com/delegatable/delegatable-sol)
  * @author @KamesGeraghty (https://github.com/kamescg)
  */
@@ -44,14 +44,16 @@ library PlugTypesLib {
      *         decode Current data from a hash.
      *
      * @dev Current extends EIP712<{
-     * 		{ name: 'ground', type: 'address' }
-     * 		{ name: 'voltage', type: 'uint256' }
+     * 		{ name: 'target', type: 'address' }
+     * 		{ name: 'gasLimit', type: 'uint256' }
+     * 		{ name: 'value', type: 'uint256' }
      * 		{ name: 'data', type: 'bytes' }
      * }>
      */
     struct Current {
-        address ground;
-        uint256 voltage;
+        address target;
+        uint256 gasLimit;
+        uint256 value;
         bytes data;
     }
 
@@ -60,13 +62,13 @@ library PlugTypesLib {
      *         decode Fuse data from a hash.
      *
      * @dev Fuse extends EIP712<{
-     * 		{ name: 'neutral', type: 'address' }
-     * 		{ name: 'live', type: 'bytes' }
+     * 		{ name: 'target', type: 'address' }
+     * 		{ name: 'data', type: 'bytes' }
      * }>
      */
     struct Fuse {
-        address neutral;
-        bytes live;
+        address target;
+        bytes data;
     }
 
     /**
@@ -76,11 +78,13 @@ library PlugTypesLib {
      * @dev Plug extends EIP712<{
      * 		{ name: 'current', type: 'Current' }
      * 		{ name: 'fuses', type: 'Fuse[]' }
+     * 		{ name: 'gasLimit', type: 'uint256' }
      * }>
      */
     struct Plug {
         Current current;
         Fuse[] fuses;
+        uint256 gasLimit;
     }
 
     /**
@@ -90,11 +94,17 @@ library PlugTypesLib {
      * @dev Plugs extends EIP712<{
      * 		{ name: 'plugs', type: 'Plug[]' }
      * 		{ name: 'salt', type: 'bytes32' }
+     * 		{ name: 'fee', type: 'uint256' }
+     * 		{ name: 'maxFeePerGas', type: 'uint256' }
+     * 		{ name: 'maxPriorityFeePerGas', type: 'uint256' }
      * }>
      */
     struct Plugs {
         Plug[] plugs;
         bytes32 salt;
+        uint256 fee;
+        uint256 maxFeePerGas;
+        uint256 maxPriorityFeePerGas;
     }
 
     /**
@@ -120,7 +130,7 @@ library PlugTypesLib {
  *      however it should be directly inherited from in the consuming protocol
  *      to power the processing of generalized plugs.
  * @author @nftchance
- * @author @nftchance/plug-types (2024-02-06)
+ * @author @nftchance/plug-types (2024-02-10)
  * @author @danfinlay (https://github.com/delegatable/delegatable-sol)
  * @author @KamesGeraghty (https://github.com/kamescg)
  */
@@ -149,24 +159,26 @@ abstract contract PlugTypes {
      * @notice Type hash representing the Current data type providing EIP-712
      *         compatability for encoding and decoding.
      * @dev CURRENT_TYPEHASH extends TypeHash<EIP712<{
-     *      { name: 'ground', type: 'address' }
-     *      { name: 'voltage', type: 'uint256' }
+     *      { name: 'target', type: 'address' }
+     *      { name: 'gasLimit', type: 'uint256' }
+     *      { name: 'value', type: 'uint256' }
      *      { name: 'data', type: 'bytes' }
      * }>>
      */
-    bytes32 constant CURRENT_TYPEHASH =
-        keccak256("Current(address ground,uint256 voltage,bytes data)");
+    bytes32 constant CURRENT_TYPEHASH = keccak256(
+        "Current(address target,uint256 gasLimit,uint256 value,bytes data)"
+    );
 
     /**
      * @notice Type hash representing the Fuse data type providing EIP-712
      *         compatability for encoding and decoding.
      * @dev FUSE_TYPEHASH extends TypeHash<EIP712<{
-     *      { name: 'neutral', type: 'address' }
-     *      { name: 'live', type: 'bytes' }
+     *      { name: 'target', type: 'address' }
+     *      { name: 'data', type: 'bytes' }
      * }>>
      */
     bytes32 constant FUSE_TYPEHASH =
-        keccak256("Fuse(address neutral,bytes live)");
+        keccak256("Fuse(address target,bytes data)");
 
     /**
      * @notice Type hash representing the Plug data type providing EIP-712
@@ -174,10 +186,11 @@ abstract contract PlugTypes {
      * @dev PLUG_TYPEHASH extends TypeHash<EIP712<{
      *      { name: 'current', type: 'Current' }
      *      { name: 'fuses', type: 'Fuse[]' }
+     *      { name: 'gasLimit', type: 'uint256' }
      * }>>
      */
     bytes32 constant PLUG_TYPEHASH = keccak256(
-        "Plug(Current current,Fuse[] fuses)Current(address ground,uint256 voltage,bytes data)Fuse(address neutral,bytes live)"
+        "Plug(Current current,Fuse[] fuses,uint256 gasLimit)Current(address target,uint256 gasLimit,uint256 value,bytes data)Fuse(address target,bytes data)"
     );
 
     /**
@@ -186,10 +199,13 @@ abstract contract PlugTypes {
      * @dev PLUGS_TYPEHASH extends TypeHash<EIP712<{
      *      { name: 'plugs', type: 'Plug[]' }
      *      { name: 'salt', type: 'bytes32' }
+     *      { name: 'fee', type: 'uint256' }
+     *      { name: 'maxFeePerGas', type: 'uint256' }
+     *      { name: 'maxPriorityFeePerGas', type: 'uint256' }
      * }>>
      */
     bytes32 constant PLUGS_TYPEHASH = keccak256(
-        "Plugs(Plug[] plugs,bytes32 salt)Current(address ground,uint256 voltage,bytes data)Fuse(address neutral,bytes live)Plug(Current current,Fuse[] fuses)"
+        "Plugs(Plug[] plugs,bytes32 salt,uint256 fee,uint256 maxFeePerGas,uint256 maxPriorityFeePerGas)Current(address target,uint256 gasLimit,uint256 value,bytes data)Fuse(address target,bytes data)Plug(Current current,Fuse[] fuses,uint256 gasLimit)"
     );
 
     /**
@@ -201,7 +217,7 @@ abstract contract PlugTypes {
      * }>>
      */
     bytes32 constant LIVE_PLUGS_TYPEHASH = keccak256(
-        "LivePlugs(Plugs plugs,bytes signature)Current(address ground,uint256 voltage,bytes data)Fuse(address neutral,bytes live)Plug(Current current,Fuse[] fuses)Plugs(Plug[] plugs,bytes32 salt)"
+        "LivePlugs(Plugs plugs,bytes signature)Current(address target,uint256 gasLimit,uint256 value,bytes data)Fuse(address target,bytes data)Plug(Current current,Fuse[] fuses,uint256 gasLimit)Plugs(Plug[] plugs,bytes32 salt,uint256 fee,uint256 maxFeePerGas,uint256 maxPriorityFeePerGas)"
     );
 
     /**
@@ -271,8 +287,9 @@ abstract contract PlugTypes {
         $hash = keccak256(
             abi.encode(
                 CURRENT_TYPEHASH,
-                $input.ground,
-                $input.voltage,
+                $input.target,
+                $input.gasLimit,
+                $input.value,
                 keccak256($input.data)
             )
         );
@@ -291,7 +308,7 @@ abstract contract PlugTypes {
         returns (bytes32 $hash)
     {
         $hash = keccak256(
-            abi.encode(FUSE_TYPEHASH, $input.neutral, keccak256($input.live))
+            abi.encode(FUSE_TYPEHASH, $input.target, keccak256($input.data))
         );
     }
 
@@ -311,7 +328,8 @@ abstract contract PlugTypes {
             abi.encode(
                 PLUG_TYPEHASH,
                 getCurrentHash($input.current),
-                getFuseArrayHash($input.fuses)
+                getFuseArrayHash($input.fuses),
+                $input.gasLimit
             )
         );
     }
@@ -356,7 +374,12 @@ abstract contract PlugTypes {
     {
         $hash = keccak256(
             abi.encode(
-                PLUGS_TYPEHASH, getPlugArrayHash($input.plugs), $input.salt
+                PLUGS_TYPEHASH,
+                getPlugArrayHash($input.plugs),
+                $input.salt,
+                $input.fee,
+                $input.maxFeePerGas,
+                $input.maxPriorityFeePerGas
             )
         );
     }

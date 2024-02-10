@@ -22,13 +22,16 @@ contract PlugSocket is PlugSocketInterface, PlugSimulation {
     function plug(PlugTypesLib.LivePlugs calldata $livePlugs)
         external
         payable
-        returns (bytes[] memory $results)
+        returns (bytes[] memory $results, uint256 $gasUsed)
     {
         /// @dev Determine who signed the intent.
         address intentSigner = getLivePlugsSigner($livePlugs);
 
         /// @dev Invoke the plugs.
-        $results = _plug($livePlugs.plugs, intentSigner);
+        ($results, $gasUsed) = _plug($livePlugs.plugs, intentSigner);
+
+        /// @dev Compensate the Executor.
+        _compensate(msg.sender, $gasUsed);
     }
 
     /**
@@ -39,11 +42,11 @@ contract PlugSocket is PlugSocketInterface, PlugSimulation {
      *       beyond just EOAs and that is a growing usecase now that we not
      *       only have Gnosis Safes, but also EIP-4337.
      */
-    function plugContract(PlugTypesLib.Plugs calldata $plugs)
-        external
-        payable
-        returns (bytes[] memory $result)
-    {
-        $result = _plug($plugs, msg.sender);
-    }
+    // function plugContract(PlugTypesLib.Plugs calldata $plugs)
+    //     external
+    //     payable
+    //     returns (bytes[] memory $result)
+    // {
+    //     $result = _plug($plugs, msg.sender);
+    // }
 }
