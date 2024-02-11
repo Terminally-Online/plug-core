@@ -6,20 +6,35 @@ pragma solidity 0.8.23;
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 
 interface PlugSocketInterface {
+    function signer(PlugTypesLib.LivePlugs calldata $livePlugs)
+        external
+        view
+        returns (address $signer);
+
     /**
      * @notice Allows anyone to submit a plugs of signed plugs for processing.
+     * @notice This version of the function will always be called by the Router.
      * @param $plugs The Plug bundle to execute.
      * @param $signer The address of the bundle signer.
-     * @param $executor The address of the executor.
      * @param $gas The gas to execute the plugs.
      * @return $results The return data of each plug executed.
      */
     function plug(
         PlugTypesLib.Plugs calldata $plugs,
         address $signer,
-        address $executor,
         uint256 $gas
     )
+        external
+        payable
+        returns (bytes[] memory $results);
+
+    /**
+     * @notice Allows anyone to submit a plugs of signed plugs for processing.
+     * @notice This version of the function will always be called by the Router.
+     * @param $plugs The Plug bundle to execute.
+     * @return $results The return data of each plug executed.
+     */
+    function plug(PlugTypesLib.Plugs calldata $plugs)
         external
         payable
         returns (bytes[] memory $results);

@@ -2,10 +2,11 @@
 
 pragma solidity 0.8.23;
 
-import { PlugSocket } from "../abstracts/Plug.Socket.sol";
+import { PlugCore } from "./Plug.Core.sol";
 import { Ownable } from "solady/src/auth/Ownable.sol";
 import { Receiver } from "solady/src/accounts/Receiver.sol";
 import { Initializable } from "solady/src/utils/Initializable.sol";
+import { ReentrancyGuard } from "solady/src/utils/ReentrancyGuard.sol";
 
 import { LibBitmap } from "solady/src/utils/LibBitmap.sol";
 
@@ -15,10 +16,11 @@ import { LibBitmap } from "solady/src/utils/LibBitmap.sol";
  * @author @nftchance (chance@utc24.io)
  */
 abstract contract PlugInitializable is
-    PlugSocket,
+    PlugCore,
     Ownable,
     Receiver,
-    Initializable
+    Initializable,
+    ReentrancyGuard
 {
     /**
      * @notice Automatically initialize the contract that is used for the

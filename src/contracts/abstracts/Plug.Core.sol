@@ -34,9 +34,6 @@ abstract contract PlugCore is PlugExecute {
         internal
         returns (bytes[] memory $results)
     {
-        /// @dev Make sure the signer and Executor of the bundle is valid.
-        ($signer, $executor) = _enforceExecutor($signer, $executor);
-
         /// @dev Prevent random people from plugging.
         _enforceSigner($signer);
 
@@ -73,7 +70,7 @@ abstract contract PlugCore is PlugExecute {
 
         /// @dev Pay the Executor for the gas used and the fee earned if
         ///      it was not the original signer of the Plug bundle.
-        if ($signer != $executor) {
+        if ($executor != address(0)) {
             /// @dev Calculate the gas price based on the current block.
             uint256 value = $plugs.maxPriorityFeePerGas + block.basefee;
             /// @dev Determine which gas price to use based on if it is a legacy

@@ -16,7 +16,7 @@ import { ECDSA } from "solady/src/utils/ECDSA.sol";
  *      As an extensible base, all projects build on top of Pins
  *      and Plugs.
  * @author @nftchance
- * @author @nftchance/plug-types (2024-02-10)
+ * @author @nftchance/plug-types (2024-02-11)
  * @author @danfinlay (https://github.com/delegatable/delegatable-sol)
  * @author @KamesGeraghty (https://github.com/kamescg)
  */
@@ -88,6 +88,7 @@ library PlugTypesLib {
      *         decode Plugs data from a hash.
      *
      * @dev Plugs extends EIP712<{
+     * 		{ name: 'socket', type: 'address' }
      * 		{ name: 'plugs', type: 'Plug[]' }
      * 		{ name: 'salt', type: 'bytes32' }
      * 		{ name: 'fee', type: 'uint256' }
@@ -97,6 +98,7 @@ library PlugTypesLib {
      * }>
      */
     struct Plugs {
+        address socket;
         Plug[] plugs;
         bytes32 salt;
         uint256 fee;
@@ -128,7 +130,7 @@ library PlugTypesLib {
  *      however it should be directly inherited from in the consuming protocol
  *      to power the processing of generalized plugs.
  * @author @nftchance
- * @author @nftchance/plug-types (2024-02-10)
+ * @author @nftchance/plug-types (2024-02-11)
  * @author @danfinlay (https://github.com/delegatable/delegatable-sol)
  * @author @KamesGeraghty (https://github.com/kamescg)
  */
@@ -192,6 +194,7 @@ abstract contract PlugTypes {
      * @notice Type hash representing the Plugs data type providing EIP-712
      *         compatability for encoding and decoding.
      * @dev PLUGS_TYPEHASH extends TypeHash<EIP712<{
+     *      { name: 'socket', type: 'address' }
      *      { name: 'plugs', type: 'Plug[]' }
      *      { name: 'salt', type: 'bytes32' }
      *      { name: 'fee', type: 'uint256' }
@@ -201,7 +204,7 @@ abstract contract PlugTypes {
      * }>>
      */
     bytes32 constant PLUGS_TYPEHASH = keccak256(
-        "Plugs(Plug[] plugs,bytes32 salt,uint256 fee,uint256 maxFeePerGas,uint256 maxPriorityFeePerGas,address executor)Current(address target,uint256 value,bytes data)Fuse(address target,bytes data)Plug(Current current,Fuse[] fuses)"
+        "Plugs(address socket,Plug[] plugs,bytes32 salt,uint256 fee,uint256 maxFeePerGas,uint256 maxPriorityFeePerGas,address executor)Current(address target,uint256 value,bytes data)Fuse(address target,bytes data)Plug(Current current,Fuse[] fuses)"
     );
 
     /**
@@ -213,7 +216,7 @@ abstract contract PlugTypes {
      * }>>
      */
     bytes32 constant LIVE_PLUGS_TYPEHASH = keccak256(
-        "LivePlugs(Plugs plugs,bytes signature)Current(address target,uint256 value,bytes data)Fuse(address target,bytes data)Plug(Current current,Fuse[] fuses)Plugs(Plug[] plugs,bytes32 salt,uint256 fee,uint256 maxFeePerGas,uint256 maxPriorityFeePerGas,address executor)"
+        "LivePlugs(Plugs plugs,bytes signature)Current(address target,uint256 value,bytes data)Fuse(address target,bytes data)Plug(Current current,Fuse[] fuses)Plugs(address socket,Plug[] plugs,bytes32 salt,uint256 fee,uint256 maxFeePerGas,uint256 maxPriorityFeePerGas,address executor)"
     );
 
     /**
@@ -369,6 +372,7 @@ abstract contract PlugTypes {
         $hash = keccak256(
             abi.encode(
                 PLUGS_TYPEHASH,
+                $input.socket,
                 getPlugArrayHash($input.plugs),
                 $input.salt,
                 $input.fee,

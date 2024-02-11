@@ -2,66 +2,78 @@
 
 pragma solidity 0.8.23;
 
+import { PlugInterface } from "../interfaces/Plug.Interface.sol";
 import { PlugTypes, PlugTypesLib } from "../abstracts/Plug.Types.sol";
 import { Initializable } from "solady/src/utils/Initializable.sol";
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 
 /**
- * @title Plug Router Socket
+ * @title Plug
  * @notice This contract represents a general purpose relay socket that can be
- *         used to route transactions to other contracts.
- * @notice Do not approve assets to this contract as anyone can sign and/or
- *         execute transactions which means they can use your approvals.
+ *         used to route transactions to other contracts. This mechanism
+ *         enables the ability to route all execution through a single contract
+ *         instead of needing to operate an Executor instance for each contract.
+ * @dev There is no need to approve assets to this contract as all transactions
+ *      are executed through the socket which will manage its own permissions
+ *      can be safely approved to interact with the assets of another account.
  * @author @nftchance (chance@utc24.io)
  */
-contract PlugRouterSocket is PlugTypes, Initializable {
+contract Plug is PlugInterface, PlugTypes, Initializable {
     /**
      * @notice Automatically initialize the contract that is used for the
      *         the implementation to prevent nefarious interaction with
-     *         this contract.
+     *         this contract when used as a standalone implementation reference.
      */
     constructor() {
         initialize();
     }
 
     /**
-     * @notice Initialize a new Plug Router.
+     * @notice Initialize a new instance of Plug.
      */
     function initialize() public payable virtual initializer {
+        /// TODO: Rename this to _initializePlug()
         _initializeSocket("PlugRouter", "0.0.0");
     }
 
+    /**
+     * See {PlugInterface-plug}.
+     */
     function plug(PlugTypesLib.LivePlugs calldata $livePlugs)
         public
         payable
         virtual
         returns (bytes[] memory $results)
     {
-        /// @dev Snapshot how much gas the transaction was provided with.
+        /// @dev Snapshot how much gas the transaction has.
         uint256 gas = gasleft();
 
-        /// @dev Determine the address that signed the Plug bundle.
-        address signer = getLivePlugsSigner($livePlugs);
+        /// @dev Load the Plug Socket.
+        PlugSocketInterface socket =
+            PlugSocketInterface($livePlugs.plugs.socket);
 
-        address executor = $livePlugs.plugs.executor;
+        /// @dev Recover the address that signed the bundle of Plugs.
+        address signer = socket.signer($livePlugs);
 
         /// @dev Make sure the bundle of Plugs is being executed by the declared
         ///      Executor or simply does not specify who can execute.
         require(
-            msg.sender == executor
-                || executor == address(0),
+            msg.sender == $livePlugs.plugs.executor
+                || $livePlugs.plugs.executor == address(0),
             "PlugRouterSocket: invalid-executor"
         );
 
-        /// @dev Pass down the now-verified signature and execute the bundle.
-        /// TODO: Need a way to associate the signer with the actual
-        ///       caller or require a declaration of the caller.
-        $results = PlugSocketInterface(signer).plug(
-            $livePlugs.plugs, signer, executor, gas
+        /// @dev Pass down the now-verified signature components and execute
+        ///      the bundle from within the Socket that was declared.
+        $results = socket.plug(
+            $livePlugs.plugs, signer, gas
         );
     }
 
-    function plugBatch(PlugTypesLib.LivePlugs[] calldata $livePlugs)
+    /**
+     * See {PlugInterface-plug}.
+     */
+    function plug(PlugTypesLib.LivePlugs[] calldata $livePlugs)
         public
         payable
         virtual

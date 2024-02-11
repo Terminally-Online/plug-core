@@ -3,7 +3,7 @@
 pragma solidity 0.8.23;
 
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
-import { PlugCore } from "./Plug.Core.sol";
+import { PlugInitializable } from "./Plug.Initializable.sol";
 import { PlugTypesLib } from "./Plug.Types.sol";
 
 /**
@@ -13,50 +13,59 @@ import { PlugTypesLib } from "./Plug.Types.sol";
  *         granular pin and execution paths.
  * @author @nftchance (chance@utc24.io)
  */
-contract PlugSocket is PlugSocketInterface, PlugCore {
-    address internal constant ROUTER_ADDRESS = address(0);
+contract PlugSocket is PlugSocketInterface, PlugInitializable {
+    /**
+     * See {PlugSocketInterface-signer}.
+     */
+    function signer(PlugTypesLib.LivePlugs calldata $livePlugs)
+        external
+        view
+        returns (address $signer)
+    {
+        /// @dev Determine the address that signed the Plug bundle.
+        $signer = getLivePlugsSigner($livePlugs);
+    }
 
     /**
      * See {PlugSocketInterface-plug}.
      */
-    /// TODO: Add a modifier to ensure that only the Router or Socket
-    ///       owner/signer can execute the plugs.
-    /// TODO: Add non-reentrant modifier.
+    /// TODO: Add a modifier to ensure that only the Router or specified
+    ////      trusted forwarders can call this function.
     function plug(
         PlugTypesLib.Plugs calldata $plugs,
         address $signer,
-        address $executor,
         uint256 $gas
     )
         external
         payable
+        virtual
+        nonReentrant
         returns (bytes[] memory $results)
     {
-        /// @dev If the call came from the router use the gas snapshot taken
-        ///      otherwise update it to prevent undersetting.
-        $gas = msg.sender == ROUTER_ADDRESS
-            ? $gas
-            : gasleft();
+        /// @dev Process the Plug bundle with an external Executor.
+        $results = _plug($plugs, $signer, $plugs.executor, $gas);
+    }
 
-        /// @dev If the call came from the router use the signer that was
-        ///      solved for in the router, otherwise use the msg.sender
-        ///      as we are assuming a direct Socket interaction.
-        $signer = msg.sender == ROUTER_ADDRESS
-            ? $signer
-            : msg.sender;
+    /**
+     * See {PlugSocketInterface-plug}.
+     */
+    /// TODO: Add a modifier to ensure that only Socket
+    ///       owner/signer can execute the plugs.
+    function plug(PlugTypesLib.Plugs calldata $plugs)
+        external
+        payable
+        virtual
+        nonReentrant
+        returns (bytes[] memory $results)
+    {
+        /// @dev Process the Plug bundle without an external Executor.
+        $results = _plug($plugs, msg.sender, address(0), 0);
+    }
 
-        /// @dev If the call came from the router use the executor that was
-        ///      solved for in the router, otherwise check if the sender
-        ///      is the same as signer. If not, compensation will be needed
-        ///      otherwise set it to the zero address as no compensation will
-        ///      be needed.
-        $executor = msg.sender == ROUTER_ADDRESS
-            ? $executor
-            : msg.sender == $signer ? $signer : address(0);
-
-        /// @dev Process the Plug bundle.
-        /// TODO: We can probably move this logic into this function itself, but
-        ///       we will want to confirm that we have contract calling handled first.
-        $results = _plug($plugs, $signer, $executor, $gas);
+    /**
+     * See {PlugInitializable-name}.
+     */
+    function name() public pure override returns (string memory) {
+        return "PlugSocket";
     }
 }
