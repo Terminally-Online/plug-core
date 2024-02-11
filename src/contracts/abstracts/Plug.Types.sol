@@ -45,14 +45,12 @@ library PlugTypesLib {
      *
      * @dev Current extends EIP712<{
      * 		{ name: 'target', type: 'address' }
-     * 		{ name: 'gasLimit', type: 'uint256' }
      * 		{ name: 'value', type: 'uint256' }
      * 		{ name: 'data', type: 'bytes' }
      * }>
      */
     struct Current {
         address target;
-        uint256 gasLimit;
         uint256 value;
         bytes data;
     }
@@ -78,13 +76,11 @@ library PlugTypesLib {
      * @dev Plug extends EIP712<{
      * 		{ name: 'current', type: 'Current' }
      * 		{ name: 'fuses', type: 'Fuse[]' }
-     * 		{ name: 'gasLimit', type: 'uint256' }
      * }>
      */
     struct Plug {
         Current current;
         Fuse[] fuses;
-        uint256 gasLimit;
     }
 
     /**
@@ -97,6 +93,7 @@ library PlugTypesLib {
      * 		{ name: 'fee', type: 'uint256' }
      * 		{ name: 'maxFeePerGas', type: 'uint256' }
      * 		{ name: 'maxPriorityFeePerGas', type: 'uint256' }
+     * 		{ name: 'executor', type: 'address' }
      * }>
      */
     struct Plugs {
@@ -105,6 +102,7 @@ library PlugTypesLib {
         uint256 fee;
         uint256 maxFeePerGas;
         uint256 maxPriorityFeePerGas;
+        address executor;
     }
 
     /**
@@ -160,14 +158,12 @@ abstract contract PlugTypes {
      *         compatability for encoding and decoding.
      * @dev CURRENT_TYPEHASH extends TypeHash<EIP712<{
      *      { name: 'target', type: 'address' }
-     *      { name: 'gasLimit', type: 'uint256' }
      *      { name: 'value', type: 'uint256' }
      *      { name: 'data', type: 'bytes' }
      * }>>
      */
-    bytes32 constant CURRENT_TYPEHASH = keccak256(
-        "Current(address target,uint256 gasLimit,uint256 value,bytes data)"
-    );
+    bytes32 constant CURRENT_TYPEHASH =
+        keccak256("Current(address target,uint256 value,bytes data)");
 
     /**
      * @notice Type hash representing the Fuse data type providing EIP-712
@@ -186,11 +182,10 @@ abstract contract PlugTypes {
      * @dev PLUG_TYPEHASH extends TypeHash<EIP712<{
      *      { name: 'current', type: 'Current' }
      *      { name: 'fuses', type: 'Fuse[]' }
-     *      { name: 'gasLimit', type: 'uint256' }
      * }>>
      */
     bytes32 constant PLUG_TYPEHASH = keccak256(
-        "Plug(Current current,Fuse[] fuses,uint256 gasLimit)Current(address target,uint256 gasLimit,uint256 value,bytes data)Fuse(address target,bytes data)"
+        "Plug(Current current,Fuse[] fuses)Current(address target,uint256 value,bytes data)Fuse(address target,bytes data)"
     );
 
     /**
@@ -202,10 +197,11 @@ abstract contract PlugTypes {
      *      { name: 'fee', type: 'uint256' }
      *      { name: 'maxFeePerGas', type: 'uint256' }
      *      { name: 'maxPriorityFeePerGas', type: 'uint256' }
+     *      { name: 'executor', type: 'address' }
      * }>>
      */
     bytes32 constant PLUGS_TYPEHASH = keccak256(
-        "Plugs(Plug[] plugs,bytes32 salt,uint256 fee,uint256 maxFeePerGas,uint256 maxPriorityFeePerGas)Current(address target,uint256 gasLimit,uint256 value,bytes data)Fuse(address target,bytes data)Plug(Current current,Fuse[] fuses,uint256 gasLimit)"
+        "Plugs(Plug[] plugs,bytes32 salt,uint256 fee,uint256 maxFeePerGas,uint256 maxPriorityFeePerGas,address executor)Current(address target,uint256 value,bytes data)Fuse(address target,bytes data)Plug(Current current,Fuse[] fuses)"
     );
 
     /**
@@ -217,7 +213,7 @@ abstract contract PlugTypes {
      * }>>
      */
     bytes32 constant LIVE_PLUGS_TYPEHASH = keccak256(
-        "LivePlugs(Plugs plugs,bytes signature)Current(address target,uint256 gasLimit,uint256 value,bytes data)Fuse(address target,bytes data)Plug(Current current,Fuse[] fuses,uint256 gasLimit)Plugs(Plug[] plugs,bytes32 salt,uint256 fee,uint256 maxFeePerGas,uint256 maxPriorityFeePerGas)"
+        "LivePlugs(Plugs plugs,bytes signature)Current(address target,uint256 value,bytes data)Fuse(address target,bytes data)Plug(Current current,Fuse[] fuses)Plugs(Plug[] plugs,bytes32 salt,uint256 fee,uint256 maxFeePerGas,uint256 maxPriorityFeePerGas,address executor)"
     );
 
     /**
@@ -288,7 +284,6 @@ abstract contract PlugTypes {
             abi.encode(
                 CURRENT_TYPEHASH,
                 $input.target,
-                $input.gasLimit,
                 $input.value,
                 keccak256($input.data)
             )
@@ -328,8 +323,7 @@ abstract contract PlugTypes {
             abi.encode(
                 PLUG_TYPEHASH,
                 getCurrentHash($input.current),
-                getFuseArrayHash($input.fuses),
-                $input.gasLimit
+                getFuseArrayHash($input.fuses)
             )
         );
     }
@@ -379,7 +373,8 @@ abstract contract PlugTypes {
                 $input.salt,
                 $input.fee,
                 $input.maxFeePerGas,
-                $input.maxPriorityFeePerGas
+                $input.maxPriorityFeePerGas,
+                $input.executor
             )
         );
     }

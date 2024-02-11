@@ -8,13 +8,21 @@ import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 interface PlugSocketInterface {
     /**
      * @notice Allows anyone to submit a plugs of signed plugs for processing.
-     * @param $livePlugs The plugs of signed plugs to process.
+     * @param $plugs The Plug bundle to execute.
+     * @param $signer The address of the bundle signer.
+     * @param $executor The address of the executor.
+     * @param $gas The gas to execute the plugs.
      * @return $results The return data of each plug executed.
      */
-    function plug(PlugTypesLib.LivePlugs calldata $livePlugs)
+    function plug(
+        PlugTypesLib.Plugs calldata $plugs,
+        address $signer,
+        address $executor,
+        uint256 $gas
+    )
         external
         payable
-        returns (bytes[] memory $results, uint256 $gasUsed);
+        returns (bytes[] memory $results);
 
     /**
      * @notice Allows a smart contract to submit a plugs of plugs for processing,
