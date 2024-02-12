@@ -41,7 +41,8 @@ abstract contract PlugEnforce is PlugTypes {
      */
     function _enforceRouter(address $router)
         internal
-        pure
+        view
+        virtual
         returns (bool $allowed)
     {
         $allowed = $router == PlugLib.ROUTER_ADDRESS;

@@ -3,18 +3,17 @@
 pragma solidity 0.8.23;
 
 import { PlugSocket } from "../abstracts/Plug.Socket.sol";
+import { Receiver } from "solady/src/accounts/Receiver.sol";
 import { Ownable } from "solady/src/auth/Ownable.sol";
 import { Initializable } from "solady/src/utils/Initializable.sol";
-
+import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 import { LibBitmap } from "solady/src/utils/LibBitmap.sol";
 
 /**
  * @title Plug Vault Socket
- * @notice This contract represents an personal relay for a single owner, and
- *         declared set of signers.
  * @author @nftchance (chance@utc24.io)
  */
-contract PlugVaultSocket is PlugSocket, Ownable, Initializable {
+contract PlugVaultSocket is PlugSocket, Receiver, Ownable, Initializable {
     using LibBitmap for LibBitmap.Bitmap;
 
     /// @dev Bitmap of the allowed routers of the contract.
@@ -37,10 +36,28 @@ contract PlugVaultSocket is PlugSocket, Ownable, Initializable {
     function initialize(address $owner) public initializer {
         /// @dev Initialize the owner.
         _initializeOwner($owner);
+        /// @dev Initialize the Plug Socket.
         _initializePlug(name(), version());
 
-        /// @dev Add the owner as a signer.
+        /// @dev Add the owner as a signer to enable seamless
+        ///      direct fulfillment of a Plug bundle without
+        ///      the need for a signature.
         signers.toggle(uint160($owner));
+    }
+
+    /**
+     * @notice Toggle a router on or off.
+     * @dev Note that you cannot toggle off the default router.
+     * @param $router The address of the router.
+     * @return $isRouter true if the address is a router, false otherwise.
+     */
+    function toggleRouter(address $router)
+        public
+        virtual
+        onlyOwner
+        returns (bool $isRouter)
+    {
+        $isRouter = routers.toggle(uint160($router));
     }
 
     /**
@@ -50,6 +67,7 @@ contract PlugVaultSocket is PlugSocket, Ownable, Initializable {
      */
     function toggleSigner(address $signer)
         public
+        virtual
         onlyOwner
         returns (bool $isSigner)
     {
@@ -57,50 +75,47 @@ contract PlugVaultSocket is PlugSocket, Ownable, Initializable {
     }
 
     /**
-     * @notice Name used for the domain separator.
+     * See { PlugSocket-name }
      */
-    function name() public pure returns (string memory) {
-        return "PlugVaultSocket";
+    function name() public pure override returns (string memory $name) {
+        $name = "PlugVaultSocket";
     }
 
     /**
-     * @notice Version used for the domain separator.
+     * See { PlugSocket-version }
      */
-    function version() public pure returns (string memory) {
-        return "0.0.1";
+    function version() public pure override returns (string memory $version) {
+        $version = "0.0.1";
     }
 
     /**
-     * @notice Enforce previous approval of a router by the owner of the
-     *         Socket to successfully execute a bundle.
-     * @param $router The address of the router.
+     * See { PlugEnforce._enforceRouter }
      */
     function _enforceRouter(address $router)
         internal
-        pure
-        override
-        returns (bool $allowed)
-    {
-        $allowed = routers.get(uint160($router)) || super._enforceRouter($router);
-    }
-
-    /**
-     * @notice Enforce previous approval of a signer by the owner of the
-     *         Socket to successfully execute a bundle.
-     * @param $signer The address of the signer.
-     */
-    function _enforceSigner(address $signer)
-        internal
-        pure
+        view
         override
         returns (bool $allowed)
     {
         $allowed =
-            signers.get(uint160($signer));
+            routers.get(uint160($router)) || super._enforceRouter($router);
+    }
+
+    /**
+     * See { PlugEnforce._enforceSigner }
+     */
+    function _enforceSigner(address $signer)
+        internal
+        view
+        override
+        returns (bool $allowed)
+    {
+        $allowed = signers.get(uint160($signer));
     }
 
     /**
      * @notice Prevent double-initialization of the owner.
+     * @return $guard true to enable the guard in Ownable.
      */
     function _guardInitializeOwner()
         internal
