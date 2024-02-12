@@ -2,13 +2,12 @@
 
 pragma solidity 0.8.23;
 
-import { PlugTypes, PlugTypesLib } from "./Plug.Types.sol";
 import { PlugEnforce } from "./Plug.Enforce.sol";
-import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
-import { PlugErrors } from "../libraries/Plug.Errors.sol";
+import { PlugTypes, PlugTypesLib } from "./Plug.Types.sol";
+import { PlugLib } from "../libraries/Plug.Lib.sol";
 
 abstract contract PlugExecute is PlugEnforce {
-    using PlugErrors for bytes;
+    using PlugLib for bytes;
 
     /**
      * @notice Execution a built transaction.

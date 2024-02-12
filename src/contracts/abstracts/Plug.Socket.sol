@@ -3,7 +3,7 @@
 pragma solidity 0.8.23;
 
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
-import { PlugInitializable } from "./Plug.Initializable.sol";
+import { PlugCore } from "./Plug.Core.sol";
 import { ReentrancyGuard } from "solady/src/utils/ReentrancyGuard.sol";
 import { PlugTypesLib } from "./Plug.Types.sol";
 
@@ -14,12 +14,7 @@ import { PlugTypesLib } from "./Plug.Types.sol";
  *         granular pin and execution paths.
  * @author @nftchance (chance@utc24.io)
  */
-contract PlugSocket is PlugSocketInterface, PlugInitializable, ReentrancyGuard {
-    /**
-     * @notice Initialize a new Plug Socket instance.
-     */
-    constructor() PlugInitializable() {}
-
+contract PlugSocket is PlugSocketInterface, PlugCore, ReentrancyGuard {
     /**
      * See {PlugSocketInterface-signer}.
      */
@@ -43,8 +38,8 @@ contract PlugSocket is PlugSocketInterface, PlugInitializable, ReentrancyGuard {
         external
         payable
         virtual
-        onlyTrustedForwarder()
-        onlyTrusted($signer)
+        enforceRouter
+        enforceSigner($signer)
         nonReentrant
         returns (bytes[] memory $results)
     {
@@ -59,18 +54,11 @@ contract PlugSocket is PlugSocketInterface, PlugInitializable, ReentrancyGuard {
         external
         payable
         virtual
-        onlyTrusted(msg.sender)
+        enforceSigner(msg.sender)
         nonReentrant
         returns (bytes[] memory $results)
     {
         /// @dev Process the Plug bundle without an external Executor.
         $results = _plug($plugs, msg.sender, address(0), 0);
-    }
-
-    /**
-     * See {PlugInitializable-name}.
-     */
-    function name() public pure override returns (string memory) {
-        return "PlugSocket";
     }
 }

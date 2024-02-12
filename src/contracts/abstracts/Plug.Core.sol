@@ -2,10 +2,8 @@
 
 pragma solidity 0.8.23;
 
-import { PlugTypes, PlugTypesLib } from "./Plug.Types.sol";
-import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
-import { PlugErrors } from "../libraries/Plug.Errors.sol";
 import { PlugExecute } from "./Plug.Execute.sol";
+import { PlugTypesLib } from "./Plug.Types.sol";
 
 /**
  * @title Plug Core
@@ -15,8 +13,6 @@ import { PlugExecute } from "./Plug.Execute.sol";
  * @author @nftchance (chance@utc24.io)
  */
 abstract contract PlugCore is PlugExecute {
-    using PlugErrors for bytes;
-
     /**
      * @notice Execute an array of plugs
      * @param $plugs The plugs to execute.
@@ -34,9 +30,6 @@ abstract contract PlugCore is PlugExecute {
         internal
         returns (bytes[] memory $results)
     {
-        /// @dev Prevent random people from plugging.
-        _enforceSigner($signer);
-
         /// @dev Load the Plug stack.
         PlugTypesLib.Plug[] calldata plugs = $plugs.plugs;
         PlugTypesLib.Current memory current;
