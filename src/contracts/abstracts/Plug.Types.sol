@@ -226,7 +226,7 @@ abstract contract PlugTypes {
      * @dev The chainId is pulled from the block and the verifying contract is set
      *	    to the address of the contract.
      */
-    function _initializeSocket(
+    function _initializePlug(
         string memory $name,
         string memory $version
     )

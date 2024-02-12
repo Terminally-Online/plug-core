@@ -3,10 +3,8 @@
 pragma solidity 0.8.23;
 
 import { PlugCore } from "./Plug.Core.sol";
-import { Ownable } from "solady/src/auth/Ownable.sol";
-import { Receiver } from "solady/src/accounts/Receiver.sol";
+import { PlugTrusted } from "./Plug.Trusted.sol";
 import { Initializable } from "solady/src/utils/Initializable.sol";
-import { ReentrancyGuard } from "solady/src/utils/ReentrancyGuard.sol";
 
 import { LibBitmap } from "solady/src/utils/LibBitmap.sol";
 
@@ -17,10 +15,8 @@ import { LibBitmap } from "solady/src/utils/LibBitmap.sol";
  */
 abstract contract PlugInitializable is
     PlugCore,
-    Ownable,
-    Receiver,
-    Initializable,
-    ReentrancyGuard
+    PlugTrusted,
+    Initializable
 {
     /**
      * @notice Automatically initialize the contract that is used for the
@@ -43,7 +39,7 @@ abstract contract PlugInitializable is
         _initializeOwner($owner);
 
         /// @dev Initialize the Plug Socket.
-        _initializeSocket(name(), version());
+        _initializePlug(name(), version());
     }
 
     /**

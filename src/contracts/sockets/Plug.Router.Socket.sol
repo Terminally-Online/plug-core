@@ -3,8 +3,7 @@
 pragma solidity 0.8.23;
 
 import { PlugInterface } from "../interfaces/Plug.Interface.sol";
-import { PlugTypes, PlugTypesLib } from "../abstracts/Plug.Types.sol";
-import { Initializable } from "solady/src/utils/Initializable.sol";
+import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 
 /**
@@ -18,24 +17,7 @@ import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
  *      can be safely approved to interact with the assets of another account.
  * @author @nftchance (chance@utc24.io)
  */
-contract Plug is PlugInterface, PlugTypes, Initializable {
-    /**
-     * @notice Automatically initialize the contract that is used for the
-     *         the implementation to prevent nefarious interaction with
-     *         this contract when used as a standalone implementation reference.
-     */
-    constructor() {
-        initialize();
-    }
-
-    /**
-     * @notice Initialize a new instance of Plug.
-     */
-    function initialize() public payable virtual initializer {
-        /// TODO: Rename this to _initializePlug()
-        _initializeSocket("PlugRouter", "0.0.0");
-    }
-
+contract Plug is PlugInterface {
     /**
      * See {PlugInterface-plug}.
      */
@@ -65,9 +47,7 @@ contract Plug is PlugInterface, PlugTypes, Initializable {
 
         /// @dev Pass down the now-verified signature components and execute
         ///      the bundle from within the Socket that was declared.
-        $results = socket.plug(
-            $livePlugs.plugs, signer, gas
-        );
+        $results = socket.plug($livePlugs.plugs, signer, gas);
     }
 
     /**

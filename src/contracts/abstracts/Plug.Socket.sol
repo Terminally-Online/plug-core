@@ -4,6 +4,7 @@ pragma solidity 0.8.23;
 
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 import { PlugInitializable } from "./Plug.Initializable.sol";
+import { ReentrancyGuard } from "solady/src/utils/ReentrancyGuard.sol";
 import { PlugTypesLib } from "./Plug.Types.sol";
 
 /**
@@ -13,7 +14,12 @@ import { PlugTypesLib } from "./Plug.Types.sol";
  *         granular pin and execution paths.
  * @author @nftchance (chance@utc24.io)
  */
-contract PlugSocket is PlugSocketInterface, PlugInitializable {
+contract PlugSocket is PlugSocketInterface, PlugInitializable, ReentrancyGuard {
+    /**
+     * @notice Initialize a new Plug Socket instance.
+     */
+    constructor() PlugInitializable() {}
+
     /**
      * See {PlugSocketInterface-signer}.
      */
@@ -29,8 +35,6 @@ contract PlugSocket is PlugSocketInterface, PlugInitializable {
     /**
      * See {PlugSocketInterface-plug}.
      */
-    /// TODO: Add a modifier to ensure that only the Router or specified
-    ////      trusted forwarders can call this function.
     function plug(
         PlugTypesLib.Plugs calldata $plugs,
         address $signer,
@@ -39,6 +43,8 @@ contract PlugSocket is PlugSocketInterface, PlugInitializable {
         external
         payable
         virtual
+        onlyTrustedForwarder()
+        onlyTrusted($signer)
         nonReentrant
         returns (bytes[] memory $results)
     {
@@ -49,12 +55,11 @@ contract PlugSocket is PlugSocketInterface, PlugInitializable {
     /**
      * See {PlugSocketInterface-plug}.
      */
-    /// TODO: Add a modifier to ensure that only Socket
-    ///       owner/signer can execute the plugs.
     function plug(PlugTypesLib.Plugs calldata $plugs)
         external
         payable
         virtual
+        onlyTrusted(msg.sender)
         nonReentrant
         returns (bytes[] memory $results)
     {
