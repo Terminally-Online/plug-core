@@ -129,8 +129,15 @@ abstract contract PlugSocket is
                 }
             }
 
-            if gt(count, 5) { count := 5 }
-
+            /// @dev If the count is greater than 5, default to 5.
+            if gt(count, 5) {
+                count := 5
+            }
+            /// @dev If no uppercase letters are found, default to "PLUG".
+            if iszero(count) {
+                mstore(resData, 0x504C5547)
+                count := 4
+            }
             mstore(result, count)
             mstore(0x40, add(add(result, count), 0x20))
 
