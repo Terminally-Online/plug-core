@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import { PlugTypes, PlugTypesLib } from "./Plug.Types.sol";
+import { PlugTypesLib } from "./Plug.Types.sol";
 import { PlugLib } from "../libraries/Plug.Lib.sol";
 import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
 
@@ -10,13 +10,18 @@ import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
  * @title Plug Enforce
  * @notice The enforcement mechanisms of Plug to ensure that transactions
  *         are only executed as defined.
+ * @dev When inheriting this contract, you must override the now-empty
+ *      enforcement of the signer with your own logic in `_enforceSigner`.
+ *      You may choose to simply allow everyone however this is not a
+ *      decision made at the base level of the Plug architecture.
  * @author @nftchance (chance@utc24.io)
  */
-abstract contract PlugEnforce is PlugTypes {
+abstract contract PlugEnforce {
     using PlugLib for bytes;
 
     /**
      * @notice Modifier to enforce the router of the transaction.
+     * @dev Apply to this to functions that are designed to be access by Routers.
      * @dev Implicitly the address is assumed to be the current sender.
      */
     modifier enforceRouter() {
@@ -26,10 +31,23 @@ abstract contract PlugEnforce is PlugTypes {
 
     /**
      * @notice Modifier to enforce the signer of the transaction.
+     * @dev Apply to this to functions that are designed to execute a bundle
+     *      of Plugs regardless of whether through a Router or or direct access.
      * @param $signer The signer of the transaction.
      */
     modifier enforceSigner(address $signer) {
         require(_enforceSigner($signer), "Plug:invalid-signer");
+        _;
+    }
+
+    /**
+     * @notice Modifier to enforce the current of the transaction.
+     * @dev Apply to this to functions that are designed to execute a bundle
+     *      of Plugs regardless of whether through a Router or or direct access.
+     * @param $current The state of the transaction to execute.
+     */
+    modifier enforceCurrent(PlugTypesLib.Current memory $current) {
+        require(_enforceCurrent($current), "Plug:invalid-current");
         _;
     }
 
@@ -51,16 +69,17 @@ abstract contract PlugEnforce is PlugTypes {
     /**
      * @notice Confirm that signer has permission to declare execution of a
      *         Plug bundle on the parent-socket that inherits this contract.
-     * @dev If you would like to limit the available signers override this
-     *      function in your contract with the additional logic.
+     * @dev This function MUST be overridden in the contract that inherits
+     *      as it has no native implementation. By default there are no
+     *      implicit assumptions made here so that the inheriting contracts
+     *      have full control over who the allowed signers are.
      * @param $signer The signer of the bundle.
      */
     function _enforceSigner(address $signer)
         internal
         view
         virtual
-        returns (bool $allowed)
-    { }
+        returns (bool $allowed);
 
     /**
      * @notice Enforce the fuse of the current plug to confirm
@@ -101,11 +120,17 @@ abstract contract PlugEnforce is PlugTypes {
      *         execution path dependent on larger external factors
      *         such as only allowing a transaction to be executed
      *         on the socket itself.
-     * @param $current The current state of the transaction.
+     * @dev If you would like to limit the Currents that can flow through
+     *      this plug override this function in your contract with the
+     *      additional logic.
+     * @return $allowed If the current is allowed.
      */
-    function _enforceCurrent(PlugTypesLib.Current memory $current)
+    function _enforceCurrent(PlugTypesLib.Current memory)
         internal
         view
         virtual
-    { }
+        returns (bool $allowed)
+    {
+        $allowed = true;
+    }
 }

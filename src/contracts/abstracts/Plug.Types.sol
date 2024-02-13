@@ -16,9 +16,7 @@ import { ECDSA } from "solady/src/utils/ECDSA.sol";
  *      As an extensible base, all projects build on top of Pins
  *      and Plugs.
  * @author @nftchance
- * @author @nftchance/plug-types (2024-02-11)
- * @author @danfinlay (https://github.com/delegatable/delegatable-sol)
- * @author @KamesGeraghty (https://github.com/kamescg)
+ * @author @nftchance/plug-types (2024-02-13)
  */
 library PlugTypesLib {
     /**
@@ -129,10 +127,10 @@ library PlugTypesLib {
  * @dev This abstract contract is auto-generated and should not be edited directly
  *      however it should be directly inherited from in the consuming protocol
  *      to power the processing of generalized plugs.
+ * @dev Contracts that inherit this one must implement the name() and version()
+ *      functions to provide the domain separator for EIP-712 signatures.
  * @author @nftchance
- * @author @nftchance/plug-types (2024-02-11)
- * @author @danfinlay (https://github.com/delegatable/delegatable-sol)
- * @author @KamesGeraghty (https://github.com/kamescg)
+ * @author @nftchance/plug-types (2024-02-13)
  */
 abstract contract PlugTypes {
     /// @notice Use the ECDSA library for signature verification.
@@ -140,7 +138,6 @@ abstract contract PlugTypes {
 
     /// @notice The hash of the domain separator used in the EIP712 domain hash.
     bytes32 public domainHash;
-
     /**
      * @notice Type hash representing the EIP712Domain data type providing EIP-712
      *         compatability for encoding and decoding.
@@ -221,18 +218,10 @@ abstract contract PlugTypes {
 
     /**
      * @notice Initialize the contract with the name and version of the protocol.
-     * @param $name The name of the protocol.
-     * @param $version The version of the protocol.
      * @dev The chainId is pulled from the block and the verifying contract is set
      *	    to the address of the contract.
      */
-    function _initializePlug(
-        string memory $name,
-        string memory $version
-    )
-        internal
-        virtual
-    {
+    function _initializePlug() internal virtual {
         if (domainHash != 0x0) {
             revert("PlugTypes:already-initialized.");
         }
@@ -240,12 +229,95 @@ abstract contract PlugTypes {
         /// @dev Sets the domain hash for the contract.
         domainHash = getEIP712DomainHash(
             PlugTypesLib.EIP712Domain({
-                name: $name,
-                version: $version,
+                name: name(),
+                version: version(),
                 chainId: block.chainid,
                 verifyingContract: address(this)
             })
         );
+    }
+
+    /**
+     * @notice Name used for the domain separator.
+     * @dev This is implemented this way so that it is easy
+     *      to retrieve the value and sign the built message.
+     * @return $name The name of the contract.
+     */
+    function name() public pure virtual returns (string memory $name);
+
+    /**
+     * @notice Version used for the domain separator.
+     * @dev This is implemented this way so that it is easy
+     *      to retrieve the value and sign the built message.
+     * @return $version The version of the contract.
+     */
+    function version() public pure virtual returns (string memory $version);
+
+    /**
+     * @notice This will use the name() and version() functions that you override
+     *         when you inherit this contract to create a deployable Socket making
+     *         retrieval of the domain used to sign much easier.
+     * @dev When signing a message it is simplest to just call this function
+     *      to retrieve the domain separator for the EIP-712 signature.
+     * @return $domain The domain separator for EIP-712.
+     */
+    function domain()
+        public
+        view
+        virtual
+        returns (PlugTypesLib.EIP712Domain memory $domain)
+    {
+        $domain = PlugTypesLib.EIP712Domain({
+            name: name(),
+            version: version(),
+            chainId: block.chainid,
+            verifyingContract: address(this)
+        });
+    }
+
+    // TODO: Test symbol() after I wrote it during a moonlight-fueled stupor.
+
+    /**
+     * @notice The symbol of the Socket only used for metadata purposes.
+     * @dev This value is not used in the domain hash for signatures/EIP-712.
+     *      You do not need to override this function as it will always
+     *      automatically generate the symbol based on the override
+     *      using the uppercase letters of the name.
+     * @dev This is implement in assembly simply because Solidity does not
+     *      have dynamic memory arrays and it is the most efficient way
+     *      to generate the symbol.
+     * @return $symbol The symbol of the Socket.
+     */
+    function symbol() public view virtual returns (string memory $symbol) {
+        string memory $name = name();
+
+        assembly {
+            let len := mload($name)
+            let result := mload(0x40)
+            mstore(result, len)
+            let data := add($name, 0x20)
+            let resData := add(result, 0x20)
+
+            let count := 0
+            for { let i := 0 } lt(i, len) { i := add(i, 1) } {
+                let char := byte(0, mload(add(data, i)))
+                if and(gt(char, 0x40), lt(char, 0x5B)) {
+                    mstore8(add(resData, count), char)
+                    count := add(count, 1)
+                }
+            }
+
+            if gt(count, 5) { count := 5 }
+            if iszero(count) {
+                mstore(resData, 0x504C554753)
+                /// @dev "PLUGS"
+                count := 4
+            }
+            mstore(result, count)
+            mstore(0x40, add(add(result, count), 0x20))
+
+            $symbol := result
+        }
     }
 
     /**

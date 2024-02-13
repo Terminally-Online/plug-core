@@ -20,6 +20,7 @@ abstract contract PlugExecute is PlugEnforce {
         address $sender
     )
         internal
+        enforceCurrent($current)
         returns (bool $success, bytes memory $result)
     {
         /// @dev Build the final call data.

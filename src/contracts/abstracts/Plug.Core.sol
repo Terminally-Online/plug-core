@@ -3,7 +3,7 @@
 pragma solidity 0.8.23;
 
 import { PlugExecute } from "./Plug.Execute.sol";
-import { PlugTypesLib } from "./Plug.Types.sol";
+import { PlugTypes, PlugTypesLib } from "./Plug.Types.sol";
 
 /**
  * @title Plug Core
@@ -12,7 +12,7 @@ import { PlugTypesLib } from "./Plug.Types.sol";
  *         verification and execution.
  * @author @nftchance (chance@utc24.io)
  */
-abstract contract PlugCore is PlugExecute {
+abstract contract PlugCore is PlugExecute, PlugTypes {
     /**
      * @notice Execute an array of plugs
      * @param $plugs The plugs to execute.
@@ -53,9 +53,6 @@ abstract contract PlugCore is PlugExecute {
                 (, current.data) =
                     _enforceFuse(plugs[i].fuses[ii], current, plugsHash);
             }
-
-            /// @dev Confirm the current is within specification.
-            _enforceCurrent(current);
 
             /// @dev Execute the transaction.
             (, $results[i]) = _execute(current, $signer);
