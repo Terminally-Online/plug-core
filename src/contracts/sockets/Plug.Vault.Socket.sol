@@ -119,6 +119,23 @@ contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
     }
 
     /**
+     * @notice Helper view function that can be used to unpack the access
+     *         value for a router or signer.
+     * @param $address The address to get the access for.
+     * @return $isRouter If the address is a router.
+     * @return $isSigner If the address is a signer.
+     */
+    function getAccess(address $address)
+        public
+        view
+        returns (bool $isRouter, bool $isSigner)
+    {
+        uint8 $access = access[uint160($address)];
+        $isRouter = _enforceAccess($access);
+        $isSigner = _enforceAccess($access >> SIGNER_SHIFT);
+    }
+
+    /**
      * See { PlugSocket-name }
      */
     function name() public pure override returns (string memory $name) {

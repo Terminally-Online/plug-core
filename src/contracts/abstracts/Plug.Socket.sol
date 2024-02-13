@@ -49,7 +49,7 @@ abstract contract PlugSocket is
         nonReentrant
         returns (bytes[] memory $results)
     {
-        $results = _plug($plugs, $signer, $plugs.executor, $gas);
+        $results = _plug($plugs, $plugs.executor, $gas);
     }
 
     /**
@@ -65,6 +65,6 @@ abstract contract PlugSocket is
         nonReentrant
         returns (bytes[] memory $results)
     {
-        $results = _plug($plugs, msg.sender, address(0), 0);
+        $results = _plug($plugs, address(0), 0);
     }
 }

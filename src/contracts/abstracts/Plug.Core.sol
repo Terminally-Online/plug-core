@@ -6,34 +6,31 @@ import { PlugExecute } from "./Plug.Execute.sol";
 import { PlugTypes, PlugTypesLib } from "./Plug.Types.sol";
 
 /**
- * @title Plug Core
- * @notice The core contract for the Plug framework that enables
- *         counterfactual intent execution with granular conditional
- *         verification and execution.
+ * @title Plug.Core
  * @author @nftchance (chance@utc24.io)
  */
 abstract contract PlugCore is PlugExecute, PlugTypes {
     /**
-     * @notice Execute an array of plugs
+     * @notice Execute a bundle of Plugs.
      * @param $plugs The plugs to execute.
-     * @param $signer The address of the bundle signer.
      * @param $executor The address of the executor.
      * @param $gas Snapshot of gas at the start of interaction.
      * @return $results The return data of the plugs.
      */
     function _plug(
         PlugTypesLib.Plugs calldata $plugs,
-        address $signer,
         address $executor,
         uint256 $gas
     )
         internal
         returns (bytes[] memory $results)
     {
+        /// @dev Hash the object to use in the Fuses.
+        bytes32 plugsHash = getPlugsHash($plugs);
+
         /// @dev Load the Plug stack.
         PlugTypesLib.Plug[] calldata plugs = $plugs.plugs;
         PlugTypesLib.Current memory current;
-        bytes32 plugsHash = getPlugsHash($plugs);
 
         /// @dev Load the loop stack.
         uint256 i;
@@ -55,7 +52,7 @@ abstract contract PlugCore is PlugExecute, PlugTypes {
             }
 
             /// @dev Execute the transaction.
-            (, $results[i]) = _execute(current, $signer);
+            (, $results[i]) = _execute(current);
         }
 
         /// @dev Pay the Executor for the gas used and the fee earned if

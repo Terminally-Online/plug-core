@@ -222,9 +222,9 @@ abstract contract PlugTypes {
      *	    to the address of the contract.
      */
     function _initializePlug() internal virtual {
-        if (domainHash != 0x0) {
-            revert("PlugTypes:already-initialized.");
-        }
+        /// @dev Ensure the domain hash has not been initialized. Effectively
+        ///      protecting the entire Plug contract stack from re-initialization.
+        require(domainHash == 0x0, "PlugTypes:already-initialized");
 
         /// @dev Sets the domain hash for the contract.
         domainHash = getEIP712DomainHash(

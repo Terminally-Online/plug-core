@@ -15,20 +15,15 @@ abstract contract PlugExecute is PlugEnforce {
      * @return $success If the transaction was successful.
      * @return $result The return data of the transaction.
      */
-    function _execute(
-        PlugTypesLib.Current memory $current,
-        address $sender
-    )
+    function _execute(PlugTypesLib.Current memory $current)
         internal
         enforceCurrent($current)
         returns (bool $success, bytes memory $result)
     {
-        /// @dev Build the final call data.
-        bytes memory full = abi.encodePacked($current.data, $sender);
-
         /// @dev Make the external call with a standard call.
-        ($success, $result) =
-            address($current.target).call{ value: $current.value }(full);
+        ($success, $result) = address($current.target).call{
+            value: $current.value
+        }($current.data);
 
         /// @dev If the call failed, bubble up the revert reason if possible.
         if (!$success) $result.bubbleRevert();

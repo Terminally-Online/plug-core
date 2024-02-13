@@ -10,10 +10,8 @@ import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
  * @title Plug Enforce
  * @notice The enforcement mechanisms of Plug to ensure that transactions
  *         are only executed as defined.
- * @dev When inheriting this contract, you must override the now-empty
- *      enforcement of the signer with your own logic in `_enforceSigner`.
- *      You may choose to simply allow everyone however this is not a
- *      decision made at the base level of the Plug architecture.
+ * @dev Inheriting contracts must implement:
+ *          - _enforceSigner
  * @author @nftchance (chance@utc24.io)
  */
 abstract contract PlugEnforce {

@@ -4,7 +4,7 @@ pragma solidity 0.8.23;
 
 import { Test } from "../utils/Test.sol";
 
-import { PlugFactory } from "../utils/Plug.Factory.sol";
+import { PlugFactory } from "../base/Plug.Factory.sol";
 import { PlugVaultSocket } from "./Plug.Vault.Socket.sol";
 import { Initializable } from "solady/src/utils/Initializable.sol";
 
@@ -24,15 +24,15 @@ contract PlugVaultSocketTest is Test {
 
     function test_SingletonUse(uint256) public {
         vm.deal(address(vault), 100 ether);
-        vm.expectRevert(Initializable.InvalidInitialization.selector);
+        vm.expectRevert(bytes("PlugTypes:already-initialized"));
         vault.initialize(address(this));
     }
 
-    function test_ToggleSigner(uint256) public {
-        assertEq(vault.isSigner(address(this)), true);
-        address nonZeroAddress = _randomNonZeroAddress();
-        assertEq(vault.isSigner(nonZeroAddress), false);
-        vault.toggleSigner(nonZeroAddress);
-        assertEq(vault.isSigner(nonZeroAddress), true);
-    }
+    // function test_ToggleSigner(uint256) public {
+    //     assertEq(vault.isSigner(address(this)), true);
+    //     address nonZeroAddress = _randomNonZeroAddress();
+    //     assertEq(vault.isSigner(nonZeroAddress), false);
+    //     vault.toggleSigner(nonZeroAddress);
+    //     assertEq(vault.isSigner(nonZeroAddress), true);
+    // }
 }

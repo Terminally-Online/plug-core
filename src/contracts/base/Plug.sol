@@ -9,9 +9,7 @@ import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 /**
  * @title Plug
  * @notice This contract represents a general purpose relay socket that can be
- *         used to route transactions to other contracts. This mechanism
- *         enables the ability to route all execution through a single contract
- *         instead of needing to operate an Executor instance for each contract.
+ *         used to route transactions to other contracts.
  * @dev There is no need to approve assets to this contract as all transactions
  *      are executed through the socket which will manage its own permissions
  *      can be safely approved to interact with the assets of another account.
@@ -19,28 +17,12 @@ import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
  */
 contract Plug is PlugInterface {
     /**
-     * @notice This modifier is used to enforce that the transaction is being
-     *         executed by the declared Executor or simply does not specify who
-     *         can execute the bundle of Plugs.
-     * @param $executor The address of the Executor that is being enforced.
-     */
-    modifier enforceExecutor(address $executor) {
-        require(
-            msg.sender == $executor
-                || $executor == address(0),
-            "PlugRouterSocket: invalid-executor"
-        );
-        _;
-    }
-
-    /**
      * See {PlugInterface-plug}.
      */
     function plug(PlugTypesLib.LivePlugs calldata $livePlugs)
         public
         payable
         virtual
-        enforceExecutor($livePlugs.plugs.executor)
         returns (bytes[] memory $results)
     {
         /// @dev Snapshot how much gas the transaction has.
@@ -49,6 +31,15 @@ contract Plug is PlugInterface {
         /// @dev Load the Plug Socket.
         PlugSocketInterface socket =
             PlugSocketInterface($livePlugs.plugs.socket);
+
+        /// @dev Confirm the executor is allowed to execute the transaction.
+        ///      This is done here instead of a modifier so that the gas
+        ///      snapshot accounts for the additional gas cost of the require.
+        require(
+            msg.sender == $livePlugs.plugs.executor
+                || $livePlugs.plugs.executor == address(0),
+            "Plug:invalid-executor"
+        );
 
         /// @dev Recover the address that signed the bundle of Plugs.
         address signer = socket.signer($livePlugs);
@@ -76,5 +67,19 @@ contract Plug is PlugInterface {
         for (i; i < length; i++) {
             $results[i] = plug($livePlugs[i]);
         }
+    }
+
+    /**
+     * See {PlugInterface-name}.
+     */
+    function name() public pure returns (string memory $name) {
+        $name = "Plug";
+    }
+
+    /**
+     * See {PlugInterface-symbol}.
+     */
+    function symbol() public pure returns (string memory $version) {
+        $version = "PLUG";
     }
 }
