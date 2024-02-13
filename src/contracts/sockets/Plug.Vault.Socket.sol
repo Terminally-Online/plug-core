@@ -40,12 +40,7 @@ contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
         /// @dev Initialize the owner.
         _initializeOwner($owner);
         /// @dev Initialize the Plug Socket.
-        _initializePlug(name(), version());
-
-        /// @dev Add the owner as a signer to enable seamless
-        ///      direct fulfillment of a Plug bundle without
-        ///      the need for a signature.
-        access[uint160($owner)] = DEFAULT_ACCESS;
+        _initializePlug();
     }
 
     /**
@@ -58,13 +53,15 @@ contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
      *      add themselves anyways, so this is just a convenience feature as well
      *      as prevents any malicious previous owners from signing on a vault that
      *      they have lost access to.
+     * @dev Note that the function appears to be public howver the super function
+     *      already has the onlyOwner modifier applied to it, so it is effectively
+     *      only callable by the owner.
      */
     function transferOwnership(address $owner)
         public
         payable
         virtual
         override
-        onlyOwner
     {
         /// @dev Convert the existing owner to a uint160 to avoid double storage reads.
         uint160 owner = uint160(owner());
@@ -136,6 +133,19 @@ contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
     }
 
     /**
+     * See { Ownable-_initializeOwner }
+     */
+    function _initializeOwner(address $owner) internal override {
+        /// @dev Add the owner as a signer to enable seamless
+        ///      direct fulfillment of a Plug bundle without
+        ///      the need for a signature.
+        _setAccess($owner, DEFAULT_ACCESS);
+
+        /// @dev Proceed with normal owner initialization.
+        super._initializeOwner($owner);
+    }
+
+    /**
      * @notice Internal management of the access a router or signer has.
      * @dev Note that you cannot toggle off the canonical router. All participants
      *      of the Plug ecosystem are expected to follow pie-growing principles.
@@ -187,6 +197,7 @@ contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
         pure
         returns (bool $allowed)
     {
+        /// @dev Confirm the masked state is equal to the flag state.
         $allowed = $state & ACCESS == ACCESS;
     }
 }

@@ -19,12 +19,28 @@ import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
  */
 contract Plug is PlugInterface {
     /**
+     * @notice This modifier is used to enforce that the transaction is being
+     *         executed by the declared Executor or simply does not specify who
+     *         can execute the bundle of Plugs.
+     * @param $executor The address of the Executor that is being enforced.
+     */
+    modifier enforceExecutor(address $executor) {
+        require(
+            msg.sender == $executor
+                || $executor == address(0),
+            "PlugRouterSocket: invalid-executor"
+        );
+        _;
+    }
+
+    /**
      * See {PlugInterface-plug}.
      */
     function plug(PlugTypesLib.LivePlugs calldata $livePlugs)
         public
         payable
         virtual
+        enforceExecutor($livePlugs.plugs.executor)
         returns (bytes[] memory $results)
     {
         /// @dev Snapshot how much gas the transaction has.
@@ -36,14 +52,6 @@ contract Plug is PlugInterface {
 
         /// @dev Recover the address that signed the bundle of Plugs.
         address signer = socket.signer($livePlugs);
-
-        /// @dev Make sure the bundle of Plugs is being executed by the declared
-        ///      Executor or simply does not specify who can execute.
-        require(
-            msg.sender == $livePlugs.plugs.executor
-                || $livePlugs.plugs.executor == address(0),
-            "PlugRouterSocket: invalid-executor"
-        );
 
         /// @dev Pass down the now-verified signature components and execute
         ///      the bundle from within the Socket that was declared.
