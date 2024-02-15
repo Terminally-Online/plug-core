@@ -515,7 +515,7 @@ abstract contract PlugTypes {
         returns (bytes32 $digest)
     {
         $digest = keccak256(
-            abi.encodePacked("\x19\x01", domainHash, getPlugsHash($input))
+            bytes.concat("\x19\x01", domainHash, getPlugsHash($input))
         );
     }
 

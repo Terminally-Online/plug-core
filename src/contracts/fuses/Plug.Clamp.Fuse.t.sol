@@ -14,7 +14,7 @@ contract PlugClampFuseTest is Test {
 		PlugTypesLib.Current({
 			target: address(0),
 			value: 0,
-			data: abi.encodePacked(uint256(51))
+			data: abi.encode(uint256(51))
 		});
     bytes32 plugsHash = bytes32(0);
 

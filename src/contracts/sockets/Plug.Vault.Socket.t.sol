@@ -5,7 +5,10 @@ pragma solidity 0.8.23;
 import { Test } from "../utils/Test.sol";
 
 import { PlugFactory } from "../base/Plug.Factory.sol";
+import { Plug } from "../base/Plug.sol";
+import { PlugEtcherLib } from "../libraries/Plug.Etcher.Lib.sol";
 import { PlugVaultSocket } from "./Plug.Vault.Socket.sol";
+
 import { Initializable } from "solady/src/utils/Initializable.sol";
 
 contract PlugVaultSocketTest is Test {
@@ -20,6 +23,11 @@ contract PlugVaultSocketTest is Test {
         (, address vaultAddress) =
             factory.deploy(address(implementation), address(this), bytes32(0));
         vault = PlugVaultSocket(payable(vaultAddress));
+    }
+
+    function etchRouterSocket() internal returns (Plug) {
+        vm.etch(PlugEtcherLib.ROUTER_SOCKET_ADDRESS, address(new Plug()).code);
+        return Plug(payable(PlugEtcherLib.ROUTER_SOCKET_ADDRESS));
     }
 
     function test_SingletonUse(uint256) public {
