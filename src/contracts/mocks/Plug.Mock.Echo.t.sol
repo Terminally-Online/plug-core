@@ -15,20 +15,7 @@ import "forge-std/console.sol";
 contract PlugMockSocketTest is Test {
     PlugMockEcho internal mock;
 
-    // address internal signer;
-    // uint256 internal signerPrivateKey;
-
-    // uint8 internal v;
-    // bytes32 internal r;
-    // bytes32 internal s;
-    // bytes32 internal digest;
-
     function setUp() public virtual {
-        // signerPrivateKey = 0xabc123;
-        // signer = vm.addr(signerPrivateKey);
-
-        // router = PlugEtcher.routerSocket();
-        // router = etchRouterSocket();
         mock = new PlugMockEcho();
     }
 

@@ -27,8 +27,5 @@ abstract contract PlugExecute is PlugEnforce {
 
         /// @dev If the call failed, bubble up the revert reason if possible.
         if (!$success) $result.bubbleRevert();
-
-        /// @dev Decode the return data to remove the wrapped bytes in memory.
-        $result = abi.decode($result, (bytes));
     }
 }
