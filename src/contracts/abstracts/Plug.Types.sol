@@ -275,8 +275,6 @@ abstract contract PlugTypes {
         });
     }
 
-    // TODO: Test symbol() after I wrote it during a moonlight-fueled stupor.
-
     /**
      * @notice The symbol of the Socket only used for metadata purposes.
      * @dev This value is not used in the domain hash for signatures/EIP-712.

@@ -130,7 +130,9 @@ contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
         view
         returns (bool $isRouter, bool $isSigner)
     {
+        /// @dev Retrieve the state from storage.
         uint8 $access = access[uint160($address)];
+        /// @dev Unpack the router and signer flags.
         $isRouter = _enforceAccess($access);
         $isSigner = _enforceAccess($access >> SIGNER_SHIFT);
     }
@@ -176,6 +178,7 @@ contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
      * @param $allowance The bitpacked allowance to set for the address.
      */
     function _setAccess(address $address, uint8 $allowance) internal virtual {
+        /// @dev Set the packed access state for the address.
         access[uint160($address)] = $allowance;
     }
 
@@ -188,6 +191,8 @@ contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
         override
         returns (bool $allowed)
     {
+        /// @dev Confirm the router is allowed by recovering the packed access
+        ///      state as well as checking if the router is the canonical router.
         $allowed = _enforceAccess(access[uint160($router)])
             || super._enforceRouter($router);
     }
@@ -201,6 +206,7 @@ contract PlugVaultSocket is PlugSocket, Receiver, Ownable {
         override
         returns (bool $allowed)
     {
+        /// @dev Confirm the signer is allowed by recovering the packed access state.
         $allowed = _enforceAccess(access[uint160($signer)] >> SIGNER_SHIFT);
     }
 

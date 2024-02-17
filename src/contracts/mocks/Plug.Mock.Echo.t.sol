@@ -32,11 +32,6 @@ contract PlugMockSocketTest is Test {
         mock = new PlugMockEcho();
     }
 
-    // function etchRouterSocket() internal returns (Plug) {
-    //     vm.etch(PlugEtcherLib.ROUTER_SOCKET_ADDRESS, address(new Plug()).code);
-    //     return Plug(payable(PlugEtcherLib.ROUTER_SOCKET_ADDRESS));
-    // }
-
     function test_Echo() public {
         string memory expected = "Hello World";
         vm.expectEmit(address(mock));
