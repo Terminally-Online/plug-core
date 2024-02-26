@@ -15,8 +15,8 @@ dependencies:
     specifier: ^0.0.168
     version: 0.0.168
   viem:
-    specifier: ^2.7.10
-    version: 2.7.10(typescript@5.3.3)
+    specifier: ^2.7.14
+    version: 2.7.14(typescript@5.3.3)
 
 devDependencies:
   '@changesets/cli':
@@ -6271,8 +6271,8 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: true
 
-  /viem@2.7.10(typescript@5.3.3):
-    resolution: {integrity: sha512-mpm/A3Rbq6hhRovOw6btkrLeDe0DlEGLoCmO2LCbH/MuTQgLNd0cWJSIov9TL/8/Pz+qC2e+bh9zohQnKA+6PQ==}
+  /viem@2.7.14(typescript@5.3.3):
+    resolution: {integrity: sha512-5b1KB1gXli02GOQHZIUsRluNUwssl2t4hqdFAzyWPwJ744N83jAOBOjOkrGz7K3qMIv9b0GQt3DoZIErSQTPkQ==}
     peerDependencies:
       typescript: '>=5.0.4'
     peerDependenciesMeta:
