@@ -11,6 +11,9 @@ const directories = fs.readdirSync(artifacts)
 const etcher = `${contractsPath}/libraries/Plug.Etcher.Lib.sol`
 const etcherTemplate = `${contractsPath}/libraries/Plug.Etcher.Lib.Template.sol`
 
+// const deploymentScript = `${contractsPath}/scripts/Plug.Stack.s.sol`
+// const deploymentScriptTemplate = `${contractsPath}/scripts/Plug.Stack.s.Template.sol`
+
 const imports: string[] = []
 const variables: string[] = []
 const functions: string[] = []
@@ -34,13 +37,12 @@ directories
 			const name = file.replace(suffix, '').replaceAll('.', '')
 
 			const variableName = directory
-				.replace('Plug.', '')
 				.replace('.sol', '')
 				.replaceAll('.', '_')
+                .replace(/([a-z])([A-Z])/g, '$1_$2')
 				.toUpperCase()
 
 			const functionName = name
-				.replace('Plug', '')
 				.replace(/^./, x => x.toLowerCase())
 
 			imports.push(
@@ -49,16 +51,16 @@ directories
 				)?.relativePath}${directory}";`
 			)
 
-			const mined = addresses[directory]['results'][0]
+			const mined = addresses[directory].deployment
 
 			variables.push(
 				`bytes internal constant ${variableName}_INITCODE = hex"${json.initcode}";`
 			)
 			variables.push(
-				`bytes32 internal constant ${variableName}_SALT = ${mined[0]};`
+				`bytes32 internal constant ${variableName}_SALT = ${mined.salt};`
 			)
 			variables.push(
-				`address internal constant ${variableName}_ADDRESS = ${mined[1]};`
+				`address internal constant ${variableName}_ADDRESS = ${mined.address};`
 			)
 
 			functions.push(`
@@ -75,21 +77,21 @@ directories
                 }
             `)
 
-			// Update the address in Plug.Receiver.sol
-			if (directory == 'Plug.Router.Socket.sol') {
-				const line = 'address internal constant ROUTER_SOCKET_ADDRESS'
+			// Update the address in Plug.Lib.sol
+			if (directory == 'Plug.sol') {
+				const line = 'address internal constant PLUG_ADDRESS'
 				const receiver = fs
 					.readFileSync(
-						`${contractsPath}/abstracts/Plug.Receiver.sol`
+						`${contractsPath}/libraries/Plug.Lib.Template.sol`
 					)
 					.toString()
 				const newReceiver = receiver.replace(
-					/address internal constant ROUTER_SOCKET_ADDRESS = 0x[0-9a-fA-F]{40};/,
-					`${line} = ${mined[1]};`
+					"/// @notice INSERT SEGMENTS",
+					`${line} = ${mined.address};`
 				)
 
 				fs.writeFileSync(
-					`${contractsPath}/abstracts/Plug.Receiver.sol`,
+					`${contractsPath}/libraries/Plug.Lib.sol`,
 					newReceiver
 				)
 			}

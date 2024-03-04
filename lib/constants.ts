@@ -1,37 +1,77 @@
-import { Contract } from "@/lib/types";
+import { Contract } from '@/lib/types'
 
 export const contractsPath = 'src/contracts'
 
-export const routerContract: Contract = {
-    name: 'Plug.Router.Socket.sol',
-    relativePath: '../sockets/',
+export const router: Contract = {
+	name: 'Plug.sol',
+	relativePath: '../base/'
+} as const
+
+export const factory: Contract = {
+	name: 'Plug.Factory.sol',
+	relativePath: '../base/'
+} as const
+
+export const baseFee: Contract = { 
+    name: 'Plug.BaseFee.Fuse.sol',
+    relativePath: '../fuses/'
+} as const
+
+export const blockNumber: Contract = { 
+    name: 'Plug.BlockNumber.Fuse.sol',
+    relativePath: '../fuses/'
+} as const
+
+export const clamp: Contract = {
+    name: 'Plug.Clamp.Fuse.sol',
+    relativePath: '../fuses/'
+} as const
+
+export const limitedCalls: Contract = {
+    name: 'Plug.LimitedCalls.Fuse.sol',
+    relativePath: '../fuses/'
+} as const
+
+export const nounsId: Contract = {
+    name: 'Plug.NounsId.Fuse.sol',
+    relativePath: '../fuses/'
+} as const
+
+export const nounsTrait: Contract = {
+    name: 'Plug.NounsTrait.Fuse.sol',
+    relativePath: '../fuses/'
+} as const
+
+export const revocation: Contract = {
+    name: 'Plug.Revocation.Fuse.sol',
+    relativePath: '../fuses/'
+} as const
+
+export const timestamp: Contract = {
+    name: 'Plug.Timestamp.Fuse.sol',
+    relativePath: '../fuses/'
+} as const
+
+export const window: Contract = {
+    name: 'Plug.Window.Fuse.sol',
+    relativePath: '../fuses/'
 } as const
 
 export const vaultContract: Contract = {
-    name: 'Plug.Vault.Socket.sol',
-    relativePath: '../sockets/',
+	name: 'Plug.Vault.Socket.sol',
+	relativePath: '../sockets/'
 } as const
 
-export const receiverContract: Contract = { 
-    name: 'Plug.Receiver.sol',
-    relativePath: '../sockets'
-}
-
 export const etchContracts: Array<Contract> = [
-    routerContract
-] as const
-
-export const mineContracts: Array<string> = [
-    'Plug.Factory.sol',
-    'Plug.Router.Socket.sol',
-    'Plug.AllowedMethods.Fuse.sol',
-    'Plug.BlockNumber.Fuse.sol',
-    'Plug.Clamp.Fuse.sol',
-    'Plug.LimitedCalls.Fuse.sol',
-    'Plug.NounsId.Fuse.sol',
-    'Plug.NounsTrait.Fuse.sol',
-    'Plug.Revocation.Fuse.sol',
-    'Plug.Timestamp.Fuse.sol',
-    'Plug.Window.Fuse.sol',
-    'Plug.NounsBid.Current.sol'
+	router,
+	factory,
+    baseFee,
+    blockNumber,
+    clamp,
+    limitedCalls,
+    nounsId,
+    nounsTrait,
+    revocation,
+    timestamp,
+    window,
 ] as const

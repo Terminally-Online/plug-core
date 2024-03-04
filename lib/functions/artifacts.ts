@@ -5,7 +5,7 @@ import { execSync } from 'child_process'
 const directory = './artifacts'
 fs.removeSync(directory)
 
-execSync("forge build --out='artifacts' --contracts='./src/contracts' --via-ir --optimize --optimizer-runs=200 --use=0.8.23")
+execSync("forge build --out='artifacts' --contracts='./src/contracts' --via-ir --optimize --optimizer-runs=10000 --use=0.8.23")
 
 const files = fs.readdirSync(directory)
 
@@ -18,6 +18,8 @@ files
 		subFiles
 			.filter(file => file.endsWith('.json'))
 			.filter(file => !file.includes('initcode'))
+			.filter(file => !file.includes('abi'))
+			.filter(file => !file.includes('Lib'))
 			.forEach(subFile => {
 				const json = fs.readJSONSync(`${subDirectory}/${subFile}`)
 				const initcode = json.bytecode.object.slice(2)
