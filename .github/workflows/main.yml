@@ -52,11 +52,8 @@ jobs:
                   pnpm install --frozen-lockfile
                   forge install
 
-            - name: 🙏 Run Forge Build
-              run: |
-                  forge --version
-                  forge build --sizes
-              id: build
+            - name: 📦 Build package
+              run: pnpm build
 
             - name: 🧪 Run Forge tests
               run: |
@@ -66,10 +63,7 @@ jobs:
             - name: 🧹 Lint
               run: pnpm lint
 
-            - name: 📦 Build package
-              run: pnpm build
-
-    contracts:
+    artifacts:
         strategy:
             fail-fast: true
         name: 👁️ Scout Build Artifacts
@@ -112,23 +106,17 @@ jobs:
                   pnpm install --frozen-lockfile
                   forge install
 
-            - name: 🙏 Run Forge Build
-              run: |
-                  forge --version
-                  forge build --sizes
+            - name: 📦 Build package
+              run: pnpm build
 
             - name: 🧪 Run Forge Gas Snapshot
               run: |
                   forge snapshot
-              id: gas
-
-            - name: 📦 Build package
-              run: pnpm build
 
             - name: 📝 Configure Git Commit
               run: |
-                  git config user.name "github-actions"
-                  git config user.email "github-actions@github.com"
+                  git config user.name "nftchance"
+                  git config user.email "chance@utc24.io"
 
             - name: 📝 Commit Changes
               run: |
