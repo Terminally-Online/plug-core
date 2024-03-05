@@ -75,25 +75,13 @@
 			"types": "./dist/index.d.ts",
 			"default": "./dist/index.js"
 		},
-		"./core/plug": {
-			"types": "./dist/core/plug.d.ts",
-			"default": "./dist/core/plug.js"
+		"./core": {
+			"types": "./dist/core/index.d.ts",
+			"default": "./dist/core/index.js"
 		},
-		"./core/sdk": {
-			"types": "./dist/core/sdk.d.ts",
-			"default": "./dist/core/sdk.js"
-		},
-		"./core/hooks": {
-			"types": "./dist/core/hooks.d.ts",
-			"default": "./dist/core/hooks.js"
-		},
-		"./lib/types": {
-			"types": "./dist/lib/types/index.d.ts",
-			"default": "./dist/lib/types/index.js"
-		},
-		"./lib/constants": {
-			"types": "./dist/lib/constants.d.ts",
-			"default": "./dist/lib/constants.js"
+		"./lib": {
+			"types": "./dist/lib/index.d.ts",
+			"default": "./dist/lib/index.js"
 		},
 		"./artifacts": {
 			"types": "./artifacts/artifacts.d.ts"
