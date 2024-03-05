@@ -16,10 +16,7 @@
 		"lint": "tsc",
 		"dev": "npm-run-all -p dev:*",
 		"dev:contracts": "nodemon --watch \"src/contracts/**\" --ext \"sol\" --exec \"forge test -vvv --via-ir && forge coverage --report lcov && genhtml -o report lcov.info --branch-coverage\"",
-		"dev:package": "pnpm tsup --watch",
-		"ci:release": "pnpm publish -r",
-		"ci:version": "changeset version",
-		"ci:publish": "changeset publish"
+		"dev:package": "pnpm tsup --watch"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.27.1",
