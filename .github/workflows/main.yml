@@ -1,9 +1,11 @@
-name: '🤖 CI'
+name: '📦 Build'
 
 on:
     push:
         branches:
             - '**'
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
     FOUNDRY_PROFILE: ci
@@ -12,7 +14,7 @@ jobs:
     build:
         strategy:
             fail-fast: true
-        name: 👁️ Scout Build Artifacts
+        name: 👁️ Build and Keep Artifacts
         runs-on: ubuntu-latest
         steps:
             - name: 🛒 Checkout
