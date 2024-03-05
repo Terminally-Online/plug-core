@@ -6,6 +6,7 @@ import {
 	TypedDataDefinition,
 	WalletClient
 } from 'viem'
+
 import { API } from './api'
 
 export const PLUGS_TYPES = {
@@ -123,6 +124,6 @@ export class Plug<
 			intent: this.intent
 		}
 
-		return await this.apiClient.post(body);
+		return await this.apiClient.post(body)
 	}
 }

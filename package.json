@@ -89,7 +89,12 @@
 		},
 		"./package.json": "./package.json"
 	},
-	"files": ["/core", "/dist", "/src", "/artifacts"],
+	"files": [
+		"/core",
+		"/dist",
+		"/src",
+		"/artifacts"
+	],
 	"publishConfig": {
 		"access": "public"
 	}
