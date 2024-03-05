@@ -40,11 +40,11 @@ directories
                 .replace(/([a-z])([A-Z])/g, '$1_$2')
                 .toUpperCase()
 
-            const functionName = name
-                .replace(/^./, x => x.toLowerCase())
-
             // ! Generate the contents for the Etcher script.
             {
+                const functionName = name
+                    .replace(/^./, x => x.toLowerCase())
+
                 imports.push(
                     `import { ${name} } from "${etchContracts.find(contract =>
                         directory.includes(contract.name)
@@ -106,7 +106,7 @@ directories
                 `;
 
                 fs.writeFileSync(
-                    `${contractsPath}/scripts/${directory.replace(".sol", "")}.s.sol`, 
+                    `${contractsPath}/scripts/${directory.replace(".sol", "")}.s.sol`,
                     fs.readFileSync(`${contractsPath}/scripts/Plug.s.Template.sol`)
                         .toString()
                         .replace('/// @auto INSERT SEGMENTS', deployment)
