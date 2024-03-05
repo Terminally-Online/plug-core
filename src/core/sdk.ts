@@ -1,18 +1,12 @@
-import { TypedDataToPrimitiveTypes } from 'abitype'
-
-import { GetContractReturnType, TypedDataDefinition, WalletClient } from 'viem'
+import { GetContractReturnType, WalletClient } from 'viem'
 
 import { Plug } from '@/src/core/plug'
-
-import { PLUGS_TYPES } from '@nftchance/plug-types'
+import { Domain, PlugPrimitiveTypes } from '@/src/lib/types/typedData'
 
 export class PlugSDK<
 	TClient extends WalletClient = WalletClient,
-	TDomain extends
-		TypedDataDefinition['domain'] = TypedDataDefinition['domain'],
-	TMessage extends TypedDataToPrimitiveTypes<
-		typeof PLUGS_TYPES
-	>['Plugs'] = TypedDataToPrimitiveTypes<typeof PLUGS_TYPES>['Plugs']
+	TDomain extends Domain = Domain,
+	TMessage extends PlugPrimitiveTypes = PlugPrimitiveTypes
 > {
 	public plugs: Plug[] = []
 
