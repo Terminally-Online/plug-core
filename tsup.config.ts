@@ -1,7 +1,6 @@
-import { defineConfig } from 'tsup'
-
 import { dependencies } from './package.json'
 import { getConfig } from './src/lib/functions/tsup'
+import { defineConfig } from 'tsup'
 
 export default defineConfig(
 	getConfig({
