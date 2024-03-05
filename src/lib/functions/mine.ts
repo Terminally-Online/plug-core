@@ -55,7 +55,7 @@ args.forEach(arg => {
     }
 });
 
-const addressesJson = fs.readFileSync("lib/addresses.json");
+const addressesJson = fs.readFileSync("src/lib/addresses.json");
 const addresses = JSON.parse(addressesJson.toString());
 
 execSync(`rm -rf create2crunch`);
@@ -168,8 +168,8 @@ processContracts().then(() => {
 
     console.log(`✔︎ All contract addresses mined in ${duration} seconds.`);
 
-    if (!fs.existsSync("lib/addresses.json")) {
-        fs.writeFileSync("lib/addresses.json", "{}");
+    if (!fs.existsSync("src/lib/addresses.json")) {
+        fs.writeFileSync("src/lib/addresses.json", "{}");
     }
 
     // Loop through each key of the efficientAddressesObject and add the results to the 
@@ -187,7 +187,7 @@ processContracts().then(() => {
         addresses[key] = efficientAddresses;
     }
 
-    fs.writeFileSync("lib/addresses.json", JSON.stringify(addresses, null, 2));
+    fs.writeFileSync("src/lib/addresses.json", JSON.stringify(addresses, null, 2));
 
     process.exit(0);
 }).catch((error) => {

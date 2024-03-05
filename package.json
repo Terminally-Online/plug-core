@@ -5,13 +5,13 @@
 	"scripts": {
 		"prebuild": "pnpm lint && rm -rf ./dist",
 		"build": "pnpm build:ts && pnpm build:contracts",
-		"build:artifacts": "pnpm tsx lib/functions/artifacts.ts",
+		"build:artifacts": "pnpm tsx src/lib/functions/artifacts.ts",
 		"build:contracts": "pnpm plug generate && pnpm build:forge && pnpm build:artifacts",
-		"build:etcher": "pnpm run build:artifacts && pnpm tsx lib/functions/etcher.ts",
+		"build:etcher": "pnpm run build:artifacts && pnpm tsx src/lib/functions/etcher.ts",
 		"build:forge": "forge fmt && forge build --out='artifacts' --contracts='./src/contracts' --via-ir --optimize --optimizer-runs=200 --use=0.8.23",
 		"build:format": "pnpm prettier --write .",
-		"build:mine": "pnpm run build:artifacts && pnpm tsx lib/functions/mine.ts",
-		"build:mine:quick": "pnpm run build:artifacts && pnpm tsx lib/functions/mine.ts --quick --leading=1 --total=2 --force",
+		"build:mine": "pnpm run build:artifacts && pnpm tsx src/lib/functions/mine.ts",
+		"build:mine:quick": "pnpm run build:artifacts && pnpm tsx src/lib/functions/mine.ts --quick --leading=1 --total=2 --force",
 		"build:ts": "pnpm tsup && pnpm build:format",
 		"lint": "tsc",
 		"dev": "npm-run-all -p dev:*",
@@ -84,6 +84,14 @@
 			"types": "./dist/core/sdk.d.ts",
 			"default": "./dist/core/sdk.js"
 		},
+		"./lib/types": {
+			"types": "./dist/lib/types/index.d.ts",
+			"default": "./dist/lib/types/index.js"
+		},
+		"./lib/constants": {
+			"types": "./dist/lib/constants.d.ts",
+			"default": "./dist/lib/constants.js"
+		},
 		"./artifacts": {
 			"types": "./artifacts/artifacts.d.ts"
 		},
@@ -91,6 +99,7 @@
 	},
 	"files": [
 		"/core",
+		"/lib",
 		"/dist",
 		"/src",
 		"/artifacts"

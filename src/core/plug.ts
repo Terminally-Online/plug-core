@@ -1,4 +1,4 @@
-import { GetTypedDataLivePlugs } from '@/lib/types/typedData'
+import { GetTypedDataLivePlugs } from '@/src/lib/types/typedData'
 
 import {
 	hashTypedData,

@@ -16,7 +16,7 @@ const variables: string[] = []
 const functions: string[] = []
 const deployments: string[] = []
 
-const addresses = JSON.parse(fs.readFileSync('lib/addresses.json').toString())
+const addresses = JSON.parse(fs.readFileSync('src/lib/addresses.json').toString())
 
 directories
     .filter(directory =>
