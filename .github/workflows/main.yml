@@ -121,5 +121,5 @@ jobs:
             - name: 📝 Commit Changes
               run: |
                   git add .
-                  git commit -m "chore: update build artifacts"
+                  git diff --staged --quiet || git commit -m "chore: update build artifacts"
                   git push
