@@ -7,27 +7,9 @@ import {
 	WalletClient
 } from 'viem'
 
-import { API } from './api'
+import { PlugAPI } from '@/src/core/api'
 
-export const PLUGS_TYPES = {
-	Current: [
-		{ name: 'ground', type: 'address' },
-		{ name: 'voltage', type: 'uint256' },
-		{ name: 'data', type: 'bytes' }
-	],
-	Fuse: [
-		{ name: 'neutral', type: 'address' },
-		{ name: 'live', type: 'bytes' }
-	],
-	Plug: [
-		{ name: 'current', type: 'Current' },
-		{ name: 'fuses', type: 'Fuse[]' }
-	],
-	Plugs: [
-		{ name: 'plugs', type: 'Plug[]' },
-		{ name: 'salt', type: 'bytes32' }
-	]
-} as const
+import { PLUGS_TYPES } from '@nftchance/plug-types'
 
 export class Plug<
 	TClient extends WalletClient = WalletClient,
@@ -45,7 +27,7 @@ export class Plug<
 	public readonly primaryType: keyof typeof PLUGS_TYPES
 	public client?: TClient
 	public intent?: TIntent
-	public apiClient: API
+	public apiClient: PlugAPI
 
 	constructor(
 		public readonly domain: NonNullable<TDomain>,
@@ -55,7 +37,7 @@ export class Plug<
 	) {
 		this.types = PLUGS_TYPES
 		this.primaryType = 'Plugs'
-		this.apiClient = new API(this.api, this.apiKey)
+		this.apiClient = new PlugAPI(this.api, this.apiKey)
 	}
 
 	lowercasePrimaryType() {

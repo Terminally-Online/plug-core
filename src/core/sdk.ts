@@ -4,25 +4,7 @@ import { GetContractReturnType, TypedDataDefinition, WalletClient } from 'viem'
 
 import { Plug } from '@/src/core/plug'
 
-export const PLUGS_TYPES = {
-	Current: [
-		{ name: 'ground', type: 'address' },
-		{ name: 'voltage', type: 'uint256' },
-		{ name: 'data', type: 'bytes' }
-	],
-	Fuse: [
-		{ name: 'neutral', type: 'address' },
-		{ name: 'live', type: 'bytes' }
-	],
-	Plug: [
-		{ name: 'current', type: 'Current' },
-		{ name: 'fuses', type: 'Fuse[]' }
-	],
-	Plugs: [
-		{ name: 'plugs', type: 'Plug[]' },
-		{ name: 'salt', type: 'bytes32' }
-	]
-} as const
+import { PLUGS_TYPES } from '@nftchance/plug-types'
 
 export class PlugSDK<
 	TClient extends WalletClient = WalletClient,

@@ -5,14 +5,7 @@ import { getConfig } from './src/lib/functions/tsup'
 
 export default defineConfig(
 	getConfig({
-		entry: [
-			'src/index.ts',
-			'src/core/plug.ts',
-			'src/core/sdk.ts',
-			'src/core/hooks.ts',
-			'src/lib/types/index.ts',
-			'src/lib/constants.ts'
-		],
+		entry: ['src/index.ts', 'src/core/index.ts', 'src/lib/index.ts'],
 		external: [...Object.keys(dependencies)]
 	})
 )
