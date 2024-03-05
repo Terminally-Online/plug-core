@@ -9,6 +9,7 @@ export default defineConfig(
 			'src/index.ts',
 			'src/core/plug.ts',
 			'src/core/sdk.ts',
+			'src/core/hooks.ts',
 			'src/lib/types/index.ts',
 			'src/lib/constants.ts'
 		],
