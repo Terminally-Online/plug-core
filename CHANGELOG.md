@@ -12,6 +12,7 @@
 
 - b9eede4: chore: update to support abitypes breaking changes
 - 3350d4f: fix: out of form error in PlugTypes
+- dd48d07: feat: vault deployment without explicitly provided salt
 - 3350d4f: feat: improved automatic mining and etching
 - f252b33: chore: update protocol types to current version
 - 3350d4f: feat: automatic deployment script generation
