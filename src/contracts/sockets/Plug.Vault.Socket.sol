@@ -5,16 +5,13 @@ pragma solidity 0.8.24;
 import {PlugSocket} from '../abstracts/Plug.Socket.sol';
 import {PlugTrading} from '../abstracts/Plug.Trading.sol';
 import {Receiver} from 'solady/src/accounts/Receiver.sol';
-import {Ownable} from 'solady/src/auth/Ownable.sol';
-import {PlugTypesLib} from '../abstracts/Plug.Types.sol';
-import {PlugLib} from '../libraries/Plug.Lib.sol';
-import {ERC721Interface} from '../interfaces/ERC.721.Interface.sol';
+import {UUPSUpgradeable} from 'solady/src/utils/UUPSUpgradeable.sol';
 
 /**
  * @title Plug Vault Socket
  * @author @nftchance (chance@utc24.io)
  */
-contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
+contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
 	/// @dev Bit related shifts and masks for access management.
 	uint8 internal constant DEFAULT_ACCESS = 0x10;
 	uint8 internal constant ACCESS = 0x1;
@@ -148,6 +145,15 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 		/// @dev Confirm the masked state is equal to the flag state.
 		$allowed = $state & ACCESS == ACCESS;
 	}
+
+    /**
+     * @notice Enforce the caller of the individual upgrading the vault
+     *         to the (ideally) to latest version or simply a newer version.
+     * @param $implementation The new address of the Vault.
+     */
+    function _authorizeUpgrade(address $implementation) internal virtual {
+        require(msg.sender == owner(), "PlugVaultSocket:invalid-upgrader");
+    }
 
 	/**
 	 * See { PlugSocket-name }
