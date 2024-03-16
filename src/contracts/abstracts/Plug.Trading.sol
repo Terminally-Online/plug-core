@@ -2,36 +2,32 @@
 
 pragma solidity 0.8.24;
 
-import { PlugTradingInterface } from '../interfaces/Plug.Trading.Interface.sol';
+import {PlugTradingInterface} from '../interfaces/Plug.Trading.Interface.sol';
 import {PlugLib} from '../libraries/Plug.Lib.sol';
 import {ERC721Interface} from '../interfaces/ERC.721.Interface.sol';
 
-
 abstract contract PlugTrading is PlugTradingInterface {
-    address public ownership;
+	address public ownership;
 
 	address private _owner;
 
 	modifier onlyTradable() {
-		require(
-			msg.sender == PlugLib.PLUG_TRADABLE_ADDRESS,
-			'PlugTrading:forbidden-caller'
-		);
+		require(msg.sender == ownership, 'PlugTrading:forbidden-caller');
 		_;
 	}
 
 	/**
-	 * @notice Only the owner of the token can call functions that have this
-	 *         modifier applied onto it.
+	 * @notice Only the owner of the token can call functions that have
+     *         this modifier applied onto it.
 	 */
 	modifier onlyOwner() {
-		require(msg.sender == owner(), 'PlugVaultSocket:forbidden-caller');
+		require(msg.sender == owner(), 'PlugTrading:forbidden-caller');
 		_;
 	}
 
-    function _initializeOwnership(address $ownership) internal {
-        ownership = $ownership;
-    }
+	function _initializeOwnership(address $ownership) internal {
+		ownership = $ownership;
+	}
 
 	function transferOwnership(address $newOwner) public virtual onlyTradable {
 		_owner = $newOwner;

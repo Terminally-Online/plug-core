@@ -91,7 +91,7 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 		uint8 $access = access[uint160(owner())][uint160($address)];
 		/// @dev Unpack the router and signer flags.
 		$isRouter = _enforceAccess($access);
-		$isSigner = _enforceAccess($access >> SIGNER_SHIFT);
+		$isSigner = $address == owner() || _enforceAccess($access >> SIGNER_SHIFT);
 	}
 
 	/**
@@ -132,7 +132,7 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 		address $signer
 	) internal view override returns (bool $allowed) {
 		/// @dev Confirm the signer is allowed by recovering the packed access state.
-		$allowed = _enforceAccess(
+		$allowed = $signer == owner() || _enforceAccess(
 			access[uint160(owner())][uint160($signer)] >> SIGNER_SHIFT
 		);
 	}
