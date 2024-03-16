@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.23;
+pragma solidity 0.8.24;
 
 import {PlugSocket} from '../abstracts/Plug.Socket.sol';
 import {PlugTrading} from '../abstracts/Plug.Trading.sol';
@@ -26,33 +26,6 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 	///      to save on storage costs. The first 4 bits are for the
 	///      router, and the last 4 bits are for the signer.
 	mapping(uint160 => mapping(uint160 => uint8)) public access;
-
-	/**
-	 * @notice Make a single call to the ownership reference to save on gas
-	 *         and then clear the owner when the function is done being consumed.
-	 */
-	modifier withOwner() {
-		/// @dev If the tokenOwner has already been set there is no need to call
-		///      the ownership proxy again.
-		if (tokenOwner == address(0))
-			/// @dev Retrieve the owner of the token from the ownership proxy.
-			tokenOwner = ERC721Interface(PlugLib.PLUG_TRADABLE_ADDRESS).ownerOf(
-					uint256(uint160(address(this)))
-				);
-		_;
-		/// @dev Reset the owner to the zero address to prevent any potential
-		///      misuse of the owner reference while reclaiming gas spent.
-		delete tokenOwner;
-	}
-
-    /**
-     * @notice Only the owner of the token can call functions that have this
-     *         modifier applied onto it.
-     */
-	modifier onlyOwner() {
-		require(msg.sender == tokenOwner, 'PlugVaultSocket:forbidden-caller');
-		_;
-	}
 
 	/*
 	 * @notice The constructor for the Plug Vault Socket will
