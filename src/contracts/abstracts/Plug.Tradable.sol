@@ -16,11 +16,6 @@ import {PlugTradingInterface} from '../interfaces/Plug.Trading.Interface.sol';
  *         contract is responsible for managing the ownership of the vault through
  *         a mirror-like function which means when the owner of this token changes,
  *         the owner of the vault does as well.
- * @dev The usage of this model increase the underlying gas costs of execution by a
- *      small margin though the vault-internal implementation already circuits out of
- *      `if` loops that are to be checking this resulting in this only ever being
- *      when an owner actually calls the state of something or someone with a bad
- *      bundler packet attempts running execution through a vault that is not their own.
  * @author nftchance (chance@onplug.io)
  */
 abstract contract PlugTradable is ERC721, Ownable {
