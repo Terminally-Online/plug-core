@@ -20,6 +20,9 @@ contract PlugTest is Test {
     PlugVaultSocket internal vault;
     PlugMockEcho internal mock;
 
+    address factoryOwner;
+    string baseURI = "https://onplug.io/metadata/";
+
     address internal signer;
     uint256 internal signerPrivateKey;
 
@@ -29,12 +32,14 @@ contract PlugTest is Test {
     bytes32 internal digest;
 
     function setUp() public virtual {
+        factoryOwner = _randomNonZeroAddress();
+
         signerPrivateKey = 0xabc123;
         signer = vm.addr(signerPrivateKey);
 
         plug = etchPlug();
         vaultImplementation = new PlugVaultSocket();
-        factory = new PlugFactory();
+        factory = new PlugFactory(factoryOwner, baseURI);
         mock = new PlugMockEcho();
 
         (, address vaultAddress) =

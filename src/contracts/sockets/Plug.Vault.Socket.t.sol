@@ -15,6 +15,9 @@ import { Initializable } from "solady/src/utils/Initializable.sol";
 import { Ownable } from "solady/src/auth/Ownable.sol";
 
 contract PlugVaultSocketTest is Test {
+    address factoryOwner;
+    string baseURI = "https://onplug.io/metadata/";
+
     PlugVaultSocket internal implementation;
     PlugVaultSocket internal vault;
     PlugFactory internal factory;
@@ -29,11 +32,13 @@ contract PlugVaultSocketTest is Test {
     bytes32 internal digest;
 
     function setUp() public virtual {
+        factoryOwner = _randomNonZeroAddress();
+
         signerPrivateKey = 0xabc123;
         signer = vm.addr(signerPrivateKey);
 
         implementation = new PlugVaultSocket();
-        factory = new PlugFactory();
+        factory = new PlugFactory(factoryOwner, baseURI);
 
         (, address vaultAddress) =
             factory.deploy(address(implementation), address(this), bytes32(0));

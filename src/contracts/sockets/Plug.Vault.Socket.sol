@@ -33,13 +33,16 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 	 *         a Socket factory.
 	 */
 	constructor() {
-		initialize();
+		initialize(address(1));
 	}
 
 	/**
 	 * @notice Initializes a new Plug Vault Socket contract.
 	 */
-	function initialize() public {
+	function initialize(address $ownership) public {
+        /// @dev Associate the ownership proxy as the factory that deployed
+        ///      the contract at the same time as deployment.
+        _initializeOwnership($ownership);
 		/// @dev Initialize the Plug Socket.
 		_initializePlug();
 	}
@@ -52,7 +55,7 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 	function setAccess(
 		address $address,
 		uint8 $allowance
-	) public virtual withOwner onlyOwner {
+	) public virtual onlyOwner {
 		_setAccess($address, $allowance);
 	}
 
@@ -85,24 +88,10 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 		address $address
 	) public view returns (bool $isRouter, bool $isSigner) {
 		/// @dev Retrieve the state from storage.
-		uint8 $access = access[uint160(tokenOwner)][uint160($address)];
+		uint8 $access = access[uint160(owner())][uint160($address)];
 		/// @dev Unpack the router and signer flags.
 		$isRouter = _enforceAccess($access);
 		$isSigner = _enforceAccess($access >> SIGNER_SHIFT);
-	}
-
-	/**
-	 * See { PlugSocket-name }
-	 */
-	function name() public pure override returns (string memory $name) {
-		$name = 'PlugVaultSocket';
-	}
-
-	/**
-	 * See { PlugSocket-version }
-	 */
-	function version() public pure override returns (string memory $version) {
-		$version = '0.0.1';
 	}
 
 	/**
@@ -120,7 +109,7 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 	 */
 	function _setAccess(address $address, uint8 $allowance) internal virtual {
 		/// @dev Set the packed access state for the address.
-		access[uint160(tokenOwner)][uint160($address)] = $allowance;
+		access[uint160(owner())][uint160($address)] = $allowance;
 	}
 
 	/**
@@ -132,7 +121,7 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 		/// @dev Confirm the router is allowed by recovering the packed access
 		///      state as well as checking if the router is the canonical router.
 		$allowed =
-			_enforceAccess(access[uint160(tokenOwner)][uint160($router)]) ||
+			_enforceAccess(access[uint160(owner())][uint160($router)]) ||
 			super._enforceRouter($router);
 	}
 
@@ -144,7 +133,7 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 	) internal view override returns (bool $allowed) {
 		/// @dev Confirm the signer is allowed by recovering the packed access state.
 		$allowed = _enforceAccess(
-			access[uint160(tokenOwner)][uint160($signer)] >> SIGNER_SHIFT
+			access[uint160(owner())][uint160($signer)] >> SIGNER_SHIFT
 		);
 	}
 
@@ -155,8 +144,22 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver {
 	 */
 	function _enforceAccess(
 		uint8 $state
-	) internal withOwner returns (bool $allowed) {
+	) internal pure returns (bool $allowed) {
 		/// @dev Confirm the masked state is equal to the flag state.
 		$allowed = $state & ACCESS == ACCESS;
+	}
+
+	/**
+	 * See { PlugSocket-name }
+	 */
+	function name() public pure override returns (string memory $name) {
+		$name = 'PlugVaultSocket';
+	}
+
+	/**
+	 * See { PlugSocket-version }
+	 */
+	function version() public pure override returns (string memory $version) {
+		$version = '0.0.1';
 	}
 }
