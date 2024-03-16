@@ -149,9 +149,12 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
     /**
      * @notice Enforce the caller of the individual upgrading the vault
      *         to the (ideally) to latest version or simply a newer version.
+     * @dev Even though there are other signers to the Vault only the deepest
+     *      branch of ownership can actually update the version of the Vault.
      * @param $implementation The new address of the Vault.
      */
     function _authorizeUpgrade(address $implementation) internal virtual {
+        /// @dev Enforce the caller to be the owner of the token held.
         require(msg.sender == owner(), "PlugVaultSocket:invalid-upgrader");
     }
 
