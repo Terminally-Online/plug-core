@@ -45,7 +45,7 @@
 		"typescript": "~5.4.2"
 	},
 	"dependencies": {
-		"@nftchance/plug-types": "^0.9.4",
+		"@nftchance/plug-types": "^0.9.5",
 		"abitype": "^1.0.1",
 		"solady": "^0.0.175",
 		"viem": "^2.7.19",
