@@ -2836,6 +2836,19 @@ export const contracts = [
             },
             {
                 "type": "function",
+                "name": "proxiableUUID",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
                 "name": "setAccess",
                 "inputs": [
                     {
@@ -2989,6 +3002,24 @@ export const contracts = [
             },
             {
                 "type": "function",
+                "name": "upgradeToAndCall",
+                "inputs": [
+                    {
+                        "name": "newImplementation",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "data",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
                 "name": "version",
                 "inputs": [],
                 "outputs": [
@@ -3001,8 +3032,31 @@ export const contracts = [
                 "stateMutability": "pure"
             },
             {
+                "type": "event",
+                "name": "Upgraded",
+                "inputs": [
+                    {
+                        "name": "implementation",
+                        "type": "address",
+                        "indexed": true,
+                        "internalType": "address"
+                    }
+                ],
+                "anonymous": false
+            },
+            {
                 "type": "error",
                 "name": "Reentrancy",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "UnauthorizedCallContext",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "UpgradeFailed",
                 "inputs": []
             }
         ]
