@@ -176,11 +176,7 @@ contract PlugVaultSocket is
      * @dev Even though there are other signers to the Vault only the deepest
      *      branch of ownership can actually update the version of the Vault.
      */
-    function _authorizeUpgrade(address)
-        internal
-        virtual
-        override
-    {
+    function _authorizeUpgrade(address) internal virtual override {
         /// @dev Enforce the caller to be the owner of the token held.
         require(msg.sender == owner(), "PlugVaultSocket:invalid-upgrader");
     }
