@@ -26,7 +26,7 @@
 		"@types/chai-as-promised": "^7.1.8",
 		"@types/fs-extra": "^11.0.4",
 		"@types/mocha": "^10.0.6",
-		"@types/node": "^20.11.28",
+		"@types/node": "^20.11.29",
 		"@wagmi/cli": "^2.1.2",
 		"chai": "^5.1.0",
 		"dedent": "^1.5.1",
