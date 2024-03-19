@@ -19,18 +19,18 @@ abstract contract PlugSocket is
     PlugCore,
     ReentrancyGuard
 {
-    /**
-     * See {PlugSocketInterface-signer}.
-     */
-    function signer(PlugTypesLib.LivePlugs calldata $livePlugs)
-        public
-        view
-        virtual
-        returns (address $signer)
-    {
-        /// @dev Determine the address that signed the Plug bundle.
-        $signer = getLivePlugsSigner($livePlugs);
-    }
+    // /**
+    //  * See {PlugSocketInterface-signer}.
+    //  */
+    // function signer(PlugTypesLib.LivePlugs calldata $livePlugs)
+    //     public
+    //     view
+    //     virtual
+    //     returns (address $signer)
+    // {
+    //     /// @dev Determine the address that signed the Plug bundle.
+    //     $signer = getLivePlugsSigner($livePlugs);
+    // }
 
     /**
      * See {PlugSocketInterface-plug}.
@@ -45,11 +45,11 @@ abstract contract PlugSocket is
         payable
         virtual
         enforceRouter
+        enforceSignature($livePlugs)
         nonReentrant
         returns (bytes[] memory $results)
     {
         $results = _plug(
-            signer($livePlugs),
             $livePlugs.plugs,
             $livePlugs.plugs.executor,
             $gas
@@ -68,6 +68,8 @@ abstract contract PlugSocket is
         nonReentrant
         returns (bytes[] memory $results)
     {
-        $results = _plug(msg.sender, $plugs, address(0), 0);
+        // TODO: Make sure only intended signers have permission to submit here.
+
+        $results = _plug($plugs, address(0), 0);
     }
 }

@@ -129,7 +129,7 @@ contract PlugFactory is PlugTradable {
 
         /// @dev Mint the transferable ownership token to the signer that
         ///      created the intent which is implicitly the Socket admin.
-        mint($admin, address($socket));
+        _mint($admin, uint256(uint160(address($socket))));
     }
 
     /**
