@@ -1,6 +1,6 @@
 //SPDX-License-Identifier: BUSL-1.1
 
-pragma solidity 0.8.24;
+pragma solidity 0.8.18;
 
 /// @dev Shape declarations in the Plug framework.
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
@@ -11,16 +11,6 @@ interface PlugSocketInterface {
      * @param $ownership The address of the owner of the Socket.
      */
     function initialize(address $ownership) external;
-
-    /**
-     * @notice Get the address of the signer of the bundle of plugs.
-     * @param $livePlugs The bundle of plugs to execute.
-     * @return $signer The address of the signer of the bundle.
-     */
-    function signer(PlugTypesLib.LivePlugs calldata $livePlugs)
-        external
-        view
-        returns (address $signer);
 
     /**
      * @notice Allows anyone to submit a plugs of signed plugs for processing.

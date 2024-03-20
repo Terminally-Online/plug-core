@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity 0.8.18;
 
 import { ECDSA } from "solady/src/utils/ECDSA.sol";
 import { MerkleProofLib } from "solady/src/utils/MerkleProofLib.sol";

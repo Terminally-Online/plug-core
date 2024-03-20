@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity 0.8.18;
 
 import { Test } from "../utils/Test.sol";
 
@@ -37,18 +37,16 @@ contract PlugFactoryTest is Test {
         if (uint256(salt) >> 96 != uint160(owner) && uint256(salt) >> 96 != 0) {
             vm.expectRevert(LibClone.SaltDoesNotStartWith.selector);
             (alreadyDeployed, vault) = factory.deploy{ value: initialValue }(
-                address(implementation), owner, salt
+                address(implementation), salt
             );
             return;
         } else {
             (alreadyDeployed, vault) = factory.deploy{ value: initialValue }(
-                address(implementation), owner, salt
+                address(implementation), salt
             );
         }
 
         assertEq(address(vault).balance, initialValue);
-        (, bool isSigner) = PlugVaultSocket(payable(vault)).getAccess(owner);
-        assertEq(isSigner, true);
     }
 
     function test_InitCodeHash() public view {

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity 0.8.18;
 
 import { PlugInterface } from "../interfaces/Plug.Interface.sol";
 import { Ownable } from "solady/src/auth/Ownable.sol";
@@ -109,7 +109,8 @@ contract Plug is PlugInterface, Ownable {
         /// @dev If the Socket has not yet been deployed, deploy it.
         if ($socketAddress.code.length == 0) {
             /// @dev Call the factory that will handle the intent based deployment.
-            (, $socketAddress) = factory.deploy(implementation, $livePlugs);
+            (, $socketAddress) =
+                factory.deploy(implementation, $livePlugs.plugs.salt);
 
             /// @dev Confirm the Socket was deployed to the right address.
             require(

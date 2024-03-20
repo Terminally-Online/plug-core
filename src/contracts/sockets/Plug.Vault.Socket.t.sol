@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity 0.8.18;
 
 import { Test } from "../utils/Test.sol";
 
@@ -42,8 +42,10 @@ contract PlugVaultSocketTest is Test {
         implementation = new PlugVaultSocket();
         factory = new PlugFactory(factoryOwner, baseURI);
 
+        bytes32 salt = bytes32(abi.encodePacked(signer, uint96(0)));
+
         (, address vaultAddress) =
-            factory.deploy(address(implementation), address(this), bytes32(0));
+            factory.deploy(address(implementation), salt);
         vault = PlugVaultSocket(payable(vaultAddress));
     }
 
@@ -112,72 +114,11 @@ contract PlugVaultSocketTest is Test {
         assertEq(vault.owner(), address(this));
     }
 
-    function test_owner_getAccess() public {
-        (bool isRouter, bool isSigner) = vault.getAccess(address(this));
-        assertTrue(isSigner);
-        assertFalse(isRouter);
-    }
-
-    function test_setAccess_Both() public {
-        bool isRouter = true;
-        bool isSigner = true;
-        signer = _randomNonZeroAddress();
-        uint8 access = vault.getAccess(isRouter, isSigner);
-        vault.setAccess(signer, access);
-        (isSigner, isRouter) = vault.getAccess(signer);
-        assertTrue(isSigner);
-        assertTrue(isRouter);
-    }
-
-    function test_setAccess_IsRouter() public {
-        bool isRouter = true;
-        bool isSigner = false;
-        signer = _randomNonZeroAddress();
-        uint8 access = vault.getAccess(isRouter, isSigner);
-        vault.setAccess(signer, access);
-        (isRouter, isSigner) = vault.getAccess(signer);
-        assertFalse(isSigner);
-        assertTrue(isRouter);
-    }
-
-    function test_setAccess_IsSigner() public {
-        bool isRouter = false;
-        bool isSigner = true;
-        signer = _randomNonZeroAddress();
-        uint8 access = vault.getAccess(isRouter, isSigner);
-        vault.setAccess(signer, access);
-        (isRouter, isSigner) = vault.getAccess(signer);
-        assertFalse(isRouter);
-        assertTrue(isSigner);
-    }
-
-    function testRevert_setAccess_Unauthorized() public {
-        bool isRouter = false;
-        bool isSigner = true;
-        signer = _randomNonZeroAddress();
-        uint8 access = vault.getAccess(isRouter, isSigner);
-        vm.prank(_randomNonZeroAddress());
-        vm.expectRevert(bytes("PlugTrading:forbidden-caller"));
-        vault.setAccess(signer, access);
-    }
-
     function test_transferOwnership_Token() public {
-        bool isRouter = true;
-        bool isSigner = true;
-        signer = _randomNonZeroAddress();
-        uint8 access = vault.getAccess(isRouter, isSigner);
-        vault.setAccess(signer, access);
-        (isRouter, isSigner) = vault.getAccess(signer);
-        assertTrue(isRouter);
-        assertTrue(isSigner);
-
         address newOwner = _randomNonZeroAddress();
         ERC721(vault.ownership()).transferFrom(
             address(this), newOwner, uint256(uint160(address(vault)))
         );
-        (isRouter, isSigner) = vault.getAccess(signer);
-        assertFalse(isRouter);
-        assertFalse(isSigner);
     }
 
     function testRevert_transferOwnership_Direct() public {

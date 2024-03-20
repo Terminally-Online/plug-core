@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.24;
+pragma solidity 0.8.18;
 
 library PlugLib {
     address internal constant PLUG_ADDRESS =
@@ -13,11 +13,11 @@ library PlugLib {
         address indexed implementation, address indexed vault, bytes32 salt
     );
 
-	event SocketOwnershipTransferred(
-		address indexed previousOwner,
-		address indexed newOwner,
-		bytes32 imageHash
-	);
+    event SocketOwnershipTransferred(
+        address indexed previousOwner,
+        address indexed newOwner,
+        bytes32 imageHash
+    );
 
     /**
      * @notice Bubble up the revert reason revert data.

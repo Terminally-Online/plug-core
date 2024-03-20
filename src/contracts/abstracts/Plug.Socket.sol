@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: BUSL-1.1
 
-pragma solidity 0.8.24;
+pragma solidity 0.8.18;
 
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 import { PlugCore } from "./Plug.Core.sol";
@@ -19,19 +19,6 @@ abstract contract PlugSocket is
     PlugCore,
     ReentrancyGuard
 {
-    // /**
-    //  * See {PlugSocketInterface-signer}.
-    //  */
-    // function signer(PlugTypesLib.LivePlugs calldata $livePlugs)
-    //     public
-    //     view
-    //     virtual
-    //     returns (address $signer)
-    // {
-    //     /// @dev Determine the address that signed the Plug bundle.
-    //     $signer = getLivePlugsSigner($livePlugs);
-    // }
-
     /**
      * See {PlugSocketInterface-plug}.
      *
@@ -49,11 +36,7 @@ abstract contract PlugSocket is
         nonReentrant
         returns (bytes[] memory $results)
     {
-        $results = _plug(
-            $livePlugs.plugs,
-            $livePlugs.plugs.executor,
-            $gas
-        );
+        $results = _plug($livePlugs.plugs, $livePlugs.plugs.executor, $gas);
     }
 
     /**
