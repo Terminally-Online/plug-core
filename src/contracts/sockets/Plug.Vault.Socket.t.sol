@@ -44,12 +44,18 @@ contract PlugVaultSocketTest is Test {
 
 		bytes32 salt = bytes32(abi.encodePacked(address(this), uint96(0)));
 
+<<<<<<< HEAD
 		(, address vaultAddress) = factory.deploy(
 			address(implementation),
 			salt
 		);
 		vault = PlugVaultSocket(payable(vaultAddress));
 	}
+=======
+        (, address vaultAddress) = factory.deploy(address(implementation), salt);
+        vault = PlugVaultSocket(payable(vaultAddress));
+    }
+>>>>>>> 7238983a13dbe7f6d8a40ff283222eb9d36fd269
 
 	function testRevert_Initialize_Again(uint256) public {
 		vm.deal(address(vault), 100 ether);
