@@ -382,135 +382,6 @@ export const contracts = [
                         "internalType": "address"
                     },
                     {
-                        "name": "$livePlugs",
-                        "type": "tuple",
-                        "internalType": "struct PlugTypesLib.LivePlugs",
-                        "components": [
-                            {
-                                "name": "plugs",
-                                "type": "tuple",
-                                "internalType": "struct PlugTypesLib.Plugs",
-                                "components": [
-                                    {
-                                        "name": "socket",
-                                        "type": "address",
-                                        "internalType": "address"
-                                    },
-                                    {
-                                        "name": "chainId",
-                                        "type": "uint256",
-                                        "internalType": "uint256"
-                                    },
-                                    {
-                                        "name": "plugs",
-                                        "type": "tuple[]",
-                                        "internalType": "struct PlugTypesLib.Plug[]",
-                                        "components": [
-                                            {
-                                                "name": "current",
-                                                "type": "tuple",
-                                                "internalType": "struct PlugTypesLib.Current",
-                                                "components": [
-                                                    {
-                                                        "name": "target",
-                                                        "type": "address",
-                                                        "internalType": "address"
-                                                    },
-                                                    {
-                                                        "name": "value",
-                                                        "type": "uint256",
-                                                        "internalType": "uint256"
-                                                    },
-                                                    {
-                                                        "name": "data",
-                                                        "type": "bytes",
-                                                        "internalType": "bytes"
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "name": "fuses",
-                                                "type": "tuple[]",
-                                                "internalType": "struct PlugTypesLib.Fuse[]",
-                                                "components": [
-                                                    {
-                                                        "name": "target",
-                                                        "type": "address",
-                                                        "internalType": "address"
-                                                    },
-                                                    {
-                                                        "name": "data",
-                                                        "type": "bytes",
-                                                        "internalType": "bytes"
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "salt",
-                                        "type": "bytes32",
-                                        "internalType": "bytes32"
-                                    },
-                                    {
-                                        "name": "fee",
-                                        "type": "uint256",
-                                        "internalType": "uint256"
-                                    },
-                                    {
-                                        "name": "maxFeePerGas",
-                                        "type": "uint256",
-                                        "internalType": "uint256"
-                                    },
-                                    {
-                                        "name": "maxPriorityFeePerGas",
-                                        "type": "uint256",
-                                        "internalType": "uint256"
-                                    },
-                                    {
-                                        "name": "executor",
-                                        "type": "address",
-                                        "internalType": "address"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "signature",
-                                "type": "bytes",
-                                "internalType": "bytes"
-                            }
-                        ]
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "$alreadyDeployed",
-                        "type": "bool",
-                        "internalType": "bool"
-                    },
-                    {
-                        "name": "$socket",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "deploy",
-                "inputs": [
-                    {
-                        "name": "$implementation",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$admin",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
                         "name": "$salt",
                         "type": "bytes32",
                         "internalType": "bytes32"
@@ -615,24 +486,6 @@ export const contracts = [
                     }
                 ],
                 "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "mint",
-                "inputs": [
-                    {
-                        "name": "$admin",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$vault",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
             },
             {
                 "type": "function",
@@ -991,31 +844,6 @@ export const contracts = [
                         "type": "address",
                         "indexed": true,
                         "internalType": "address"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
-                "name": "SocketDeployed",
-                "inputs": [
-                    {
-                        "name": "implementation",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "vault",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "salt",
-                        "type": "bytes32",
-                        "indexed": false,
-                        "internalType": "bytes32"
                     }
                 ],
                 "anonymous": false
@@ -1884,75 +1712,16 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "access",
-                "inputs": [
-                    {
-                        "name": "",
-                        "type": "uint160",
-                        "internalType": "uint160"
-                    },
-                    {
-                        "name": "",
-                        "type": "uint160",
-                        "internalType": "uint160"
-                    }
-                ],
+                "name": "SET_IMAGE_HASH_TYPE_HASH",
+                "inputs": [],
                 "outputs": [
                     {
                         "name": "",
-                        "type": "uint8",
-                        "internalType": "uint8"
+                        "type": "bytes32",
+                        "internalType": "bytes32"
                     }
                 ],
                 "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "getAccess",
-                "inputs": [
-                    {
-                        "name": "$address",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "$isRouter",
-                        "type": "bool",
-                        "internalType": "bool"
-                    },
-                    {
-                        "name": "$isSigner",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "getAccess",
-                "inputs": [
-                    {
-                        "name": "$isRouter",
-                        "type": "bool",
-                        "internalType": "bool"
-                    },
-                    {
-                        "name": "$isSigner",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "$access",
-                        "type": "uint8",
-                        "internalType": "uint8"
-                    }
-                ],
-                "stateMutability": "pure"
             },
             {
                 "type": "function",
@@ -2704,6 +2473,19 @@ export const contracts = [
             },
             {
                 "type": "function",
+                "name": "imageHash",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
                 "name": "initialize",
                 "inputs": [
                     {
@@ -2714,6 +2496,54 @@ export const contracts = [
                 ],
                 "outputs": [],
                 "stateMutability": "nonpayable"
+            },
+            {
+                "type": "function",
+                "name": "isValidSignature",
+                "inputs": [
+                    {
+                        "name": "_hash",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "_signatures",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bytes4",
+                        "internalType": "bytes4"
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
+                "name": "isValidSignature",
+                "inputs": [
+                    {
+                        "name": "_data",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "_signatures",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bytes4",
+                        "internalType": "bytes4"
+                    }
+                ],
+                "stateMutability": "view"
             },
             {
                 "type": "function",
@@ -2734,7 +2564,7 @@ export const contracts = [
                 "inputs": [],
                 "outputs": [
                     {
-                        "name": "",
+                        "name": "$owner",
                         "type": "address",
                         "internalType": "address"
                     }
@@ -2990,135 +2820,66 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "setAccess",
+                "name": "signatureRecovery",
                 "inputs": [
                     {
-                        "name": "$address",
-                        "type": "address",
-                        "internalType": "address"
+                        "name": "_digest",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
                     },
                     {
-                        "name": "$allowance",
-                        "type": "uint8",
-                        "internalType": "uint8"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
-                "name": "signer",
-                "inputs": [
-                    {
-                        "name": "$livePlugs",
-                        "type": "tuple",
-                        "internalType": "struct PlugTypesLib.LivePlugs",
-                        "components": [
-                            {
-                                "name": "plugs",
-                                "type": "tuple",
-                                "internalType": "struct PlugTypesLib.Plugs",
-                                "components": [
-                                    {
-                                        "name": "socket",
-                                        "type": "address",
-                                        "internalType": "address"
-                                    },
-                                    {
-                                        "name": "chainId",
-                                        "type": "uint256",
-                                        "internalType": "uint256"
-                                    },
-                                    {
-                                        "name": "plugs",
-                                        "type": "tuple[]",
-                                        "internalType": "struct PlugTypesLib.Plug[]",
-                                        "components": [
-                                            {
-                                                "name": "current",
-                                                "type": "tuple",
-                                                "internalType": "struct PlugTypesLib.Current",
-                                                "components": [
-                                                    {
-                                                        "name": "target",
-                                                        "type": "address",
-                                                        "internalType": "address"
-                                                    },
-                                                    {
-                                                        "name": "value",
-                                                        "type": "uint256",
-                                                        "internalType": "uint256"
-                                                    },
-                                                    {
-                                                        "name": "data",
-                                                        "type": "bytes",
-                                                        "internalType": "bytes"
-                                                    }
-                                                ]
-                                            },
-                                            {
-                                                "name": "fuses",
-                                                "type": "tuple[]",
-                                                "internalType": "struct PlugTypesLib.Fuse[]",
-                                                "components": [
-                                                    {
-                                                        "name": "target",
-                                                        "type": "address",
-                                                        "internalType": "address"
-                                                    },
-                                                    {
-                                                        "name": "data",
-                                                        "type": "bytes",
-                                                        "internalType": "bytes"
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "salt",
-                                        "type": "bytes32",
-                                        "internalType": "bytes32"
-                                    },
-                                    {
-                                        "name": "fee",
-                                        "type": "uint256",
-                                        "internalType": "uint256"
-                                    },
-                                    {
-                                        "name": "maxFeePerGas",
-                                        "type": "uint256",
-                                        "internalType": "uint256"
-                                    },
-                                    {
-                                        "name": "maxPriorityFeePerGas",
-                                        "type": "uint256",
-                                        "internalType": "uint256"
-                                    },
-                                    {
-                                        "name": "executor",
-                                        "type": "address",
-                                        "internalType": "address"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "signature",
-                                "type": "bytes",
-                                "internalType": "bytes"
-                            }
-                        ]
+                        "name": "_signature",
+                        "type": "bytes",
+                        "internalType": "bytes"
                     }
                 ],
                 "outputs": [
                     {
-                        "name": "$signer",
-                        "type": "address",
-                        "internalType": "address"
+                        "name": "threshold",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "weight",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "imageHash",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "subdigest",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "checkpoint",
+                        "type": "uint256",
+                        "internalType": "uint256"
                     }
                 ],
                 "stateMutability": "view"
+            },
+            {
+                "type": "function",
+                "name": "supportsInterface",
+                "inputs": [
+                    {
+                        "name": "_interfaceID",
+                        "type": "bytes4",
+                        "internalType": "bytes4"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bool",
+                        "internalType": "bool"
+                    }
+                ],
+                "stateMutability": "pure"
             },
             {
                 "type": "function",
@@ -3141,6 +2902,19 @@ export const contracts = [
                         "name": "$newOwner",
                         "type": "address",
                         "internalType": "address"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "nonpayable"
+            },
+            {
+                "type": "function",
+                "name": "updateImageHash",
+                "inputs": [
+                    {
+                        "name": "_imageHash",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
                     }
                 ],
                 "outputs": [],
@@ -3179,6 +2953,19 @@ export const contracts = [
             },
             {
                 "type": "event",
+                "name": "ImageHashUpdated",
+                "inputs": [
+                    {
+                        "name": "newImageHash",
+                        "type": "bytes32",
+                        "indexed": false,
+                        "internalType": "bytes32"
+                    }
+                ],
+                "anonymous": false
+            },
+            {
+                "type": "event",
                 "name": "Upgraded",
                 "inputs": [
                     {
@@ -3192,8 +2979,152 @@ export const contracts = [
             },
             {
                 "type": "error",
+                "name": "EmptySignature",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "ImageHashIsZero",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "InvalidNestedSignature",
+                "inputs": [
+                    {
+                        "name": "_hash",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    },
+                    {
+                        "name": "_addr",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "_signature",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "InvalidSValue",
+                "inputs": [
+                    {
+                        "name": "_signature",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "_s",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "InvalidSignatureFlag",
+                "inputs": [
+                    {
+                        "name": "_flag",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "InvalidSignatureLength",
+                "inputs": [
+                    {
+                        "name": "_signature",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "InvalidSignatureType",
+                "inputs": [
+                    {
+                        "name": "_type",
+                        "type": "bytes1",
+                        "internalType": "bytes1"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "InvalidVValue",
+                "inputs": [
+                    {
+                        "name": "_signature",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "_v",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "LowWeightChainedSignature",
+                "inputs": [
+                    {
+                        "name": "_signature",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "threshold",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "_weight",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "OnlySelfAuth",
+                "inputs": [
+                    {
+                        "name": "_sender",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "_self",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
+            },
+            {
+                "type": "error",
                 "name": "Reentrancy",
                 "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "SignerIsAddress0",
+                "inputs": [
+                    {
+                        "name": "_signature",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    }
+                ]
             },
             {
                 "type": "error",
@@ -3202,8 +3133,45 @@ export const contracts = [
             },
             {
                 "type": "error",
+                "name": "UnsupportedSignatureType",
+                "inputs": [
+                    {
+                        "name": "_signature",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "_type",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "_recoverMode",
+                        "type": "bool",
+                        "internalType": "bool"
+                    }
+                ]
+            },
+            {
+                "type": "error",
                 "name": "UpgradeFailed",
                 "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "WrongChainedCheckpointOrder",
+                "inputs": [
+                    {
+                        "name": "_current",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "_prev",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
             }
         ]
     },

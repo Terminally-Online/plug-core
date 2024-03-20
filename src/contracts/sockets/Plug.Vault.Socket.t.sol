@@ -44,8 +44,7 @@ contract PlugVaultSocketTest is Test {
 
         bytes32 salt = bytes32(abi.encodePacked(address(this), uint96(0)));
 
-        (, address vaultAddress) =
-            factory.deploy(address(implementation), salt);
+        (, address vaultAddress) = factory.deploy(address(implementation), salt);
         vault = PlugVaultSocket(payable(vaultAddress));
     }
 

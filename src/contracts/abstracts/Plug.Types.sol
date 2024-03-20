@@ -16,7 +16,7 @@ import { ECDSA } from "solady/src/utils/ECDSA.sol";
  *      As an extensible base, all projects build on top of Pins
  *      and Plugs.
  * @author @nftchance
- * @author @nftchance/plug-types (2024-03-19)
+ * @author @nftchance/plug-types (2024-03-20)
  */
 library PlugTypesLib {
     /**
@@ -132,7 +132,7 @@ library PlugTypesLib {
  * @dev Contracts that inherit this one must implement the name() and version()
  *      functions to provide the domain separator for EIP-712 signatures.
  * @author @nftchance
- * @author @nftchance/plug-types (2024-03-19)
+ * @author @nftchance/plug-types (2024-03-20)
  */
 abstract contract PlugTypes {
     /// @notice Use the ECDSA library for signature verification.
@@ -573,5 +573,38 @@ abstract contract PlugTypes {
                 keccak256($input.signature)
             )
         );
+    }
+
+    /**
+     * @notice Encode Plugs data into a digest hash that has been
+     *         localized to the domain of the contract.
+     * @param $input The Plugs data to encode.
+     * @return $digest The digest hash of the encoded Plugs data.
+     */
+    function getPlugsDigest(PlugTypesLib.Plugs memory $input)
+        public
+        view
+        virtual
+        returns (bytes32 $digest)
+    {
+        $digest = keccak256(
+            bytes.concat(
+                "\x19\x01", getDomainHash($input.chainId), getPlugsHash($input)
+            )
+        );
+    }
+
+    /**
+     * @notice Get the signer of a LivePlugs data type.
+     * @param $input The LivePlugs data to encode.
+     * @return $signer The signer of the LivePlugs data.
+     */
+    function getLivePlugsSigner(PlugTypesLib.LivePlugs memory $input)
+        public
+        view
+        virtual
+        returns (address $signer)
+    {
+        $signer = getPlugsDigest($input.plugs).recover($input.signature);
     }
 }
