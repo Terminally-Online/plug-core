@@ -38,7 +38,7 @@ PlugVaultSocketTest:testRevert_Initialize_Again(uint256) (runs: 10000, μ: 13758
 PlugVaultSocketTest:testRevert_owner_Implementation() (gas: 13716)
 PlugVaultSocketTest:testRevert_transferOwnership_Direct() (gas: 21197)
 PlugVaultSocketTest:testRevert_transferOwnership_Unauthorized() (gas: 22136)
-PlugVaultSocketTest:test__codesize() (gas: 30847)
+PlugVaultSocketTest:test__codesize() (gas: 30576)
 PlugVaultSocketTest:test_name() (gas: 11985)
 PlugVaultSocketTest:test_owner() (gas: 17881)
 PlugVaultSocketTest:test_ownership_Implementation() (gas: 7620)
