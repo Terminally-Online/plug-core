@@ -7,7 +7,8 @@ import { Vm } from "forge-std/Vm.sol";
 import { ECDSA } from "solady/src/utils/ECDSA.sol";
 
 abstract contract TestPlug {
-    Vm private constant vm = Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
+    Vm private constant vm =
+        Vm(address(uint160(uint256(keccak256("hevm cheat code")))));
 
     function getExpectedImageHash(
         address user,
