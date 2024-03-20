@@ -3,7 +3,6 @@
 pragma solidity 0.8.18;
 
 import { ECDSA } from "solady/src/utils/ECDSA.sol";
-import { MerkleProofLib } from "solady/src/utils/MerkleProofLib.sol";
 
 /**
  * @title Plug:PlugTypes
@@ -574,69 +573,5 @@ abstract contract PlugTypes {
                 keccak256($input.signature)
             )
         );
-    }
-
-    /**
-     * @notice Encode Plugs data into a digest hash that has been
-     *         localized to the domain of the contract.
-     * @param $input The Plugs data to encode.
-     * @return $digest The digest hash of the encoded Plugs data.
-     */
-    function getPlugsDigest(PlugTypesLib.Plugs memory $input)
-        public
-        view
-        virtual
-        returns (bytes32 $digest)
-    {
-        $digest = keccak256(
-            bytes.concat(
-                "\x19\x01", getDomainHash($input.chainId), getPlugsHash($input)
-            )
-        );
-    }
-
-    /**
-     * @notice Get the signer of a LivePlugs data type.
-     * @param $input The LivePlugs data to encode.
-     * @return $signer The signer of the LivePlugs data.
-     */
-    function getLivePlugsSigner(PlugTypesLib.LivePlugs calldata $input)
-        public
-        view
-        virtual
-        returns (address)
-    {
-        /// @dev The last bit denotes whether it is a standard signature or a
-        ///      merkle proof signature.
-        bytes1 signatureType = $input.signature[0];
-
-        /// @dev Utilize a standard signature recovery method that is only designed
-        ///      to support one domain and intent at a time.
-        if (signatureType & 0x03 == signatureType) {
-            return getPlugsDigest($input.plugs).recover($input.signature);
-        }
-        /// @dev Utilize a merkle proof signature recovery method that holds several
-        ///      domains and intents at a time inside a single signature.
-        else if (signatureType & 0x04 == signatureType) {
-            /// @dev Recover the merkle proof data from the packed signature.
-            (bytes32 root, bytes32[] memory proof, bytes memory signature) =
-                abi.decode($input.signature[1:], (bytes32, bytes32[], bytes));
-
-            /// @dev Ensure the merkle tree contains the data of the signed bundle.
-            require(
-                MerkleProofLib.verify(proof, root, getPlugsHash($input.plugs)),
-                "PlugTypes:invalid-proof"
-            );
-
-            /// @dev Calculate the offset needed to extract solely the signature from
-            ///      the packed state of the `signature` data provided.
-            uint256 offset = proof.length * 32 + 161;
-
-            return getPlugsDigest($input.plugs).recover(
-                $input.signature[offset:offset + signature.length]
-            );
-        }
-
-        revert("PlugTypes:invalid-signature");
     }
 }
