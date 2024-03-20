@@ -3908,5 +3908,9 @@ export const contracts = [
                 "inputs": []
             }
         ]
+    },
+    {
+        "name": "TestPlug",
+        "abi": []
     }
 ] as const
