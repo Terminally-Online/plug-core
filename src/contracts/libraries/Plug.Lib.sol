@@ -3,24 +3,23 @@
 pragma solidity 0.8.18;
 
 library PlugLib {
-    address internal constant PLUG_ADDRESS =
-        0xDb3Bf1e7Fcc3476D9D00150FaA0039A7B795283F;
-
-    // TODO: Add this to the automatic generation
     address internal constant PLUG_FACTORY_ADDRESS =
-        0xDb3Bf1e7Fcc3476D9D00150FaA0039A7B795283F;
+        0x009ecf9Aa0E27b6043A27d782548860E7325C30E;
 
     address internal constant PLUG_TREASURY_ADDRESS =
         0x00EC991a53dEa376Fe0A7798aAc3F8E5cF5C9123;
 
+    address internal constant PLUG_ADDRESS =
+        0xDb3Bf1e7Fcc3476D9D00150FaA0039A7B795283F;
+
     event SocketDeployed(
-        address indexed $implementation, address indexed $vault, bytes32 $salt
+        address indexed implementation, address indexed vault, bytes32 salt
     );
 
     event SocketOwnershipTransferred(
-        address indexed $previousOwner,
-        address indexed $newOwner,
-        bytes32 $imageHash
+        address indexed previousOwner,
+        address indexed newOwner,
+        bytes32 imageHash
     );
 
     error SocketAddressInvalid(address $intended, address $socket);
