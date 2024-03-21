@@ -18,9 +18,6 @@ import { PlugLib } from "../libraries/Plug.Lib.sol";
  * @author @nftchance (chance@onplug.io)
  */
 contract Plug is PlugInterface {
-    /// @dev The factory that enables automatic Socket deployment.
-    PlugFactory factory;
-
     /**
      * See {PlugInterface-plug}.
      */
@@ -89,7 +86,9 @@ contract Plug is PlugInterface {
         /// @dev If the Socket has not yet been deployed, deploy it.
         if (socketAddress.code.length == 0) {
             /// @dev Call the factory that will handle the intent based deployment.
-            (, address $socketAddress) = factory.deploy($livePlugs.plugs.salt);
+            (, address $socketAddress) = PlugFactory(
+                PlugLib.PLUG_FACTORY_ADDRESS
+            ).deploy($livePlugs.plugs.salt);
 
             /// @dev Confirm the Socket was actually deployed.
             if ($socketAddress.code.length == 0) {

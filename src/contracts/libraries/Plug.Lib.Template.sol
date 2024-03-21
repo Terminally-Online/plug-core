@@ -15,6 +15,9 @@ library PlugLib {
         bytes32 imageHash
     );
 
+    error SocketAddressInvalid(address $intended, address $socket);
+    error SocketAddressEmpty(address $socket);
+
     /**
      * @notice Bubble up the revert reason revert data.
      * @param $revertData The revert data to extract the reason from.
