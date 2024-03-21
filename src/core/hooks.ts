@@ -54,81 +54,6 @@ export const plugAbi = [
     inputs: [
       {
         name: '$livePlugs',
-        internalType: 'struct PlugTypesLib.LivePlugs',
-        type: 'tuple',
-        components: [
-          {
-            name: 'plugs',
-            internalType: 'struct PlugTypesLib.Plugs',
-            type: 'tuple',
-            components: [
-              { name: 'socket', internalType: 'address', type: 'address' },
-              {
-                name: 'plugs',
-                internalType: 'struct PlugTypesLib.Plug[]',
-                type: 'tuple[]',
-                components: [
-                  {
-                    name: 'current',
-                    internalType: 'struct PlugTypesLib.Current',
-                    type: 'tuple',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      {
-                        name: 'value',
-                        internalType: 'uint256',
-                        type: 'uint256',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
-                  {
-                    name: 'fuses',
-                    internalType: 'struct PlugTypesLib.Fuse[]',
-                    type: 'tuple[]',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
-                ],
-              },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
-              { name: 'fee', internalType: 'uint256', type: 'uint256' },
-              {
-                name: 'maxFeePerGas',
-                internalType: 'uint256',
-                type: 'uint256',
-              },
-              {
-                name: 'maxPriorityFeePerGas',
-                internalType: 'uint256',
-                type: 'uint256',
-              },
-              { name: 'solver', internalType: 'address', type: 'address' },
-            ],
-          },
-          { name: 'signature', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
-    ],
-    name: 'plug',
-    outputs: [{ name: '$results', internalType: 'bytes[]', type: 'bytes[]' }],
-    stateMutability: 'payable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: '$livePlugs',
         internalType: 'struct PlugTypesLib.LivePlugs[]',
         type: 'tuple[]',
         components: [
@@ -137,6 +62,11 @@ export const plugAbi = [
             internalType: 'struct PlugTypesLib.Plugs',
             type: 'tuple',
             components: [
+              {
+                name: 'implementation',
+                internalType: 'address',
+                type: 'address',
+              },
               { name: 'socket', internalType: 'address', type: 'address' },
               {
                 name: 'plugs',
@@ -178,17 +108,7 @@ export const plugAbi = [
               },
               { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
               { name: 'fee', internalType: 'uint256', type: 'uint256' },
-              {
-                name: 'maxFeePerGas',
-                internalType: 'uint256',
-                type: 'uint256',
-              },
-              {
-                name: 'maxPriorityFeePerGas',
-                internalType: 'uint256',
-                type: 'uint256',
-              },
-              { name: 'solver', internalType: 'address', type: 'address' },
+              { name: 'solver', internalType: 'bytes', type: 'bytes' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
@@ -199,6 +119,76 @@ export const plugAbi = [
     outputs: [
       { name: '$results', internalType: 'bytes[][]', type: 'bytes[][]' },
     ],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: '$livePlugs',
+        internalType: 'struct PlugTypesLib.LivePlugs',
+        type: 'tuple',
+        components: [
+          {
+            name: 'plugs',
+            internalType: 'struct PlugTypesLib.Plugs',
+            type: 'tuple',
+            components: [
+              {
+                name: 'implementation',
+                internalType: 'address',
+                type: 'address',
+              },
+              { name: 'socket', internalType: 'address', type: 'address' },
+              {
+                name: 'plugs',
+                internalType: 'struct PlugTypesLib.Plug[]',
+                type: 'tuple[]',
+                components: [
+                  {
+                    name: 'current',
+                    internalType: 'struct PlugTypesLib.Current',
+                    type: 'tuple',
+                    components: [
+                      {
+                        name: 'target',
+                        internalType: 'address',
+                        type: 'address',
+                      },
+                      {
+                        name: 'value',
+                        internalType: 'uint256',
+                        type: 'uint256',
+                      },
+                      { name: 'data', internalType: 'bytes', type: 'bytes' },
+                    ],
+                  },
+                  {
+                    name: 'fuses',
+                    internalType: 'struct PlugTypesLib.Fuse[]',
+                    type: 'tuple[]',
+                    components: [
+                      {
+                        name: 'target',
+                        internalType: 'address',
+                        type: 'address',
+                      },
+                      { name: 'data', internalType: 'bytes', type: 'bytes' },
+                    ],
+                  },
+                ],
+              },
+              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'fee', internalType: 'uint256', type: 'uint256' },
+              { name: 'solver', internalType: 'bytes', type: 'bytes' },
+            ],
+          },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    name: 'plug',
+    outputs: [{ name: '$results', internalType: 'bytes[]', type: 'bytes[]' }],
     stateMutability: 'payable',
   },
   {
@@ -1395,6 +1385,11 @@ export const plugVaultSocketAbi = [
             internalType: 'struct PlugTypesLib.Plugs',
             type: 'tuple',
             components: [
+              {
+                name: 'implementation',
+                internalType: 'address',
+                type: 'address',
+              },
               { name: 'socket', internalType: 'address', type: 'address' },
               {
                 name: 'plugs',
@@ -1436,17 +1431,7 @@ export const plugVaultSocketAbi = [
               },
               { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
               { name: 'fee', internalType: 'uint256', type: 'uint256' },
-              {
-                name: 'maxFeePerGas',
-                internalType: 'uint256',
-                type: 'uint256',
-              },
-              {
-                name: 'maxPriorityFeePerGas',
-                internalType: 'uint256',
-                type: 'uint256',
-              },
-              { name: 'solver', internalType: 'address', type: 'address' },
+              { name: 'solver', internalType: 'bytes', type: 'bytes' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
@@ -1533,6 +1518,7 @@ export const plugVaultSocketAbi = [
         internalType: 'struct PlugTypesLib.Plugs',
         type: 'tuple',
         components: [
+          { name: 'implementation', internalType: 'address', type: 'address' },
           { name: 'socket', internalType: 'address', type: 'address' },
           {
             name: 'plugs',
@@ -1562,13 +1548,7 @@ export const plugVaultSocketAbi = [
           },
           { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
           { name: 'fee', internalType: 'uint256', type: 'uint256' },
-          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
-          {
-            name: 'maxPriorityFeePerGas',
-            internalType: 'uint256',
-            type: 'uint256',
-          },
-          { name: 'solver', internalType: 'address', type: 'address' },
+          { name: 'solver', internalType: 'bytes', type: 'bytes' },
         ],
       },
     ],
@@ -1644,6 +1624,11 @@ export const plugVaultSocketAbi = [
             internalType: 'struct PlugTypesLib.Plugs',
             type: 'tuple',
             components: [
+              {
+                name: 'implementation',
+                internalType: 'address',
+                type: 'address',
+              },
               { name: 'socket', internalType: 'address', type: 'address' },
               {
                 name: 'plugs',
@@ -1685,22 +1670,13 @@ export const plugVaultSocketAbi = [
               },
               { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
               { name: 'fee', internalType: 'uint256', type: 'uint256' },
-              {
-                name: 'maxFeePerGas',
-                internalType: 'uint256',
-                type: 'uint256',
-              },
-              {
-                name: 'maxPriorityFeePerGas',
-                internalType: 'uint256',
-                type: 'uint256',
-              },
-              { name: 'solver', internalType: 'address', type: 'address' },
+              { name: 'solver', internalType: 'bytes', type: 'bytes' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
         ],
       },
+      { name: '$solver', internalType: 'address', type: 'address' },
       { name: '$gas', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'plug',
@@ -1715,6 +1691,7 @@ export const plugVaultSocketAbi = [
         internalType: 'struct PlugTypesLib.Plugs',
         type: 'tuple',
         components: [
+          { name: 'implementation', internalType: 'address', type: 'address' },
           { name: 'socket', internalType: 'address', type: 'address' },
           {
             name: 'plugs',
@@ -1744,13 +1721,7 @@ export const plugVaultSocketAbi = [
           },
           { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
           { name: 'fee', internalType: 'uint256', type: 'uint256' },
-          { name: 'maxFeePerGas', internalType: 'uint256', type: 'uint256' },
-          {
-            name: 'maxPriorityFeePerGas',
-            internalType: 'uint256',
-            type: 'uint256',
-          },
-          { name: 'solver', internalType: 'address', type: 'address' },
+          { name: 'solver', internalType: 'bytes', type: 'bytes' },
         ],
       },
     ],
