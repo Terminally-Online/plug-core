@@ -21,8 +21,11 @@ import { LibClone } from "solady/src/utils/LibClone.sol";
  * @author @nftchance (chance@utc24.io)
  */
 contract PlugFactory is PlugTradable {
-    mapping(uint160 => uint256) public nonce;
-
+    /**
+     * @notice Construct a new Plug Factory.
+     * @param $owner The address of the owner.
+     * @param $baseURI The base URI of the factory.
+     */
     constructor(
         address $owner,
         string memory $baseURI
