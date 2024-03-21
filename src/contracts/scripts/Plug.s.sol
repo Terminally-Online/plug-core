@@ -58,8 +58,8 @@ contract PlugDeployment is Script {
         );
 
         PlugEtcherLib.FACTORY.safeCreate2(
-            PlugEtcherLib.PLUG_VAULT_SOCKET_SALT,
-            PlugEtcherLib.PLUG_VAULT_SOCKET_INITCODE
+            PlugEtcherLib.PLUG_TREASURY_SALT,
+            PlugEtcherLib.PLUG_TREASURY_INITCODE
         );
 
         PlugEtcherLib.FACTORY.safeCreate2(

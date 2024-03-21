@@ -4,12 +4,20 @@ pragma solidity 0.8.18;
 
 import { PlugExecute } from "./Plug.Execute.sol";
 import { PlugTypes, PlugTypesLib } from "./Plug.Types.sol";
+import { PlugLib } from "../libraries/Plug.Lib.sol";
 
 /**
  * @title Plug.Core
  * @author @nftchance (chance@utc24.io)
  */
 abstract contract PlugCore is PlugExecute {
+    function _compensate(address $recipient, uint256 $value) internal {
+        /// @dev Transfer the money the Solver is owed and confirm it
+        ///      the transfer is successful.
+        (bool success,) = $recipient.call{ value: $value }("");
+        require(success, "Plug:compensation-failed");
+    }
+
     /**
      * @notice Execute a bundle of Plugs.
      * @param $plugs The plugs to execute.
@@ -55,6 +63,11 @@ abstract contract PlugCore is PlugExecute {
             (, $results[i]) = _execute(current);
         }
 
+        /// @dev Pay the platform fee if it there is an associated fee.
+        if ($plugs.fee != 0) {
+            _compensate(PlugLib.PLUG_TREASURY_ADDRESS, $plugs.fee);
+        }
+
         /// @dev Pay the Solver for the gas used and the fee earned if
         ///      it was not the original signer of the Plug bundle.
         if ($solver != address(0)) {
@@ -68,12 +81,11 @@ abstract contract PlugCore is PlugExecute {
                 : $plugs.maxFeePerGas < value ? $plugs.maxFeePerGas : value;
 
             /// @dev Augment the native gas price with the Solver "gas" fee.
-            value = $plugs.fee + ($gas - gasleft()) * value;
+            value = ($gas - gasleft()) * value;
 
             /// @dev Transfer the money the Solver is owed and confirm it
             ///      the transfer is successful.
-            (bool success,) = $solver.call{ value: value }("");
-            require(success, "Plug:compensation-failed");
+            _compensate($solver, value);
         }
     }
 }
