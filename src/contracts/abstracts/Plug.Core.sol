@@ -13,13 +13,13 @@ abstract contract PlugCore is PlugExecute {
     /**
      * @notice Execute a bundle of Plugs.
      * @param $plugs The plugs to execute.
-     * @param $executor The address of the executor.
+     * @param $solver The address of the Solver.
      * @param $gas Snapshot of gas at the start of interaction.
      * @return $results The return data of the plugs.
      */
     function _plug(
         PlugTypesLib.Plugs calldata $plugs,
-        address $executor,
+        address $solver,
         uint256 $gas
     )
         internal
@@ -55,9 +55,9 @@ abstract contract PlugCore is PlugExecute {
             (, $results[i]) = _execute(current);
         }
 
-        /// @dev Pay the Executor for the gas used and the fee earned if
+        /// @dev Pay the Solver for the gas used and the fee earned if
         ///      it was not the original signer of the Plug bundle.
-        if ($executor != address(0)) {
+        if ($solver != address(0)) {
             /// @dev Calculate the gas price based on the current block.
             uint256 value = $plugs.maxPriorityFeePerGas + block.basefee;
             /// @dev Determine which gas price to use based on if it is a legacy
@@ -67,12 +67,12 @@ abstract contract PlugCore is PlugExecute {
                 ? $plugs.maxFeePerGas
                 : $plugs.maxFeePerGas < value ? $plugs.maxFeePerGas : value;
 
-            /// @dev Augment the native gas price with the Executor "gas" fee.
+            /// @dev Augment the native gas price with the Solver "gas" fee.
             value = $plugs.fee + ($gas - gasleft()) * value;
 
-            /// @dev Transfer the money the Executor is owed and confirm it
+            /// @dev Transfer the money the Solver is owed and confirm it
             ///      the transfer is successful.
-            (bool success,) = $executor.call{ value: value }("");
+            (bool success,) = $solver.call{ value: value }("");
             require(success, "Plug:compensation-failed");
         }
     }

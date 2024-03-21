@@ -22,7 +22,7 @@ abstract contract PlugSocket is
     /**
      * See {PlugSocketInterface-plug}.
      *
-     * @dev Process the Plug bundle with an external Executor.
+     * @dev Process the Plug bundle with an external Solver.
      */
     function plug(
         PlugTypesLib.LivePlugs calldata $livePlugs,
@@ -42,7 +42,7 @@ abstract contract PlugSocket is
     /**
      * See {PlugSocketInterface-plug}.
      *
-     * @dev Process the Plug bundle without an external Executor.
+     * @dev Process the Plug bundle without an external Solver.
      */
     function plug(PlugTypesLib.Plugs calldata $plugs)
         external

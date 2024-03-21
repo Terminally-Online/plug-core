@@ -6,7 +6,7 @@
 		"prebuild": "pnpm lint && rm -rf ./dist",
 		"build": "pnpm build:ts && pnpm build:contracts",
 		"build:artifacts": "rm -rf artifacts/ && forge build --out='artifacts' --contracts='./src/contracts' --via-ir --optimize --optimizer-runs=10000 --use=0.8.18 && pnpm tsx src/lib/functions/artifacts.ts",
-		"build:contracts": "pnpm plug generate && forge fmt && pnpm build:artifacts",
+		"build:contracts": "pnpm plug generate && forge fmt && pnpm build:artifacts && npx wagmi generate",
 		"build:etcher": "pnpm run build:artifacts && pnpm tsx src/lib/functions/etcher.ts",
 		"build:forge": "forge fmt && forge build --out='artifacts' --contracts='./src/contracts' --via-ir --optimize --optimizer-runs=10000 --use=0.8.18",
 		"build:format": "pnpm prettier --write .",
@@ -90,13 +90,7 @@
 		"./package.json": "./package.json",
 		"./addresses.json": "./src/lib/addresses.json"
 	},
-	"files": [
-		"/core",
-		"/lib",
-		"/dist",
-		"/src",
-		"/artifacts"
-	],
+	"files": ["/core", "/lib", "/dist", "/src", "/artifacts"],
 	"publishConfig": {
 		"access": "public"
 	}
