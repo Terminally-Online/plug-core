@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: BUSL-1.1
+// SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.18;
 
@@ -36,7 +36,7 @@ abstract contract PlugSocket is
         nonReentrant
         returns (bytes[] memory $results)
     {
-        $results = _plug($livePlugs.plugs, $livePlugs.plugs.executor, $gas);
+        $results = _plug($livePlugs.plugs, $livePlugs.plugs.solver, $gas);
     }
 
     /**

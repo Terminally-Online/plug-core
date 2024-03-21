@@ -38,13 +38,13 @@ contract Plug is PlugInterface, Ownable {
         /// @dev Snapshot how much gas the transaction has.
         uint256 gas = (gasleft() * 63) / 64;
 
-        /// @dev Confirm the executor is allowed to execute the transaction.
+        /// @dev Confirm the Solver is allowed to execute the transaction.
         ///      This is done here instead of a modifier so that the gas
         ///      snapshot accounts for the additional gas cost of the require.
         require(
-            msg.sender == $livePlugs.plugs.executor
-                || $livePlugs.plugs.executor == address(0),
-            "Plug:invalid-executor"
+            msg.sender == $livePlugs.plugs.solver
+                || $livePlugs.plugs.solver == address(0),
+            "Plug:invalid-solver"
         );
 
         /// @dev Pass down the now-verified signature components and execute

@@ -60,7 +60,7 @@ contract PlugTest is Test {
         assertEq(plug.symbol(), "PLUG");
     }
 
-    function test_PlugEmptyEcho_SignerExecutor() public {
+    function test_PlugEmptyEcho_SignerSolver() public {
         /// @dev Encode the transaction that is going to be called.
         bytes memory encodedTransaction =
             abi.encodeWithSelector(mock.emptyEcho.selector);
@@ -80,13 +80,12 @@ contract PlugTest is Test {
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
             socket: address(vault),
-            chainId: block.chainid,
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 0,
             maxFeePerGas: 0,
             maxPriorityFeePerGas: 0,
-            executor: address(0)
+            solver: address(0)
         });
 
         bytes memory plugsSignature = sign(
@@ -104,7 +103,7 @@ contract PlugTest is Test {
         plug.plug(livePlugs);
     }
 
-    function testRevert_PlugEmptyEcho_SignerExecutor_InvalidRouter() public {
+    function testRevert_PlugEmptyEcho_SignerSolver_InvalidRouter() public {
         /// @dev Encode the transaction that is going to be called.
         bytes memory encodedTransaction =
             abi.encodeWithSelector(mock.emptyEcho.selector);
@@ -124,13 +123,12 @@ contract PlugTest is Test {
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
             socket: address(vault),
-            chainId: block.chainid,
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 0,
             maxFeePerGas: 0,
             maxPriorityFeePerGas: 0,
-            executor: address(0)
+            solver: address(0)
         });
 
         /// @dev Sign the execution.
@@ -149,9 +147,7 @@ contract PlugTest is Test {
         plug.plug(livePlugs);
     }
 
-    function testRevert_PlugEmptyEcho_SignerExecutor_InvalidSignature()
-        public
-    {
+    function testRevert_PlugEmptyEcho_SignerSolver_InvalidSignature() public {
         /// @dev Encode the transaction that is going to be called.
         bytes memory encodedTransaction =
             abi.encodeWithSelector(mock.emptyEcho.selector);
@@ -171,13 +167,12 @@ contract PlugTest is Test {
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
             socket: address(vault),
-            chainId: block.chainid,
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 0,
             maxFeePerGas: 0,
             maxPriorityFeePerGas: 0,
-            executor: address(0)
+            solver: address(0)
         });
 
         /// @dev Sign the execution.
@@ -194,7 +189,7 @@ contract PlugTest is Test {
         plug.plug(livePlugs);
     }
 
-    function test_PlugEmptyEcho_ExternalExecutor_NotCompensated() public {
+    function test_PlugEmptyEcho_ExternalSolver_NotCompensated() public {
         /// @dev Encode the transaction that is going to be called.
         bytes memory encodedTransaction =
             abi.encodeWithSelector(mock.emptyEcho.selector);
@@ -211,19 +206,18 @@ contract PlugTest is Test {
             fuses: new PlugTypesLib.Fuse[](0)
         });
 
-        address executor = _randomNonZeroAddress();
-        vm.deal(executor, 100 ether);
+        address solver = _randomNonZeroAddress();
+        vm.deal(solver, 100 ether);
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
             socket: address(vault),
-            chainId: block.chainid,
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 0,
             maxFeePerGas: 0,
             maxPriorityFeePerGas: 0,
-            executor: executor
+            solver: solver
         });
 
         /// @dev Sign the execution.
@@ -239,11 +233,11 @@ contract PlugTest is Test {
         /// @dev Execute the plug.
         vm.expectEmit(address(mock));
         emit EchoInvoked(address(vault), "Hello World");
-        vm.prank(executor);
+        vm.prank(solver);
         plug.plug(livePlugs);
     }
 
-    function test_PlugEmptyEcho_ExternalExecutor_Compensated() public {
+    function test_PlugEmptyEcho_ExternalSolver_Compensated() public {
         /// @dev Encode the transaction that is going to be called.
         bytes memory encodedTransaction =
             abi.encodeWithSelector(mock.emptyEcho.selector);
@@ -260,20 +254,19 @@ contract PlugTest is Test {
             fuses: new PlugTypesLib.Fuse[](0)
         });
 
-        address executor = _randomNonZeroAddress();
-        vm.deal(executor, 100 ether);
+        address solver = _randomNonZeroAddress();
+        vm.deal(solver, 100 ether);
         vm.deal(address(vault), 100 ether);
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
             socket: address(vault),
-            chainId: block.chainid,
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 1 ether,
             maxFeePerGas: 0,
             maxPriorityFeePerGas: 0,
-            executor: executor
+            solver: solver
         });
 
         /// @dev Sign the execution.
@@ -289,7 +282,7 @@ contract PlugTest is Test {
         /// @dev Execute the plug.
         vm.expectEmit(address(mock));
         emit EchoInvoked(address(vault), "Hello World");
-        vm.prank(executor);
+        vm.prank(solver);
         /// @dev Make sure the compensation successfully changes hands.
         uint256 preBalance = address(vault).balance;
         plug.plug(livePlugs);
@@ -297,7 +290,7 @@ contract PlugTest is Test {
         assertEq(preBalance - 1 ether, postBalance);
     }
 
-    function testRevert_PlugEmptyEcho_ExternalExecutor_CompensationFailure()
+    function testRevert_PlugEmptyEcho_ExternalSolver_CompensationFailure()
         public
     {
         /// @dev Encode the transaction that is going to be called.
@@ -316,20 +309,19 @@ contract PlugTest is Test {
             fuses: new PlugTypesLib.Fuse[](0)
         });
 
-        address executor = _randomNonZeroAddress();
-        vm.deal(executor, 100 ether);
+        address solver = _randomNonZeroAddress();
+        vm.deal(solver, 100 ether);
         vm.deal(address(vault), 0);
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
             socket: address(vault),
-            chainId: block.chainid,
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 1 ether,
             maxFeePerGas: 0,
             maxPriorityFeePerGas: 0,
-            executor: executor
+            solver: solver
         });
 
         /// @dev Sign the execution.
@@ -343,12 +335,12 @@ contract PlugTest is Test {
         });
 
         /// @dev Execute the plug.
-        vm.prank(executor);
+        vm.prank(solver);
         vm.expectRevert("Plug:compensation-failed");
         plug.plug(livePlugs);
     }
 
-    function testRevert_PlugEmptyEcho_ExternalExecutor_Invalid() public {
+    function testRevert_PlugEmptyEcho_ExternalSolver_Invalid() public {
         /// @dev Encode the transaction that is going to be called.
         bytes memory encodedTransaction =
             abi.encodeWithSelector(mock.emptyEcho.selector);
@@ -366,20 +358,19 @@ contract PlugTest is Test {
             fuses: new PlugTypesLib.Fuse[](0)
         });
 
-        address executor = _randomNonZeroAddress();
-        vm.deal(executor, 100 ether);
+        address solver = _randomNonZeroAddress();
+        vm.deal(solver, 100 ether);
         vm.deal(address(vault), 100 ether);
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
             socket: address(vault),
-            chainId: block.chainid,
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 1 ether,
             maxFeePerGas: 0,
             maxPriorityFeePerGas: 0,
-            executor: executor
+            solver: solver
         });
 
         /// @dev Sign the execution.
@@ -393,7 +384,7 @@ contract PlugTest is Test {
         });
 
         /// @dev Execute the plug.
-        vm.expectRevert(bytes("Plug:invalid-executor"));
+        vm.expectRevert(bytes("Plug:invalid-solver"));
         plug.plug(livePlugs);
     }
 }

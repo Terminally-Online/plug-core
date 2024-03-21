@@ -86,24 +86,22 @@ library PlugTypesLib {
      *
      * @dev Plugs extends EIP712<{
      *      { name: 'socket', type: 'address' }
-     * 		{ name: 'chainId', type: 'uint256' }
      * 		{ name: 'plugs', type: 'Plug[]' }
      * 		{ name: 'salt', type: 'bytes32' }
      * 		{ name: 'fee', type: 'uint256' }
      * 		{ name: 'maxFeePerGas', type: 'uint256' }
      * 		{ name: 'maxPriorityFeePerGas', type: 'uint256' }
-     * 		{ name: 'executor', type: 'address' }
+     * 		{ name: 'solver', type: 'address' }
      * }>
      */
     struct Plugs {
         address socket;
-        uint256 chainId;
         Plug[] plugs;
         bytes32 salt;
         uint256 fee;
         uint256 maxFeePerGas;
         uint256 maxPriorityFeePerGas;
-        address executor;
+        address solver;
     }
 
     /**
@@ -189,17 +187,16 @@ abstract contract PlugTypes {
      *         compatability for encoding and decoding.
      * @dev PLUGS_TYPEHASH extends TypeHash<EIP712<{
      *      { name: 'socket', type: 'address' }
-     *      { name: 'chainId', type: 'uint256' }
      *      { name: 'plugs', type: 'Plug[]' }
      *      { name: 'salt', type: 'bytes32' }
      *      { name: 'fee', type: 'uint256' }
      *      { name: 'maxFeePerGas', type: 'uint256' }
      *      { name: 'maxPriorityFeePerGas', type: 'uint256' }
-     *      { name: 'executor', type: 'address' }
+     *      { name: 'solver', type: 'address' }
      * }>>
      */
     bytes32 constant PLUGS_TYPEHASH =
-        0x625e32145b4a3fd66e2d2af04401d8a7d3968ab6a771ea04664bc9bdcae6d62d;
+        0xf6bc9db363e39d370c03292523a8c414d48117b1a291ec093570ec5f75bb1598;
 
     /**
      * @notice Type hash representing the LivePlugs data type providing EIP-712
@@ -210,7 +207,7 @@ abstract contract PlugTypes {
      * }>>
      */
     bytes32 constant LIVE_PLUGS_TYPEHASH =
-        0xcd7acbd8814a0956d65476cbbd1453d8142509c3b0bc4042b38988da795438e5;
+        0xbd158c70761c4f4080abbdff7bf857fee7971dc798e804f71c5293d5924badff;
     /**
      * @notice Name used for the domain separator.
      * @dev This is implemented this way so that it is easy
@@ -396,13 +393,12 @@ abstract contract PlugTypes {
             abi.encode(
                 PLUGS_TYPEHASH,
                 $input.socket,
-                $input.chainId,
                 getPlugArrayHash($input.plugs),
                 $input.salt,
                 $input.fee,
                 $input.maxFeePerGas,
                 $input.maxPriorityFeePerGas,
-                $input.executor
+                $input.solver
             )
         );
     }

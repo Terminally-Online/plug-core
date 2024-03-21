@@ -5,7 +5,7 @@
 	"scripts": {
 		"prebuild": "pnpm lint && rm -rf ./dist",
 		"build": "pnpm build:ts && pnpm build:contracts",
-		"build:artifacts": "pnpm tsx src/lib/functions/artifacts.ts",
+		"build:artifacts": "rm -rf artifacts/ && forge build --out='artifacts' --contracts='./src/contracts' --via-ir --optimize --optimizer-runs=10000 --use=0.8.18 && pnpm tsx src/lib/functions/artifacts.ts",
 		"build:contracts": "pnpm plug generate && forge fmt && pnpm build:artifacts",
 		"build:etcher": "pnpm run build:artifacts && pnpm tsx src/lib/functions/etcher.ts",
 		"build:forge": "forge fmt && forge build --out='artifacts' --contracts='./src/contracts' --via-ir --optimize --optimizer-runs=10000 --use=0.8.18",
@@ -46,7 +46,7 @@
 	},
 	"dependencies": {
 		"@0xsequence/wallet-contracts": "^2.0.0",
-		"@nftchance/plug-types": "^0.9.8",
+		"@nftchance/plug-types": "^0.9.9",
 		"abitype": "^1.0.2",
 		"solady": "^0.0.179",
 		"viem": "^2.8.12",
@@ -90,13 +90,7 @@
 		"./package.json": "./package.json",
 		"./addresses.json": "./src/lib/addresses.json"
 	},
-	"files": [
-		"/core",
-		"/lib",
-		"/dist",
-		"/src",
-		"/artifacts"
-	],
+	"files": ["/core", "/lib", "/dist", "/src", "/artifacts"],
 	"publishConfig": {
 		"access": "public"
 	}
