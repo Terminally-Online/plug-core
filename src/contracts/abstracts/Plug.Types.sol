@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity 0.8.18;
 
 import { ECDSA } from "solady/src/utils/ECDSA.sol";
@@ -16,7 +15,7 @@ import { ECDSA } from "solady/src/utils/ECDSA.sol";
  *      As an extensible base, all projects build on top of Pins
  *      and Plugs.
  * @author @nftchance
- * @author @nftchance/plug-types (2024-03-20)
+ * @author @nftchance/plug-types (2024-03-21)
  */
 library PlugTypesLib {
     /**
@@ -24,7 +23,7 @@ library PlugTypesLib {
      *         decode EIP712Domain data from a hash.
      *
      * @dev EIP712Domain extends EIP712<{
-     * 		{ name: 'name', type: 'string' }
+     *      { name: 'name', type: 'string' }
      * 		{ name: 'version', type: 'string' }
      * 		{ name: 'chainId', type: 'uint256' }
      * 		{ name: 'verifyingContract', type: 'address' }
@@ -42,7 +41,7 @@ library PlugTypesLib {
      *         decode Current data from a hash.
      *
      * @dev Current extends EIP712<{
-     * 		{ name: 'target', type: 'address' }
+     *      { name: 'target', type: 'address' }
      * 		{ name: 'value', type: 'uint256' }
      * 		{ name: 'data', type: 'bytes' }
      * }>
@@ -58,7 +57,7 @@ library PlugTypesLib {
      *         decode Fuse data from a hash.
      *
      * @dev Fuse extends EIP712<{
-     * 		{ name: 'target', type: 'address' }
+     *      { name: 'target', type: 'address' }
      * 		{ name: 'data', type: 'bytes' }
      * }>
      */
@@ -72,7 +71,7 @@ library PlugTypesLib {
      *         decode Plug data from a hash.
      *
      * @dev Plug extends EIP712<{
-     * 		{ name: 'current', type: 'Current' }
+     *      { name: 'current', type: 'Current' }
      * 		{ name: 'fuses', type: 'Fuse[]' }
      * }>
      */
@@ -86,7 +85,7 @@ library PlugTypesLib {
      *         decode Plugs data from a hash.
      *
      * @dev Plugs extends EIP712<{
-     * 		{ name: 'socket', type: 'address' }
+     *      { name: 'socket', type: 'address' }
      * 		{ name: 'chainId', type: 'uint256' }
      * 		{ name: 'plugs', type: 'Plug[]' }
      * 		{ name: 'salt', type: 'bytes32' }
@@ -112,7 +111,7 @@ library PlugTypesLib {
      *         decode LivePlugs data from a hash.
      *
      * @dev LivePlugs extends EIP712<{
-     * 		{ name: 'plugs', type: 'Plugs' }
+     *      { name: 'plugs', type: 'Plugs' }
      * 		{ name: 'signature', type: 'bytes' }
      * }>
      */
@@ -132,11 +131,12 @@ library PlugTypesLib {
  * @dev Contracts that inherit this one must implement the name() and version()
  *      functions to provide the domain separator for EIP-712 signatures.
  * @author @nftchance
- * @author @nftchance/plug-types (2024-03-20)
+ * @author @nftchance/plug-types (2024-03-21)
  */
 abstract contract PlugTypes {
     /// @notice Use the ECDSA library for signature verification.
     using ECDSA for bytes32;
+
     /**
      * @notice Type hash representing the EIP712Domain data type providing EIP-712
      *         compatability for encoding and decoding.
@@ -147,7 +147,6 @@ abstract contract PlugTypes {
      *      { name: 'verifyingContract', type: 'address' }
      * }>>
      */
-
     bytes32 constant EIP712_DOMAIN_TYPEHASH =
         0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f;
 
@@ -212,13 +211,13 @@ abstract contract PlugTypes {
      */
     bytes32 constant LIVE_PLUGS_TYPEHASH =
         0xcd7acbd8814a0956d65476cbbd1453d8142509c3b0bc4042b38988da795438e5;
-
     /**
      * @notice Name used for the domain separator.
      * @dev This is implemented this way so that it is easy
      *      to retrieve the value and sign the built message.
      * @return $name The name of the contract.
      */
+
     function name() public pure virtual returns (string memory $name);
 
     /**
