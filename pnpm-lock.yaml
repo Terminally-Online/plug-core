@@ -9,8 +9,8 @@ dependencies:
     specifier: ^2.0.0
     version: 2.0.0(@ethersproject/abi@5.7.0)(@ethersproject/bytes@5.7.0)(@ethersproject/providers@5.7.2)(typechain@5.2.0)(typescript@5.4.2)
   '@nftchance/plug-types':
-    specifier: ^0.9.10
-    version: 0.9.10(esbuild@0.20.2)(typescript@5.4.2)
+    specifier: ^0.9.11
+    version: 0.9.11(esbuild@0.20.2)(typescript@5.4.2)
   abitype:
     specifier: ^1.0.2
     version: 1.0.2(typescript@5.4.2)(zod@3.22.4)
@@ -3046,8 +3046,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@nftchance/plug-types@0.9.10(esbuild@0.20.2)(typescript@5.4.2):
-    resolution: {integrity: sha512-NB5F21O/1/vP8PoBel92TKZMVwUgFVouXXR0OfJQYT8Vkz1xQj1uxbepVzpjCvMHnjOxtCU5p708tOHOTr/QHQ==}
+  /@nftchance/plug-types@0.9.11(esbuild@0.20.2)(typescript@5.4.2):
+    resolution: {integrity: sha512-y+e8J7kDCohsXo7/D4Vc7kyGeFf2Wc6RwoXQ3981Hv2XP3y6ruzNouESuyeYTH92oT2NCuc40nVNpxiwcGijHg==}
     hasBin: true
     dependencies:
       '@trivago/prettier-plugin-sort-imports': 4.3.0(prettier@3.2.5)

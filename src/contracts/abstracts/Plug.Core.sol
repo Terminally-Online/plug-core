@@ -79,9 +79,9 @@ abstract contract PlugCore is PlugExecute {
             (uint96 maxPriorityFeePerGas, uint96 maxFeePerGas, address solver) =
                 abi.decode($plugs.solver, (uint96, uint96, address));
 
-		    /// @dev Confirm the Solver is allowed to execute the transaction.
-		    ///      This is done here instead of a modifier so that the gas
-		    ///      snapshot accounts for the additional gas cost of the require.
+            /// @dev Confirm the Solver is allowed to execute the transaction.
+            ///      This is done here instead of a modifier so that the gas
+            ///      snapshot accounts for the additional gas cost of the require.
             require(solver == $solver, "Plug:invalid-solver");
 
             /// @dev Calculate the gas price based on the current block.

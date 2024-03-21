@@ -21,6 +21,9 @@ import { LibClone } from "solady/src/utils/LibClone.sol";
  * @author @nftchance (chance@utc24.io)
  */
 contract PlugFactory is PlugTradable {
+    /// @dev The mapping of the implementations of the vaults.
+    mapping(uint16 => address) public implementations;
+
     /**
      * @notice Construct a new Plug Factory.
      * @param $owner The address of the owner.
@@ -37,61 +40,47 @@ contract PlugFactory is PlugTradable {
      * @notice Deploy a new Socket and initialize it.
      * @dev This version is used to interface with directly enabling the ability
      *      to deploy multiple Sockets at once from a single Plug bundle.
-     * @param $implementation The implementation of the vault.
      * @param $salt The salt of the Socket.
      * @return $alreadyDeployed Whether or not the Socket was already deployed.
      * @return $socket The address of the deployed Socket.
      */
-    function deploy(
-        address $implementation,
-        bytes32 $salt
-    )
+    function deploy(bytes32 $salt)
         public
         payable
         virtual
         returns (bool $alreadyDeployed, address $socket)
     {
+        /// @dev Determine the address of the implementation provided the salt.
+        address implementation = implementations[uint16(uint256($salt))];
+
+        /// @dev Ensure the implementation is valid.
+        require(implementation != address(0), "PlugFactory:invalid-implementation");
+
         /// @dev Deploy the new vault using a Beacon Proxy pattern.
         ($alreadyDeployed, $socket) = LibClone.createDeterministicERC1967(
-            msg.value, $implementation, $salt
+            msg.value, implementation, $salt
         );
 
         /// @dev If the vault was not already deployed, initialize it.
         if (!$alreadyDeployed) {
-            _afterDeploy($implementation, $salt, $socket);
+            _afterDeploy(implementation, $salt, $socket);
         }
     }
 
     /**
-     * @notice Handle the state updates after the deployment of a new Socket.
+     * @notice Set the implementation of a new version of the Socket.
+     * @param $version The version of the vault.
      * @param $implementation The implementation of the vault.
-     * @param $salt The salt of the Socket.
-     * @param $socket The deployed Socket.
      */
-    function _afterDeploy(
-        address $implementation,
-        bytes32 $salt,
-        address $socket
-    )
-        internal
-        virtual
+    function setImplementation(uint16 $version, address $implementation)
+        public
+        onlyOwner
     {
-        /// @dev Initialize the Socket with the ownership proxy pointing
-        ///      this factory that is deploying the Socket.
-        PlugSocketInterface($socket).initialize(address(this));
+        /// @dev Ensure the implementation is not already set.
+        require(implementations[$version] == address(0), "PlugFactory:version-already-initialized");
 
-        /// @dev Recover the admin of the Socket by unpacking the signer from the salt.
-        ///      The admin is the first 20 bytes of the salt and nonce is the last
-        ///      12 bytes of the salt.
-        address admin = address(uint160(uint256($salt) >> 96));
-
-        /// @dev Emit an event for the creation of the Vault to make
-        ///      tracking things easier offchain.
-        emit PlugLib.SocketDeployed($implementation, admin, $salt);
-
-        /// @dev Mint the transferable ownership token to the signer that
-        ///      created the intent which is implicitly the Socket admin.
-        _mint(admin, uint256(uint160(address($socket))));
+        /// @dev Set the implementation of the vault.
+        implementations[$version] = $implementation;
     }
 
     /**
@@ -124,5 +113,37 @@ contract PlugFactory is PlugTradable {
         returns (bytes32 $initCodeHash)
     {
         $initCodeHash = LibClone.initCodeHashERC1967($implementation);
+    }
+
+    /**
+     * @notice Handle the state updates after the deployment of a new Socket.
+     * @param $implementation The implementation of the vault.
+     * @param $salt The salt of the Socket.
+     * @param $socket The deployed Socket.
+     */
+    function _afterDeploy(
+        address $implementation,
+        bytes32 $salt,
+        address $socket
+    )
+        internal
+        virtual
+    {
+        /// @dev Recover the admin of the Socket by unpacking the signer from the salt.
+        ///      The admin is the first 20 bytes of the salt and nonce is the last
+        ///      12 bytes of the salt.
+        address admin = address(uint160(uint256($salt) >> 96));
+
+        /// @dev Emit an event for the creation of the Vault to make
+        ///      tracking things easier offchain.
+        emit PlugLib.SocketDeployed($implementation, admin, $salt);
+
+        /// @dev Initialize the Socket with the ownership proxy pointing
+        ///      this factory that is deploying the Socket.
+        PlugSocketInterface($socket).initialize(address(this));
+
+        /// @dev Mint the transferable ownership token to the signer that
+        ///      created the intent which is implicitly the Socket admin.
+        _mint(admin, uint256(uint160(address($socket))));
     }
 }
