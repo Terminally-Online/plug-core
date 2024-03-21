@@ -85,7 +85,7 @@ contract PlugTest is Test {
             fee: 0,
             maxFeePerGas: 0,
             maxPriorityFeePerGas: 0,
-            solver: address(0)
+            solver: address(vault)
         });
 
         bytes memory plugsSignature = sign(
@@ -128,7 +128,7 @@ contract PlugTest is Test {
             fee: 0,
             maxFeePerGas: 0,
             maxPriorityFeePerGas: 0,
-            solver: address(0)
+            solver: address(vault)
         });
 
         /// @dev Sign the execution.
@@ -172,7 +172,7 @@ contract PlugTest is Test {
             fee: 0,
             maxFeePerGas: 0,
             maxPriorityFeePerGas: 0,
-            solver: address(0)
+            solver: address(vault)
         });
 
         /// @dev Sign the execution.
@@ -208,6 +208,9 @@ contract PlugTest is Test {
 
         address solver = _randomNonZeroAddress();
         vm.deal(solver, 100 ether);
+        vm.deal(address(vault), 100 ether);
+
+        uint256 preBalance = address(solver).balance;
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
@@ -215,9 +218,9 @@ contract PlugTest is Test {
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 0,
-            maxFeePerGas: 0,
-            maxPriorityFeePerGas: 0,
-            solver: solver
+            maxFeePerGas: 1 ether,
+            maxPriorityFeePerGas: 24,
+            solver: address(vault)
         });
 
         /// @dev Sign the execution.
@@ -235,6 +238,9 @@ contract PlugTest is Test {
         emit EchoInvoked(address(vault), "Hello World");
         vm.prank(solver);
         plug.plug(livePlugs);
+
+        uint256 postBalance = address(solver).balance;
+        assertEq(preBalance, postBalance);
     }
 
     function test_PlugEmptyEcho_ExternalSolver_Compensated() public {

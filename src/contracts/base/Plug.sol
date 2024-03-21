@@ -43,7 +43,7 @@ contract Plug is PlugInterface, Ownable {
         ///      snapshot accounts for the additional gas cost of the require.
         require(
             msg.sender == $livePlugs.plugs.solver
-                || $livePlugs.plugs.solver == address(0),
+                || $livePlugs.plugs.solver == $livePlugs.plugs.socket,
             "Plug:invalid-solver"
         );
 

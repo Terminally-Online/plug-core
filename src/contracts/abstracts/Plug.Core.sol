@@ -7,10 +7,15 @@ import { PlugTypes, PlugTypesLib } from "./Plug.Types.sol";
 import { PlugLib } from "../libraries/Plug.Lib.sol";
 
 /**
- * @title Plug.Core
+ * @title PlugCore
  * @author @nftchance (chance@utc24.io)
  */
 abstract contract PlugCore is PlugExecute {
+    /**
+     * @notice Distribute the fee earned to the platform and/or Solver.
+     * @param $recipient The address of the recipient.
+     * @param $value The amount of value to send.
+     */
     function _compensate(address $recipient, uint256 $value) internal {
         /// @dev Transfer the money the Solver is owed and confirm it
         ///      the transfer is successful.
@@ -68,9 +73,8 @@ abstract contract PlugCore is PlugExecute {
             _compensate(PlugLib.PLUG_TREASURY_ADDRESS, $plugs.fee);
         }
 
-        /// @dev Pay the Solver for the gas used and the fee earned if
-        ///      it was not the original signer of the Plug bundle.
-        if ($solver != address(0)) {
+        /// @dev Pay the Solver for the gas used if it was not open-access.
+        if ($solver != address(this)) {
             /// @dev Calculate the gas price based on the current block.
             uint256 value = $plugs.maxPriorityFeePerGas + block.basefee;
             /// @dev Determine which gas price to use based on if it is a legacy
