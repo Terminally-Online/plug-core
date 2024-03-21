@@ -54,6 +54,71 @@ export const plugAbi = [
     inputs: [
       {
         name: '$livePlugs',
+        internalType: 'struct PlugTypesLib.LivePlugs',
+        type: 'tuple',
+        components: [
+          {
+            name: 'plugs',
+            internalType: 'struct PlugTypesLib.Plugs',
+            type: 'tuple',
+            components: [
+              { name: 'socket', internalType: 'address', type: 'address' },
+              {
+                name: 'plugs',
+                internalType: 'struct PlugTypesLib.Plug[]',
+                type: 'tuple[]',
+                components: [
+                  {
+                    name: 'current',
+                    internalType: 'struct PlugTypesLib.Current',
+                    type: 'tuple',
+                    components: [
+                      {
+                        name: 'target',
+                        internalType: 'address',
+                        type: 'address',
+                      },
+                      {
+                        name: 'value',
+                        internalType: 'uint256',
+                        type: 'uint256',
+                      },
+                      { name: 'data', internalType: 'bytes', type: 'bytes' },
+                    ],
+                  },
+                  {
+                    name: 'fuses',
+                    internalType: 'struct PlugTypesLib.Fuse[]',
+                    type: 'tuple[]',
+                    components: [
+                      {
+                        name: 'target',
+                        internalType: 'address',
+                        type: 'address',
+                      },
+                      { name: 'data', internalType: 'bytes', type: 'bytes' },
+                    ],
+                  },
+                ],
+              },
+              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'fee', internalType: 'uint256', type: 'uint256' },
+              { name: 'solver', internalType: 'bytes', type: 'bytes' },
+            ],
+          },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    name: 'plug',
+    outputs: [{ name: '$results', internalType: 'bytes[]', type: 'bytes[]' }],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: '$livePlugs',
         internalType: 'struct PlugTypesLib.LivePlugs[]',
         type: 'tuple[]',
         components: [
@@ -62,11 +127,6 @@ export const plugAbi = [
             internalType: 'struct PlugTypesLib.Plugs',
             type: 'tuple',
             components: [
-              {
-                name: 'implementation',
-                internalType: 'address',
-                type: 'address',
-              },
               { name: 'socket', internalType: 'address', type: 'address' },
               {
                 name: 'plugs',
@@ -119,76 +179,6 @@ export const plugAbi = [
     outputs: [
       { name: '$results', internalType: 'bytes[][]', type: 'bytes[][]' },
     ],
-    stateMutability: 'payable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: '$livePlugs',
-        internalType: 'struct PlugTypesLib.LivePlugs',
-        type: 'tuple',
-        components: [
-          {
-            name: 'plugs',
-            internalType: 'struct PlugTypesLib.Plugs',
-            type: 'tuple',
-            components: [
-              {
-                name: 'implementation',
-                internalType: 'address',
-                type: 'address',
-              },
-              { name: 'socket', internalType: 'address', type: 'address' },
-              {
-                name: 'plugs',
-                internalType: 'struct PlugTypesLib.Plug[]',
-                type: 'tuple[]',
-                components: [
-                  {
-                    name: 'current',
-                    internalType: 'struct PlugTypesLib.Current',
-                    type: 'tuple',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      {
-                        name: 'value',
-                        internalType: 'uint256',
-                        type: 'uint256',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
-                  {
-                    name: 'fuses',
-                    internalType: 'struct PlugTypesLib.Fuse[]',
-                    type: 'tuple[]',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
-                ],
-              },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
-              { name: 'fee', internalType: 'uint256', type: 'uint256' },
-              { name: 'solver', internalType: 'bytes', type: 'bytes' },
-            ],
-          },
-          { name: 'signature', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
-    ],
-    name: 'plug',
-    outputs: [{ name: '$results', internalType: 'bytes[]', type: 'bytes[]' }],
     stateMutability: 'payable',
   },
   {
@@ -459,10 +449,7 @@ export const plugFactoryAbi = [
   },
   {
     type: 'function',
-    inputs: [
-      { name: '$implementation', internalType: 'address', type: 'address' },
-      { name: '$salt', internalType: 'bytes32', type: 'bytes32' },
-    ],
+    inputs: [{ name: '$salt', internalType: 'bytes32', type: 'bytes32' }],
     name: 'deploy',
     outputs: [
       { name: '$alreadyDeployed', internalType: 'bool', type: 'bool' },
@@ -485,6 +472,13 @@ export const plugFactoryAbi = [
     inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
     name: 'getApproved',
     outputs: [{ name: 'result', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: '', internalType: 'uint16', type: 'uint16' }],
+    name: 'implementations',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -589,6 +583,16 @@ export const plugFactoryAbi = [
     type: 'function',
     inputs: [{ name: '$baseURI', internalType: 'string', type: 'string' }],
     name: 'setBaseURI',
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: '$version', internalType: 'uint16', type: 'uint16' },
+      { name: '$implementation', internalType: 'address', type: 'address' },
+    ],
+    name: 'setImplementation',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -1385,11 +1389,6 @@ export const plugVaultSocketAbi = [
             internalType: 'struct PlugTypesLib.Plugs',
             type: 'tuple',
             components: [
-              {
-                name: 'implementation',
-                internalType: 'address',
-                type: 'address',
-              },
               { name: 'socket', internalType: 'address', type: 'address' },
               {
                 name: 'plugs',
@@ -1518,7 +1517,6 @@ export const plugVaultSocketAbi = [
         internalType: 'struct PlugTypesLib.Plugs',
         type: 'tuple',
         components: [
-          { name: 'implementation', internalType: 'address', type: 'address' },
           { name: 'socket', internalType: 'address', type: 'address' },
           {
             name: 'plugs',
@@ -1624,11 +1622,6 @@ export const plugVaultSocketAbi = [
             internalType: 'struct PlugTypesLib.Plugs',
             type: 'tuple',
             components: [
-              {
-                name: 'implementation',
-                internalType: 'address',
-                type: 'address',
-              },
               { name: 'socket', internalType: 'address', type: 'address' },
               {
                 name: 'plugs',
@@ -1691,7 +1684,6 @@ export const plugVaultSocketAbi = [
         internalType: 'struct PlugTypesLib.Plugs',
         type: 'tuple',
         components: [
-          { name: 'implementation', internalType: 'address', type: 'address' },
           { name: 'socket', internalType: 'address', type: 'address' },
           {
             name: 'plugs',
@@ -2388,6 +2380,15 @@ export const useReadPlugFactoryGetApproved =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"implementations"`
+ */
+export const useReadPlugFactoryImplementations =
+  /*#__PURE__*/ createUseReadContract({
+    abi: plugFactoryAbi,
+    functionName: 'implementations',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"initCodeHash"`
  */
 export const useReadPlugFactoryInitCodeHash =
@@ -2550,6 +2551,15 @@ export const useWritePlugFactorySetBaseUri =
   })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"setImplementation"`
+ */
+export const useWritePlugFactorySetImplementation =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: plugFactoryAbi,
+    functionName: 'setImplementation',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"transferFrom"`
  */
 export const useWritePlugFactoryTransferFrom =
@@ -2653,6 +2663,15 @@ export const useSimulatePlugFactorySetBaseUri =
   /*#__PURE__*/ createUseSimulateContract({
     abi: plugFactoryAbi,
     functionName: 'setBaseURI',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"setImplementation"`
+ */
+export const useSimulatePlugFactorySetImplementation =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: plugFactoryAbi,
+    functionName: 'setImplementation',
   })
 
 /**

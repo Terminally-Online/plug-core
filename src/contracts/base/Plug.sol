@@ -96,9 +96,7 @@ contract Plug is PlugInterface, Ownable {
         /// @dev If the Socket has not yet been deployed, deploy it.
         if ($socketAddress.code.length == 0) {
             /// @dev Call the factory that will handle the intent based deployment.
-            (, $socketAddress) = factory.deploy(
-                $livePlugs.plugs.salt
-            );
+            (, $socketAddress) = factory.deploy($livePlugs.plugs.salt);
 
             /// @dev Confirm the Socket was deployed to the right address.
             require(

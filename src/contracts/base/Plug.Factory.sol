@@ -54,7 +54,9 @@ contract PlugFactory is PlugTradable {
         address implementation = implementations[uint16(uint256($salt))];
 
         /// @dev Ensure the implementation is valid.
-        require(implementation != address(0), "PlugFactory:invalid-implementation");
+        require(
+            implementation != address(0), "PlugFactory:invalid-implementation"
+        );
 
         /// @dev Deploy the new vault using a Beacon Proxy pattern.
         ($alreadyDeployed, $socket) = LibClone.createDeterministicERC1967(
@@ -72,12 +74,18 @@ contract PlugFactory is PlugTradable {
      * @param $version The version of the vault.
      * @param $implementation The implementation of the vault.
      */
-    function setImplementation(uint16 $version, address $implementation)
+    function setImplementation(
+        uint16 $version,
+        address $implementation
+    )
         public
         onlyOwner
     {
         /// @dev Ensure the implementation is not already set.
-        require(implementations[$version] == address(0), "PlugFactory:version-already-initialized");
+        require(
+            implementations[$version] == address(0),
+            "PlugFactory:version-already-initialized"
+        );
 
         /// @dev Set the implementation of the vault.
         implementations[$version] = $implementation;
