@@ -85,23 +85,21 @@ library PlugTypesLib {
      *         decode Plugs data from a hash.
      *
      * @dev Plugs extends EIP712<{
-     *      { name: 'socket', type: 'address' }
+     *      { name: 'implementation', type: 'address' }
+     * 		{ name: 'socket', type: 'address' }
      * 		{ name: 'plugs', type: 'Plug[]' }
      * 		{ name: 'salt', type: 'bytes32' }
      * 		{ name: 'fee', type: 'uint256' }
-     * 		{ name: 'maxFeePerGas', type: 'uint256' }
-     * 		{ name: 'maxPriorityFeePerGas', type: 'uint256' }
-     * 		{ name: 'solver', type: 'address' }
+     * 		{ name: 'solver', type: 'bytes' }
      * }>
      */
     struct Plugs {
+        address implementation;
         address socket;
         Plug[] plugs;
         bytes32 salt;
         uint256 fee;
-        uint256 maxFeePerGas;
-        uint256 maxPriorityFeePerGas;
-        address solver;
+        bytes solver;
     }
 
     /**
@@ -186,17 +184,16 @@ abstract contract PlugTypes {
      * @notice Type hash representing the Plugs data type providing EIP-712
      *         compatability for encoding and decoding.
      * @dev PLUGS_TYPEHASH extends TypeHash<EIP712<{
+     *      { name: 'implementation', type: 'address' }
      *      { name: 'socket', type: 'address' }
      *      { name: 'plugs', type: 'Plug[]' }
      *      { name: 'salt', type: 'bytes32' }
      *      { name: 'fee', type: 'uint256' }
-     *      { name: 'maxFeePerGas', type: 'uint256' }
-     *      { name: 'maxPriorityFeePerGas', type: 'uint256' }
-     *      { name: 'solver', type: 'address' }
+     *      { name: 'solver', type: 'bytes' }
      * }>>
      */
     bytes32 constant PLUGS_TYPEHASH =
-        0xf6bc9db363e39d370c03292523a8c414d48117b1a291ec093570ec5f75bb1598;
+        0x13f7d3468badc2cb8b9bf0e03f5a1cc98eea0c3561c578a774f1f15f91ca83d7;
 
     /**
      * @notice Type hash representing the LivePlugs data type providing EIP-712
@@ -207,7 +204,7 @@ abstract contract PlugTypes {
      * }>>
      */
     bytes32 constant LIVE_PLUGS_TYPEHASH =
-        0xbd158c70761c4f4080abbdff7bf857fee7971dc798e804f71c5293d5924badff;
+        0x4883409b4c442a3daf69532ecec0722dfb02d6ea60abfcda1e587ac143930fd8;
     /**
      * @notice Name used for the domain separator.
      * @dev This is implemented this way so that it is easy
@@ -392,13 +389,12 @@ abstract contract PlugTypes {
         $hash = keccak256(
             abi.encode(
                 PLUGS_TYPEHASH,
+                $input.implementation,
                 $input.socket,
                 getPlugArrayHash($input.plugs),
                 $input.salt,
                 $input.fee,
-                $input.maxFeePerGas,
-                $input.maxPriorityFeePerGas,
-                $input.solver
+                keccak256($input.solver)
             )
         );
     }

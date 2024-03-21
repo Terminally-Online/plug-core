@@ -21,11 +21,10 @@ abstract contract PlugSocket is
 {
     /**
      * See {PlugSocketInterface-plug}.
-     *
-     * @dev Process the Plug bundle with an external Solver.
      */
     function plug(
         PlugTypesLib.LivePlugs calldata $livePlugs,
+        address $solver,
         uint256 $gas
     )
         external
@@ -36,13 +35,11 @@ abstract contract PlugSocket is
         nonReentrant
         returns (bytes[] memory $results)
     {
-        $results = _plug($livePlugs.plugs, $livePlugs.plugs.solver, $gas);
+        $results = _plug($livePlugs.plugs, $solver, $gas);
     }
 
     /**
      * See {PlugSocketInterface-plug}.
-     *
-     * @dev Process the Plug bundle without an external Solver.
      */
     function plug(PlugTypesLib.Plugs calldata $plugs)
         external

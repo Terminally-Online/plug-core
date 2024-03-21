@@ -79,13 +79,12 @@ contract PlugTest is Test {
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
+            implementation: address(0),
             socket: address(vault),
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 0,
-            maxFeePerGas: 0,
-            maxPriorityFeePerGas: 0,
-            solver: address(vault)
+            solver: bytes("")
         });
 
         bytes memory plugsSignature = sign(
@@ -122,13 +121,12 @@ contract PlugTest is Test {
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
+            implementation: address(0),
             socket: address(vault),
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 0,
-            maxFeePerGas: 0,
-            maxPriorityFeePerGas: 0,
-            solver: address(vault)
+            solver: bytes("")
         });
 
         /// @dev Sign the execution.
@@ -166,13 +164,12 @@ contract PlugTest is Test {
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
+            implementation: address(0),
             socket: address(vault),
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 0,
-            maxFeePerGas: 0,
-            maxPriorityFeePerGas: 0,
-            solver: address(vault)
+            solver: bytes("")
         });
 
         /// @dev Sign the execution.
@@ -214,13 +211,12 @@ contract PlugTest is Test {
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
+            implementation: address(0),
             socket: address(vault),
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 0,
-            maxFeePerGas: 1 ether,
-            maxPriorityFeePerGas: 24,
-            solver: address(vault)
+            solver: abi.encode(uint96(0), uint96(0), solver)
         });
 
         /// @dev Sign the execution.
@@ -266,13 +262,12 @@ contract PlugTest is Test {
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
+            implementation: address(0),
             socket: address(vault),
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 1 ether,
-            maxFeePerGas: 0,
-            maxPriorityFeePerGas: 0,
-            solver: solver
+            solver: abi.encode(uint96(0.2 ether), uint96(1), solver)
         });
 
         /// @dev Sign the execution.
@@ -288,12 +283,13 @@ contract PlugTest is Test {
         /// @dev Execute the plug.
         vm.expectEmit(address(mock));
         emit EchoInvoked(address(vault), "Hello World");
-        vm.prank(solver);
         /// @dev Make sure the compensation successfully changes hands.
         uint256 preBalance = address(vault).balance;
+        vm.prank(solver);
         plug.plug(livePlugs);
         uint256 postBalance = address(vault).balance;
-        assertEq(preBalance - 1 ether, postBalance);
+        /// @dev Check if it's greater than to account for the solver fee.
+        assertTrue(preBalance - 1 ether > postBalance);
     }
 
     function testRevert_PlugEmptyEcho_ExternalSolver_CompensationFailure()
@@ -321,13 +317,12 @@ contract PlugTest is Test {
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
+            implementation: address(0),
             socket: address(vault),
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 1 ether,
-            maxFeePerGas: 0,
-            maxPriorityFeePerGas: 0,
-            solver: solver
+            solver: abi.encode(uint96(0.2 ether), uint96(24), solver)
         });
 
         /// @dev Sign the execution.
@@ -370,13 +365,12 @@ contract PlugTest is Test {
 
         /// @dev Make sure this transaction cannot be replayed.
         PlugTypesLib.Plugs memory plugs = PlugTypesLib.Plugs({
+            implementation: address(0),
             socket: address(vault),
             plugs: plugsArray,
             salt: bytes32(0),
             fee: 1 ether,
-            maxFeePerGas: 0,
-            maxPriorityFeePerGas: 0,
-            solver: solver
+            solver: abi.encode(uint96(0), uint96(0), address(solver))
         });
 
         /// @dev Sign the execution.

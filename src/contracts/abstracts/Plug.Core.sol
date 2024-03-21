@@ -74,22 +74,31 @@ abstract contract PlugCore is PlugExecute {
         }
 
         /// @dev Pay the Solver for the gas used if it was not open-access.
-        if ($solver != address(this)) {
+        if ($plugs.solver.length != 0) {
+            /// @dev Unpack the solver data from the encoded slot.
+            (uint96 maxPriorityFeePerGas, uint96 maxFeePerGas, address solver) =
+                abi.decode($plugs.solver, (uint96, uint96, address));
+
+		    /// @dev Confirm the Solver is allowed to execute the transaction.
+		    ///      This is done here instead of a modifier so that the gas
+		    ///      snapshot accounts for the additional gas cost of the require.
+            require(solver == $solver, "Plug:invalid-solver");
+
             /// @dev Calculate the gas price based on the current block.
-            uint256 value = $plugs.maxPriorityFeePerGas + block.basefee;
+            uint256 value = maxPriorityFeePerGas + block.basefee;
             /// @dev Determine which gas price to use based on if it is a legacy
             ///      transaction (on a chain that does not support it) or if the
             ///      the transaction is submit post EIP-1559.
-            value = $plugs.maxFeePerGas == $plugs.maxPriorityFeePerGas
-                ? $plugs.maxFeePerGas
-                : $plugs.maxFeePerGas < value ? $plugs.maxFeePerGas : value;
+            value = maxFeePerGas == maxPriorityFeePerGas
+                ? maxFeePerGas
+                : maxFeePerGas < value ? maxFeePerGas : value;
 
             /// @dev Augment the native gas price with the Solver "gas" fee.
             value = ($gas - gasleft()) * value;
 
             /// @dev Transfer the money the Solver is owed and confirm it
             ///      the transfer is successful.
-            _compensate($solver, value);
+            _compensate(solver, value);
         }
     }
 }
