@@ -29,9 +29,7 @@ contract Plug is PlugInterface {
     {
         /// @dev Pass down the signature components and execute
         ///      the bundle from within the Socket that was declared.
-        $results = _socket($livePlugs).plug(
-            $livePlugs, msg.sender, (gasleft() * 63) / 64
-        );
+        $results = _socket($livePlugs).plug($livePlugs, msg.sender, gasleft());
     }
 
     /**
