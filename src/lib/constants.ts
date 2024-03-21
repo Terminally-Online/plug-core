@@ -79,5 +79,6 @@ export const etchContracts: Array<Contract> = [
     nounsTrait,
     revocation,
     timestamp,
-    window
+    window,
+    vault
 ] as const
