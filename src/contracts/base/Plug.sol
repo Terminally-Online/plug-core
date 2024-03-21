@@ -3,21 +3,21 @@
 pragma solidity 0.8.18;
 
 import { PlugInterface } from "../interfaces/Plug.Interface.sol";
-import { Ownable } from "solady/src/auth/Ownable.sol";
-import { PlugFactory } from "../base/Plug.Factory.sol";
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
-import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
+import { PlugSocket } from "../abstracts/Plug.Socket.sol";
+import { PlugFactory } from "../base/Plug.Factory.sol";
+import { PlugLib } from "../libraries/Plug.Lib.sol";
 
 /**
  * @title Plug
- * @notice This contract represents a general purpose relay socket that can be
- *         used to route transactions to other contracts.
+ * @notice This contract represents a general purpose relay used to route signed
+ *         intents to target Sockets.
  * @dev There is no need to approve assets to this contract as all transactions
- *      are executed through the socket which will manage its own permissions
- *      can be safely approved to interact with the assets of another account.
- * @author @nftchance (chance@utc24.io)
+ *      are executed through the Socket which will manage its own permissions
+ *      that can be safely approved to interact with the assets of another account.
+ * @author @nftchance (chance@onplug.io)
  */
-contract Plug is PlugInterface, Ownable {
+contract Plug is PlugInterface {
     /// @dev The factory that enables automatic Socket deployment.
     PlugFactory factory;
 
@@ -30,13 +30,10 @@ contract Plug is PlugInterface, Ownable {
         virtual
         returns (bytes[] memory $results)
     {
-        /// @dev Snapshot how much gas the transaction has.
-        uint256 gas = (gasleft() * 63) / 64;
-
-        /// @dev Pass down the now-verified signature components and execute
+        /// @dev Pass down the signature components and execute
         ///      the bundle from within the Socket that was declared.
-        $results = _socket($livePlugs.plugs.socket, $livePlugs).plug(
-            $livePlugs, msg.sender, gas
+        $results = _socket($livePlugs).plug(
+            $livePlugs, msg.sender, (gasleft() * 63) / 64
         );
     }
 
@@ -78,33 +75,35 @@ contract Plug is PlugInterface, Ownable {
      * @notice Initialize the Plug with the factory and the implementation if
      *         it has not been initialized yet, otherwise just use the address
      *         included in the Plug bundle.
-     * @param $socketAddress The address of the Socket to use.
-     * @param $livePlugs The bundle of plugs to execute.
+     * @param $livePlugs The signed bundle of Plugs being executed.
      * @return $socket The Socket to use.
      */
-    function _socket(
-        address $socketAddress,
-        PlugTypesLib.LivePlugs calldata $livePlugs
-    )
+    function _socket(PlugTypesLib.LivePlugs calldata $livePlugs)
         internal
         virtual
-        returns (PlugSocketInterface $socket)
+        returns (PlugSocket $socket)
     {
         /// @dev Pull the address of the Socket from the bundle.
         address socketAddress = $livePlugs.plugs.socket;
 
         /// @dev If the Socket has not yet been deployed, deploy it.
-        if ($socketAddress.code.length == 0) {
+        if (socketAddress.code.length == 0) {
             /// @dev Call the factory that will handle the intent based deployment.
-            (, $socketAddress) = factory.deploy($livePlugs.plugs.salt);
+            (, address $socketAddress) = factory.deploy($livePlugs.plugs.salt);
 
+            /// @dev Confirm the Socket was actually deployed.
+            if ($socketAddress.code.length == 0) {
+                revert PlugLib.SocketAddressEmpty($socketAddress);
+            }
             /// @dev Confirm the Socket was deployed to the right address.
-            require(
-                $socketAddress == socketAddress, "Plug:invalid-socket-address"
-            );
+            if (socketAddress != $socketAddress) {
+                revert PlugLib.SocketAddressInvalid(
+                    socketAddress, $socketAddress
+                );
+            }
         }
 
         /// @dev Load the Socket and return it.
-        $socket = PlugSocketInterface(socketAddress);
+        $socket = PlugSocket(socketAddress);
     }
 }

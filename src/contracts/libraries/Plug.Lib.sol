@@ -3,68 +3,72 @@
 pragma solidity 0.8.18;
 
 library PlugLib {
-    address internal constant PLUG_TREASURY_ADDRESS =
-        0x00EC991a53dEa376Fe0A7798aAc3F8E5cF5C9123;
+	address internal constant PLUG_TREASURY_ADDRESS =
+		0x00EC991a53dEa376Fe0A7798aAc3F8E5cF5C9123;
 
-    address internal constant PLUG_ADDRESS =
-        0xDb3Bf1e7Fcc3476D9D00150FaA0039A7B795283F;
+	address internal constant PLUG_ADDRESS =
+		0xDb3Bf1e7Fcc3476D9D00150FaA0039A7B795283F;
 
-    event SocketDeployed(
-        address indexed implementation, address indexed vault, bytes32 salt
-    );
+	event SocketDeployed(
+		address indexed $implementation,
+		address indexed $vault,
+		bytes32 $salt
+	);
 
-    event SocketOwnershipTransferred(
-        address indexed previousOwner,
-        address indexed newOwner,
-        bytes32 imageHash
-    );
+	event SocketOwnershipTransferred(
+		address indexed $previousOwner,
+		address indexed $newOwner,
+		bytes32 $imageHash
+	);
 
-    /**
-     * @notice Bubble up the revert reason revert data.
-     * @param $revertData The revert data to extract the reason from.
-     */
-    function bubbleRevert(bytes memory $revertData) internal pure {
-        /// @dev If we won't be able to recover the message, go ahead
-        ///      and revert with the default.
-        if ($revertData.length < 4) revert("PlugCore:revert");
+	error SocketAddressInvalid(address $intended, address $socket);
+	error SocketAddressEmpty(address $socket);
 
-        bytes4 errorSelector;
-        assembly {
-            errorSelector := mload(add($revertData, 0x20))
-        }
+	/**
+	 * @notice Bubble up the revert reason revert data.
+	 * @param $revertData The revert data to extract the reason from.
+	 */
+	function bubbleRevert(bytes memory $revertData) internal pure {
+		/// @dev If we won't be able to recover the message, go ahead
+		///      and revert with the default.
+		if ($revertData.length < 4) revert('PlugCore:revert');
 
-        /// @dev Panic(uint256) (>=0.8.0)
-        if (errorSelector == bytes4(0x4e487b71)) {
-            string memory reason = "PlugCore:target-panicked-0x";
-            uint256 errorCode;
+		bytes4 errorSelector;
+		assembly {
+			errorSelector := mload(add($revertData, 0x20))
+		}
 
-            assembly {
-                errorCode := mload(add($revertData, 0x24))
-                let reasonWord := mload(add(reason, 0x20))
-                // [0..9] is converted to ['0'..'9']
-                // [0xa..0xf] is not correctly converted to ['a'..'f']
-                // but since panic code doesn't have those cases, we will ignore them for now!
-                let e1 := add(and(errorCode, 0xf), 0x30)
-                let e2 := shl(8, add(shr(4, and(errorCode, 0xf0)), 0x30))
-                reasonWord :=
-                    or(
-                        and(
-                            reasonWord,
-                            0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000
-                        ),
-                        or(e2, e1)
-                    )
-                mstore(add(reason, 0x20), reasonWord)
-            }
+		/// @dev Panic(uint256) (>=0.8.0)
+		if (errorSelector == bytes4(0x4e487b71)) {
+			string memory reason = 'PlugCore:target-panicked-0x';
+			uint256 errorCode;
 
-            revert(reason);
-        }
+			assembly {
+				errorCode := mload(add($revertData, 0x24))
+				let reasonWord := mload(add(reason, 0x20))
+				// [0..9] is converted to ['0'..'9']
+				// [0xa..0xf] is not correctly converted to ['a'..'f']
+				// but since panic code doesn't have those cases, we will ignore them for now!
+				let e1 := add(and(errorCode, 0xf), 0x30)
+				let e2 := shl(8, add(shr(4, and(errorCode, 0xf0)), 0x30))
+				reasonWord := or(
+					and(
+						reasonWord,
+						0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000
+					),
+					or(e2, e1)
+				)
+				mstore(add(reason, 0x20), reasonWord)
+			}
 
-        /// @dev Error(string) (>= 0.7.0)
-        /// @dev Custom errors (>= 0.8.0)
-        uint256 len = $revertData.length;
-        assembly {
-            revert(add($revertData, 32), len)
-        }
-    }
+			revert(reason);
+		}
+
+		/// @dev Error(string) (>= 0.7.0)
+		/// @dev Custom errors (>= 0.8.0)
+		uint256 len = $revertData.length;
+		assembly {
+			revert(add($revertData, 32), len)
+		}
+	}
 }
