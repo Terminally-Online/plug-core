@@ -11,8 +11,8 @@ import { LibClone } from "solady/src/utils/LibClone.sol";
 
 /**
  * @title Plug Factory
- * @notice This contract is responsible for deploying new Plug Vaults that can be used
- *         as personal relays for an individual. The owner can execute transactions
+ * @notice This contract is responsible for deploying new Plug Sockets that can be used
+ *         as personal accounts for an individual. The owner can execute transactions
  *         through the Sockets. The Sockets are deployed using the Beacon Proxy
  *         pattern, and the owner can upgrade the implementation at any time. On top
  *         of being the deployment mechanism for the Sockets, the Factory also manages
@@ -25,16 +25,31 @@ contract PlugFactory is PlugTradable {
     mapping(uint16 => address) public implementations;
 
     /**
-     * @notice Construct a new Plug Factory.
+     * @notice Initialize a reference implementation that will not be
+     *         with real intent of consumption.
+     */
+    constructor() {
+        _initializeTradable(address(1), "");
+    }
+
+    /**
+     * @notice Initialize this implementation of the factory.
      * @param $owner The address of the owner.
      * @param $baseURI The base URI of the factory.
      */
-    constructor(
+    function initialize(
         address $owner,
-        string memory $baseURI
+        string memory $baseURI,
+        address $implementation
     )
-        PlugTradable($owner, $baseURI)
-    { }
+        public
+        virtual
+    {
+        _initializeTradable($owner, $baseURI);
+
+        /// @dev Set the implementation of the first live version.
+        implementations[0] = $implementation;
+    }
 
     /**
      * @notice Deploy a new Socket and initialize it.
@@ -50,13 +65,17 @@ contract PlugFactory is PlugTradable {
         virtual
         returns (bool $alreadyDeployed, address $socket)
     {
+        /// @dev Recover the version of the Socket being deployed from the end
+        ///      of the salt provided.
+        uint16 version = uint16(uint256($salt));
+
         /// @dev Determine the address of the implementation provided the salt.
-        address implementation = implementations[uint16(uint256($salt))];
+        address implementation = implementations[version];
 
         /// @dev Ensure the implementation is valid.
-        require(
-            implementation != address(0), "PlugFactory:invalid-implementation"
-        );
+        if (implementation == address(0)) {
+            revert PlugLib.ImplementationInvalid(version);
+        }
 
         /// @dev Deploy the new vault using a Beacon Proxy pattern.
         ($alreadyDeployed, $socket) = LibClone.createDeterministicERC1967(
@@ -65,7 +84,24 @@ contract PlugFactory is PlugTradable {
 
         /// @dev If the vault was not already deployed, initialize it.
         if (!$alreadyDeployed) {
-            _afterDeploy(implementation, $salt, $socket);
+            /// @dev Recover the admin of the Socket by unpacking the signer from the salt.
+            ///      The admin is the first 20 bytes of the salt and nonce is the last
+            ///      12 bytes of the salt.
+            address admin = address(uint160(uint256($salt) >> 96));
+
+            /// @dev Emit an event for the creation of the Vault to make
+            ///      tracking things easier offchain.
+            emit PlugLib.SocketDeployed(implementation, admin, $salt);
+
+            /// @dev Initialize the Socket with the ownership proxy pointing
+            ///      this factory that is deploying the Socket.
+            PlugSocketInterface($socket).initialize(address(this));
+
+            /// @dev Mint the transferable ownership token to the signer that
+            ///      created the intent which is implicitly the Socket admin
+            ///      with the id of the token as integer representation of
+            ///      the address the Socket was deployed to.
+            _mint(admin, uint256(uint160(address($socket))));
         }
     }
 
@@ -81,11 +117,10 @@ contract PlugFactory is PlugTradable {
         public
         onlyOwner
     {
-        /// @dev Ensure the implementation is not already set.
-        require(
-            implementations[$version] == address(0),
-            "PlugFactory:version-already-initialized"
-        );
+        /// @dev Ensure the implementation for this version has not already been set.
+        if (implementations[$version] != address(0)) {
+            revert PlugLib.ImplementationAlreadyInitialized($version);
+        }
 
         /// @dev Set the implementation of the vault.
         implementations[$version] = $implementation;
@@ -121,37 +156,5 @@ contract PlugFactory is PlugTradable {
         returns (bytes32 $initCodeHash)
     {
         $initCodeHash = LibClone.initCodeHashERC1967($implementation);
-    }
-
-    /**
-     * @notice Handle the state updates after the deployment of a new Socket.
-     * @param $implementation The implementation of the vault.
-     * @param $salt The salt of the Socket.
-     * @param $socket The deployed Socket.
-     */
-    function _afterDeploy(
-        address $implementation,
-        bytes32 $salt,
-        address $socket
-    )
-        internal
-        virtual
-    {
-        /// @dev Recover the admin of the Socket by unpacking the signer from the salt.
-        ///      The admin is the first 20 bytes of the salt and nonce is the last
-        ///      12 bytes of the salt.
-        address admin = address(uint160(uint256($salt) >> 96));
-
-        /// @dev Emit an event for the creation of the Vault to make
-        ///      tracking things easier offchain.
-        emit PlugLib.SocketDeployed($implementation, admin, $salt);
-
-        /// @dev Initialize the Socket with the ownership proxy pointing
-        ///      this factory that is deploying the Socket.
-        PlugSocketInterface($socket).initialize(address(this));
-
-        /// @dev Mint the transferable ownership token to the signer that
-        ///      created the intent which is implicitly the Socket admin.
-        _mint(admin, uint256(uint160(address($socket))));
     }
 }

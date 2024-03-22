@@ -26,7 +26,9 @@ abstract contract PlugTrading is PlugTradingInterface, ModuleAuthUpgradable {
      */
     modifier onlyOwnership() {
         /// @dev Ensure the `caller` is the ownership proxy.
-        require(msg.sender == ownership, "PlugTrading:forbidden-caller");
+        if (msg.sender != ownership) {
+            revert PlugLib.CallerInvalid(ownership, msg.sender);
+        }
         _;
     }
 
@@ -36,7 +38,9 @@ abstract contract PlugTrading is PlugTradingInterface, ModuleAuthUpgradable {
      */
     modifier onlyOwner() {
         /// @dev Ensure the `caller` is the owner of the Socket.
-        require(msg.sender == owner(), "PlugTrading:forbidden-caller");
+        if (msg.sender != owner()) {
+            revert PlugLib.CallerInvalid(owner(), msg.sender);
+        }
         _;
     }
 
@@ -95,8 +99,9 @@ abstract contract PlugTrading is PlugTradingInterface, ModuleAuthUpgradable {
         /// @dev Check if the inheriting contract requires single-use
         ///      ownership initialization.
         if (_guardInitializeOwnership()) {
-            /// @dev Confirm the ownership has not been set yet.
-            require(ownership == address(0), "PlugTrading:already-initialized");
+            if (ownership != address(0)) {
+                revert PlugLib.TradingAlreadyInitialized();
+            }
         }
 
         /// @dev Set the state of the ownership proxy.

@@ -15,8 +15,22 @@ library PlugLib {
         bytes32 imageHash
     );
 
+    error ImplementationAlreadyInitialized(uint16 $version);
+    error ImplementationInvalid(uint16 $version);
+
+    error TradingAlreadyInitialized();
+
     error SocketAddressInvalid(address $intended, address $socket);
     error SocketAddressEmpty(address $socket);
+
+    error CallerInvalid(address $expected, address $reality);
+
+    error RouterInvalid(address $reality);
+    error SignatureInvalid();
+    error CurrentInvalid();
+    error SolverInvalid(address $expected, address $reality);
+
+    error CompensationFailed(address $recipient, uint256 $value);
 
     /**
      * @notice Bubble up the revert reason revert data.

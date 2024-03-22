@@ -20,7 +20,9 @@ abstract contract PlugCore is PlugExecute {
         /// @dev Transfer the money the Solver is owed and confirm it
         ///      the transfer is successful.
         (bool success,) = $recipient.call{ value: $value }("");
-        require(success, "Plug:compensation-failed");
+        if (success == false) {
+            revert PlugLib.CompensationFailed($recipient, $value);
+        }
     }
 
     /**
@@ -82,7 +84,9 @@ abstract contract PlugCore is PlugExecute {
             /// @dev Confirm the Solver is allowed to execute the transaction.
             ///      This is done here instead of a modifier so that the gas
             ///      snapshot accounts for the additional gas cost of the require.
-            require(solver == $solver, "Plug:invalid-solver");
+            if (solver != $solver) {
+                revert PlugLib.SolverInvalid(solver, $solver);
+            }
 
             /// @dev Calculate the gas price based on the current block.
             uint256 value = maxPriorityFeePerGas + block.basefee;

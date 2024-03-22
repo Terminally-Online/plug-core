@@ -3,6 +3,8 @@
 pragma solidity 0.8.18;
 
 import { Test } from "../utils/Test.sol";
+import { PlugEtcherLib } from "../libraries/Plug.Etcher.Lib.sol";
+import { PlugLib } from "../libraries/Plug.Lib.sol";
 
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 import { Plug } from "../base/Plug.sol";
@@ -13,48 +15,40 @@ import { PlugMockEcho } from "../mocks/Plug.Mock.Echo.sol";
 import { ERC721 } from "solady/src/tokens/ERC721.sol";
 
 contract PlugVaultSocketTest is Test {
+    PlugFactory internal factory;
+
     PlugVaultSocket internal implementation;
     PlugVaultSocket internal vault;
-    PlugFactory internal factory;
+
     PlugMockEcho internal mock;
 
+    address internal factoryOwner;
     address internal signer;
-    uint256 internal signerPrivateKey;
+    uint256 internal signerPrivateKey = 0x12345;
 
-    address factoryOwner;
+    string internal baseURI = "https://onplug.io/metadata/";
 
     function setUp() public virtual {
-        signerPrivateKey = 0xabc123;
+        factoryOwner = _randomNonZeroAddress();
         signer = vm.addr(signerPrivateKey);
 
+        factory = deployFactory();
+        vault = deployVault();
+    }
+
+    function deployFactory() internal returns (PlugFactory $factory) {
+        vm.etch(
+            PlugEtcherLib.PLUG_FACTORY_ADDRESS, address(new PlugFactory()).code
+        );
         implementation = new PlugVaultSocket();
-
-        factoryOwner = _randomNonZeroAddress();
-        factory = new PlugFactory(factoryOwner, "https://onplug.io/metadata/");
-        vm.prank(factoryOwner);
-        factory.setImplementation(0, address(implementation));
-        bytes32 salt = bytes32(abi.encodePacked(address(this), uint96(0)));
-        (, address vaultAddress) = factory.deploy(salt);
-        vault = PlugVaultSocket(payable(vaultAddress));
+        $factory = PlugFactory(payable(PlugEtcherLib.PLUG_FACTORY_ADDRESS));
+        $factory.initialize(factoryOwner, baseURI, address(implementation));
     }
 
-    function testRevert_Initialize_Again() public {
-        vm.deal(address(vault), 100 ether);
-        vm.expectRevert(bytes("PlugTrading:already-initialized"));
-        vault.initialize(address(this));
-    }
-
-    function testRevert_UninitializedVersion() public {
-        bytes32 salt =
-            bytes32(abi.encodePacked(address(this), uint80(0), uint16(1)));
-        vm.expectRevert(bytes("PlugFactory:invalid-implementation"));
-        factory.deploy(salt);
-    }
-
-    function testRevert_ReinitializeOwner() public {
-        vm.expectRevert(bytes("PlugFactory:version-already-initialized"));
-        vm.prank(factoryOwner);
-        factory.setImplementation(0, address(implementation));
+    function deployVault() internal returns (PlugVaultSocket $vault) {
+        (, address vaultAddress) =
+            factory.deploy(bytes32(abi.encodePacked(address(this), uint96(0))));
+        $vault = PlugVaultSocket(payable(vaultAddress));
     }
 
     function test_name() public {
@@ -65,17 +59,44 @@ contract PlugVaultSocketTest is Test {
         assertEq(vault.symbol(), "PVS");
     }
 
-    function test_ownership_Implementation() public {
-        assertEq(implementation.ownership(), address(1));
+    function testRevert_Initialize_Again() public {
+        vm.deal(address(vault), 100 ether);
+        vm.expectRevert(PlugLib.TradingAlreadyInitialized.selector);
+        vault.initialize(address(this));
     }
 
-    function test_owner() public {
-        assertEq(vault.owner(), address(this));
+    function testRevert_ReinitializeImplementation() public {
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                PlugLib.ImplementationAlreadyInitialized.selector, uint16(0)
+            )
+        );
+        vm.prank(factoryOwner);
+        factory.setImplementation(0, address(implementation));
+    }
+
+    function testRevert_UninitializedImplementation() public {
+        bytes32 salt =
+            bytes32(abi.encodePacked(address(this), uint80(0), uint16(2)));
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                PlugLib.ImplementationInvalid.selector, uint16(2)
+            )
+        );
+        factory.deploy(salt);
+    }
+
+    function test_ownership_Implementation() public {
+        assertEq(implementation.ownership(), address(1));
     }
 
     function testRevert_owner_Implementation() public {
         vm.expectRevert();
         implementation.owner();
+    }
+
+    function test_owner() public {
+        assertEq(vault.owner(), address(this));
     }
 
     function test_transferOwnership_Token() public {
@@ -85,15 +106,12 @@ contract PlugVaultSocketTest is Test {
         );
     }
 
-    function testRevert_transferOwnership_Direct() public {
-        address newOwner = _randomNonZeroAddress();
-        vm.expectRevert(bytes("PlugTrading:forbidden-caller"));
-        vault.transferOwnership(newOwner);
-    }
-
-    function testRevert_transferOwnership_Unauthorized() public {
-        vm.prank(_randomNonZeroAddress());
-        vm.expectRevert(bytes("PlugTrading:forbidden-caller"));
+    function testRevert_transferOwnership() public {
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                PlugLib.CallerInvalid.selector, address(factory), address(this)
+            )
+        );
         vault.transferOwnership(_randomNonZeroAddress());
     }
 }

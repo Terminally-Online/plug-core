@@ -3,6 +3,7 @@
 pragma solidity 0.8.18;
 
 import { Test } from "../utils/Test.sol";
+import { PlugEtcherLib } from "../libraries/Plug.Etcher.Lib.sol";
 
 import { PlugFactory } from "./Plug.Factory.sol";
 import { PlugVaultSocket } from "../sockets/Plug.Vault.Socket.sol";
@@ -10,7 +11,6 @@ import { PlugVaultSocket } from "../sockets/Plug.Vault.Socket.sol";
 import { LibClone } from "solady/src/utils/LibClone.sol";
 
 contract PlugFactoryTest is Test {
-    PlugVaultSocket internal implementation;
     PlugFactory internal factory;
 
     address factoryOwner;
@@ -18,12 +18,17 @@ contract PlugFactoryTest is Test {
 
     function setUp() public virtual {
         factoryOwner = _randomNonZeroAddress();
+        factory = deployFactory();
+    }
 
-        implementation = new PlugVaultSocket();
-
-        factory = new PlugFactory(factoryOwner, baseURI);
-        vm.prank(factoryOwner);
-        factory.setImplementation(0, address(implementation));
+    function deployFactory() internal returns (PlugFactory $factory) {
+        vm.etch(
+            PlugEtcherLib.PLUG_FACTORY_ADDRESS, address(new PlugFactory()).code
+        );
+        $factory = PlugFactory(payable(PlugEtcherLib.PLUG_FACTORY_ADDRESS));
+        $factory.initialize(
+            factoryOwner, baseURI, address(new PlugVaultSocket())
+        );
     }
 
     function test_DeployDeterministic(uint256) public {
@@ -41,9 +46,5 @@ contract PlugFactoryTest is Test {
         // TODO: Check for repeated deployment calls to make sure that we don't double deploy.
 
         assertEq(address(vault).balance, initialValue);
-    }
-
-    function test_InitCodeHash() public view {
-        factory.initCodeHash(address(implementation));
     }
 }
