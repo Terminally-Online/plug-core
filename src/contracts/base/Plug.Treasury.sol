@@ -35,9 +35,7 @@ contract PlugTreasury is Receiver, Ownable {
         onlyOwner
     {
         (bool success, bytes memory reason) = $to.call{ value: $value }($data);
-        if (success == false) {
-            PlugLib.bubbleRevert(reason);
-        }
+        PlugLib.bubbleRevert(success, reason);
     }
 
     /**

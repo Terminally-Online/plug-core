@@ -40,7 +40,8 @@ library PlugLib {
     error CompensationFailed(address $recipient, uint256 $value);
 
     /**
-     * @notice Bubble up the revert reason revert data.
+     * @notice Bubble up the revert reason revert data from an internal call
+     *         that would typically revert without surfacing the reason.
      * @param $revertData The revert data to extract the reason from.
      */
     function bubbleRevert(bytes memory $revertData) internal pure {
@@ -85,6 +86,19 @@ library PlugLib {
         uint256 len = $revertData.length;
         assembly {
             revert(add($revertData, 32), len)
+        }
+    }
+
+    /**
+     * @notice Helper function to bubble up a revert reason if a condition is not met.
+     * @param $reason The revert reason to surface.
+     */
+    function bubbleRevert(bool $success, bytes memory $reason) internal pure {
+        /// @dev Confirm the call was successful.
+        if (!$success) {
+            /// @dev Go ahead and surface the revert reason as a failure would have
+            ///      returned an error rather than the expected typed message.
+            bubbleRevert($reason);
         }
     }
 }

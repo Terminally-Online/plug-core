@@ -111,7 +111,7 @@ abstract contract PlugEnforce is PlugTypes {
         );
 
         /// @dev If the Fuse failed and is not optional, bubble up the revert.
-        if (!$success) PlugLib.bubbleRevert($through);
+        PlugLib.bubbleRevert($success, $through);
 
         /// @dev Decode the return data to remove the wrapped bytes in memory.
         $through = abi.decode($through, (bytes));
