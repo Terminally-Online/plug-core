@@ -301,18 +301,7 @@ export const contracts = [
         "abi": [
             {
                 "type": "constructor",
-                "inputs": [
-                    {
-                        "name": "$owner",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$baseURI",
-                        "type": "string",
-                        "internalType": "string"
-                    }
-                ],
+                "inputs": [],
                 "stateMutability": "nonpayable"
             },
             {
@@ -476,6 +465,29 @@ export const contracts = [
                     }
                 ],
                 "stateMutability": "view"
+            },
+            {
+                "type": "function",
+                "name": "initialize",
+                "inputs": [
+                    {
+                        "name": "$owner",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$baseURI",
+                        "type": "string",
+                        "internalType": "string"
+                    },
+                    {
+                        "name": "$implementation",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "nonpayable"
             },
             {
                 "type": "function",
@@ -900,6 +912,28 @@ export const contracts = [
                 "type": "error",
                 "name": "BalanceQueryForZeroAddress",
                 "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "ImplementationAlreadyInitialized",
+                "inputs": [
+                    {
+                        "name": "$version",
+                        "type": "uint16",
+                        "internalType": "uint16"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "ImplementationInvalid",
+                "inputs": [
+                    {
+                        "name": "$version",
+                        "type": "uint16",
+                        "internalType": "uint16"
+                    }
+                ]
             },
             {
                 "type": "error",
@@ -1835,19 +1869,6 @@ export const contracts = [
             },
             {
                 "type": "event",
-                "name": "Initialized",
-                "inputs": [
-                    {
-                        "name": "version",
-                        "type": "uint64",
-                        "indexed": false,
-                        "internalType": "uint64"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
                 "name": "OwnershipHandoverCanceled",
                 "inputs": [
                     {
@@ -1898,22 +1919,12 @@ export const contracts = [
             },
             {
                 "type": "error",
-                "name": "InvalidInitialization",
-                "inputs": []
-            },
-            {
-                "type": "error",
                 "name": "NewOwnerIsZeroAddress",
                 "inputs": []
             },
             {
                 "type": "error",
                 "name": "NoHandoverRequest",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "NotInitializing",
                 "inputs": []
             },
             {
@@ -2797,6 +2808,19 @@ export const contracts = [
             },
             {
                 "type": "function",
+                "name": "tokenId",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "$tokenId",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
                 "name": "transferOwnership",
                 "inputs": [
                     {
@@ -2877,6 +2901,43 @@ export const contracts = [
                     }
                 ],
                 "anonymous": false
+            },
+            {
+                "type": "error",
+                "name": "CallerInvalid",
+                "inputs": [
+                    {
+                        "name": "$expected",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "CompensationFailed",
+                "inputs": [
+                    {
+                        "name": "$recipient",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$value",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "CurrentInvalid",
+                "inputs": []
             },
             {
                 "type": "error",
@@ -3018,6 +3079,22 @@ export const contracts = [
             },
             {
                 "type": "error",
+                "name": "RouterInvalid",
+                "inputs": [
+                    {
+                        "name": "$reality",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "SignatureInvalid",
+                "inputs": []
+            },
+            {
+                "type": "error",
                 "name": "SignerIsAddress0",
                 "inputs": [
                     {
@@ -3026,6 +3103,27 @@ export const contracts = [
                         "internalType": "bytes"
                     }
                 ]
+            },
+            {
+                "type": "error",
+                "name": "SolverInvalid",
+                "inputs": [
+                    {
+                        "name": "$expected",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "TradingAlreadyInitialized",
+                "inputs": []
             },
             {
                 "type": "error",
@@ -3412,26 +3510,6 @@ export const contracts = [
         "abi": [
             {
                 "type": "function",
-                "name": "cancelOwnershipHandover",
-                "inputs": [],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "completeOwnershipHandover",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
                 "name": "name",
                 "inputs": [],
                 "outputs": [
@@ -3442,38 +3520,6 @@ export const contracts = [
                     }
                 ],
                 "stateMutability": "pure"
-            },
-            {
-                "type": "function",
-                "name": "owner",
-                "inputs": [],
-                "outputs": [
-                    {
-                        "name": "result",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "ownershipHandoverExpiresAt",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "result",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "stateMutability": "view"
             },
             {
                 "type": "function",
@@ -3675,20 +3721,6 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "renounceOwnership",
-                "inputs": [],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "requestOwnershipHandover",
-                "inputs": [],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
                 "name": "symbol",
                 "inputs": [],
                 "outputs": [
@@ -3701,82 +3733,31 @@ export const contracts = [
                 "stateMutability": "pure"
             },
             {
-                "type": "function",
-                "name": "transferOwnership",
+                "type": "error",
+                "name": "SocketAddressEmpty",
                 "inputs": [
                     {
-                        "name": "newOwner",
+                        "name": "$socket",
                         "type": "address",
                         "internalType": "address"
                     }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
+                ]
             },
             {
-                "type": "event",
-                "name": "OwnershipHandoverCanceled",
+                "type": "error",
+                "name": "SocketAddressInvalid",
                 "inputs": [
                     {
-                        "name": "pendingOwner",
+                        "name": "$intended",
                         "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
-                "name": "OwnershipHandoverRequested",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
-                "name": "OwnershipTransferred",
-                "inputs": [
-                    {
-                        "name": "oldOwner",
-                        "type": "address",
-                        "indexed": true,
                         "internalType": "address"
                     },
                     {
-                        "name": "newOwner",
+                        "name": "$socket",
                         "type": "address",
-                        "indexed": true,
                         "internalType": "address"
                     }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "error",
-                "name": "AlreadyInitialized",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "NewOwnerIsZeroAddress",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "NoHandoverRequest",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "Unauthorized",
-                "inputs": []
+                ]
             }
         ]
     }
