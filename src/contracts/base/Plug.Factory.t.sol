@@ -2,33 +2,14 @@
 
 pragma solidity 0.8.18;
 
-import { Test } from "../utils/Test.sol";
-import { PlugEtcherLib } from "../libraries/Plug.Etcher.Lib.sol";
+import { Test, PlugEtcherLib, LibClone } from "../utils/Test.sol";
 
 import { PlugFactory } from "./Plug.Factory.sol";
 import { PlugVaultSocket } from "../sockets/Plug.Vault.Socket.sol";
 
-import { LibClone } from "solady/src/utils/LibClone.sol";
-
 contract PlugFactoryTest is Test {
-    PlugFactory internal factory;
-
-    address factoryOwner;
-    string baseURI = "https://onplug.io/metadata/";
-
     function setUp() public virtual {
-        factoryOwner = _randomNonZeroAddress();
-        factory = deployFactory();
-    }
-
-    function deployFactory() internal returns (PlugFactory $factory) {
-        vm.etch(
-            PlugEtcherLib.PLUG_FACTORY_ADDRESS, address(new PlugFactory()).code
-        );
-        $factory = PlugFactory(payable(PlugEtcherLib.PLUG_FACTORY_ADDRESS));
-        $factory.initialize(
-            factoryOwner, baseURI, address(new PlugVaultSocket())
-        );
+        setUpPlug();
     }
 
     function test_DeployDeterministic(uint256) public {
@@ -47,4 +28,6 @@ contract PlugFactoryTest is Test {
 
         assertEq(address(vault).balance, initialValue);
     }
+
+    function test_Deploy_AlreadyDeployed() public { }
 }

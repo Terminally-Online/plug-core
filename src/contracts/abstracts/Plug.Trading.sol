@@ -87,8 +87,14 @@ abstract contract PlugTrading is PlugTradingInterface, ModuleAuthUpgradable {
      * @notice Get the owner of the Vault.
      */
     function owner() public view virtual returns (address $owner) {
-        $owner =
-            ERC721Interface(ownership).ownerOf(uint256(uint160(address(this))));
+        $owner = ERC721Interface(ownership).ownerOf(tokenId());
+    }
+
+    /**
+     * @notice Get the token ID of the Vault.
+     */
+    function tokenId() public view virtual returns (uint256 $tokenId) {
+        $tokenId = uint256(uint160(address(this)));
     }
 
     /**

@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.18;
 
-contract TestPlus {
+abstract contract TestPlus {
     event LogString(string name, string value);
     event LogBytes(string name, bytes value);
     event LogUint(string name, uint256 value);

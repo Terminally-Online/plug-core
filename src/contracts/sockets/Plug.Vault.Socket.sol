@@ -41,7 +41,7 @@ contract PlugVaultSocket is
      * See { PlugSocket-name }
      */
     function name() public pure override returns (string memory $name) {
-        $name = "PlugVaultSocket";
+        $name = "Plug Vault Socket";
     }
 
     /**

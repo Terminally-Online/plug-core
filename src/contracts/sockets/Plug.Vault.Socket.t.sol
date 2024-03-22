@@ -2,57 +2,30 @@
 
 pragma solidity 0.8.18;
 
-import { Test } from "../utils/Test.sol";
-import { PlugEtcherLib } from "../libraries/Plug.Etcher.Lib.sol";
-import { PlugLib } from "../libraries/Plug.Lib.sol";
-
-import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
-import { Plug } from "../base/Plug.sol";
-import { PlugFactory } from "../base/Plug.Factory.sol";
-
-import { PlugVaultSocket } from "./Plug.Vault.Socket.sol";
-import { PlugMockEcho } from "../mocks/Plug.Mock.Echo.sol";
-import { ERC721 } from "solady/src/tokens/ERC721.sol";
+import {
+    Test,
+    PlugLib,
+    PlugEtcherLib,
+    PlugTypesLib,
+    Plug,
+    PlugFactory,
+    PlugVaultSocket,
+    PlugMockEcho
+} from "../utils/Test.sol";
 
 contract PlugVaultSocketTest is Test {
-    PlugFactory internal factory;
-
-    PlugVaultSocket internal implementation;
-    PlugVaultSocket internal vault;
-
-    PlugMockEcho internal mock;
-
-    address internal factoryOwner;
-    address internal signer;
-    uint256 internal signerPrivateKey = 0x12345;
-
-    string internal baseURI = "https://onplug.io/metadata/";
-
     function setUp() public virtual {
-        factoryOwner = _randomNonZeroAddress();
-        signer = vm.addr(signerPrivateKey);
-
-        factory = deployFactory();
-        vault = deployVault();
+        setUpPlug();
     }
 
-    function deployFactory() internal returns (PlugFactory $factory) {
-        vm.etch(
-            PlugEtcherLib.PLUG_FACTORY_ADDRESS, address(new PlugFactory()).code
-        );
-        implementation = new PlugVaultSocket();
-        $factory = PlugFactory(payable(PlugEtcherLib.PLUG_FACTORY_ADDRESS));
-        $factory.initialize(factoryOwner, baseURI, address(implementation));
-    }
-
-    function deployVault() internal returns (PlugVaultSocket $vault) {
+    function deployVault() internal override returns (PlugVaultSocket $vault) {
         (, address vaultAddress) =
             factory.deploy(bytes32(abi.encodePacked(address(this), uint96(0))));
         $vault = PlugVaultSocket(payable(vaultAddress));
     }
 
     function test_name() public {
-        assertEq(vault.name(), "PlugVaultSocket");
+        assertEq(vault.name(), "Plug Vault Socket");
     }
 
     function test_symbol() public {
@@ -72,7 +45,7 @@ contract PlugVaultSocketTest is Test {
             )
         );
         vm.prank(factoryOwner);
-        factory.setImplementation(0, address(implementation));
+        factory.setImplementation(0, address(vaultImplementation));
     }
 
     function testRevert_UninitializedImplementation() public {
@@ -87,12 +60,12 @@ contract PlugVaultSocketTest is Test {
     }
 
     function test_ownership_Implementation() public {
-        assertEq(implementation.ownership(), address(1));
+        assertEq(vaultImplementation.ownership(), address(1));
     }
 
     function testRevert_owner_Implementation() public {
         vm.expectRevert();
-        implementation.owner();
+        vaultImplementation.owner();
     }
 
     function test_owner() public {
@@ -100,9 +73,10 @@ contract PlugVaultSocketTest is Test {
     }
 
     function test_transferOwnership_Token() public {
-        address newOwner = _randomNonZeroAddress();
-        ERC721(vault.ownership()).transferFrom(
-            address(this), newOwner, uint256(uint160(address(vault)))
+        factory.transferFrom(
+            address(this),
+            _randomNonZeroAddress(),
+            uint256(uint160(address(vault)))
         );
     }
 

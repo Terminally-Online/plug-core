@@ -76,7 +76,7 @@ abstract contract PlugTradable is ERC721, Ownable {
      * @return $symbol The symbol of the collection.
      */
     function symbol() public pure override returns (string memory $symbol) {
-        $symbol = "PLUG";
+        $symbol = "PLGSOK";
     }
 
     /**

@@ -38,7 +38,6 @@ library PlugLib {
     error SolverInvalid(address $expected, address $reality);
 
     error CompensationFailed(address $recipient, uint256 $value);
-    error ExecutionFailed(address $target, bytes $data);
 
     /**
      * @notice Bubble up the revert reason revert data.

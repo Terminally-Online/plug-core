@@ -2,61 +2,22 @@
 
 pragma solidity 0.8.18;
 
-import { Test } from "../utils/Test.sol";
-
-import { PlugEtcherLib } from "../libraries/Plug.Etcher.Lib.sol";
-import { PlugLib } from "../libraries/Plug.Lib.sol";
-
-import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
-import { PlugFactory } from "../base/Plug.Factory.sol";
-import { Plug } from "./Plug.sol";
-import { PlugVaultSocket } from "../sockets/Plug.Vault.Socket.sol";
-import { PlugMockEcho } from "../mocks/Plug.Mock.Echo.sol";
+import {
+    Test,
+    PlugLib,
+    PlugEtcherLib,
+    PlugTypesLib,
+    PlugFactory,
+    Plug,
+    PlugVaultSocket,
+    PlugMockEcho
+} from "../utils/Test.sol";
 
 contract PlugTest is Test {
     event EchoInvoked(address $sender, string $message);
 
-    PlugFactory internal factory;
-    Plug internal plug;
-    PlugVaultSocket internal vault;
-    PlugMockEcho internal mock;
-
-    address internal factoryOwner;
-    string internal baseURI = "https://onplug.io/metadata/";
-
-    address internal signer;
-    uint256 internal signerPrivateKey = 0x12345;
-
     function setUp() public virtual {
-        factoryOwner = _randomNonZeroAddress();
-        signer = vm.addr(signerPrivateKey);
-
-        plug = deployPlug();
-        factory = deployFactory();
-        vault = deployVault();
-
-        mock = new PlugMockEcho();
-    }
-
-    function deployPlug() internal returns (Plug $plug) {
-        vm.etch(PlugEtcherLib.PLUG_ADDRESS, address(new Plug()).code);
-        $plug = Plug(payable(PlugEtcherLib.PLUG_ADDRESS));
-    }
-
-    function deployFactory() internal returns (PlugFactory $factory) {
-        vm.etch(
-            PlugEtcherLib.PLUG_FACTORY_ADDRESS, address(new PlugFactory()).code
-        );
-        $factory = PlugFactory(payable(PlugEtcherLib.PLUG_FACTORY_ADDRESS));
-        $factory.initialize(
-            factoryOwner, baseURI, address(new PlugVaultSocket())
-        );
-    }
-
-    function deployVault() internal returns (PlugVaultSocket $vault) {
-        (, address vaultAddress) =
-            factory.deploy(bytes32(abi.encodePacked(signer, uint96(0))));
-        $vault = PlugVaultSocket(payable(vaultAddress));
+        setUpPlug();
     }
 
     function test_name() public {
