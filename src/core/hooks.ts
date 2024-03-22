@@ -158,11 +158,6 @@ export const plugAbi = [
   },
   {
     type: 'error',
-    inputs: [{ name: '$socket', internalType: 'address', type: 'address' }],
-    name: 'SocketAddressEmpty',
-  },
-  {
-    type: 'error',
     inputs: [
       { name: '$intended', internalType: 'address', type: 'address' },
       { name: '$socket', internalType: 'address', type: 'address' },
@@ -353,7 +348,10 @@ export const plugFactoryAbi = [
   },
   {
     type: 'function',
-    inputs: [{ name: '$salt', internalType: 'bytes32', type: 'bytes32' }],
+    inputs: [
+      { name: '$salt', internalType: 'bytes32', type: 'bytes32' },
+      { name: '$router', internalType: 'address', type: 'address' },
+    ],
     name: 'deploy',
     outputs: [
       { name: '$alreadyDeployed', internalType: 'bool', type: 'bool' },
@@ -1473,7 +1471,10 @@ export const plugVaultSocketAbi = [
   },
   {
     type: 'function',
-    inputs: [{ name: '$ownership', internalType: 'address', type: 'address' }],
+    inputs: [
+      { name: '$ownership', internalType: 'address', type: 'address' },
+      { name: '$router', internalType: 'address', type: 'address' },
+    ],
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -1636,6 +1637,13 @@ export const plugVaultSocketAbi = [
     inputs: [],
     name: 'proxiableUUID',
     outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'router',
+    outputs: [{ name: '', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -3365,6 +3373,13 @@ export const useReadPlugVaultSocketProxiableUuid =
     abi: plugVaultSocketAbi,
     functionName: 'proxiableUUID',
   })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"router"`
+ */
+export const useReadPlugVaultSocketRouter = /*#__PURE__*/ createUseReadContract(
+  { abi: plugVaultSocketAbi, functionName: 'router' },
+)
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"signatureRecovery"`

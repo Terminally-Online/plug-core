@@ -8,7 +8,11 @@ import { StdCheats } from "forge-std/StdCheats.sol";
 import { console2 } from "forge-std/console2.sol";
 
 import { PlugEtcherLib } from "../../libraries/Plug.Etcher.Lib.sol";
-import { PlugLib, PlugTypesLib, PlugAddressesLib } from "../../libraries/Plug.Lib.sol";
+import {
+    PlugLib,
+    PlugTypesLib,
+    PlugAddressesLib
+} from "../../libraries/Plug.Lib.sol";
 
 import { LibClone } from "solady/src/utils/LibClone.sol";
 import { ECDSA } from "solady/src/utils/ECDSA.sol";
@@ -479,8 +483,9 @@ abstract contract TestPlug is TestPlus {
     }
 
     function deployVault() internal virtual returns (PlugVaultSocket $vault) {
-        (, address vaultAddress) =
-            factory.deploy(bytes32(abi.encodePacked(signer, uint96(0))), address(plug));
+        (, address vaultAddress) = factory.deploy(
+            bytes32(abi.encodePacked(signer, uint96(0))), address(plug)
+        );
         $vault = PlugVaultSocket(payable(vaultAddress));
     }
 
