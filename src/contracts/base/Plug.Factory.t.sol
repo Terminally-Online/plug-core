@@ -2,31 +2,35 @@
 
 pragma solidity 0.8.18;
 
-import { Test, PlugEtcherLib, LibClone } from "../utils/Test.sol";
-
-import { PlugFactory } from "./Plug.Factory.sol";
-import { PlugVaultSocket } from "../sockets/Plug.Vault.Socket.sol";
+import {
+    Test,
+    PlugEtcherLib,
+    LibClone,
+    PlugFactory,
+    PlugVaultSocket
+} from "../abstracts/test/Plug.Test.sol";
 
 contract PlugFactoryTest is Test {
+    event Transfer(address indexed from, address indexed to, uint256 indexed id);
+
     function setUp() public virtual {
         setUpPlug();
     }
 
     function test_DeployDeterministic(uint256) public {
-        vm.deal(address(this), 100 ether);
-        address owner = _randomNonZeroAddress();
+        vm.deal(address(this), 1000 ether);
         uint256 initialValue = _random() % 100 ether;
-
         bytes32 salt =
-            bytes32(abi.encodePacked(owner, uint80(_random()), uint16(0)));
+            bytes32(abi.encodePacked(address(1), uint96(0)));
+        address implementation = factory.implementations(0);
+        uint256 tokenId = uint256(uint160(factory.getAddress(implementation, salt)));
 
-        // TODO: Check for the token event emission.
-
+        vm.expectEmit(address(factory));
+        emit Transfer(address(0), address(1), tokenId);
         (, address vault) = factory.deploy{ value: initialValue }(salt);
-
-        // TODO: Check for repeated deployment calls to make sure that we don't double deploy.
-
         assertEq(address(vault).balance, initialValue);
+        (bool alreadyDeployed,) = factory.deploy{ value: initialValue }(salt);
+        assertTrue(alreadyDeployed);
     }
 
     function test_Deploy_AlreadyDeployed() public { }

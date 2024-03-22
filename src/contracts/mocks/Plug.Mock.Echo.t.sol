@@ -2,9 +2,7 @@
 
 pragma solidity 0.8.18;
 
-import { Test } from "../utils/Test.sol";
-
-import { PlugMockEcho } from "./Plug.Mock.Echo.sol";
+import { Test, PlugMockEcho } from "../abstracts/test/Plug.Test.sol";
 
 contract PlugMockSocketTest is Test {
     event EchoInvoked(address $sender, string $message);

@@ -2,9 +2,7 @@
 
 pragma solidity 0.8.18;
 
-import { Test } from "../utils/Test.sol";
-
-import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
+import { Test, PlugTypesLib } from "../abstracts/test/Plug.Test.sol";
 import { PlugBlockNumberFuse } from "./Plug.BlockNumber.Fuse.sol";
 
 contract PlugBlockNumberFuseTest is Test {

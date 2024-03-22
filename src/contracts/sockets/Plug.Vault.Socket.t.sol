@@ -11,7 +11,7 @@ import {
     PlugFactory,
     PlugVaultSocket,
     PlugMockEcho
-} from "../utils/Test.sol";
+} from "../abstracts/test/Plug.Test.sol";
 
 contract PlugVaultSocketTest is Test {
     function setUp() public virtual {
