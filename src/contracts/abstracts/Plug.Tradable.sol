@@ -46,23 +46,6 @@ abstract contract PlugTradable is ERC721, Ownable {
         baseURI = $baseURI;
     }
 
-    function _afterTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    )
-        internal
-        override
-    {
-        super._afterTokenTransfer(from, to, tokenId);
-
-        /// @dev Call into the vault that is representing this asset and update
-        ///      the owner in storage. We do not rely on a runtime read for ownership
-        ///      references because that would end up costing more than just storing
-        ///      the data over there as well.
-        PlugTrading(address(uint160(tokenId))).transferOwnership(to);
-    }
-
     /**
      * @notice Metadata response for the name of the collection.
      * @return $name The name of the collection.
@@ -91,6 +74,23 @@ abstract contract PlugTradable is ERC721, Ownable {
         returns (string memory $uri)
     {
         $uri = string(abi.encodePacked(baseURI, LibString.toString($tokenId)));
+    }
+
+    function _afterTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    )
+        internal
+        override
+    {
+        super._afterTokenTransfer(from, to, tokenId);
+
+        /// @dev Call into the vault that is representing this asset and update
+        ///      the owner in storage. We do not rely on a runtime read for ownership
+        ///      references because that would end up costing more than just storing
+        ///      the data over there as well.
+        PlugTrading(address(uint160(tokenId))).transferOwnership(to);
     }
 
     /**

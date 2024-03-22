@@ -21,6 +21,9 @@ abstract contract PlugTrading is PlugTradingInterface, ModuleAuthUpgradable {
     /// @dev The address that houses the ownership information.
     address public ownership;
 
+    /// @dev The address that has permission to route generalized bundles.
+    address public router;
+
     /**
      * @notice Modifier enforcing the caller to be the ownership proxy.
      */
@@ -101,7 +104,12 @@ abstract contract PlugTrading is PlugTradingInterface, ModuleAuthUpgradable {
      * @notice Set the address of the ownership proxy which is a ERC721
      *         compliant contract that lives inside of the factory.
      */
-    function _initializeOwnership(address $ownership) internal {
+    function _initializeOwnership(
+        address $ownership,
+        address $router
+    )
+        internal
+    {
         /// @dev Check if the inheriting contract requires single-use
         ///      ownership initialization.
         if (_guardInitializeOwnership()) {
@@ -112,6 +120,9 @@ abstract contract PlugTrading is PlugTradingInterface, ModuleAuthUpgradable {
 
         /// @dev Set the state of the ownership proxy.
         ownership = $ownership;
+
+        /// @dev Set the state of the higher level router.
+        router = $router;
     }
 
     /**

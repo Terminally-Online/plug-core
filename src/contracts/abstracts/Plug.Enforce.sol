@@ -10,7 +10,9 @@ import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
  * @title Plug Enforce
  * @notice The enforcement mechanisms of Plug to ensure that transactions
  *         are only executed as defined.
- * @dev Inheriting contracts must implement the logic fo `enforceSignature`.
+ * @dev Inheriting contracts must implement the logic for:
+ *      - `_enforceSignature`
+ *      - `_enforceRouter`.
  * @author @nftchance (chance@utc24.io)
  */
 abstract contract PlugEnforce is PlugTypes {
@@ -64,10 +66,7 @@ abstract contract PlugEnforce is PlugTypes {
         internal
         view
         virtual
-        returns (bool $allowed)
-    {
-        $allowed = $router == PlugLib.PLUG_ADDRESS;
-    }
+        returns (bool $allowed);
 
     /**
      * @notice Confirm that signer has permission to declare execution of a

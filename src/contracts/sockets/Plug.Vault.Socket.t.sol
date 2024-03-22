@@ -20,7 +20,7 @@ contract PlugVaultSocketTest is Test {
 
     function deployVault() internal override returns (PlugVaultSocket $vault) {
         (, address vaultAddress) =
-            factory.deploy(bytes32(abi.encodePacked(address(this), uint96(0))));
+            factory.deploy(bytes32(abi.encodePacked(address(this), uint96(0))), address(plug));
         $vault = PlugVaultSocket(payable(vaultAddress));
     }
 
@@ -35,7 +35,7 @@ contract PlugVaultSocketTest is Test {
     function testRevert_Initialize_Again() public {
         vm.deal(address(vault), 100 ether);
         vm.expectRevert(PlugLib.TradingAlreadyInitialized.selector);
-        vault.initialize(address(this));
+        vault.initialize(address(this), address(plug));
     }
 
     function testRevert_ReinitializeImplementation() public {
@@ -56,7 +56,7 @@ contract PlugVaultSocketTest is Test {
                 PlugLib.ImplementationInvalid.selector, uint16(2)
             )
         );
-        factory.deploy(salt);
+        factory.deploy(salt, address(plug));
     }
 
     function test_ownership_Implementation() public {

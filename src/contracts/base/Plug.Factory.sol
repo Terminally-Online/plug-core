@@ -2,12 +2,13 @@
 
 pragma solidity 0.8.18;
 
+import { PlugFactoryInterface } from "../interfaces/Plug.Factory.Interface.sol";
 import { PlugTradable } from "../abstracts/Plug.Tradable.sol";
 
-import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
-import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
-import { PlugLib } from "../libraries/Plug.Lib.sol";
+import { PlugLib, PlugTypesLib } from "../libraries/Plug.Lib.sol";
 import { LibClone } from "solady/src/utils/LibClone.sol";
+
+import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 
 /**
  * @title Plug Factory
@@ -20,7 +21,7 @@ import { LibClone } from "solady/src/utils/LibClone.sol";
  *         Sockets to be traded on any major marketplace with ease.
  * @author @nftchance (chance@utc24.io)
  */
-contract PlugFactory is PlugTradable {
+contract PlugFactory is PlugFactoryInterface, PlugTradable {
     /// @dev The mapping of the implementations of the vaults.
     mapping(uint16 => address) public implementations;
 
@@ -33,9 +34,7 @@ contract PlugFactory is PlugTradable {
     }
 
     /**
-     * @notice Initialize this implementation of the factory.
-     * @param $owner The address of the owner.
-     * @param $baseURI The base URI of the factory.
+     * See { PlugFactoryInterface.initialize }
      */
     function initialize(
         address $owner,
@@ -45,6 +44,8 @@ contract PlugFactory is PlugTradable {
         public
         virtual
     {
+        /// @dev Configure the starting state of the tradable functionatlity
+        ///      that enables non-fungible representation of Socket ownership.
         _initializeTradable($owner, $baseURI);
 
         /// @dev Set the implementation of the first live version.
@@ -52,14 +53,33 @@ contract PlugFactory is PlugTradable {
     }
 
     /**
-     * @notice Deploy a new Socket and initialize it.
-     * @dev This version is used to interface with directly enabling the ability
-     *      to deploy multiple Sockets at once from a single Plug bundle.
-     * @param $salt The salt of the Socket.
-     * @return $alreadyDeployed Whether or not the Socket was already deployed.
-     * @return $socket The address of the deployed Socket.
+     * @notice Set the implementation of a new version of the Socket.
+     * @param $version The version of the vault.
+     * @param $implementation The implementation of the vault.
      */
-    function deploy(bytes32 $salt)
+    function setImplementation(
+        uint16 $version,
+        address $implementation
+    )
+        public
+        onlyOwner
+    {
+        /// @dev Ensure the implementation for this version has not already been set.
+        if (implementations[$version] != address(0)) {
+            revert PlugLib.ImplementationAlreadyInitialized($version);
+        }
+
+        /// @dev Set the implementation of the vault.
+        implementations[$version] = $implementation;
+    }
+
+    /**
+     * See { PlugFactoryInterface.deploy }
+     */
+    function deploy(
+        bytes32 $salt,
+        address $router
+    )
         public
         payable
         virtual
@@ -95,7 +115,7 @@ contract PlugFactory is PlugTradable {
 
             /// @dev Initialize the Socket with the ownership proxy pointing
             ///      this factory that is deploying the Socket.
-            PlugSocketInterface($socket).initialize(address(this));
+            PlugSocketInterface($socket).initialize(address(this), $router);
 
             /// @dev Mint the transferable ownership token to the signer that
             ///      created the intent which is implicitly the Socket admin
@@ -106,30 +126,7 @@ contract PlugFactory is PlugTradable {
     }
 
     /**
-     * @notice Set the implementation of a new version of the Socket.
-     * @param $version The version of the vault.
-     * @param $implementation The implementation of the vault.
-     */
-    function setImplementation(
-        uint16 $version,
-        address $implementation
-    )
-        public
-        onlyOwner
-    {
-        /// @dev Ensure the implementation for this version has not already been set.
-        if (implementations[$version] != address(0)) {
-            revert PlugLib.ImplementationAlreadyInitialized($version);
-        }
-
-        /// @dev Set the implementation of the vault.
-        implementations[$version] = $implementation;
-    }
-
-    /**
-     * @notice Predict the address of a new Plug Vault.
-     * @param $salt The salt of the vault.
-     * @return $vault The predicted address of the vault.
+     * See { PlugFactoryInterface.getAddress }
      */
     function getAddress(
         address $implementation,
@@ -145,9 +142,7 @@ contract PlugFactory is PlugTradable {
     }
 
     /**
-     * @notice Get the init code hash of the vaults.
-     * @dev This is used to mine vanity addresses.
-     * @return $initCodeHash The init code hash of the vaults.
+     * See { PlugFactoryInterface.initCodeHash }
      */
     function initCodeHash(address $implementation)
         public

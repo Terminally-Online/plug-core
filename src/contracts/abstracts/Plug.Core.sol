@@ -3,8 +3,10 @@
 pragma solidity 0.8.18;
 
 import { PlugExecute } from "./Plug.Execute.sol";
-import { PlugTypes, PlugTypesLib } from "./Plug.Types.sol";
-import { PlugLib } from "../libraries/Plug.Lib.sol";
+import { PlugTypes } from "./Plug.Types.sol";
+import {
+    PlugLib, PlugTypesLib, PlugAddressesLib
+} from "../libraries/Plug.Lib.sol";
 
 /**
  * @title PlugCore
@@ -72,7 +74,7 @@ abstract contract PlugCore is PlugExecute {
 
         /// @dev Pay the platform fee if it there is an associated fee.
         if ($plugs.fee != 0) {
-            _compensate(PlugLib.PLUG_TREASURY_ADDRESS, $plugs.fee);
+            _compensate(PlugAddressesLib.PLUG_TREASURY_ADDRESS, $plugs.fee);
         }
 
         /// @dev Pay the Solver for the gas used if it was not open-access.

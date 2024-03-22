@@ -5,8 +5,9 @@ pragma solidity 0.8.18;
 import {
     Test,
     PlugLib,
-    PlugEtcherLib,
     PlugTypesLib,
+    PlugAddressesLib,
+    PlugEtcherLib,
     PlugFactory,
     Plug,
     PlugVaultSocket,
@@ -274,7 +275,7 @@ contract PlugTest is Test {
         vm.expectRevert(
             abi.encodeWithSelector(
                 PlugLib.CompensationFailed.selector,
-                PlugLib.PLUG_TREASURY_ADDRESS,
+                PlugAddressesLib.PLUG_TREASURY_ADDRESS,
                 1 ether
             )
         );

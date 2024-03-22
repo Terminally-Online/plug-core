@@ -369,6 +369,11 @@ export const contracts = [
                         "name": "$salt",
                         "type": "bytes32",
                         "internalType": "bytes32"
+                    },
+                    {
+                        "name": "$router",
+                        "type": "address",
+                        "internalType": "address"
                     }
                 ],
                 "outputs": [
@@ -2429,6 +2434,11 @@ export const contracts = [
                         "name": "$ownership",
                         "type": "address",
                         "internalType": "address"
+                    },
+                    {
+                        "name": "$router",
+                        "type": "address",
+                        "internalType": "address"
                     }
                 ],
                 "outputs": [],
@@ -2726,6 +2736,19 @@ export const contracts = [
                         "name": "",
                         "type": "bytes32",
                         "internalType": "bytes32"
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
+                "name": "router",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "address",
+                        "internalType": "address"
                     }
                 ],
                 "stateMutability": "view"
@@ -3731,17 +3754,6 @@ export const contracts = [
                     }
                 ],
                 "stateMutability": "pure"
-            },
-            {
-                "type": "error",
-                "name": "SocketAddressEmpty",
-                "inputs": [
-                    {
-                        "name": "$socket",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ]
             },
             {
                 "type": "error",

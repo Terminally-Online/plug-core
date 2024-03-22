@@ -20,7 +20,7 @@ const addresses = JSON.parse(
 	fs.readFileSync('src/lib/addresses.json').toString()
 )
 
-const libs = ['Plug.Treasury.sol', 'Plug.Factory.sol', 'Plug.sol']
+const libs = ['Plug.Treasury.sol', 'Plug.Factory.sol']
 
 directories
 	.filter(directory =>
@@ -165,9 +165,11 @@ fs.writeFileSync(
 )
 
 fs.writeFileSync(
-	`${contractsPath}/libraries/Plug.Lib.sol`,
+	`${contractsPath}/libraries/Plug.Addresses.Lib.sol`,
 	fs
-		.readFileSync(`${contractsPath}/libraries/Plug.Lib.Template.sol`)
+		.readFileSync(
+			`${contractsPath}/libraries/Plug.Addresses.Lib.Template.sol`
+		)
 		.toString()
 		.replace('/// @notice INSERT SEGMENTS', segments.join('\n\n'))
 )
