@@ -12,8 +12,24 @@ import { ERC721 } from "solady/src/tokens/ERC721.sol";
 
 /**
  * @title Plug Balance Fuse
- * @dev A fuse that provides enforcement for thresholds for
- *      Native, ERC20, and ERC721, but not ERC1155 balances.
+ * @notice A fuse that provides enforcement for thresholds for Native, ERC20, and
+ *         ERC721 tokens, but not ERC1155s.
+ * @notice Use cases for enforcing balance thresholds:
+ *     - Limit the balance of a given asset that an account should hold.
+ *     - Limit the amount of tokens that a given recipient should be sent.
+ *     - Swap assets when a holder's balance follows below a threshold.
+ *     - Swap assets when a holder's balance exceeds a threshold.
+ *     - Allow a account to manage/use the state of an external contract and/or
+ *       application by giving permission of interaction when holdings are present
+ *       with a read-only interaction pattern (subscription services).
+ *     - Systematically give and revoke permissions to other accounts with an
+ *       onchain write interaction pattern.
+ *     - Automatically adjust the collateralization of a loan or position based on
+ *       the balance of collateral assets, reducing the risk of liquidiation.
+ *     - Determine and set the fee structure for a given account based on the
+ *       asset holdings of the targeted holder.
+ *     - Airdrop eligibility based on the current balance of a given asset.
+ *     - Automatically trigger donations when balance exceeds the declared threshold.
  * @author nftchance (chance@onplug.io)
  */
 contract PlugBalanceFuse is

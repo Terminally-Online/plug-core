@@ -11,7 +11,10 @@ import { ERC1155 } from "solady/src/tokens/ERC1155.sol";
 
 /**
  * @title Plug Balance Semi Fungible Fuse
- * @dev A fuse that provides enforcement for semi-fungible balance thresholds.
+ * @notice A fuse that provides enforcement for semi-fungible (ERC1155s) balance thresholds.
+ * @notice Use cases for enforcing balance thresholds:
+ *     - Inherits all the use cases of the fungible and non-fungible balance threshold fuse.
+ *     - Tier based access and services resolved through the token id balance held.
  * @author nftchance (chance@onplug.io)
  */
 contract PlugBalanceSemiFungibleFuse is
