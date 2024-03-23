@@ -176,16 +176,16 @@ export const plugBaseFeeFuseAbi = [
     inputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
     name: 'decode',
     outputs: [
-      { name: '$operator', internalType: 'uint128', type: 'uint128' },
-      { name: '$threshold', internalType: 'uint128', type: 'uint128' },
+      { name: '$operator', internalType: 'uint8', type: 'uint8' },
+      { name: '$threshold', internalType: 'uint256', type: 'uint256' },
     ],
     stateMutability: 'pure',
   },
   {
     type: 'function',
     inputs: [
-      { name: '$operator', internalType: 'uint128', type: 'uint128' },
-      { name: '$threshold', internalType: 'uint128', type: 'uint128' },
+      { name: '$operator', internalType: 'uint8', type: 'uint8' },
+      { name: '$threshold', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'encode',
     outputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
@@ -210,6 +210,22 @@ export const plugBaseFeeFuseAbi = [
     name: 'enforceFuse',
     outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
     stateMutability: 'view',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: '$expected', internalType: 'uint256', type: 'uint256' },
+      { name: '$reality', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ThresholdExceeded',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: '$expected', internalType: 'uint256', type: 'uint256' },
+      { name: '$reality', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ThresholdInsufficient',
   },
 ] as const
 
@@ -223,16 +239,16 @@ export const plugBlockNumberFuseAbi = [
     inputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
     name: 'decode',
     outputs: [
-      { name: '$operator', internalType: 'uint128', type: 'uint128' },
-      { name: '$threshold', internalType: 'uint128', type: 'uint128' },
+      { name: '$operator', internalType: 'uint8', type: 'uint8' },
+      { name: '$threshold', internalType: 'uint256', type: 'uint256' },
     ],
     stateMutability: 'pure',
   },
   {
     type: 'function',
     inputs: [
-      { name: '$operator', internalType: 'uint128', type: 'uint128' },
-      { name: '$threshold', internalType: 'uint128', type: 'uint128' },
+      { name: '$operator', internalType: 'uint8', type: 'uint8' },
+      { name: '$threshold', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'encode',
     outputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
@@ -257,6 +273,22 @@ export const plugBlockNumberFuseAbi = [
     name: 'enforceFuse',
     outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
     stateMutability: 'view',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: '$expected', internalType: 'uint256', type: 'uint256' },
+      { name: '$reality', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ThresholdExceeded',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: '$expected', internalType: 'uint256', type: 'uint256' },
+      { name: '$reality', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ThresholdInsufficient',
   },
 ] as const
 
@@ -1028,16 +1060,16 @@ export const plugTimestampFuseAbi = [
     inputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
     name: 'decode',
     outputs: [
-      { name: '$operator', internalType: 'uint128', type: 'uint128' },
-      { name: '$threshold', internalType: 'uint128', type: 'uint128' },
+      { name: '$operator', internalType: 'uint8', type: 'uint8' },
+      { name: '$threshold', internalType: 'uint256', type: 'uint256' },
     ],
     stateMutability: 'pure',
   },
   {
     type: 'function',
     inputs: [
-      { name: '$operator', internalType: 'uint128', type: 'uint128' },
-      { name: '$threshold', internalType: 'uint128', type: 'uint128' },
+      { name: '$operator', internalType: 'uint8', type: 'uint8' },
+      { name: '$threshold', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'encode',
     outputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
@@ -1062,6 +1094,22 @@ export const plugTimestampFuseAbi = [
     name: 'enforceFuse',
     outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
     stateMutability: 'view',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: '$expected', internalType: 'uint256', type: 'uint256' },
+      { name: '$reality', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ThresholdExceeded',
+  },
+  {
+    type: 'error',
+    inputs: [
+      { name: '$expected', internalType: 'uint256', type: 'uint256' },
+      { name: '$reality', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ThresholdInsufficient',
   },
 ] as const
 

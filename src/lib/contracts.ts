@@ -15,13 +15,13 @@ export const contracts = [
                 "outputs": [
                     {
                         "name": "$operator",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint8",
+                        "internalType": "uint8"
                     },
                     {
                         "name": "$threshold",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint256",
+                        "internalType": "uint256"
                     }
                 ],
                 "stateMutability": "pure"
@@ -32,13 +32,13 @@ export const contracts = [
                 "inputs": [
                     {
                         "name": "$operator",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint8",
+                        "internalType": "uint8"
                     },
                     {
                         "name": "$threshold",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint256",
+                        "internalType": "uint256"
                     }
                 ],
                 "outputs": [
@@ -95,6 +95,38 @@ export const contracts = [
                     }
                 ],
                 "stateMutability": "view"
+            },
+            {
+                "type": "error",
+                "name": "ThresholdExceeded",
+                "inputs": [
+                    {
+                        "name": "$expected",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "ThresholdInsufficient",
+                "inputs": [
+                    {
+                        "name": "$expected",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
             }
         ]
     },
@@ -114,13 +146,13 @@ export const contracts = [
                 "outputs": [
                     {
                         "name": "$operator",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint8",
+                        "internalType": "uint8"
                     },
                     {
                         "name": "$threshold",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint256",
+                        "internalType": "uint256"
                     }
                 ],
                 "stateMutability": "pure"
@@ -131,13 +163,13 @@ export const contracts = [
                 "inputs": [
                     {
                         "name": "$operator",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint8",
+                        "internalType": "uint8"
                     },
                     {
                         "name": "$threshold",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint256",
+                        "internalType": "uint256"
                     }
                 ],
                 "outputs": [
@@ -194,6 +226,38 @@ export const contracts = [
                     }
                 ],
                 "stateMutability": "view"
+            },
+            {
+                "type": "error",
+                "name": "ThresholdExceeded",
+                "inputs": [
+                    {
+                        "name": "$expected",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "ThresholdInsufficient",
+                "inputs": [
+                    {
+                        "name": "$expected",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
             }
         ]
     },
@@ -1663,13 +1727,13 @@ export const contracts = [
                 "outputs": [
                     {
                         "name": "$operator",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint8",
+                        "internalType": "uint8"
                     },
                     {
                         "name": "$threshold",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint256",
+                        "internalType": "uint256"
                     }
                 ],
                 "stateMutability": "pure"
@@ -1680,13 +1744,13 @@ export const contracts = [
                 "inputs": [
                     {
                         "name": "$operator",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint8",
+                        "internalType": "uint8"
                     },
                     {
                         "name": "$threshold",
-                        "type": "uint128",
-                        "internalType": "uint128"
+                        "type": "uint256",
+                        "internalType": "uint256"
                     }
                 ],
                 "outputs": [
@@ -1743,6 +1807,38 @@ export const contracts = [
                     }
                 ],
                 "stateMutability": "view"
+            },
+            {
+                "type": "error",
+                "name": "ThresholdExceeded",
+                "inputs": [
+                    {
+                        "name": "$expected",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "ThresholdInsufficient",
+                "inputs": [
+                    {
+                        "name": "$expected",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
             }
         ]
     },
