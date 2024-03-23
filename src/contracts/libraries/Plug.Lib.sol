@@ -16,6 +16,8 @@ library PlugLib {
         bytes32 imageHash
     );
 
+    error NotImplemented();
+
     error ImplementationAlreadyInitialized(uint16 $version);
     error ImplementationInvalid(uint16 $version);
 

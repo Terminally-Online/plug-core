@@ -3,9 +3,13 @@
 pragma solidity 0.8.18;
 
 import { PlugFuseInterface } from "../../interfaces/Plug.Fuse.Interface.sol";
+import { PlugThresholdFuseEnforce } from "./Plug.Threshold.Fuse.Enforce.sol";
 import { PlugLib, PlugTypesLib } from "../../libraries/Plug.Lib.sol";
 
-abstract contract ThresholdFuse is PlugFuseInterface {
+abstract contract ThresholdFuse is
+    PlugFuseInterface,
+    PlugThresholdFuseEnforce
+{
     /**
      * See {FuseEnforcer-enforceFuse}.
      */
@@ -16,24 +20,16 @@ abstract contract ThresholdFuse is PlugFuseInterface {
     )
         public
         view
-        override
+        virtual
         returns (bytes memory $through)
     {
         /// @dev Decode the terms to get the logic operator and threshold.
         (uint8 $operator, uint256 $threshold) = decode($live);
 
-        /// @dev Make sure the base denominator is below (or before) the threshold.
-        if ($operator == 0) {
-            if ($threshold < _threshold()) {
-                revert PlugLib.ThresholdExceeded($threshold, _threshold());
-            }
-        }
-        /// @dev Make sure the base denominator is above (or after) after the threshold.
-        else if ($threshold > _threshold()) {
-            revert PlugLib.ThresholdInsufficient($threshold, _threshold());
-        }
+        /// @dev Enforce the threshold against the current state.
+        _enforceFuse($operator, $threshold, _threshold());
 
-        /// @dev Continue the pass through.
+        /// @dev Return the current state.
         $through = $current.data;
     }
 
@@ -43,6 +39,7 @@ abstract contract ThresholdFuse is PlugFuseInterface {
     function decode(bytes calldata $data)
         public
         pure
+        virtual
         returns (uint8 $operator, uint256 $threshold)
     {
         ($operator, $threshold) = abi.decode($data, (uint8, uint256));
@@ -57,6 +54,7 @@ abstract contract ThresholdFuse is PlugFuseInterface {
     )
         public
         pure
+        virtual
         returns (bytes memory $data)
     {
         /// @dev Encode the logic operator and threshold.
@@ -66,5 +64,5 @@ abstract contract ThresholdFuse is PlugFuseInterface {
     /**
      * @dev Unit denomination of the threshold.
      */
-    function _threshold() internal view virtual returns (uint256);
+    function _threshold() internal view virtual returns (uint256) { }
 }
