@@ -29,11 +29,11 @@ contract PlugFactoryTest is Test {
 
         vm.expectEmit(address(factory));
         emit Transfer(address(0), address(1), tokenId);
-        (, address vault) = factory.deploy{ value: initialValue }(salt, address(plug));
+        (, address vault) =
+            factory.deploy{ value: initialValue }(salt, address(plug));
         assertEq(address(vault).balance, initialValue);
-        (bool alreadyDeployed,) = factory.deploy{ value: initialValue }(salt, address(plug));
+        (bool alreadyDeployed,) =
+            factory.deploy{ value: initialValue }(salt, address(plug));
         assertTrue(alreadyDeployed);
     }
-
-    function test_Deploy_AlreadyDeployed() public { }
 }

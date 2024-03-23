@@ -19,8 +19,9 @@ contract PlugVaultSocketTest is Test {
     }
 
     function deployVault() internal override returns (PlugVaultSocket $vault) {
-        (, address vaultAddress) =
-            factory.deploy(bytes32(abi.encodePacked(address(this), uint96(0))), address(plug));
+        (, address vaultAddress) = factory.deploy(
+            bytes32(abi.encodePacked(address(this), uint96(0))), address(plug)
+        );
         $vault = PlugVaultSocket(payable(vaultAddress));
     }
 
