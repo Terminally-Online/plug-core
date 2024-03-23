@@ -15,7 +15,7 @@ import { PlugNounsLib } from "../libraries/Plug.Nouns.Lib.sol";
  *         of the Noun that is currently being auctioned as well as handling
  *         auto-settlement of expired auctions so that users do not need to chain the
  *         conditionals or even be aware that is what is happening.
- * @author @nftchance (chance@utc24.io)
+ * @author @nftchance (chance@onplug.io)
  */
 contract PlugNounsBidCurrent {
     /// @dev The WETH token address used in case the ETH transfer fails.

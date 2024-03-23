@@ -13,7 +13,7 @@ import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
  * @dev Inheriting contracts must implement the logic for:
  *      - `_enforceSignature`
  *      - `_enforceRouter`.
- * @author @nftchance (chance@utc24.io)
+ * @author @nftchance (chance@onplug.io)
  */
 abstract contract PlugEnforce is PlugTypes {
     /**

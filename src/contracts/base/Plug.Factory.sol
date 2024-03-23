@@ -19,7 +19,7 @@ import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
  *         of being the deployment mechanism for the Sockets, the Factory also manages
  *         the ownership of the Sockets through the ERC721 standard allowing the
  *         Sockets to be traded on any major marketplace with ease.
- * @author @nftchance (chance@utc24.io)
+ * @author @nftchance (chance@onplug.io)
  */
 contract PlugFactory is PlugFactoryInterface, PlugTradable {
     /// @dev The mapping of the implementations of the vaults.

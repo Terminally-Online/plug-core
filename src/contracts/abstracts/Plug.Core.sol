@@ -10,7 +10,7 @@ import {
 
 /**
  * @title PlugCore
- * @author @nftchance (chance@utc24.io)
+ * @author @nftchance (chance@onplug.io)
  */
 abstract contract PlugCore is PlugExecute {
     /**
