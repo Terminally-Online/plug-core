@@ -33,6 +33,9 @@ library PlugLib {
 
     error CompensationFailed(address $recipient, uint256 $value);
 
+    error ThresholdExceeded(uint256 $expected, uint256 $reality);
+    error ThresholdInsufficient(uint256 $expected, uint256 $reality);
+
     /**
      * @notice Bubble up the revert reason revert data from an internal call
      *         that would typically revert without surfacing the reason.
