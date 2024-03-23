@@ -43,7 +43,7 @@ contract PlugBalanceFuseTest is Test {
         mockERC721.mint(address(this), balance);
     }
 
-    function test_enforceFuse_BelowNativeBalance() public {
+    function test_enforceFuse_Encoding() public {
         bytes memory terms = fuse.encode(
             address(this),
             address(0),
@@ -64,7 +64,16 @@ contract PlugBalanceFuseTest is Test {
         assertEq(decodedType, nativeType);
         assertEq(decodedOperator, belowOperator);
         assertEq(decodedBalance, belowBalance);
+    }
 
+    function test_enforceFuse_BelowNativeBalance() public view {
+        bytes memory terms = fuse.encode(
+            address(this),
+            address(0),
+            nativeType,
+            belowOperator,
+            belowBalance
+        );
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
@@ -85,7 +94,7 @@ contract PlugBalanceFuseTest is Test {
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
-    function test_enforceFuse_AboveNativeBalance() public {
+    function test_enforceFuse_AboveNativeBalance() public view {
         bytes memory terms = fuse.encode(
             address(this),
             address(0),
@@ -93,20 +102,6 @@ contract PlugBalanceFuseTest is Test {
             aboveOperator,
             aboveBalance
         );
-        (
-            address decodedHolder,
-            address decodedAsset,
-            uint8 decodedType,
-            uint8 decodedOperator,
-            uint256 decodedBalance
-        ) = fuse.decode(terms);
-
-        assertEq(decodedHolder, address(this));
-        assertEq(decodedAsset, address(0));
-        assertEq(decodedType, nativeType);
-        assertEq(decodedOperator, aboveOperator);
-        assertEq(decodedBalance, aboveBalance);
-
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
@@ -131,7 +126,7 @@ contract PlugBalanceFuseTest is Test {
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
-    function test_enforceFuse_BelowERC20Balance() public {
+    function test_enforceFuse_BelowERC20Balance() public view {
         bytes memory terms = fuse.encode(
             address(this),
             address(mockERC20),
@@ -139,20 +134,6 @@ contract PlugBalanceFuseTest is Test {
             belowOperator,
             belowBalance
         );
-        (
-            address decodedHolder,
-            address decodedAsset,
-            uint8 decodedType,
-            uint8 decodedOperator,
-            uint256 decodedBalance
-        ) = fuse.decode(terms);
-
-        assertEq(decodedHolder, address(this));
-        assertEq(decodedAsset, address(mockERC20));
-        assertEq(decodedType, erc20Type);
-        assertEq(decodedOperator, belowOperator);
-        assertEq(decodedBalance, belowBalance);
-
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
@@ -173,7 +154,7 @@ contract PlugBalanceFuseTest is Test {
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
-    function test_enforceFuse_AboveERC20Balance() public {
+    function test_enforceFuse_AboveERC20Balance() public view {
         bytes memory terms = fuse.encode(
             address(this),
             address(mockERC20),
@@ -181,20 +162,6 @@ contract PlugBalanceFuseTest is Test {
             aboveOperator,
             aboveBalance
         );
-        (
-            address decodedHolder,
-            address decodedAsset,
-            uint8 decodedType,
-            uint8 decodedOperator,
-            uint256 decodedBalance
-        ) = fuse.decode(terms);
-
-        assertEq(decodedHolder, address(this));
-        assertEq(decodedAsset, address(mockERC20));
-        assertEq(decodedType, erc20Type);
-        assertEq(decodedOperator, aboveOperator);
-        assertEq(decodedBalance, aboveBalance);
-
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
@@ -219,7 +186,7 @@ contract PlugBalanceFuseTest is Test {
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
-    function test_enforceFuse_BelowERC721Balance() public {
+    function test_enforceFuse_BelowERC721Balance() public view {
         bytes memory terms = fuse.encode(
             address(this),
             address(mockERC721),
@@ -227,20 +194,6 @@ contract PlugBalanceFuseTest is Test {
             belowOperator,
             2
         );
-        (
-            address decodedHolder,
-            address decodedAsset,
-            uint8 decodedType,
-            uint8 decodedOperator,
-            uint256 decodedBalance
-        ) = fuse.decode(terms);
-
-        assertEq(decodedHolder, address(this));
-        assertEq(decodedAsset, address(mockERC721));
-        assertEq(decodedType, erc721Type);
-        assertEq(decodedOperator, belowOperator);
-        assertEq(decodedBalance, 2);
-
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
@@ -261,7 +214,7 @@ contract PlugBalanceFuseTest is Test {
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
-    function test_enforceFuse_AboveERC721Balance() public {
+    function test_enforceFuse_AboveERC721Balance() public view {
         bytes memory terms = fuse.encode(
             address(this),
             address(mockERC721),
@@ -269,20 +222,6 @@ contract PlugBalanceFuseTest is Test {
             aboveOperator,
             0
         );
-        (
-            address decodedHolder,
-            address decodedAsset,
-            uint8 decodedType,
-            uint8 decodedOperator,
-            uint256 decodedBalance
-        ) = fuse.decode(terms);
-
-        assertEq(decodedHolder, address(this));
-        assertEq(decodedAsset, address(mockERC721));
-        assertEq(decodedType, erc721Type);
-        assertEq(decodedOperator, aboveOperator);
-        assertEq(decodedBalance, 0);
-
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
