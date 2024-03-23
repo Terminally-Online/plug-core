@@ -2,8 +2,9 @@
 
 pragma solidity 0.8.18;
 
-import {PlugFuseInterface} from '../interfaces/Plug.Fuse.Interface.sol';
-import {PlugLib, PlugTypesLib} from '../libraries/Plug.Lib.sol';
+import { PlugFuseInterface } from
+    "../interfaces/Plug.Fuse.Interface.sol";
+import { PlugLib, PlugTypesLib } from "../libraries/Plug.Lib.sol";
 
 /**
  * @title Plug Cooldown Fuse
@@ -17,54 +18,66 @@ import {PlugLib, PlugTypesLib} from '../libraries/Plug.Lib.sol';
  * @author nftchance (chance@onplug.io)
  */
 contract PlugCooldownFuse is PlugFuseInterface {
-	/// @dev Keep track of the last time a bundle of Plugs was used.
-	mapping(address => mapping(bytes32 => uint256)) socketToPlugsToLastUsed;
+    /// @dev Keep track of the last time a bundle of Plugs was used.
+    mapping(address => mapping(bytes32 => uint256))
+        socketToPlugsToLastUsed;
 
-	/**
-	 * See {PlugFuseInterface-enforceFuse}.
-	 */
-	function enforceFuse(
-		bytes calldata $live,
-		PlugTypesLib.Current calldata $current,
-		bytes32 $plugsHash
-	) public virtual override returns (bytes memory $through) {
-		/// @dev Snapshot the current state of the cooldown and use.
-		uint256 cooldown = decode($live);
-		uint256 lastUsed = socketToPlugsToLastUsed[msg.sender][$plugsHash];
+    /**
+     * See {PlugFuseInterface-enforceFuse}.
+     */
+    function enforceFuse(
+        bytes calldata $live,
+        PlugTypesLib.Current calldata $current,
+        bytes32 $plugsHash
+    )
+        public
+        virtual
+        override
+        returns (bytes memory $through)
+    {
+        /// @dev Snapshot the current state of the cooldown and use.
+        uint256 cooldown = decode($live);
+        uint256 lastUsed =
+            socketToPlugsToLastUsed[msg.sender][$plugsHash];
 
         /// @dev Confirm one use has already happened.
-		if (lastUsed != 0) {
+        if (lastUsed != 0) {
             /// @dev Determine how long it has been since the last use.
-			uint256 timeSince = block.timestamp - lastUsed;
+            uint256 timeSince = block.timestamp - lastUsed;
 
             /// @dev Confirm the cooldown has not been exceeded.
-			if (timeSince < cooldown) {
-				revert PlugLib.ThresholdExceeded(cooldown, timeSince);
-			}
-		}
+            if (timeSince < cooldown) {
+                revert PlugLib.ThresholdExceeded(cooldown, timeSince);
+            }
+        }
 
         /// @dev Update the last used timestamp for the next cooldown check.
-		socketToPlugsToLastUsed[msg.sender][$plugsHash] = block.timestamp;
+        socketToPlugsToLastUsed[msg.sender][$plugsHash] =
+            block.timestamp;
 
-		/// @dev Continue the pass through.
-		$through = $current.data;
-	}
+        /// @dev Continue the pass through.
+        $through = $current.data;
+    }
 
-	/**
-	 * See {PlugFuseInterface-decode}.
-	 */
-	function decode(
-		bytes calldata $terms
-	) public pure returns (uint256 $cooldown) {
-		$cooldown = abi.decode($terms, (uint256));
-	}
+    /**
+     * See {PlugFuseInterface-decode}.
+     */
+    function decode(bytes calldata $terms)
+        public
+        pure
+        returns (uint256 $cooldown)
+    {
+        $cooldown = abi.decode($terms, (uint256));
+    }
 
-	/**
-	 * See {PlugFuseInterface-encode}.
-	 */
-	function encode(
-		uint256 $cooldown
-	) public pure returns (bytes memory $terms) {
-		$terms = abi.encode($cooldown);
-	}
+    /**
+     * See {PlugFuseInterface-encode}.
+     */
+    function encode(uint256 $cooldown)
+        public
+        pure
+        returns (bytes memory $terms)
+    {
+        $terms = abi.encode($cooldown);
+    }
 }
