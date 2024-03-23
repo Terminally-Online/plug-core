@@ -6,10 +6,12 @@ import { ImmutableCreate2Factory } from
     "../interfaces/Deployment.Create2Factory.Interface.sol";
 import { PlugLib } from "../libraries/Plug.Lib.sol";
 import { PlugBaseFeeFuse } from "../fuses/Plug.BaseFee.Fuse.sol";
-import { PlugBlockNumberFuse } from "../fuses/Plug.BlockNumber.Fuse.sol";
+import { PlugBlockNumberFuse } from
+    "../fuses/Plug.BlockNumber.Fuse.sol";
 import { PlugClampFuse } from "../fuses/Plug.Clamp.Fuse.sol";
 import { PlugFactory } from "../base/Plug.Factory.sol";
-import { PlugLimitedCallsFuse } from "../fuses/Plug.LimitedCalls.Fuse.sol";
+import { PlugLimitedCallsFuse } from
+    "../fuses/Plug.LimitedCalls.Fuse.sol";
 import { PlugNounsIdFuse } from "../fuses/Plug.NounsId.Fuse.sol";
 import { PlugNounsTraitFuse } from "../fuses/Plug.NounsTrait.Fuse.sol";
 import { PlugRevocationFuse } from "../fuses/Plug.Revocation.Fuse.sol";
@@ -35,7 +37,9 @@ import { Plug } from "../base/Plug.sol";
 library PlugEtcherLib {
     /// @notice The immutable Create2 factory used for deployment.
     ImmutableCreate2Factory internal constant FACTORY =
-        ImmutableCreate2Factory(0x0000000000FFe8B47B3e2130213B802212439497);
+    ImmutableCreate2Factory(
+        0x0000000000FFe8B47B3e2130213B802212439497
+    );
 
     bytes internal constant PLUG_BASE_FEE_FUSE_INITCODE =
         hex"6080806040523461001657610619908161001c8239f35b600080fdfe6080604052600436101561001257600080fd5b6000803560e01c90816311aecce21461004a575080631323692a146100455763e5c5e9a31461004057600080fd5b610223565b610181565b346100d6577ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc906060823601126100d65767ffffffffffffffff6004358181116100dd5761009c9036906004016100e1565b9290936024359283116100d95760609083360301126100d6576100d26100c66004840185876103fc565b60405191829182610137565b0390f35b80fd5b5080fd5b8280fd5b9181601f8401121561010f5782359167ffffffffffffffff831161010f576020838186019501011161010f57565b600080fd5b60005b8381106101275750506000910152565b8181015183820152602001610117565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f6040936020845261017a8151809281602088015260208888019101610114565b0116010190565b3461010f5760407ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261010f576004356fffffffffffffffffffffffffffffffff808216820361010f57602435908116810361010f576100d291604051917fffffffffffffffffffffffffffffffff00000000000000000000000000000000809260801b16602084015260801b166030820152602081526100c6816102e4565b3461010f5760207ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc36011261010f5760043567ffffffffffffffff811161010f5761027d61027760409236906004016100e1565b9061053d565b82516fffffffffffffffffffffffffffffffff928316815291166020820152f35b906102b160209282815194859201610114565b0190565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040810190811067ffffffffffffffff82111761030057604052565b6102b5565b90601f7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0910116810190811067ffffffffffffffff82111761030057604052565b9035907fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe18136030182121561010f570180359067ffffffffffffffff821161010f5760200191813603831361010f57565b92919267ffffffffffffffff821161030057604051916103df60207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8401160184610305565b82948184528183011161010f578281602093846000960137010152565b906104069161053d565b6fffffffffffffffffffffffffffffffff90811691166104f15748116104425761043861043f915b6040810190610346565b3691610397565b90565b6104ed6104666104bb6104536105d3565b61048f604051938492602084019061029e565b7f3a65787069726564000000000000000000000000000000000000000000000000815260080190565b037fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe08101835282610305565b6040519182917f08c379a000000000000000000000000000000000000000000000000000000000835260048301610137565b0390fd5b48106105035761043861043f9161042e565b6104ed6105146104bb6104536105d3565b7f3a6561726c790000000000000000000000000000000000000000000000000000815260060190565b91909161054b368483610397565b906010825110610575576010610565920151933691610397565b6020815110610575576020015190565b60646040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601560248201527f746f55696e743132385f6f75744f66426f756e647300000000000000000000006044820152fd5b604051906105e0826102e4565b600f82527f506c756742617365466565467573650000000000000000000000000000000000602083015256fea164736f6c6343000812000a";
@@ -171,7 +175,8 @@ library PlugEtcherLib {
                 "Etcher: Reality check failed"
             );
         }
-        $plugBaseFeeFuse = PlugBaseFeeFuse(payable(PLUG_BASE_FEE_FUSE_ADDRESS));
+        $plugBaseFeeFuse =
+            PlugBaseFeeFuse(payable(PLUG_BASE_FEE_FUSE_ADDRESS));
     }
 
     /**
@@ -184,43 +189,54 @@ library PlugEtcherLib {
     {
         if (_extcodesize(PLUG_BLOCK_NUMBER_FUSE_ADDRESS) == 0) {
             address reality = _safeCreate2(
-                PLUG_BLOCK_NUMBER_FUSE_SALT, PLUG_BLOCK_NUMBER_FUSE_INITCODE
+                PLUG_BLOCK_NUMBER_FUSE_SALT,
+                PLUG_BLOCK_NUMBER_FUSE_INITCODE
             );
             require(
                 reality == PLUG_BLOCK_NUMBER_FUSE_ADDRESS,
                 "Etcher: Reality check failed"
             );
         }
-        $plugBlockNumberFuse =
-            PlugBlockNumberFuse(payable(PLUG_BLOCK_NUMBER_FUSE_ADDRESS));
+        $plugBlockNumberFuse = PlugBlockNumberFuse(
+            payable(PLUG_BLOCK_NUMBER_FUSE_ADDRESS)
+        );
     }
 
     /**
      * @notice Deploy (if needed) and return the PlugClampFuse contract instance.
      * @return $plugClampFuse The PlugClampFuse contract instance.
      */
-    function plugClampFuse() internal returns (PlugClampFuse $plugClampFuse) {
+    function plugClampFuse()
+        internal
+        returns (PlugClampFuse $plugClampFuse)
+    {
         if (_extcodesize(PLUG_CLAMP_FUSE_ADDRESS) == 0) {
-            address reality =
-                _safeCreate2(PLUG_CLAMP_FUSE_SALT, PLUG_CLAMP_FUSE_INITCODE);
+            address reality = _safeCreate2(
+                PLUG_CLAMP_FUSE_SALT, PLUG_CLAMP_FUSE_INITCODE
+            );
             require(
                 reality == PLUG_CLAMP_FUSE_ADDRESS,
                 "Etcher: Reality check failed"
             );
         }
-        $plugClampFuse = PlugClampFuse(payable(PLUG_CLAMP_FUSE_ADDRESS));
+        $plugClampFuse =
+            PlugClampFuse(payable(PLUG_CLAMP_FUSE_ADDRESS));
     }
 
     /**
      * @notice Deploy (if needed) and return the PlugFactory contract instance.
      * @return $plugFactory The PlugFactory contract instance.
      */
-    function plugFactory() internal returns (PlugFactory $plugFactory) {
+    function plugFactory()
+        internal
+        returns (PlugFactory $plugFactory)
+    {
         if (_extcodesize(PLUG_FACTORY_ADDRESS) == 0) {
             address reality =
                 _safeCreate2(PLUG_FACTORY_SALT, PLUG_FACTORY_INITCODE);
             require(
-                reality == PLUG_FACTORY_ADDRESS, "Etcher: Reality check failed"
+                reality == PLUG_FACTORY_ADDRESS,
+                "Etcher: Reality check failed"
             );
         }
         $plugFactory = PlugFactory(payable(PLUG_FACTORY_ADDRESS));
@@ -236,15 +252,17 @@ library PlugEtcherLib {
     {
         if (_extcodesize(PLUG_LIMITED_CALLS_FUSE_ADDRESS) == 0) {
             address reality = _safeCreate2(
-                PLUG_LIMITED_CALLS_FUSE_SALT, PLUG_LIMITED_CALLS_FUSE_INITCODE
+                PLUG_LIMITED_CALLS_FUSE_SALT,
+                PLUG_LIMITED_CALLS_FUSE_INITCODE
             );
             require(
                 reality == PLUG_LIMITED_CALLS_FUSE_ADDRESS,
                 "Etcher: Reality check failed"
             );
         }
-        $plugLimitedCallsFuse =
-            PlugLimitedCallsFuse(payable(PLUG_LIMITED_CALLS_FUSE_ADDRESS));
+        $plugLimitedCallsFuse = PlugLimitedCallsFuse(
+            payable(PLUG_LIMITED_CALLS_FUSE_ADDRESS)
+        );
     }
 
     /**
@@ -264,7 +282,8 @@ library PlugEtcherLib {
                 "Etcher: Reality check failed"
             );
         }
-        $plugNounsIdFuse = PlugNounsIdFuse(payable(PLUG_NOUNS_ID_FUSE_ADDRESS));
+        $plugNounsIdFuse =
+            PlugNounsIdFuse(payable(PLUG_NOUNS_ID_FUSE_ADDRESS));
     }
 
     /**
@@ -277,7 +296,8 @@ library PlugEtcherLib {
     {
         if (_extcodesize(PLUG_NOUNS_TRAIT_FUSE_ADDRESS) == 0) {
             address reality = _safeCreate2(
-                PLUG_NOUNS_TRAIT_FUSE_SALT, PLUG_NOUNS_TRAIT_FUSE_INITCODE
+                PLUG_NOUNS_TRAIT_FUSE_SALT,
+                PLUG_NOUNS_TRAIT_FUSE_INITCODE
             );
             require(
                 reality == PLUG_NOUNS_TRAIT_FUSE_ADDRESS,
@@ -298,7 +318,8 @@ library PlugEtcherLib {
     {
         if (_extcodesize(PLUG_REVOCATION_FUSE_ADDRESS) == 0) {
             address reality = _safeCreate2(
-                PLUG_REVOCATION_FUSE_SALT, PLUG_REVOCATION_FUSE_INITCODE
+                PLUG_REVOCATION_FUSE_SALT,
+                PLUG_REVOCATION_FUSE_INITCODE
             );
             require(
                 reality == PLUG_REVOCATION_FUSE_ADDRESS,
@@ -334,12 +355,17 @@ library PlugEtcherLib {
      * @notice Deploy (if needed) and return the PlugTreasury contract instance.
      * @return $plugTreasury The PlugTreasury contract instance.
      */
-    function plugTreasury() internal returns (PlugTreasury $plugTreasury) {
+    function plugTreasury()
+        internal
+        returns (PlugTreasury $plugTreasury)
+    {
         if (_extcodesize(PLUG_TREASURY_ADDRESS) == 0) {
-            address reality =
-                _safeCreate2(PLUG_TREASURY_SALT, PLUG_TREASURY_INITCODE);
+            address reality = _safeCreate2(
+                PLUG_TREASURY_SALT, PLUG_TREASURY_INITCODE
+            );
             require(
-                reality == PLUG_TREASURY_ADDRESS, "Etcher: Reality check failed"
+                reality == PLUG_TREASURY_ADDRESS,
+                "Etcher: Reality check failed"
             );
         }
         $plugTreasury = PlugTreasury(payable(PLUG_TREASURY_ADDRESS));
@@ -354,14 +380,16 @@ library PlugEtcherLib {
         returns (PlugVaultSocket $plugVaultSocket)
     {
         if (_extcodesize(PLUG_VAULT_SOCKET_ADDRESS) == 0) {
-            address reality =
-                _safeCreate2(PLUG_VAULT_SOCKET_SALT, PLUG_VAULT_SOCKET_INITCODE);
+            address reality = _safeCreate2(
+                PLUG_VAULT_SOCKET_SALT, PLUG_VAULT_SOCKET_INITCODE
+            );
             require(
                 reality == PLUG_VAULT_SOCKET_ADDRESS,
                 "Etcher: Reality check failed"
             );
         }
-        $plugVaultSocket = PlugVaultSocket(payable(PLUG_VAULT_SOCKET_ADDRESS));
+        $plugVaultSocket =
+            PlugVaultSocket(payable(PLUG_VAULT_SOCKET_ADDRESS));
     }
 
     /**
@@ -373,14 +401,16 @@ library PlugEtcherLib {
         returns (PlugWindowFuse $plugWindowFuse)
     {
         if (_extcodesize(PLUG_WINDOW_FUSE_ADDRESS) == 0) {
-            address reality =
-                _safeCreate2(PLUG_WINDOW_FUSE_SALT, PLUG_WINDOW_FUSE_INITCODE);
+            address reality = _safeCreate2(
+                PLUG_WINDOW_FUSE_SALT, PLUG_WINDOW_FUSE_INITCODE
+            );
             require(
                 reality == PLUG_WINDOW_FUSE_ADDRESS,
                 "Etcher: Reality check failed"
             );
         }
-        $plugWindowFuse = PlugWindowFuse(payable(PLUG_WINDOW_FUSE_ADDRESS));
+        $plugWindowFuse =
+            PlugWindowFuse(payable(PLUG_WINDOW_FUSE_ADDRESS));
     }
 
     /**
@@ -390,7 +420,10 @@ library PlugEtcherLib {
     function plug() internal returns (Plug $plug) {
         if (_extcodesize(PLUG_ADDRESS) == 0) {
             address reality = _safeCreate2(PLUG_SALT, PLUG_INITCODE);
-            require(reality == PLUG_ADDRESS, "Etcher: Reality check failed");
+            require(
+                reality == PLUG_ADDRESS,
+                "Etcher: Reality check failed"
+            );
         }
         $plug = Plug(payable(PLUG_ADDRESS));
     }
@@ -427,7 +460,8 @@ library PlugEtcherLib {
                         mload(add(add(ic2fBytecode, 0x20), i))
                     )
                 }
-                let vmAddress := 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
+                let vmAddress :=
+                    0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
                 if iszero(
                     call(
                         gas(),
@@ -456,8 +490,11 @@ library PlugEtcherLib {
                     mload(add(add($initializationCode, 0x20), i))
                 )
             }
-            if iszero(call(gas(), c2f, 0, add(m, 0x1c), add(n, 0x64), m, 0x20))
-            {
+            if iszero(
+                call(
+                    gas(), c2f, 0, add(m, 0x1c), add(n, 0x64), m, 0x20
+                )
+            ) {
                 returndatacopy(m, m, returndatasize())
                 revert(m, returndatasize())
             }

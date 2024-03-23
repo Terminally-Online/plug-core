@@ -2,7 +2,8 @@
 
 pragma solidity 0.8.18;
 
-import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
+import { PlugFuseInterface } from
+    "../interfaces/Plug.Fuse.Interface.sol";
 import { PlugThresholdFuseEnforce } from
     "../abstracts/fuses/Plug.Threshold.Fuse.Enforce.sol";
 import { PlugLib, PlugTypesLib } from "../libraries/Plug.Lib.sol";
@@ -61,8 +62,8 @@ contract PlugBalanceSemiFungibleFuse is
             uint256 $threshold
         )
     {
-        ($holder, $asset, $tokenId, $operator, $threshold) =
-            abi.decode($data, (address, address, uint256, uint8, uint256));
+        ($holder, $asset, $tokenId, $operator, $threshold) = abi
+            .decode($data, (address, address, uint256, uint8, uint256));
     }
 
     /**
@@ -79,6 +80,8 @@ contract PlugBalanceSemiFungibleFuse is
         pure
         returns (bytes memory $data)
     {
-        $data = abi.encode($holder, $asset, $tokenId, $operator, $threshold);
+        $data = abi.encode(
+            $holder, $asset, $tokenId, $operator, $threshold
+        );
     }
 }
