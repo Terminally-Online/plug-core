@@ -15,10 +15,7 @@ import { ERC721 } from "solady/src/tokens/ERC721.sol";
  *      Native, ERC20, and ERC721, but not ERC1155 balances.
  * @author nftchance (chance@onplug.io)
  */
-contract PlugBalanceFuse is
-    PlugFuseInterface,
-    PlugThresholdFuseEnforce
-{
+contract PlugBalanceFuse is PlugFuseInterface, PlugThresholdFuseEnforce {
     /**
      * See {PlugFuseInterface-enforceFuse}.
      */
