@@ -49,9 +49,16 @@ contract PlugRateLimitFuse is PlugFuseInterface {
         Bucket storage bucket =
             consumption[msg.sender][global ? bytes32(0) : $plugsHash];
 
+
         /// @dev Determine how many tokens have been replenished since last use.
         uint256 tokensToAdd =
             (block.timestamp - bucket.lastUpdatedAt) / replenishRate;
+
+        /// @dev Account for partial tokens by adjusting the refresh window.
+        bucket.lastUpdatedAt = uint32(
+            block.timestamp
+                - ((block.timestamp - bucket.lastUpdatedAt) % replenishRate)
+        );
 
         /// @dev Determine how many tokens are available while acounting for
         ///      the amount of time that has passed since last use.
@@ -59,12 +66,6 @@ contract PlugRateLimitFuse is PlugFuseInterface {
             (bucket.availableTokens + tokensToAdd > max)
                 ? max
                 : bucket.availableTokens + tokensToAdd
-        );
-
-        /// @dev Account for partial tokens by adjusting the refresh window.
-        bucket.lastUpdatedAt = uint32(
-            block.timestamp
-                - ((block.timestamp - bucket.lastUpdatedAt) % replenishRate)
         );
 
         /// @dev Make sure that there are tokens that can be used.
