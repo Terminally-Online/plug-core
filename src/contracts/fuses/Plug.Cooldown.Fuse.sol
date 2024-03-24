@@ -27,7 +27,7 @@ contract PlugCooldownFuse is PlugFuseInterface {
 		bytes calldata $terms,
 		PlugTypesLib.Current calldata $current,
 		bytes32 $plugsHash
-	) public virtual override returns (bytes memory $through) {
+	) public virtual returns (bytes memory $through) {
 		/// @dev Snapshot the current state of the cooldown and use.
 		uint256 lastUsed = socketToPlugsToLastUsed[msg.sender][$plugsHash];
 
