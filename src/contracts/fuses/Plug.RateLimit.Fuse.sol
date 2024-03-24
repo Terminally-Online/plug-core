@@ -64,7 +64,10 @@ contract PlugRateLimitFuse is PlugFuseInterface {
         /// @dev Account for partial tokens by adjusting the refresh window.
         bucket.lastUpdatedAt = uint32(
             block.timestamp
-                - ((block.timestamp - bucket.lastUpdatedAt) % replenishRate)
+                - (
+                    (block.timestamp - bucket.lastUpdatedAt)
+                        % replenishRate
+                )
         );
 
         /// @dev Make sure that there are tokens that can be used.
