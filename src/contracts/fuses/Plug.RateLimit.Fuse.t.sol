@@ -31,7 +31,11 @@ contract PlugCooldownFuseTest is Test {
 
     function test_enforceFuse_Encoding() public {
         bytes memory terms = fuse.encode(global, replenishRate, max);
-        (bool decodedGlobal, uint32 decodedReplenishRate, uint32 decodedMax) = fuse.decode(terms);
+        (
+            bool decodedGlobal,
+            uint32 decodedReplenishRate,
+            uint32 decodedMax
+        ) = fuse.decode(terms);
         assertEq(decodedGlobal, global);
         assertEq(decodedReplenishRate, replenishRate);
         assertEq(decodedMax, max);
@@ -49,7 +53,9 @@ contract PlugCooldownFuseTest is Test {
         fuse.enforceFuse(terms, current, plugsHash);
     }
 
-    function testRevert_enforceFuse_RateLimit_ThresholdExceeded() public {
+    function testRevert_enforceFuse_RateLimit_ThresholdExceeded()
+        public
+    {
         bytes memory terms = fuse.encode(global, replenishRate, 1);
         fuse.enforceFuse(terms, current, plugsHash);
         vm.expectRevert(
