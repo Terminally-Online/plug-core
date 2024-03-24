@@ -24,26 +24,27 @@ contract PlugCooldownFuse is PlugFuseInterface {
 	 * See {PlugFuseInterface-enforceFuse}.
 	 */
 	function enforceFuse(
-		bytes calldata $live,
+		bytes calldata $terms,
 		PlugTypesLib.Current calldata $current,
 		bytes32 $plugsHash
 	) public virtual override returns (bytes memory $through) {
 		/// @dev Snapshot the current state of the cooldown and use.
-		uint256 cooldown = decode($live);
 		uint256 lastUsed = socketToPlugsToLastUsed[msg.sender][$plugsHash];
 
-        /// @dev Confirm one use has already happened.
+		/// @dev Confirm one use has already happened.
 		if (lastUsed != 0) {
-            /// @dev Determine how long it has been since the last use.
+			/// @dev Determine how long it has been since the last use.
 			uint256 timeSince = block.timestamp - lastUsed;
+            /// @dev Decode the cooldown from the terms.
+			uint256 cooldown = decode($terms);
 
-            /// @dev Confirm the cooldown has not been exceeded.
+			/// @dev Confirm the cooldown has not been exceeded.
 			if (timeSince < cooldown) {
 				revert PlugLib.ThresholdExceeded(cooldown, timeSince);
 			}
 		}
 
-        /// @dev Update the last used timestamp for the next cooldown check.
+		/// @dev Update the last used timestamp for the next cooldown check.
 		socketToPlugsToLastUsed[msg.sender][$plugsHash] = block.timestamp;
 
 		/// @dev Continue the pass through.
