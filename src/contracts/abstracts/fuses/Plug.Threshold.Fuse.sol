@@ -2,11 +2,13 @@
 
 pragma solidity 0.8.18;
 
-import { PlugFuseInterface } from
-    "../../interfaces/Plug.Fuse.Interface.sol";
+import {
+    PlugFuseInterface,
+    PlugTypesLib
+} from "../../interfaces/Plug.Fuse.Interface.sol";
 import { PlugThresholdFuseEnforce } from
     "./Plug.Threshold.Fuse.Enforce.sol";
-import { PlugLib, PlugTypesLib } from "../../libraries/Plug.Lib.sol";
+import { PlugLib } from "../../libraries/Plug.Lib.sol";
 
 abstract contract ThresholdFuse is
     PlugFuseInterface,

@@ -2,9 +2,10 @@
 
 pragma solidity 0.8.18;
 
-import { PlugFuseInterface } from
-    "../../interfaces/Plug.Fuse.Interface.sol";
-import { PlugTypesLib } from "../../abstracts/Plug.Types.sol";
+import {
+    PlugFuseInterface,
+    PlugTypesLib
+} from "../../interfaces/Plug.Fuse.Interface.sol";
 import { PlugNounsLib } from
     "../../libraries/protocols/Plug.Nouns.Lib.sol";
 
