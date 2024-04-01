@@ -10,12 +10,16 @@ import { PlugBalanceInterface } from
 import { SafeTransferLib } from "solady/src/utils/SafeTransferLib.sol";
 
 abstract contract PlugRouter is ReentrancyGuard {
-
     function plugNative(
         address payable $target,
         bytes calldata $data,
         uint256 $fee
-    ) public payable virtual nonReentrant {
+    )
+        public
+        payable
+        virtual
+        nonReentrant
+    {
         uint256 preNative = address(this).balance - msg.value;
 
         (bool success, bytes memory reason) =
@@ -41,7 +45,12 @@ abstract contract PlugRouter is ReentrancyGuard {
         bytes calldata $data,
         uint256 $sell,
         uint256 $fee
-    ) public virtual payable nonReentrant { 
+    )
+        public
+        payable
+        virtual
+        nonReentrant
+    {
         /// @dev Retrieve the tokens being swapped from the transaction caller (a Socket)
         ///      and transfer them to this contract.
         SafeTransferLib.safeTransferFrom(
@@ -256,7 +265,7 @@ abstract contract PlugRouter is ReentrancyGuard {
         uint256 postNative = address(this).balance;
 
         /// @dev Confim that the native balance actually increased.
-        if(postNative <= preNative) {
+        if (postNative <= preNative) {
             revert PlugLib.TokenReceiptInvalid();
         }
 
@@ -264,14 +273,16 @@ abstract contract PlugRouter is ReentrancyGuard {
         uint256 diffNative = postNative - preNative;
 
         /// @dev Handle the fee if one is present.
-        if($fee > 0) { 
-            /// @dev Calculate the fee in the form of basis points and transfer 
+        if ($fee > 0) {
+            /// @dev Calculate the fee in the form of basis points and transfer
             ///      the remainder to the sender.
             uint256 fee = (diffNative * $fee) / 10 ** 18;
             /// @dev Transfer the native tokens earned without the fee to the sender.
-            SafeTransferLib.safeTransferETH(msg.sender, diffNative - fee);
-        } 
-        /// @dev If there is no fee, return the entire amount to the sender. 
+            SafeTransferLib.safeTransferETH(
+                msg.sender, diffNative - fee
+            );
+        }
+        /// @dev If there is no fee, return the entire amount to the sender.
         else if (diffNative > 0) {
             /// @dev Transfer the native tokens earned to the sender.
             SafeTransferLib.safeTransferETH(msg.sender, diffNative);
