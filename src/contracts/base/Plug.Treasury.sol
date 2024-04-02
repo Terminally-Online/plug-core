@@ -4,7 +4,6 @@ pragma solidity 0.8.18;
 
 import {Receiver} from 'solady/src/accounts/Receiver.sol';
 import {Ownable} from 'solady/src/auth/Ownable.sol';
-import {Multicallable} from 'solady/src/utils/Multicallable.sol';
 import {PlugSwapper, PlugLib} from '../abstracts/Plug.Swapper.sol';
 
 /**
@@ -16,7 +15,7 @@ import {PlugSwapper, PlugLib} from '../abstracts/Plug.Swapper.sol';
  *         the tokens to remain in the Treasury rather than needing
  *         another token transfer.
  */
-contract PlugTreasury is Receiver, Ownable, Multicallable, PlugSwapper {
+contract PlugTreasury is Receiver, Ownable, PlugSwapper {
 	/**
 	 * @notice Initialize the contract with the owner.
 	 * @param $owner The address of the owner.
@@ -34,22 +33,39 @@ contract PlugTreasury is Receiver, Ownable, Multicallable, PlugSwapper {
 		address[] calldata $targets,
 		bool $allowed
 	) public virtual onlyOwner {
-		for (uint256 $i; $i < $targets.length; $i++) {
-			targetToAllowed[$targets[$i]] = $allowed;
+		for (uint256 i; i < $targets.length; i++) {
+			targetToAllowed[$targets[i]] = $allowed;
 		}
 	}
 
 	/**
-	 * @notice Execute an arbitrary set of transactions from the Treasury.
-     * @dev Only the owner of the Treasury can execute arbitrary calls and
-     *      the targets do not have to be on the list of allowed targets.
-	 * @param $transactions An array of encoded transactions to execute
-     *        within the context of the Treasury.
+	 * @notice Execute multiple calls that are not required to succeed.
+	 * @param $targets The targets to call.
+	 * @param $values The values to send with the calls.
+	 * @param $datas The data to send with the calls.
+	 * @return $successes The success status of each call.
+	 * @return $results The results of each call.
 	 */
-	function multicall(
-		bytes[] calldata $transactions
-	) public virtual override onlyOwner returns (bytes[] memory) {
-        return super.multicall($transactions);
+	function execute(
+		address[] calldata $targets,
+		uint256[] calldata $values,
+		bytes[] calldata $datas
+	) public virtual onlyOwner returns (bool[] memory $successes, bytes[] memory $results) {
+		/// @dev Take a snapshot of the number of calls in the array.
+		uint256 length = $targets.length;
+
+		/// @dev Instantiate the results array with the length of the calls array.
+		$successes = new bool[](length);
+		$results = new bytes[](length);
+
+		/// @dev Loop through all of the calls in the array.
+		for (uint256 i; i < length; i++) {
+			/// @dev Execute the transaction from within the array and save the response
+			///      of success and failure reason into the result.
+			($successes[i], $results[i]) = $targets[i].call{
+				value: $values[i]
+			}($datas[i]);
+		}
 	}
 
 	/**
