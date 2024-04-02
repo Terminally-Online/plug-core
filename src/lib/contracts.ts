@@ -2910,7 +2910,7 @@ export const contracts = [
             },
             {
                 "type": "error",
-                "name": "TokenReceiptInvalid",
+                "name": "TokenBalanceInvalid",
                 "inputs": []
             },
             {

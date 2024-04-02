@@ -1581,7 +1581,7 @@ export const plugTreasuryAbi = [
   { type: 'error', inputs: [], name: 'Reentrancy' },
   { type: 'error', inputs: [], name: 'TargetInvalid' },
   { type: 'error', inputs: [], name: 'TokenAllowanceInvalid' },
-  { type: 'error', inputs: [], name: 'TokenReceiptInvalid' },
+  { type: 'error', inputs: [], name: 'TokenBalanceInvalid' },
   { type: 'error', inputs: [], name: 'Unauthorized' },
 ] as const
 
