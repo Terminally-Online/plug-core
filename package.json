@@ -32,7 +32,7 @@
     "@types/chai-as-promised": "^7.1.8",
     "@types/fs-extra": "^11.0.4",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^20.11.30",
+    "@types/node": "^20.12.2",
     "@wagmi/cli": "^2.1.4",
     "chai": "^5.1.0",
     "dedent": "^1.5.1",
@@ -55,8 +55,8 @@
     "@nftchance/plug-types": "^0.9.11",
     "abitype": "^1.0.2",
     "solady": "^0.0.181",
-    "viem": "^2.9.5",
-    "wagmi": "^2.5.16"
+    "viem": "^2.9.6",
+    "wagmi": "^2.5.17"
   },
   "repository": {
     "type": "git",
