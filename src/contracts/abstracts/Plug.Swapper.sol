@@ -17,7 +17,7 @@ import { SafeTransferLib } from "solady/src/utils/SafeTransferLib.sol";
  *         has a secure mechanism to collect a fee upon successful execution.
  */
 abstract contract PlugSwapper is ReentrancyGuard {
-    /// @dev Storage reference to track which contracts can be interacted with through 
+    /// @dev Storage reference to track which contracts can be interacted with through
     ///      the Swapper. Without this, a malicious call could be made to directly call the
     ///      assets held within and transfer them out having bypassed any swap mechanism.
     mapping(address => bool) public targetToAllowed;
@@ -25,9 +25,9 @@ abstract contract PlugSwapper is ReentrancyGuard {
     /// @dev Modifier to confirm that all transactions are only being executed on
     ///      active targets that are allowed to be interacted with.
     modifier onlyActiveTarget(address $target) {
-        /// @dev If the target is not on the allowance list then revert as it 
+        /// @dev If the target is not on the allowance list then revert as it
         ///      is potentially an unsafe call.
-        if(targetToAllowed[$target] == false) {
+        if (targetToAllowed[$target] == false) {
             revert PlugLib.TargetInvalid();
         }
         _;
@@ -98,8 +98,8 @@ abstract contract PlugSwapper is ReentrancyGuard {
         ///      amount that the `caller` can move after the fee is accounted for.
         SafeTransferLib.safeApprove($tokenOut, $target, $sell - $fee);
 
-        /// @dev Submit the call that is going to consume Token B using the amount of the Native 
-        ///      currency supplied (without fees) included which results in the fee in Native 
+        /// @dev Submit the call that is going to consume Token B using the amount of the Native
+        ///      currency supplied (without fees) included which results in the fee in Native
         ///      currency remaining in the Swapper for future withdrawal.
         (bool success, bytes memory reason) =
             $target.call{ value: msg.value }($data);
