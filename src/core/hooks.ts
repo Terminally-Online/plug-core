@@ -920,6 +920,31 @@ export const plugFactoryAbi = [
     type: 'event',
     anonymous: false,
     inputs: [
+      {
+        name: 'implementation',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'vault',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'salt',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+    ],
+    name: 'SocketDeployed',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
       { name: 'from', internalType: 'address', type: 'address', indexed: true },
       { name: 'to', internalType: 'address', type: 'address', indexed: true },
       { name: 'id', internalType: 'uint256', type: 'uint256', indexed: true },
@@ -2036,6 +2061,31 @@ export const plugVaultSocketAbi = [
     anonymous: false,
     inputs: [
       {
+        name: 'previousOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'imageHash',
+        internalType: 'bytes32',
+        type: 'bytes32',
+        indexed: false,
+      },
+    ],
+    name: 'SocketOwnershipTransferred',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
         name: 'implementation',
         internalType: 'address',
         type: 'address',
@@ -2816,6 +2866,15 @@ export const useWatchPlugFactoryOwnershipTransferredEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: plugFactoryAbi,
     eventName: 'OwnershipTransferred',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugFactoryAbi}__ and `eventName` set to `"SocketDeployed"`
+ */
+export const useWatchPlugFactorySocketDeployedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: plugFactoryAbi,
+    eventName: 'SocketDeployed',
   })
 
 /**
@@ -3675,6 +3734,15 @@ export const useWatchPlugVaultSocketImageHashUpdatedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: plugVaultSocketAbi,
     eventName: 'ImageHashUpdated',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `eventName` set to `"SocketOwnershipTransferred"`
+ */
+export const useWatchPlugVaultSocketSocketOwnershipTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: plugVaultSocketAbi,
+    eventName: 'SocketOwnershipTransferred',
   })
 
 /**
