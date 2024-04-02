@@ -169,7 +169,7 @@ abstract contract PlugSwapper is ReentrancyGuard {
         /// @dev Confirm Token B increased. If the balance is smaller
         ///      or the same as before, revert due to the lack of receipt.
         if (preTokenIn >= postTokenIn) {
-            revert PlugLib.TokenReceiptInvalid();
+            revert PlugLib.TokenBalanceInvalid();
         }
 
         /// @dev Deliver the acquired Token B to the `caller` (the Socket).
@@ -257,7 +257,7 @@ abstract contract PlugSwapper is ReentrancyGuard {
         /// @dev Confirm Token B increased. If the balance is smaller
         ///      or the same as before, revert due to the lack of receipt.
         if (preTokenIn >= postTokenIn) {
-            revert PlugLib.TokenReceiptInvalid();
+            revert PlugLib.TokenBalanceInvalid();
         }
 
         /// @dev Deliver the swapped Token B to the `caller`.
@@ -327,7 +327,7 @@ abstract contract PlugSwapper is ReentrancyGuard {
         /// @dev Confirm Token B increased. If the balance is smaller
         ///      or the same as before, revert due to the lack of receipt.
         if (postNative <= preNative) {
-            revert PlugLib.TokenReceiptInvalid();
+            revert PlugLib.TokenBalanceInvalid();
         }
 
         /// @dev Determine the increase in native tokens.

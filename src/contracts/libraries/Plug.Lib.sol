@@ -42,7 +42,6 @@ library PlugLib {
 
     error TargetInvalid();
 
-    error TokenReceiptInvalid();
     error TokenAllowanceInvalid();
     error TokenBalanceInvalid();
 
