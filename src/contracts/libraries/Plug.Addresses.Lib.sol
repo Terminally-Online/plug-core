@@ -7,5 +7,5 @@ library PlugAddressesLib {
         0x0052530c90b05c20F2B4AD465bB6BB4Bb3e0DACe;
 
     address internal constant PLUG_TREASURY_ADDRESS =
-        0x008909fF8669Ee812bee4Bbf06A8EbE059a57229;
+        0x7DBbfD603450Ebb2827A4F345f00470011324D6b;
 }
