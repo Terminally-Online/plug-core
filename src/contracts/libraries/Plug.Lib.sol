@@ -37,11 +37,14 @@ library PlugLib {
 
     error CompensationFailed(address $recipient, uint256 $value);
 
-    error TokenReceiptInvalid();
-    error TokenAllowanceInvalid();
-
     error ThresholdExceeded(uint256 $expected, uint256 $reality);
     error ThresholdInsufficient(uint256 $expected, uint256 $reality);
+
+    error TargetInvalid();
+
+    error TokenReceiptInvalid();
+    error TokenAllowanceInvalid();
+    error TokenBalanceInvalid();
 
     /**
      * @notice Bubble up the revert reason revert data from an internal call

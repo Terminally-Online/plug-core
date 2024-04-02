@@ -2,53 +2,65 @@
 
 pragma solidity 0.8.18;
 
-import { Receiver } from "solady/src/accounts/Receiver.sol";
-import { Ownable } from "solady/src/auth/Ownable.sol";
-
-import { PlugLib } from "../libraries/Plug.Lib.sol";
+import {Receiver} from 'solady/src/accounts/Receiver.sol';
+import {Ownable} from 'solady/src/auth/Ownable.sol';
+import {Multicallable} from 'solady/src/utils/Multicallable.sol';
+import {PlugSwapper, PlugLib} from '../abstracts/Plug.Swapper.sol';
 
 /**
  * @title PlugTreasury
- * @notice The treasury contract that receives fees from the Plug
- *         framework and can execute arbitrary transactions.
+ * @notice The Treasury contract that receives fees from the Plug
+ *         framework. While the owner of the treasury can execute
+ *         arbitrary transactions, the Treasury also has a built-in
+ *         Swapper to enable streamlined fee collection while allowing
+ *         the tokens to remain in the Treasury rather than needing
+ *         another token transfer.
  */
-contract PlugTreasury is Receiver, Ownable {
-    /**
-     * @notice Initialize the contract with the owner.
-     * @param $owner The address of the owner.
-     */
-    function initialize(address $owner) public {
-        _initializeOwner($owner);
-    }
+contract PlugTreasury is Receiver, Ownable, Multicallable, PlugSwapper {
+	/**
+	 * @notice Initialize the contract with the owner.
+	 * @param $owner The address of the owner.
+	 */
+	function initialize(address $owner) public {
+		_initializeOwner($owner);
+	}
 
-    /**
-     * @notice Execute an arbitrary transaction from the Treasury.
-     * @param $to The address to send the transaction to.
-     * @param $value The amount of value to send.
-     * @param $data The data to send.
-     */
-    function execute(
-        address $to,
-        uint256 $value,
-        bytes memory $data
-    )
-        external
-        onlyOwner
-    {
-        (bool success, bytes memory reason) =
-            $to.call{ value: $value }($data);
-        PlugLib.bubbleRevert(success, reason);
-    }
+	/**
+	 * @notice Set the targets allowed to be executed by the Treasury.
+	 * @param $targets The targets to set the allowed status for.
+	 * @param $allowed The allowed status to set.
+	 */
+	function setTargetsAllowed(
+		address[] calldata $targets,
+		bool $allowed
+	) public virtual onlyOwner {
+		for (uint256 $i; $i < $targets.length; $i++) {
+			targetToAllowed[$targets[$i]] = $allowed;
+		}
+	}
 
-    /**
-     * See {Ownable-_initializeOwner}.
-     */
-    function _guardInitializeOwner()
-        internal
-        pure
-        override
-        returns (bool $guard)
-    {
-        $guard = true;
-    }
+	/**
+	 * @notice Execute an arbitrary set of transactions from the Treasury.
+     * @dev Only the owner of the Treasury can execute arbitrary calls and
+     *      the targets do not have to be on the list of allowed targets.
+	 * @param $transactions An array of encoded transactions to execute
+     *        within the context of the Treasury.
+	 */
+	function multicall(
+		bytes[] calldata $transactions
+	) public virtual override onlyOwner returns (bytes[] memory) {
+        return super.multicall($transactions);
+	}
+
+	/**
+	 * See {Ownable-_initializeOwner}.
+	 */
+	function _guardInitializeOwner()
+		internal
+		pure
+		override
+		returns (bool $guard)
+	{
+		$guard = true;
+	}
 }
