@@ -42,8 +42,8 @@ export const nounsTrait = protocolFuse('Plug.Nouns.Trait.Fuse.sol')
 
 export const vault = socket('Plug.Vault.Socket.sol')
 
-export const constantContracts = [factory, treasury]
-export const etchContracts: Array<Contract> = [
+export const constantContracts: Readonly<Array<Contract>> = [factory] as const
+export const etchContracts: Readonly<Array<Contract>> = [
     // ! Bases
     router,
     factory,
