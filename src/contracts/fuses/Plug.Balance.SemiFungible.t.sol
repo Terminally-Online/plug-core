@@ -78,9 +78,7 @@ contract PlugBalanceSemiFungibleFuseTest is Test, Receiver {
         );
         vm.expectRevert(
             abi.encodeWithSelector(
-                PlugLib.ThresholdExceeded.selector,
-                aboveBalance,
-                balance
+                PlugLib.ThresholdExceeded.selector, aboveBalance, balance
             )
         );
         fuse.enforceFuse(terms, plugsHash);
@@ -98,9 +96,7 @@ contract PlugBalanceSemiFungibleFuseTest is Test, Receiver {
         fuse.enforceFuse(terms, plugsHash);
     }
 
-    function testRevert_enforceFuse_AboveERC1155Balance_Insufficient()
-        public
-    {
+    function testRevert_enforceFuse_AboveERC1155Balance_Insufficient() public {
         bytes memory terms = fuse.encode(
             address(this),
             address(mockERC1155),
@@ -110,9 +106,7 @@ contract PlugBalanceSemiFungibleFuseTest is Test, Receiver {
         );
         vm.expectRevert(
             abi.encodeWithSelector(
-                PlugLib.ThresholdInsufficient.selector,
-                belowBalance,
-                balance
+                PlugLib.ThresholdInsufficient.selector, belowBalance, balance
             )
         );
         fuse.enforceFuse(terms, plugsHash);

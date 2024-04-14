@@ -3654,6 +3654,27 @@ export const contracts = [
             },
             {
                 "type": "error",
+                "name": "ValueInvalid",
+                "inputs": [
+                    {
+                        "name": "$recipient",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$expected",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            },
+            {
+                "type": "error",
                 "name": "WrongChainedCheckpointOrder",
                 "inputs": [
                     {

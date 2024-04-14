@@ -125,7 +125,14 @@ contract PlugTest is Test {
             createLivePlugs(plugsArray, 0.2 ether, 24, solver);
 
         vm.prank(solver);
-        vm.expectRevert(PlugLib.PlugFailed.selector);
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                PlugLib.ValueInvalid.selector,
+                PlugEtcherLib.PLUG_TREASURY_ADDRESS,
+                PLUG_VALUE,
+                address(vault).balance
+            )
+        );
         plug.plug(livePlugs);
     }
 

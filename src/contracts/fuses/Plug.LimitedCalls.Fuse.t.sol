@@ -32,9 +32,7 @@ contract PlugLimitedCallsFuseTest is Test {
         bytes memory terms = fuse.encode(calls);
         fuse.enforceFuse(terms, plugsHash);
         vm.expectRevert(
-            abi.encodeWithSelector(
-                PlugLib.ThresholdExceeded.selector, calls, 2
-            )
+            abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, calls, 2)
         );
         fuse.enforceFuse(terms, plugsHash);
     }
@@ -43,9 +41,7 @@ contract PlugLimitedCallsFuseTest is Test {
         uint256 calls = 0;
         bytes memory terms = fuse.encode(calls);
         vm.expectRevert(
-            abi.encodeWithSelector(
-                PlugLib.ThresholdExceeded.selector, calls, 1
-            )
+            abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, calls, 1)
         );
         fuse.enforceFuse(terms, plugsHash);
     }

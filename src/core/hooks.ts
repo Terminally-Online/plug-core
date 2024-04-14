@@ -1982,6 +1982,15 @@ export const plugVaultSocketAbi = [
   {
     type: 'error',
     inputs: [
+      { name: '$recipient', internalType: 'address', type: 'address' },
+      { name: '$expected', internalType: 'uint256', type: 'uint256' },
+      { name: '$reality', internalType: 'uint256', type: 'uint256' },
+    ],
+    name: 'ValueInvalid',
+  },
+  {
+    type: 'error',
+    inputs: [
       { name: '_current', internalType: 'uint256', type: 'uint256' },
       { name: '_prev', internalType: 'uint256', type: 'uint256' },
     ],

@@ -16,20 +16,6 @@ import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
  */
 abstract contract PlugCore is PlugTypes {
     /**
-     * @notice Distribute the fee earned to the platform and/or Solver.
-     * @param $recipient The address of the recipient.
-     * @param $value The amount of value to send.
-     */
-    function _compensate(address $recipient, uint256 $value) internal {
-        /// @dev Transfer the money the Solver is owed and confirm it
-        ///      the transfer is successful.
-        (bool success,) = $recipient.call{ value: $value }("");
-        if (success == false) {
-            revert PlugLib.CompensationFailed($recipient, $value);
-        }
-    }
-
-    /**
      * @notice Execute a bundle of Plugs.
      * @param $plugs The Plugs to execute containing the bundle and side effects.
      * @param $solver Encoded data defining the Solver and compensation.
@@ -52,6 +38,8 @@ abstract contract PlugCore is PlugTypes {
         uint256 length = $plugs.plugs.length;
         $results = new PlugTypesLib.Result[](length);
 
+        /// @dev Save the object into memory to avoid multiple creations
+        ///      of the same object.
         PlugTypesLib.Plug calldata plug;
 
         /// @dev Iterate over the Plugs that are held within this bundle
@@ -65,10 +53,16 @@ abstract contract PlugCore is PlugTypes {
             ///      instead of declaring multiple EIP712 types, we are using
             ///      a single type and encoding the data in a way that is
             ///      recoverable and solvable in a single type and call.
-            // bytes1 plugType = plug.data[0];
-
             (bytes memory plugData, uint8 plugType) =
                 abi.decode(plug.data, (bytes, uint8));
+
+            /// @dev If the call has an associated value, ensure the contract
+            ///      has enough balance to cover the cost of the call.
+            if (address(this).balance < plug.value) {
+                revert PlugLib.ValueInvalid(
+                    plug.target, plug.value, address(this).balance
+                );
+            }
 
             /// @dev This check is a conditional Plug that requires access
             ///      to the hash and is confirming the current state of some
@@ -77,7 +71,9 @@ abstract contract PlugCore is PlugTypes {
                 /// @dev Call the Plug to determine that is operating as a
                 ///      condition and enforce the outcome of the condition
                 ///      if it is not met (reverts).
-                ($results[i].success, $results[i].result) = plug.target.call(
+                ($results[i].success, $results[i].result) = plug.target.call{
+                    value: plug.value
+                }(
                     abi.encodeWithSelector(
                         PlugFuseInterface.enforceFuse.selector,
                         plug.data[1:],
@@ -128,7 +124,10 @@ abstract contract PlugCore is PlugTypes {
 
             /// @dev Transfer the money the Solver is owed and confirm it
             ///      the transfer is successful.
-            _compensate(solver, value);
+            (bool success,) = solver.call{ value: value }("");
+            if (success == false) {
+                revert PlugLib.CompensationFailed(solver, value);
+            }
         }
     }
 }

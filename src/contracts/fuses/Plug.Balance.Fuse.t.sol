@@ -40,11 +40,7 @@ contract PlugBalanceFuseTest is Test {
 
     function test_enforceFuse_Encoding() public {
         bytes memory terms = fuse.encode(
-            address(this),
-            address(0),
-            nativeType,
-            belowOperator,
-            belowBalance
+            address(this), address(0), nativeType, belowOperator, belowBalance
         );
         (
             address decodedHolder,
@@ -63,11 +59,7 @@ contract PlugBalanceFuseTest is Test {
 
     function test_enforceFuse_BelowNativeBalance() public view {
         bytes memory terms = fuse.encode(
-            address(this),
-            address(0),
-            nativeType,
-            belowOperator,
-            belowBalance
+            address(this), address(0), nativeType, belowOperator, belowBalance
         );
         fuse.enforceFuse(terms, plugsHash);
     }
@@ -75,11 +67,7 @@ contract PlugBalanceFuseTest is Test {
     function test_enforceFuse_BelowNativeBalance_Exceeded() public {
         uint256 expected = balance - 1;
         bytes memory terms = fuse.encode(
-            address(this),
-            address(0),
-            nativeType,
-            belowOperator,
-            expected
+            address(this), address(0), nativeType, belowOperator, expected
         );
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -91,31 +79,19 @@ contract PlugBalanceFuseTest is Test {
 
     function test_enforceFuse_AboveNativeBalance() public view {
         bytes memory terms = fuse.encode(
-            address(this),
-            address(0),
-            nativeType,
-            aboveOperator,
-            aboveBalance
+            address(this), address(0), nativeType, aboveOperator, aboveBalance
         );
         fuse.enforceFuse(terms, plugsHash);
     }
 
-    function testRevert_enforceFuse_AboveNativeBalance_Insufficient()
-        public
-    {
+    function testRevert_enforceFuse_AboveNativeBalance_Insufficient() public {
         uint256 expected = balance + 1;
         bytes memory terms = fuse.encode(
-            address(this),
-            address(0),
-            nativeType,
-            aboveOperator,
-            expected
+            address(this), address(0), nativeType, aboveOperator, expected
         );
         vm.expectRevert(
             abi.encodeWithSelector(
-                PlugLib.ThresholdInsufficient.selector,
-                expected,
-                balance
+                PlugLib.ThresholdInsufficient.selector, expected, balance
             )
         );
         fuse.enforceFuse(terms, plugsHash);
@@ -160,9 +136,7 @@ contract PlugBalanceFuseTest is Test {
         fuse.enforceFuse(terms, plugsHash);
     }
 
-    function testRevert_enforceFuse_AboveERC20Balance_Insufficient()
-        public
-    {
+    function testRevert_enforceFuse_AboveERC20Balance_Insufficient() public {
         uint256 expected = balance + 1;
         bytes memory terms = fuse.encode(
             address(this),
@@ -173,9 +147,7 @@ contract PlugBalanceFuseTest is Test {
         );
         vm.expectRevert(
             abi.encodeWithSelector(
-                PlugLib.ThresholdInsufficient.selector,
-                expected,
-                balance
+                PlugLib.ThresholdInsufficient.selector, expected, balance
             )
         );
         fuse.enforceFuse(terms, plugsHash);
@@ -183,11 +155,7 @@ contract PlugBalanceFuseTest is Test {
 
     function test_enforceFuse_BelowERC721Balance() public view {
         bytes memory terms = fuse.encode(
-            address(this),
-            address(mockERC721),
-            erc721Type,
-            belowOperator,
-            2
+            address(this), address(mockERC721), erc721Type, belowOperator, 2
         );
         fuse.enforceFuse(terms, plugsHash);
     }
@@ -211,18 +179,12 @@ contract PlugBalanceFuseTest is Test {
 
     function test_enforceFuse_AboveERC721Balance() public view {
         bytes memory terms = fuse.encode(
-            address(this),
-            address(mockERC721),
-            erc721Type,
-            aboveOperator,
-            0
+            address(this), address(mockERC721), erc721Type, aboveOperator, 0
         );
         fuse.enforceFuse(terms, plugsHash);
     }
 
-    function testRevert_enforceFuse_AboveERC721Balance_Insufficient()
-        public
-    {
+    function testRevert_enforceFuse_AboveERC721Balance_Insufficient() public {
         uint256 expected = 1 + 1;
         bytes memory terms = fuse.encode(
             address(this),
