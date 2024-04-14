@@ -61,7 +61,7 @@ contract PlugTest is Test {
                 1,
                 1,
                 1
-                )
+            )
         });
 
         vm.expectEmit(address(mock));
@@ -103,7 +103,7 @@ contract PlugTest is Test {
                 1,
                 1,
                 1
-                )
+            )
         });
 
         plug = new Plug();
@@ -149,7 +149,7 @@ contract PlugTest is Test {
                 1,
                 1,
                 1
-                )
+            )
         });
 
         vm.expectRevert(PlugLib.SignatureInvalid.selector);
@@ -195,7 +195,7 @@ contract PlugTest is Test {
                 1,
                 1,
                 1
-                )
+            )
         });
 
         vm.expectEmit(address(mock));
@@ -242,7 +242,7 @@ contract PlugTest is Test {
                 1,
                 1,
                 1
-                )
+            )
         });
 
         vm.expectEmit(address(mock));
@@ -292,7 +292,7 @@ contract PlugTest is Test {
                 1,
                 1,
                 1
-                )
+            )
         });
 
         vm.prank(solver);
@@ -346,7 +346,7 @@ contract PlugTest is Test {
                 1,
                 1,
                 1
-                )
+            )
         });
 
         vm.expectRevert(
