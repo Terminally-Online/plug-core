@@ -57,24 +57,14 @@ contract PlugCalendarFuse is PlugFuseInterface {
     /// @dev Bits to shift over the days of the week in a schedule.
     uint256 private constant DAYS_OF_WEEK_SHIFT = 0;
 
-    function enforceFuse(
-        bytes calldata $live,
-        PlugTypesLib.Current calldata $current,
-        bytes32
-    )
-        public
-        view
-        override
-        returns (bytes memory $through)
-    {
-        uint256 schedule = abi.decode($live, (uint256));
+    uint256 a = 0;
+
+    function enforceFuse(bytes calldata $terms, bytes32) public view override {
+        uint256 schedule = abi.decode($terms, (uint256));
 
         if (!isWithinCalendar(schedule)) {
             revert CalendarFuseLib.CalendarCaveatViolation();
         }
-
-        /// @dev Continue the pass through.
-        $through = $current.data;
     }
 
     /**
@@ -131,16 +121,13 @@ contract PlugCalendarFuse is PlugFuseInterface {
 
         /// @dev Prevent weird overlapping calendars.
         if ($duration > $repeatsEvery) {
-            revert
-                CalendarFuseLib
-                .CalendarLackingSufficientRepeatsEvery();
+            revert CalendarFuseLib.CalendarLackingSufficientRepeatsEvery();
         }
 
         /// @dev Pack the schedule details.
         $schedule = (uint256($startTime) << START_TIME_SHIFT)
             | (uint256($repeatsEvery) << REPEATS_EVERY_SHIFT)
-            | (uint256($duration) << DURATION_SHIFT)
-            | uint256($daysOfWeek);
+            | (uint256($duration) << DURATION_SHIFT) | uint256($daysOfWeek);
     }
 
     /**
@@ -149,11 +136,7 @@ contract PlugCalendarFuse is PlugFuseInterface {
      * @param $schedule The schedule to check.
      * @return $isWithinCalendar Whether or not the current time is within the
      */
-    function isWithinCalendar(uint256 $schedule)
-        public
-        view
-        returns (bool)
-    {
+    function isWithinCalendar(uint256 $schedule) public view returns (bool) {
         /// @dev Get the schedule details.
         (
             uint32 startTime,
@@ -163,9 +146,7 @@ contract PlugCalendarFuse is PlugFuseInterface {
         ) = decode($schedule);
 
         /// @dev Ensure the current time is within the calendar.
-        return _isWithinCalendar(
-            startTime, repeatsEvery, duration, daysOfWeek
-        );
+        return _isWithinCalendar(startTime, repeatsEvery, duration, daysOfWeek);
     }
 
     /**
@@ -185,9 +166,8 @@ contract PlugCalendarFuse is PlugFuseInterface {
         returns (bool)
     {
         /// @dev Ensure the current time is within the calendar.
-        return _isWithinCalendar(
-            $startTime, $repeatsEvery, $duration, $daysOfWeek
-        );
+        return
+            _isWithinCalendar($startTime, $repeatsEvery, $duration, $daysOfWeek);
     }
 
     /**
@@ -205,10 +185,7 @@ contract PlugCalendarFuse is PlugFuseInterface {
     )
         external
         view
-        returns (
-            CalendarFuseLib.Calendar[] memory $calendars,
-            uint32 $cursor
-        )
+        returns (CalendarFuseLib.Calendar[] memory $calendars, uint32 $cursor)
     {
         /// @dev Load the stack.
         $calendars = new CalendarFuseLib.Calendar[]($n);
@@ -290,8 +267,7 @@ contract PlugCalendarFuse is PlugFuseInterface {
         returns (bool)
     {
         /// @dev Get the day of the week.
-        uint8 dayOfWeek =
-            uint8((($timestamp / SECONDS_PER_DAY) + 4) % 7);
+        uint8 dayOfWeek = uint8((($timestamp / SECONDS_PER_DAY) + 4) % 7);
 
         /// @dev Check if the day of the week is supported.
         return ($daysOfWeek >> dayOfWeek) & 1 == 1;
@@ -323,14 +299,12 @@ contract PlugCalendarFuse is PlugFuseInterface {
         uint32 daysInCalendar = $duration / SECONDS_PER_DAY;
 
         /// @dev Load the stack.
-        $calendar.periods =
-            new CalendarFuseLib.Period[](daysInCalendar);
+        $calendar.periods = new CalendarFuseLib.Period[](daysInCalendar);
 
         /// @dev Loop through every day in the calendar backwards.
         for (daysInCalendar; daysInCalendar >= 0; daysInCalendar--) {
             /// @dev Get the time `daysInCalendar` days after the start time.
-            uint32 dayTime =
-                $startTime + daysInCalendar * SECONDS_PER_DAY;
+            uint32 dayTime = $startTime + daysInCalendar * SECONDS_PER_DAY;
 
             /// @dev Day time will be the 24 hour increment of the start time,
             ///      however the day calculations roll by the start of the day.
@@ -339,8 +313,7 @@ contract PlugCalendarFuse is PlugFuseInterface {
 
             /// @dev Some Calendars may be longer than 1 day so we must check if
             ///      the period is active today.
-            bool isOnDayOfWeek =
-                _isOnDayOfWeek($daysOfWeek, topDayTime);
+            bool isOnDayOfWeek = _isOnDayOfWeek($daysOfWeek, topDayTime);
 
             /// @dev If it is not active there is no active period.
             /// @dev Do realize if the start time is not on a day of the week
@@ -360,10 +333,8 @@ contract PlugCalendarFuse is PlugFuseInterface {
             /// @dev Calculate the end of this period by determining if we have
             ///      gone past the declared end time otherwise it ended
             ///      at the bottom of the day.
-            $calendar.periods[daysInCalendar].endTime =
-            calendarEndTime < bottomDayTime
-                ? calendarEndTime
-                : bottomDayTime;
+            $calendar.periods[daysInCalendar].endTime = calendarEndTime
+                < bottomDayTime ? calendarEndTime : bottomDayTime;
         }
     }
 

@@ -36,42 +36,13 @@ export const plugAbi = [
                 internalType: 'struct PlugTypesLib.Plug[]',
                 type: 'tuple[]',
                 components: [
-                  {
-                    name: 'current',
-                    internalType: 'struct PlugTypesLib.Current',
-                    type: 'tuple',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      {
-                        name: 'value',
-                        internalType: 'uint256',
-                        type: 'uint256',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
-                  {
-                    name: 'fuses',
-                    internalType: 'struct PlugTypesLib.Fuse[]',
-                    type: 'tuple[]',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
+                  { name: 'target', internalType: 'address', type: 'address' },
+                  { name: 'value', internalType: 'uint256', type: 'uint256' },
+                  { name: 'data', internalType: 'bytes', type: 'bytes' },
                 ],
               },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
-              { name: 'fee', internalType: 'uint256', type: 'uint256' },
               { name: 'solver', internalType: 'bytes', type: 'bytes' },
+              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
@@ -79,7 +50,17 @@ export const plugAbi = [
       },
     ],
     name: 'plug',
-    outputs: [{ name: '$results', internalType: 'bytes[]', type: 'bytes[]' }],
+    outputs: [
+      {
+        name: '$results',
+        internalType: 'struct PlugTypesLib.Result[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'success', internalType: 'bool', type: 'bool' },
+          { name: 'result', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
     stateMutability: 'payable',
   },
   {
@@ -101,42 +82,13 @@ export const plugAbi = [
                 internalType: 'struct PlugTypesLib.Plug[]',
                 type: 'tuple[]',
                 components: [
-                  {
-                    name: 'current',
-                    internalType: 'struct PlugTypesLib.Current',
-                    type: 'tuple',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      {
-                        name: 'value',
-                        internalType: 'uint256',
-                        type: 'uint256',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
-                  {
-                    name: 'fuses',
-                    internalType: 'struct PlugTypesLib.Fuse[]',
-                    type: 'tuple[]',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
+                  { name: 'target', internalType: 'address', type: 'address' },
+                  { name: 'value', internalType: 'uint256', type: 'uint256' },
+                  { name: 'data', internalType: 'bytes', type: 'bytes' },
                 ],
               },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
-              { name: 'fee', internalType: 'uint256', type: 'uint256' },
               { name: 'solver', internalType: 'bytes', type: 'bytes' },
+              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
@@ -145,7 +97,15 @@ export const plugAbi = [
     ],
     name: 'plug',
     outputs: [
-      { name: '$results', internalType: 'bytes[][]', type: 'bytes[][]' },
+      {
+        name: '$results',
+        internalType: 'struct PlugTypesLib.Result[][]',
+        type: 'tuple[][]',
+        components: [
+          { name: 'success', internalType: 'bool', type: 'bool' },
+          { name: 'result', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
     ],
     stateMutability: 'payable',
   },
@@ -200,21 +160,11 @@ export const plugBalanceFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
   {
@@ -269,21 +219,11 @@ export const plugBalanceSemiFungibleFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
   {
@@ -332,21 +272,11 @@ export const plugBaseFeeFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
   {
@@ -395,21 +325,11 @@ export const plugBlockNumberFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
   {
@@ -462,21 +382,11 @@ export const plugCalendarFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
   {
@@ -1007,21 +917,11 @@ export const plugFraxlendApyFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
   {
@@ -1064,21 +964,11 @@ export const plugLimitedCallsFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '$plugsHash', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'nonpayable',
   },
   {
@@ -1119,21 +1009,11 @@ export const plugNounsBidFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
   { type: 'error', inputs: [], name: 'InsufficientBalance' },
@@ -1162,21 +1042,11 @@ export const plugNounsIdFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
 ] as const
@@ -1244,21 +1114,11 @@ export const plugNounsTraitFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
   {
@@ -1292,21 +1152,11 @@ export const plugRevocationFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '$plugsHash', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
   {
@@ -1359,21 +1209,11 @@ export const plugTimestampFuseAbi = [
   {
     type: 'function',
     inputs: [
-      { name: '$live', internalType: 'bytes', type: 'bytes' },
-      {
-        name: '$current',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
+      { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
     name: 'enforceFuse',
-    outputs: [{ name: '$through', internalType: 'bytes', type: 'bytes' }],
+    outputs: [],
     stateMutability: 'view',
   },
   {
@@ -1603,6 +1443,7 @@ export const plugTreasuryAbi = [
   { type: 'error', inputs: [], name: 'AlreadyInitialized' },
   { type: 'error', inputs: [], name: 'NewOwnerIsZeroAddress' },
   { type: 'error', inputs: [], name: 'NoHandoverRequest' },
+  { type: 'error', inputs: [], name: 'PlugFailed' },
   { type: 'error', inputs: [], name: 'Reentrancy' },
   { type: 'error', inputs: [], name: 'TargetInvalid' },
   { type: 'error', inputs: [], name: 'TokenAllowanceInvalid' },
@@ -1624,24 +1465,6 @@ export const plugVaultSocketAbi = [
     name: 'SET_IMAGE_HASH_TYPE_HASH',
     outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
     stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: '$input',
-        internalType: 'struct PlugTypesLib.Current',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'value', internalType: 'uint256', type: 'uint256' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
-    ],
-    name: 'getCurrentHash',
-    outputs: [{ name: '$hash', internalType: 'bytes32', type: 'bytes32' }],
-    stateMutability: 'pure',
   },
   {
     type: 'function',
@@ -1671,40 +1494,6 @@ export const plugVaultSocketAbi = [
     inputs: [
       {
         name: '$input',
-        internalType: 'struct PlugTypesLib.Fuse[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
-    ],
-    name: 'getFuseArrayHash',
-    outputs: [{ name: '$hash', internalType: 'bytes32', type: 'bytes32' }],
-    stateMutability: 'pure',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: '$input',
-        internalType: 'struct PlugTypesLib.Fuse',
-        type: 'tuple',
-        components: [
-          { name: 'target', internalType: 'address', type: 'address' },
-          { name: 'data', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
-    ],
-    name: 'getFuseHash',
-    outputs: [{ name: '$hash', internalType: 'bytes32', type: 'bytes32' }],
-    stateMutability: 'pure',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: '$input',
         internalType: 'struct PlugTypesLib.LivePlugs',
         type: 'tuple',
         components: [
@@ -1719,42 +1508,13 @@ export const plugVaultSocketAbi = [
                 internalType: 'struct PlugTypesLib.Plug[]',
                 type: 'tuple[]',
                 components: [
-                  {
-                    name: 'current',
-                    internalType: 'struct PlugTypesLib.Current',
-                    type: 'tuple',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      {
-                        name: 'value',
-                        internalType: 'uint256',
-                        type: 'uint256',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
-                  {
-                    name: 'fuses',
-                    internalType: 'struct PlugTypesLib.Fuse[]',
-                    type: 'tuple[]',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
+                  { name: 'target', internalType: 'address', type: 'address' },
+                  { name: 'value', internalType: 'uint256', type: 'uint256' },
+                  { name: 'data', internalType: 'bytes', type: 'bytes' },
                 ],
               },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
-              { name: 'fee', internalType: 'uint256', type: 'uint256' },
               { name: 'solver', internalType: 'bytes', type: 'bytes' },
+              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
@@ -1773,25 +1533,9 @@ export const plugVaultSocketAbi = [
         internalType: 'struct PlugTypesLib.Plug[]',
         type: 'tuple[]',
         components: [
-          {
-            name: 'current',
-            internalType: 'struct PlugTypesLib.Current',
-            type: 'tuple',
-            components: [
-              { name: 'target', internalType: 'address', type: 'address' },
-              { name: 'value', internalType: 'uint256', type: 'uint256' },
-              { name: 'data', internalType: 'bytes', type: 'bytes' },
-            ],
-          },
-          {
-            name: 'fuses',
-            internalType: 'struct PlugTypesLib.Fuse[]',
-            type: 'tuple[]',
-            components: [
-              { name: 'target', internalType: 'address', type: 'address' },
-              { name: 'data', internalType: 'bytes', type: 'bytes' },
-            ],
-          },
+          { name: 'target', internalType: 'address', type: 'address' },
+          { name: 'value', internalType: 'uint256', type: 'uint256' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
         ],
       },
     ],
@@ -1807,25 +1551,9 @@ export const plugVaultSocketAbi = [
         internalType: 'struct PlugTypesLib.Plug',
         type: 'tuple',
         components: [
-          {
-            name: 'current',
-            internalType: 'struct PlugTypesLib.Current',
-            type: 'tuple',
-            components: [
-              { name: 'target', internalType: 'address', type: 'address' },
-              { name: 'value', internalType: 'uint256', type: 'uint256' },
-              { name: 'data', internalType: 'bytes', type: 'bytes' },
-            ],
-          },
-          {
-            name: 'fuses',
-            internalType: 'struct PlugTypesLib.Fuse[]',
-            type: 'tuple[]',
-            components: [
-              { name: 'target', internalType: 'address', type: 'address' },
-              { name: 'data', internalType: 'bytes', type: 'bytes' },
-            ],
-          },
+          { name: 'target', internalType: 'address', type: 'address' },
+          { name: 'value', internalType: 'uint256', type: 'uint256' },
+          { name: 'data', internalType: 'bytes', type: 'bytes' },
         ],
       },
     ],
@@ -1847,30 +1575,13 @@ export const plugVaultSocketAbi = [
             internalType: 'struct PlugTypesLib.Plug[]',
             type: 'tuple[]',
             components: [
-              {
-                name: 'current',
-                internalType: 'struct PlugTypesLib.Current',
-                type: 'tuple',
-                components: [
-                  { name: 'target', internalType: 'address', type: 'address' },
-                  { name: 'value', internalType: 'uint256', type: 'uint256' },
-                  { name: 'data', internalType: 'bytes', type: 'bytes' },
-                ],
-              },
-              {
-                name: 'fuses',
-                internalType: 'struct PlugTypesLib.Fuse[]',
-                type: 'tuple[]',
-                components: [
-                  { name: 'target', internalType: 'address', type: 'address' },
-                  { name: 'data', internalType: 'bytes', type: 'bytes' },
-                ],
-              },
+              { name: 'target', internalType: 'address', type: 'address' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
             ],
           },
-          { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'fee', internalType: 'uint256', type: 'uint256' },
           { name: 'solver', internalType: 'bytes', type: 'bytes' },
+          { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
         ],
       },
     ],
@@ -1955,42 +1666,13 @@ export const plugVaultSocketAbi = [
                 internalType: 'struct PlugTypesLib.Plug[]',
                 type: 'tuple[]',
                 components: [
-                  {
-                    name: 'current',
-                    internalType: 'struct PlugTypesLib.Current',
-                    type: 'tuple',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      {
-                        name: 'value',
-                        internalType: 'uint256',
-                        type: 'uint256',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
-                  {
-                    name: 'fuses',
-                    internalType: 'struct PlugTypesLib.Fuse[]',
-                    type: 'tuple[]',
-                    components: [
-                      {
-                        name: 'target',
-                        internalType: 'address',
-                        type: 'address',
-                      },
-                      { name: 'data', internalType: 'bytes', type: 'bytes' },
-                    ],
-                  },
+                  { name: 'target', internalType: 'address', type: 'address' },
+                  { name: 'value', internalType: 'uint256', type: 'uint256' },
+                  { name: 'data', internalType: 'bytes', type: 'bytes' },
                 ],
               },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
-              { name: 'fee', internalType: 'uint256', type: 'uint256' },
               { name: 'solver', internalType: 'bytes', type: 'bytes' },
+              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
@@ -2000,7 +1682,17 @@ export const plugVaultSocketAbi = [
       { name: '$gas', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'plug',
-    outputs: [{ name: '$results', internalType: 'bytes[]', type: 'bytes[]' }],
+    outputs: [
+      {
+        name: '$results',
+        internalType: 'struct PlugTypesLib.Result[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'success', internalType: 'bool', type: 'bool' },
+          { name: 'result', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
     stateMutability: 'payable',
   },
   {
@@ -2017,35 +1709,28 @@ export const plugVaultSocketAbi = [
             internalType: 'struct PlugTypesLib.Plug[]',
             type: 'tuple[]',
             components: [
-              {
-                name: 'current',
-                internalType: 'struct PlugTypesLib.Current',
-                type: 'tuple',
-                components: [
-                  { name: 'target', internalType: 'address', type: 'address' },
-                  { name: 'value', internalType: 'uint256', type: 'uint256' },
-                  { name: 'data', internalType: 'bytes', type: 'bytes' },
-                ],
-              },
-              {
-                name: 'fuses',
-                internalType: 'struct PlugTypesLib.Fuse[]',
-                type: 'tuple[]',
-                components: [
-                  { name: 'target', internalType: 'address', type: 'address' },
-                  { name: 'data', internalType: 'bytes', type: 'bytes' },
-                ],
-              },
+              { name: 'target', internalType: 'address', type: 'address' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
             ],
           },
-          { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
-          { name: 'fee', internalType: 'uint256', type: 'uint256' },
           { name: 'solver', internalType: 'bytes', type: 'bytes' },
+          { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
         ],
       },
     ],
     name: 'plug',
-    outputs: [{ name: '$results', internalType: 'bytes[]', type: 'bytes[]' }],
+    outputs: [
+      {
+        name: '$results',
+        internalType: 'struct PlugTypesLib.Result[]',
+        type: 'tuple[]',
+        components: [
+          { name: 'success', internalType: 'bool', type: 'bool' },
+          { name: 'result', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
     stateMutability: 'payable',
   },
   {
@@ -2197,7 +1882,6 @@ export const plugVaultSocketAbi = [
     ],
     name: 'CompensationFailed',
   },
-  { type: 'error', inputs: [], name: 'CurrentInvalid' },
   { type: 'error', inputs: [], name: 'EmptySignature' },
   { type: 'error', inputs: [], name: 'ImageHashIsZero' },
   {
@@ -2257,6 +1941,7 @@ export const plugVaultSocketAbi = [
     ],
     name: 'OnlySelfAuth',
   },
+  { type: 'error', inputs: [], name: 'PlugFailed' },
   { type: 'error', inputs: [], name: 'Reentrancy' },
   {
     type: 'error',
@@ -2278,6 +1963,11 @@ export const plugVaultSocketAbi = [
     name: 'SolverInvalid',
   },
   { type: 'error', inputs: [], name: 'TradingAlreadyInitialized' },
+  {
+    type: 'error',
+    inputs: [{ name: '$reality', internalType: 'uint8', type: 'uint8' }],
+    name: 'TypeInvalid',
+  },
   { type: 'error', inputs: [], name: 'UnauthorizedCallContext' },
   {
     type: 'error',
@@ -3651,39 +3341,12 @@ export const useReadPlugVaultSocketSetImageHashTypeHash =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"getCurrentHash"`
- */
-export const useReadPlugVaultSocketGetCurrentHash =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'getCurrentHash',
-  })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"getEIP712DomainHash"`
  */
 export const useReadPlugVaultSocketGetEip712DomainHash =
   /*#__PURE__*/ createUseReadContract({
     abi: plugVaultSocketAbi,
     functionName: 'getEIP712DomainHash',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"getFuseArrayHash"`
- */
-export const useReadPlugVaultSocketGetFuseArrayHash =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'getFuseArrayHash',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"getFuseHash"`
- */
-export const useReadPlugVaultSocketGetFuseHash =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'getFuseHash',
   })
 
 /**

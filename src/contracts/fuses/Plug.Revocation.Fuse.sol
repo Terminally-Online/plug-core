@@ -25,6 +25,7 @@ import {
 contract PlugRevocationFuse is PlugFuseInterface {
     /// @dev Keep track of which bundles of Plugs have been revoked.
     mapping(address => mapping(bytes32 => bool)) public isRevoked;
+    uint256 b = 1;
 
     /**
      * See {FuseEnforcer-enforceFuse}.
@@ -35,27 +36,20 @@ contract PlugRevocationFuse is PlugFuseInterface {
      *      outside of the definition of the sender themselves.
      */
     function enforceFuse(
-        bytes calldata $live,
-        PlugTypesLib.Current calldata $current,
+        bytes calldata $terms,
         bytes32 $plugsHash
     )
         public
         view
         virtual
-        override
-        returns (bytes memory $through)
     {
         /// @dev Decode the (declared) controller of the bundle of Plugs.
-        address sender = decode($live);
+        address sender = decode($terms);
 
         /// @dev Ensure the plug has not been revoked.
         require(
-            isRevoked[sender][$plugsHash] == false,
-            "PlugRevocationFuse:revoked"
+            isRevoked[sender][$plugsHash] == false, "PlugRevocationFuse:revoked"
         );
-
-        /// @dev Continue the pass through.
-        $through = $current.data;
     }
 
     /**
@@ -67,13 +61,7 @@ contract PlugRevocationFuse is PlugFuseInterface {
      * @param $plugsHash The hash of the bundle of Plugs to revoke.
      * @param $revoked Whether to revoke or un-revoke the bundle of Plugs.
      */
-    function revoke(
-        bytes32 $plugsHash,
-        bool $revoked
-    )
-        public
-        virtual
-    {
+    function revoke(bytes32 $plugsHash, bool $revoked) public virtual {
         /// @dev Mark the bundle of Plugs as revoked.
         isRevoked[msg.sender][$plugsHash] = $revoked;
     }
@@ -92,11 +80,7 @@ contract PlugRevocationFuse is PlugFuseInterface {
     /**
      * @dev Encode the clamp bounds.
      */
-    function encode(address $sender)
-        public
-        pure
-        returns (bytes memory $data)
-    {
+    function encode(address $sender) public pure returns (bytes memory $data) {
         $data = abi.encode($sender);
     }
 }

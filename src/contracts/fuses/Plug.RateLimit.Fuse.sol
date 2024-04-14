@@ -36,16 +36,13 @@ contract PlugRateLimitFuse is PlugFuseInterface {
      */
     function enforceFuse(
         bytes calldata $terms,
-        PlugTypesLib.Current calldata $current,
         bytes32 $plugsHash
     )
         public
         virtual
-        returns (bytes memory $through)
     {
         /// @dev Snapshot the current state of the cooldown and use.
-        (bool global, uint32 replenishRate, uint32 max) =
-            decode($terms);
+        (bool global, uint32 replenishRate, uint32 max) = decode($terms);
 
         /// @dev Retrieve the current state of the timestamp and use from storage.
         Bucket storage bucket =
@@ -58,10 +55,7 @@ contract PlugRateLimitFuse is PlugFuseInterface {
         /// @dev Account for partial tokens by adjusting the refresh window.
         bucket.lastUpdatedAt = uint32(
             block.timestamp
-                - (
-                    (block.timestamp - bucket.lastUpdatedAt)
-                        % replenishRate
-                )
+                - ((block.timestamp - bucket.lastUpdatedAt) % replenishRate)
         );
 
         /// @dev Determine how many tokens are available while acounting for
@@ -79,9 +73,6 @@ contract PlugRateLimitFuse is PlugFuseInterface {
 
         /// @dev Decrement the available tokens.
         bucket.availableTokens -= 1;
-
-        /// @dev Continue the pass through.
-        $through = $current.data;
     }
 
     /**

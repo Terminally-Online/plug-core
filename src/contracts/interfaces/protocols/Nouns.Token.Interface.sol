@@ -4,9 +4,7 @@ pragma solidity 0.8.23;
 
 interface NounsTokenInterface {
     event Approval(
-        address indexed owner,
-        address indexed approved,
-        uint256 indexed tokenId
+        address indexed owner, address indexed approved, uint256 indexed tokenId
     );
     event ApprovalForAll(
         address indexed owner, address indexed operator, bool approved
@@ -17,18 +15,14 @@ interface NounsTokenInterface {
         address indexed toDelegate
     );
     event DelegateVotesChanged(
-        address indexed delegate,
-        uint256 previousBalance,
-        uint256 newBalance
+        address indexed delegate, uint256 previousBalance, uint256 newBalance
     );
     event DescriptorLocked();
     event DescriptorUpdated(address descriptor);
     event MinterLocked();
     event MinterUpdated(address minter);
     event NounBurned(uint256 indexed tokenId);
-    event NounCreated(
-        uint256 indexed tokenId, INounsSeeder.Seed seed
-    );
+    event NounCreated(uint256 indexed tokenId, INounsSeeder.Seed seed);
     event NoundersDAOUpdated(address noundersDAO);
     event OwnershipTransferred(
         address indexed previousOwner, address indexed newOwner
@@ -36,9 +30,7 @@ interface NounsTokenInterface {
     event SeederLocked();
     event SeederUpdated(address seeder);
     event Transfer(
-        address indexed from,
-        address indexed to,
-        uint256 indexed tokenId
+        address indexed from, address indexed to, uint256 indexed tokenId
     );
 
     function DELEGATION_TYPEHASH() external view returns (bytes32);
@@ -47,10 +39,7 @@ interface NounsTokenInterface {
 
     function approve(address to, uint256 tokenId) external;
 
-    function balanceOf(address owner)
-        external
-        view
-        returns (uint256);
+    function balanceOf(address owner) external view returns (uint256);
 
     function burn(uint256 nounId) external;
 
@@ -64,10 +53,7 @@ interface NounsTokenInterface {
 
     function contractURI() external view returns (string memory);
 
-    function dataURI(uint256 tokenId)
-        external
-        view
-        returns (string memory);
+    function dataURI(uint256 tokenId) external view returns (string memory);
 
     function decimals() external view returns (uint8);
 
@@ -83,22 +69,13 @@ interface NounsTokenInterface {
     )
         external;
 
-    function delegates(address delegator)
-        external
-        view
-        returns (address);
+    function delegates(address delegator) external view returns (address);
 
     function descriptor() external view returns (address);
 
-    function getApproved(uint256 tokenId)
-        external
-        view
-        returns (address);
+    function getApproved(uint256 tokenId) external view returns (address);
 
-    function getCurrentVotes(address account)
-        external
-        view
-        returns (uint96);
+    function getCurrentVotes(address account) external view returns (uint96);
 
     function getPriorVotes(
         address account,
@@ -142,10 +119,7 @@ interface NounsTokenInterface {
 
     function owner() external view returns (address);
 
-    function ownerOf(uint256 tokenId)
-        external
-        view
-        returns (address);
+    function ownerOf(uint256 tokenId) external view returns (address);
 
     function proxyRegistry() external view returns (address);
 
@@ -179,14 +153,9 @@ interface NounsTokenInterface {
             uint48 glasses
         );
 
-    function setApprovalForAll(
-        address operator,
-        bool approved
-    )
-        external;
+    function setApprovalForAll(address operator, bool approved) external;
 
-    function setContractURIHash(string memory newContractURIHash)
-        external;
+    function setContractURIHash(string memory newContractURIHash) external;
 
     function setDescriptor(address _descriptor) external;
 
@@ -203,10 +172,7 @@ interface NounsTokenInterface {
 
     function symbol() external view returns (string memory);
 
-    function tokenByIndex(uint256 index)
-        external
-        view
-        returns (uint256);
+    function tokenByIndex(uint256 index) external view returns (uint256);
 
     function tokenOfOwnerByIndex(
         address owner,
@@ -216,19 +182,11 @@ interface NounsTokenInterface {
         view
         returns (uint256);
 
-    function tokenURI(uint256 tokenId)
-        external
-        view
-        returns (string memory);
+    function tokenURI(uint256 tokenId) external view returns (string memory);
 
     function totalSupply() external view returns (uint256);
 
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    )
-        external;
+    function transferFrom(address from, address to, uint256 tokenId) external;
 
     function transferOwnership(address newOwner) external;
 

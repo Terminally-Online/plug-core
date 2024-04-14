@@ -6,8 +6,7 @@ import {
     PlugFuseInterface,
     PlugTypesLib
 } from "../../interfaces/Plug.Fuse.Interface.sol";
-import { PlugThresholdFuseEnforce } from
-    "./Plug.Threshold.Fuse.Enforce.sol";
+import { PlugThresholdFuseEnforce } from "./Plug.Threshold.Fuse.Enforce.sol";
 import { PlugLib } from "../../libraries/Plug.Lib.sol";
 
 abstract contract ThresholdFuse is
@@ -17,24 +16,12 @@ abstract contract ThresholdFuse is
     /**
      * See {FuseEnforcer-enforceFuse}.
      */
-    function enforceFuse(
-        bytes calldata $live,
-        PlugTypesLib.Current calldata $current,
-        bytes32
-    )
-        public
-        view
-        virtual
-        returns (bytes memory $through)
-    {
+    function enforceFuse(bytes calldata $terms, bytes32) public view virtual {
         /// @dev Decode the terms to get the logic operator and threshold.
-        (uint8 $operator, uint256 $threshold) = decode($live);
+        (uint8 $operator, uint256 $threshold) = decode($terms);
 
         /// @dev Enforce the threshold against the current state.
         _enforceFuse($operator, $threshold, _threshold());
-
-        /// @dev Return the current state.
-        $through = $current.data;
     }
 
     /**

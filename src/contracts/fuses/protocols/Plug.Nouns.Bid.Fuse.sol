@@ -6,8 +6,7 @@ import {
     PlugFuseInterface,
     PlugTypesLib
 } from "../../interfaces/Plug.Fuse.Interface.sol";
-import { PlugNounsLib } from
-    "../../libraries/protocols/Plug.Nouns.Lib.sol";
+import { PlugNounsLib } from "../../libraries/protocols/Plug.Nouns.Lib.sol";
 
 /**
  * @title Plug Nouns Bid Fuse
@@ -23,17 +22,8 @@ contract PlugNounsBidFuse is PlugFuseInterface {
     /**
      * See {PlugFuseInterface-enforceFuse}.
      */
-    function enforceFuse(
-        bytes calldata $live,
-        PlugTypesLib.Current calldata $current,
-        bytes32
-    )
-        public
-        view
-        override
-        returns (bytes memory $through)
-    {
-        (address $bidder, uint256 $bid) = decode($live);
+    function enforceFuse(bytes calldata $terms, bytes32) public view override {
+        (address $bidder, uint256 $bid) = decode($terms);
 
         /// @dev Get the current state of the auction.
         (,,,, address $winner,) = PlugNounsLib.AUCTION_HOUSE.auction();
@@ -49,11 +39,8 @@ contract PlugNounsBidFuse is PlugFuseInterface {
             revert PlugNounsLib.InsufficientBalance();
         }
 
-        /// @dev Make sure the bid - fees is large enough to cover
-        ///		 the minimum bid.
-
-        /// @dev Callback to transfer the fee to the protocol.
-        $through = $current.data;
+        /// @TODO: Make sure the bid value is large enough to cover
+        ///		   the minimum bid.
     }
 
     function decode(bytes calldata $live)

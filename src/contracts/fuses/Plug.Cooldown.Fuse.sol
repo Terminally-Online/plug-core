@@ -21,24 +21,20 @@ import { PlugLib } from "../libraries/Plug.Lib.sol";
  */
 contract PlugCooldownFuse is PlugFuseInterface {
     /// @dev Keep track of the last time a bundle of Plugs was used.
-    mapping(address => mapping(bytes32 => uint256))
-        socketToPlugsToLastUsed;
+    mapping(address => mapping(bytes32 => uint256)) socketToPlugsToLastUsed;
 
     /**
      * See {PlugFuseInterface-enforceFuse}.
      */
     function enforceFuse(
         bytes calldata $terms,
-        PlugTypesLib.Current calldata $current,
         bytes32 $plugsHash
     )
         public
         virtual
-        returns (bytes memory $through)
     {
         /// @dev Snapshot the current state of the cooldown and use.
-        uint256 lastUsed =
-            socketToPlugsToLastUsed[msg.sender][$plugsHash];
+        uint256 lastUsed = socketToPlugsToLastUsed[msg.sender][$plugsHash];
 
         /// @dev Confirm one use has already happened.
         if (lastUsed != 0) {
@@ -54,11 +50,7 @@ contract PlugCooldownFuse is PlugFuseInterface {
         }
 
         /// @dev Update the last used timestamp for the next cooldown check.
-        socketToPlugsToLastUsed[msg.sender][$plugsHash] =
-            block.timestamp;
-
-        /// @dev Continue the pass through.
-        $through = $current.data;
+        socketToPlugsToLastUsed[msg.sender][$plugsHash] = block.timestamp;
     }
 
     /**

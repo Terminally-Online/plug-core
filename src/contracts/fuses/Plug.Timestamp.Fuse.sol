@@ -2,8 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import { ThresholdFuse } from
-    "../abstracts/fuses/Plug.Threshold.Fuse.sol";
+import { ThresholdFuse } from "../abstracts/fuses/Plug.Threshold.Fuse.sol";
 
 /**
  * @title Plug Timestamp Fuse

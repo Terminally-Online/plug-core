@@ -50,12 +50,7 @@ abstract contract PlugTradable is ERC721, Ownable {
      * @notice Metadata response for the name of the collection.
      * @return $name The name of the collection.
      */
-    function name()
-        public
-        pure
-        override
-        returns (string memory $name)
-    {
+    function name() public pure override returns (string memory $name) {
         $name = "Plug Sockets";
     }
 
@@ -63,12 +58,7 @@ abstract contract PlugTradable is ERC721, Ownable {
      * @notice Metadata response for the symbol of the collection.
      * @return $symbol The symbol of the collection.
      */
-    function symbol()
-        public
-        pure
-        override
-        returns (string memory $symbol)
-    {
+    function symbol() public pure override returns (string memory $symbol) {
         $symbol = "PLGSOK";
     }
 
@@ -83,9 +73,7 @@ abstract contract PlugTradable is ERC721, Ownable {
         override
         returns (string memory $uri)
     {
-        $uri = string(
-            abi.encodePacked(baseURI, LibString.toString($tokenId))
-        );
+        $uri = string(abi.encodePacked(baseURI, LibString.toString($tokenId)));
     }
 
     function _afterTokenTransfer(

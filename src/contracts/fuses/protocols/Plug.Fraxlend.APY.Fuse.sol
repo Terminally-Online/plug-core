@@ -24,29 +24,18 @@ import { FraxlendVaultInterface } from
  *       declared threshold
  * @author nftchance (chance@onplug.io)
  */
-contract PlugFraxlendAPYFuse is
-    PlugFuseInterface,
-    PlugThresholdFuseEnforce
-{
+contract PlugFraxlendAPYFuse is PlugFuseInterface, PlugThresholdFuseEnforce {
     /**
      * See {PlugFuseInterface-enforceFuse}.
      */
-    function enforceFuse(
-        bytes calldata $live,
-        PlugTypesLib.Current calldata $current,
-        bytes32
-    )
-        public
-        view
-        returns (bytes memory $through)
-    {
+    function enforceFuse(bytes calldata $terms, bytes32) public view {
         /// @dev Determine the balance lookup definition.
         (
             address $vault,
             uint8 $vaultOperator,
             uint8 $operator,
             uint256 $threshold
-        ) = decode($live);
+        ) = decode($terms);
 
         /// @dev Connect to the vault and retrieve the current rate information.
         FraxlendVaultInterface vault = FraxlendVaultInterface($vault);
@@ -60,8 +49,7 @@ contract PlugFraxlendAPYFuse is
         (uint128 totalBorrowAmount,) = vault.totalBorrow();
 
         /// @dev Solve for the base borrow.
-        uint256 apyBaseBorrow =
-            ((ratePerSec * 365 days) / 10 ** 18) / 100;
+        uint256 apyBaseBorrow = ((ratePerSec * 365 days) / 10 ** 18) / 100;
 
         /// @dev Determine the amount of apy boosting that is taking place.
         uint256 apyRewardBorrow =
@@ -74,9 +62,6 @@ contract PlugFraxlendAPYFuse is
 
         /// @dev Enforce that the APY is within bounds.
         _enforceFuse($operator, $threshold, apy);
-
-        /// @dev Otherwise, return the current value.
-        $through = $current.data;
     }
 
     /**
@@ -110,7 +95,6 @@ contract PlugFraxlendAPYFuse is
         returns (bytes memory $data)
     {
         /// @dev Encode the holder, asset, operator, and threshold.
-        $data =
-            abi.encode($vault, $vaultOperator, $operator, $threshold);
+        $data = abi.encode($vault, $vaultOperator, $operator, $threshold);
     }
 }

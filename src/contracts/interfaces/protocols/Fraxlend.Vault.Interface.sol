@@ -8,12 +8,8 @@ interface FraxlendVaultInterface {
     error BadSwapper();
     error BorrowerSolvent();
     error BorrowerWhitelistRequired();
-    error Insolvent(
-        uint256 _borrow, uint256 _collateral, uint256 _exchangeRate
-    );
-    error InsufficientAssetsInContract(
-        uint256 _assets, uint256 _request
-    );
+    error Insolvent(uint256 _borrow, uint256 _collateral, uint256 _exchangeRate);
+    error InsufficientAssetsInContract(uint256 _assets, uint256 _request);
     error InvalidPath(address _expected, address _actual);
     error NameEmpty();
     error NotDeployer();
@@ -95,15 +91,11 @@ interface FraxlendVaultInterface {
         uint256 _amountAssetOut,
         uint256 _sharesRepaid
     );
-    event SetApprovedBorrower(
-        address indexed _address, bool _approval
-    );
+    event SetApprovedBorrower(address indexed _address, bool _approval);
     event SetApprovedLender(address indexed _address, bool _approval);
     event SetSwapper(address _swapper, bool _approval);
     event SetTimeLock(address _oldAddress, address _newAddress);
-    event Transfer(
-        address indexed from, address indexed to, uint256 value
-    );
+    event Transfer(address indexed from, address indexed to, uint256 value);
     event Unpaused(address account);
     event UpdateExchangeRate(uint256 _rate);
     event UpdateRate(
@@ -123,16 +115,10 @@ interface FraxlendVaultInterface {
         uint128 _shares, address _recipient, uint256 _amountToTransfer
     );
 
-    function CIRCUIT_BREAKER_ADDRESS()
-        external
-        view
-        returns (address);
+    function CIRCUIT_BREAKER_ADDRESS() external view returns (address);
     function COMPTROLLER_ADDRESS() external view returns (address);
     function DEPLOYER_ADDRESS() external view returns (address);
-    function FRAXLEND_WHITELIST_ADDRESS()
-        external
-        view
-        returns (address);
+    function FRAXLEND_WHITELIST_ADDRESS() external view returns (address);
     function TIME_LOCK_ADDRESS() external view returns (address);
     function addCollateral(
         uint256 _collateralAmount,
@@ -154,22 +140,11 @@ interface FraxlendVaultInterface {
         external
         view
         returns (uint256);
-    function approve(
-        address spender,
-        uint256 amount
-    )
-        external
-        returns (bool);
-    function approvedBorrowers(address)
-        external
-        view
-        returns (bool);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function approvedBorrowers(address) external view returns (bool);
     function approvedLenders(address) external view returns (bool);
     function asset() external view returns (address);
-    function balanceOf(address account)
-        external
-        view
-        returns (uint256);
+    function balanceOf(address account) external view returns (uint256);
     function borrowAsset(
         uint256 _borrowAmount,
         uint256 _collateralAmount,
@@ -305,10 +280,7 @@ interface FraxlendVaultInterface {
     function paused() external view returns (bool);
     function penaltyRate() external view returns (uint256);
     function rateContract() external view returns (address);
-    function rateInitCallData()
-        external
-        view
-        returns (bytes memory);
+    function rateInitCallData() external view returns (bytes memory);
     function redeem(
         uint256 _shares,
         address _receiver,
@@ -388,12 +360,7 @@ interface FraxlendVaultInterface {
         returns (uint128 amount, uint128 shares);
     function totalCollateral() external view returns (uint256);
     function totalSupply() external view returns (uint256);
-    function transfer(
-        address to,
-        uint256 amount
-    )
-        external
-        returns (bool);
+    function transfer(address to, uint256 amount) external returns (bool);
     function transferFrom(
         address from,
         address to,
@@ -403,17 +370,9 @@ interface FraxlendVaultInterface {
         returns (bool);
     function transferOwnership(address newOwner) external;
     function unpause() external;
-    function updateExchangeRate()
-        external
-        returns (uint256 _exchangeRate);
-    function userBorrowShares(address)
-        external
-        view
-        returns (uint256);
-    function userCollateralBalance(address)
-        external
-        view
-        returns (uint256);
+    function updateExchangeRate() external returns (uint256 _exchangeRate);
+    function userBorrowShares(address) external view returns (uint256);
+    function userCollateralBalance(address) external view returns (uint256);
     function version() external view returns (string memory);
     function withdrawFees(
         uint128 _shares,

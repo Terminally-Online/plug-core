@@ -5,15 +5,11 @@ pragma solidity 0.8.23;
 import { PlugInterface } from "../interfaces/Plug.Interface.sol";
 
 import {
-    PlugLib,
-    PlugTypesLib,
-    PlugAddressesLib
+    PlugLib, PlugTypesLib, PlugAddressesLib
 } from "../libraries/Plug.Lib.sol";
 
-import { PlugFactoryInterface } from
-    "../interfaces/Plug.Factory.Interface.sol";
-import { PlugSocketInterface } from
-    "../interfaces/Plug.Socket.Interface.sol";
+import { PlugFactoryInterface } from "../interfaces/Plug.Factory.Interface.sol";
+import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 
 /**
  * @title Plug
@@ -37,13 +33,11 @@ contract Plug is PlugInterface {
         public
         payable
         virtual
-        returns (bytes[] memory $results)
+        returns (PlugTypesLib.Result[] memory $results)
     {
         /// @dev Pass down the signature components and execute
         ///      the bundle from within the Socket that was declared.
-        $results = _socket($livePlugs).plug(
-            $livePlugs, msg.sender, gasleft()
-        );
+        $results = _socket($livePlugs).plug($livePlugs, msg.sender, gasleft());
     }
 
     /**
@@ -53,12 +47,12 @@ contract Plug is PlugInterface {
         public
         payable
         virtual
-        returns (bytes[][] memory $results)
+        returns (PlugTypesLib.Result[][] memory $results)
     {
         /// @dev Load the stack.
         uint256 i;
         uint256 length = $livePlugs.length;
-        $results = new bytes[][](length);
+        $results = new PlugTypesLib.Result[][](length);
 
         /// @dev Iterate over the plugs and execute them.
         for (i; i < length; i++) {

@@ -9,8 +9,7 @@ import {
 import { PlugThresholdFuseEnforce } from
     "../abstracts/fuses/Plug.Threshold.Fuse.Enforce.sol";
 
-import { PlugBalanceInterface } from
-    "../interfaces/Plug.Balance.Interface.sol";
+import { PlugBalanceInterface } from "../interfaces/Plug.Balance.Interface.sol";
 
 /**
  * @title Plug Balance Fuse
@@ -34,22 +33,11 @@ import { PlugBalanceInterface } from
  *     - Automatically trigger donations when balance exceeds the declared threshold.
  * @author nftchance (chance@onplug.io)
  */
-contract PlugBalanceFuse is
-    PlugFuseInterface,
-    PlugThresholdFuseEnforce
-{
+contract PlugBalanceFuse is PlugFuseInterface, PlugThresholdFuseEnforce {
     /**
      * See {PlugFuseInterface-enforceFuse}.
      */
-    function enforceFuse(
-        bytes calldata $live,
-        PlugTypesLib.Current calldata $current,
-        bytes32
-    )
-        public
-        view
-        returns (bytes memory $through)
-    {
+    function enforceFuse(bytes calldata $terms, bytes32) public view {
         /// @dev Determine the balance lookup definition.
         (
             address $holder,
@@ -57,7 +45,7 @@ contract PlugBalanceFuse is
             uint8 $type,
             uint8 $operator,
             uint256 $threshold
-        ) = decode($live);
+        ) = decode($terms);
 
         /// @dev If it is a native asset, ensure the balance is within bounds defined.
         if ($type == 0) {
@@ -72,9 +60,6 @@ contract PlugBalanceFuse is
                 PlugBalanceInterface($asset).balanceOf($holder)
             );
         }
-
-        /// @dev Otherwise, return the current value.
-        $through = $current.data;
     }
 
     /**
@@ -91,9 +76,8 @@ contract PlugBalanceFuse is
             uint256 $threshold
         )
     {
-        ($holder, $asset, $type, $operator, $threshold) = abi.decode(
-            $data, (address, address, uint8, uint8, uint256)
-        );
+        ($holder, $asset, $type, $operator, $threshold) =
+            abi.decode($data, (address, address, uint8, uint8, uint256));
     }
 
     /**
@@ -111,7 +95,6 @@ contract PlugBalanceFuse is
         returns (bytes memory $data)
     {
         /// @dev Encode the holder, asset, operator, and threshold.
-        $data =
-            abi.encode($holder, $asset, $type, $operator, $threshold);
+        $data = abi.encode($holder, $asset, $type, $operator, $threshold);
     }
 }

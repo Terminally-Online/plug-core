@@ -9,8 +9,7 @@ import {
 import { PlugThresholdFuseEnforce } from
     "../abstracts/fuses/Plug.Threshold.Fuse.Enforce.sol";
 
-import { PlugBalanceInterface } from
-    "../interfaces/Plug.Balance.Interface.sol";
+import { PlugBalanceInterface } from "../interfaces/Plug.Balance.Interface.sol";
 
 /**
  * @title Plug Balance (Semi-Fungible) Fuse
@@ -27,15 +26,7 @@ contract PlugBalanceSemiFungibleFuse is
     /**
      * See {PlugFuseInterface-enforceFuse}.
      */
-    function enforceFuse(
-        bytes calldata $live,
-        PlugTypesLib.Current calldata $current,
-        bytes32
-    )
-        public
-        view
-        returns (bytes memory $through)
-    {
+    function enforceFuse(bytes calldata $terms, bytes32) public view {
         /// @dev Determine the balance lookup definition.
         (
             address $holder,
@@ -43,7 +34,7 @@ contract PlugBalanceSemiFungibleFuse is
             uint256 $tokenId,
             uint8 $operator,
             uint256 $threshold
-        ) = decode($live);
+        ) = decode($terms);
 
         /// @dev Ensure the balance of the 1155 token is within the bounds defined.
         _enforceFuse(
@@ -51,9 +42,6 @@ contract PlugBalanceSemiFungibleFuse is
             $threshold,
             PlugBalanceInterface($asset).balanceOf($holder, $tokenId)
         );
-
-        /// @dev Otherwise, return the current value.
-        $through = $current.data;
     }
 
     /**
@@ -70,8 +58,8 @@ contract PlugBalanceSemiFungibleFuse is
             uint256 $threshold
         )
     {
-        ($holder, $asset, $tokenId, $operator, $threshold) = abi
-            .decode($data, (address, address, uint256, uint8, uint256));
+        ($holder, $asset, $tokenId, $operator, $threshold) =
+            abi.decode($data, (address, address, uint256, uint8, uint256));
     }
 
     /**
@@ -88,8 +76,6 @@ contract PlugBalanceSemiFungibleFuse is
         pure
         returns (bytes memory $data)
     {
-        $data = abi.encode(
-            $holder, $asset, $tokenId, $operator, $threshold
-        );
+        $data = abi.encode($holder, $asset, $tokenId, $operator, $threshold);
     }
 }

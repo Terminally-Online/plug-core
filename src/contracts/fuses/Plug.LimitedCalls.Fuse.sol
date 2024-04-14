@@ -28,26 +28,20 @@ contract PlugLimitedCallsFuse is PlugFuseInterface {
      * See {PlugFuseInterface-enforceFuse}.
      */
     function enforceFuse(
-        bytes calldata $live,
-        PlugTypesLib.Current calldata $current,
+        bytes calldata $terms,
         bytes32 $plugsHash
     )
         public
         virtual
-        override
-        returns (bytes memory $through)
     {
         /// @dev Snapshot the current state of the call allowance and consumption.
-        uint256 allowedCalls = decode($live);
+        uint256 allowedCalls = decode($terms);
         uint256 calls = ++callCounts[msg.sender][$plugsHash];
 
         /// @dev Confirm the declared limit has not been exceeded.
         if (allowedCalls < calls) {
             revert PlugLib.ThresholdExceeded(allowedCalls, calls);
         }
-
-        /// @dev Continue the pass through.
-        $through = $current.data;
     }
 
     /**

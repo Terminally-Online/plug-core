@@ -4,8 +4,7 @@ pragma solidity 0.8.23;
 
 import { ReentrancyGuard } from "solady/src/utils/ReentrancyGuard.sol";
 import { PlugLib } from "../libraries/Plug.Lib.sol";
-import { PlugBalanceInterface } from
-    "../interfaces/Plug.Balance.Interface.sol";
+import { PlugBalanceInterface } from "../interfaces/Plug.Balance.Interface.sol";
 
 import { SafeTransferLib } from "solady/src/utils/SafeTransferLib.sol";
 
@@ -110,9 +109,8 @@ abstract contract PlugSwapper is ReentrancyGuard {
         /// @dev If the target did not use all of the tokens within allowance, revert
         ///      as there was an issue and/or imbalance somewhere in the execution.
         if (
-            PlugBalanceInterface($tokenOut).allowance(
-                address(this), $target
-            ) != 0
+            PlugBalanceInterface($tokenOut).allowance(address(this), $target)
+                != 0
         ) {
             revert PlugLib.TokenAllowanceInvalid();
         }
@@ -183,9 +181,7 @@ abstract contract PlugSwapper is ReentrancyGuard {
 
         /// @dev Deliver any surplus of the Native token back to the `caller`.
         if (postNative > preNative) {
-            SafeTransferLib.safeTransferETH(
-                msg.sender, postNative - preNative
-            );
+            SafeTransferLib.safeTransferETH(msg.sender, postNative - preNative);
         }
     }
 
@@ -244,9 +240,8 @@ abstract contract PlugSwapper is ReentrancyGuard {
         /// @dev If the target did not use all of the tokens within allowance, revert
         ///      as there was an issue and/or imbalance somewhere in the execution.
         if (
-            PlugBalanceInterface($tokenOut).allowance(
-                address(this), $target
-            ) != 0
+            PlugBalanceInterface($tokenOut).allowance(address(this), $target)
+                != 0
         ) {
             revert PlugLib.TokenAllowanceInvalid();
         }
@@ -314,9 +309,8 @@ abstract contract PlugSwapper is ReentrancyGuard {
         /// @dev If the target did not use all of the tokens within allowance, revert
         ///      as there was an issue and/or imbalance somewhere in the execution.
         if (
-            PlugBalanceInterface($tokenOut).allowance(
-                address(this), $target
-            ) != 0
+            PlugBalanceInterface($tokenOut).allowance(address(this), $target)
+                != 0
         ) {
             revert PlugLib.TokenAllowanceInvalid();
         }
@@ -337,8 +331,7 @@ abstract contract PlugSwapper is ReentrancyGuard {
         if ($fee > 0) {
             /// @dev Transfer the native tokens earned excluding the fee to the `caller`.
             SafeTransferLib.safeTransferETH(
-                msg.sender,
-                diffNative - (diffNative * $fee) / 10 ** 18
+                msg.sender, diffNative - (diffNative * $fee) / 10 ** 18
             );
         }
         /// @dev If there is no fee, return the entire amount to the sender.

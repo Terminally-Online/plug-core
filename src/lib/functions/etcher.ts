@@ -25,7 +25,7 @@ const addresses = JSON.parse(
 	fs.readFileSync('src/lib/addresses.json').toString()
 )
 
-const libs = ['Plug.Treasury.sol', 'Plug.Factory.sol']
+const libs = ['Plug.Factory.sol']
 
 directories
 	.filter(directory =>

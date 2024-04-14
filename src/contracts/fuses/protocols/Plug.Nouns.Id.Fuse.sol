@@ -6,8 +6,7 @@ import {
     PlugFuseInterface,
     PlugTypesLib
 } from "../../interfaces/Plug.Fuse.Interface.sol";
-import { PlugNounsLib } from
-    "../../libraries/protocols/Plug.Nouns.Lib.sol";
+import { PlugNounsLib } from "../../libraries/protocols/Plug.Nouns.Lib.sol";
 
 /**
  * @title Plug Nouns Id Fuse
@@ -21,25 +20,11 @@ contract PlugNounsIdFuse is PlugFuseInterface {
     /**
      * See {PlugFuseInterface-enforceFuse}.
      */
-    function enforceFuse(
-        bytes calldata $live,
-        PlugTypesLib.Current calldata $current,
-        bytes32
-    )
-        public
-        view
-        override
-        returns (bytes memory $through)
-    {
+    function enforceFuse(bytes calldata $terms, bytes32) public view {
         /// @dev Get the current state of the auction.
         (uint256 nounId,,,,,) = PlugNounsLib.AUCTION_HOUSE.auction();
 
-        require(
-            nounId == decode($live), "NounsTokenId:invalid-noun-id"
-        );
-
-        /// @dev Continue the pass through.
-        $through = $current.data;
+        require(nounId == decode($terms), "NounsTokenId:invalid-noun-id");
     }
 
     /**

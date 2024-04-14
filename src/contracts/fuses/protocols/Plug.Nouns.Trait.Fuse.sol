@@ -6,8 +6,7 @@ import {
     PlugFuseInterface,
     PlugTypesLib
 } from "../../interfaces/Plug.Fuse.Interface.sol";
-import { PlugNounsLib } from
-    "../../libraries/protocols/Plug.Nouns.Lib.sol";
+import { PlugNounsLib } from "../../libraries/protocols/Plug.Nouns.Lib.sol";
 
 /**
  * @title Plug Nouns Trait Fuse
@@ -40,25 +39,10 @@ contract PlugNounsTraitFuse is PlugFuseInterface {
     /**
      * See {PlugFuseInterface-enforceFuse}.
      */
-    function enforceFuse(
-        bytes calldata $live,
-        PlugTypesLib.Current calldata $current,
-        bytes32
-    )
-        public
-        view
-        override
-        returns (bytes memory $through)
-    {
-        (bytes32 selector, bytes32 trait) = decode($live);
+    function enforceFuse(bytes calldata $terms, bytes32) public view {
+        (bytes32 selector, bytes32 trait) = decode($terms);
 
-        require(
-            nounTrait(selector) == trait,
-            "NounsTraitFuse:invalid-trait"
-        );
-
-        /// @dev Continue the pass through.
-        $through = $current.data;
+        require(nounTrait(selector) == trait, "NounsTraitFuse:invalid-trait");
     }
 
     /**
@@ -92,10 +76,8 @@ contract PlugNounsTraitFuse is PlugFuseInterface {
         returns (bytes memory)
     {
         if (
-            $selector == HEAD_SELECTOR
-                || $selector == GLASSES_SELECTOR
-                || $selector == BODY_SELECTOR
-                || $selector == ACCESSORY_SELECTOR
+            $selector == HEAD_SELECTOR || $selector == GLASSES_SELECTOR
+                || $selector == BODY_SELECTOR || $selector == ACCESSORY_SELECTOR
                 || $selector == BACKGROUND_SELECTOR
         ) { } else {
             revert("NounsTraitFuse:invalid-selector");
@@ -144,8 +126,7 @@ contract PlugNounsTraitFuse is PlugFuseInterface {
         }
 
         /// @dev Build the transaction data to call the Noun contract.
-        bytes memory data =
-            abi.encodeWithSelector(bytes4($selector), traitSeed);
+        bytes memory data = abi.encodeWithSelector(bytes4($selector), traitSeed);
 
         /// @dev Retrieve the trait.
         (bool success, bytes memory returnData) = art.staticcall(data);

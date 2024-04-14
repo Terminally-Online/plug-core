@@ -26,8 +26,7 @@ contract PlugMockERC721 is ERC721 {
         override
         returns (string memory)
     {
-        return string(
-            abi.encodePacked("https://mock.com/", $tokenId.toString())
-        );
+        return
+            string(abi.encodePacked("https://mock.com/", $tokenId.toString()));
     }
 }

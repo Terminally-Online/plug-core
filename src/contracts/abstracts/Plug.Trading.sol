@@ -2,8 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import { PlugTradingInterface } from
-    "../interfaces/Plug.Trading.Interface.sol";
+import { PlugTradingInterface } from "../interfaces/Plug.Trading.Interface.sol";
 import { ModuleAuthUpgradable } from
     "sequence/modules/commons/ModuleAuthUpgradable.sol";
 
@@ -20,10 +19,7 @@ import { ERC721 } from "solady/src/tokens/ERC721.sol";
  *         aforementioned workflows such as points and yield.
  * @author nftchance (chance@onplug.io)
  */
-abstract contract PlugTrading is
-    PlugTradingInterface,
-    ModuleAuthUpgradable
-{
+abstract contract PlugTrading is PlugTradingInterface, ModuleAuthUpgradable {
     /// @dev The address that houses the ownership information.
     address public ownership;
 
@@ -72,8 +68,7 @@ abstract contract PlugTrading is
                 keccak256(
                     abi.encodePacked(
                         abi.decode(
-                            abi.encodePacked(uint96(1), $newOwner),
-                            (bytes32)
+                            abi.encodePacked(uint96(1), $newOwner), (bytes32)
                         ),
                         uint256(1)
                     )
@@ -103,12 +98,7 @@ abstract contract PlugTrading is
     /**
      * @notice Get the token ID of the Vault.
      */
-    function tokenId()
-        public
-        view
-        virtual
-        returns (uint256 $tokenId)
-    {
+    function tokenId() public view virtual returns (uint256 $tokenId) {
         $tokenId = uint256(uint160(address(this)));
     }
 
