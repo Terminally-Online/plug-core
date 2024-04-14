@@ -26,35 +26,27 @@ contract PlugTimestampFuseTest is Test {
     }
 
     function test_enforceFuse_BeforeTimestamp() public {
-        bytes memory terms =
-            fuse.encode(beforeOperator, beforeTimestamp);
-        (uint256 decodedOperator, uint256 decodedTimestamp) =
-            fuse.decode(terms);
+        bytes memory terms = fuse.encode(beforeOperator, beforeTimestamp);
+        (uint256 decodedOperator, uint256 decodedTimestamp) = fuse.decode(terms);
         assertEq(decodedOperator, beforeOperator);
         assertEq(decodedTimestamp, beforeTimestamp);
         fuse.enforceFuse(terms, plugsHash);
     }
 
-    function testRevert_enforceFuse_BeforeTimestamp_Expired()
-        public
-    {
+    function testRevert_enforceFuse_BeforeTimestamp_Expired() public {
         uint256 expected = beforeTimestamp - 150;
         bytes memory terms = fuse.encode(beforeOperator, expected);
         vm.expectRevert(
             abi.encodeWithSelector(
-                PlugLib.ThresholdExceeded.selector,
-                expected,
-                block.timestamp
+                PlugLib.ThresholdExceeded.selector, expected, block.timestamp
             )
         );
         fuse.enforceFuse(terms, plugsHash);
     }
 
     function test_enforceFuse_AfterTimestamp() public {
-        bytes memory terms =
-            fuse.encode(afterOperator, afterTimestamp);
-        (uint256 decodedOperator, uint256 decodedTimestamp) =
-            fuse.decode(terms);
+        bytes memory terms = fuse.encode(afterOperator, afterTimestamp);
+        (uint256 decodedOperator, uint256 decodedTimestamp) = fuse.decode(terms);
         assertEq(decodedOperator, afterOperator);
         assertEq(decodedTimestamp, afterTimestamp);
         fuse.enforceFuse(terms, plugsHash);
