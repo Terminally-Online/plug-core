@@ -44,14 +44,8 @@ abstract contract PlugCore is PlugTypes {
         ///      an execute each of them. Each respectively may be a
         ///      condition being enforced or an outcome focused transaction.
         for (uint256 i; i < length; i++) {
+            /// @dev Place the active Plug in the shorter reference stack.
             plug = $plugs.plugs[i];
-
-            /// @dev Recover the byte that is being used to denote the type of
-            ///      Plug being executed. It has to be done this way because
-            ///      instead of declaring multiple EIP712 types, we are using
-            ///      a single type and encoding the data in a way that is
-            ///      recoverable and solvable in a single type and call.
-            (bytes memory plugData, uint8 plugType) = abi.decode(plug.data, (bytes, uint8));
 
             /// @dev If the call has an associated value, ensure the contract
             ///      has enough balance to cover the cost of the call.
@@ -59,10 +53,17 @@ abstract contract PlugCore is PlugTypes {
                 revert PlugLib.ValueInvalid(plug.target, plug.value, address(this).balance);
             }
 
+            /// @dev Recover the byte that is being used to denote the type of
+            ///      Plug being executed. It has to be done this way because
+            ///      instead of declaring multiple EIP712 types, we are using
+            ///      a single type and encoding the data in a way that is
+            ///      recoverable and solvable in a single type and call.
+            bytes1 plugType = plug.data[0];
+
             /// @dev This check is a conditional Plug that requires access
             ///      to the hash and is confirming the current state of some
             ///      onchain data in an external contract.
-            if (plugType == 1) {
+            if (plugType & 0x01 == plugType) {
                 /// @dev Call the Plug to determine that is operating as a
                 ///      condition and enforce the outcome of the condition
                 ///      if it is not met (reverts).
@@ -72,8 +73,8 @@ abstract contract PlugCore is PlugTypes {
             }
             /// @dev Make the call to the Plug and bubble up the
             ///      result if it happens to fail.
-            else if (plugType == 2) {
-                ($results[i].success, $results[i].result) = plug.target.call{ value: plug.value }(plugData);
+            else if (plugType & 0x02 == plugType) {
+                ($results[i].success, $results[i].result) = plug.target.call{ value: plug.value }(plug.data[1:]);
             }
             /// @dev If an invalid Plug type was provided revert to protect
             ///      against fund siphoning when no work is done.

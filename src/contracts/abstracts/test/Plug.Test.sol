@@ -459,7 +459,7 @@ abstract contract TestPlug is TestPlus {
         pure
         returns (PlugTypesLib.Plug memory $plug)
     {
-        $plug = PlugTypesLib.Plug({ target: $target, value: $value, data: abi.encode($data, $plugType) });
+        $plug = PlugTypesLib.Plug({ target: $target, value: $value, data: abi.encodePacked($plugType, $data) });
     }
 
     function createPlug(uint256 $value, uint8 $plugType) internal view returns (PlugTypesLib.Plug memory $plug) {

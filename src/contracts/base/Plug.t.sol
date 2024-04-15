@@ -29,6 +29,14 @@ contract PlugTest is Test {
         assertEq(plug.symbol(), "PLUG");
     }
 
+    function test_PlugEmptyEcho_TypeRecovery() public {
+        PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
+        plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray);
+
+        plug.plug(livePlugs);
+    }
+
     function test_PlugEmptyEcho_SignerSolver() public {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
