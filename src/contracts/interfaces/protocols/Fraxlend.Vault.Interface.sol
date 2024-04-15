@@ -24,13 +24,22 @@ interface FraxlendVaultInterface {
     error ProtocolOrOwnerOnly();
     error SlippageTooHigh(uint256 _minOut, uint256 _actual);
 
-    event AddCollateral(address indexed _sender, address indexed _borrower, uint256 _collateralAmount);
+    event AddCollateral(
+        address indexed _sender, address indexed _borrower, uint256 _collateralAmount
+    );
     event AddInterest(
-        uint256 _interestEarned, uint256 _rate, uint256 _deltaTime, uint256 _feesAmount, uint256 _feesShare
+        uint256 _interestEarned,
+        uint256 _rate,
+        uint256 _deltaTime,
+        uint256 _feesAmount,
+        uint256 _feesShare
     );
     event Approval(address indexed owner, address indexed spender, uint256 value);
     event BorrowAsset(
-        address indexed _borrower, address indexed _receiver, uint256 _borrowAmount, uint256 _sharesAdded
+        address indexed _borrower,
+        address indexed _receiver,
+        uint256 _borrowAmount,
+        uint256 _sharesAdded
     );
     event ChangeFee(uint32 _newFee);
     event Deposit(address indexed caller, address indexed owner, uint256 assets, uint256 shares);
@@ -53,9 +62,14 @@ interface FraxlendVaultInterface {
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     event Paused(address account);
     event RemoveCollateral(
-        address indexed _sender, uint256 _collateralAmount, address indexed _receiver, address indexed _borrower
+        address indexed _sender,
+        uint256 _collateralAmount,
+        address indexed _receiver,
+        address indexed _borrower
     );
-    event RepayAsset(address indexed _payer, address indexed _borrower, uint256 _amountToRepay, uint256 _shares);
+    event RepayAsset(
+        address indexed _payer, address indexed _borrower, uint256 _amountToRepay, uint256 _shares
+    );
     event RepayAssetWithCollateral(
         address indexed _borrower,
         address _swapperAddress,
@@ -70,9 +84,15 @@ interface FraxlendVaultInterface {
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Unpaused(address account);
     event UpdateExchangeRate(uint256 _rate);
-    event UpdateRate(uint256 _ratePerSec, uint256 _deltaTime, uint256 _utilizationRate, uint256 _newRatePerSec);
+    event UpdateRate(
+        uint256 _ratePerSec, uint256 _deltaTime, uint256 _utilizationRate, uint256 _newRatePerSec
+    );
     event Withdraw(
-        address indexed caller, address indexed receiver, address indexed owner, uint256 assets, uint256 shares
+        address indexed caller,
+        address indexed receiver,
+        address indexed owner,
+        uint256 assets,
+        uint256 shares
     );
     event WithdrawFees(uint128 _shares, address _recipient, uint256 _amountToTransfer);
 
@@ -105,12 +125,25 @@ interface FraxlendVaultInterface {
     function currentRateInfo()
         external
         view
-        returns (uint64 lastBlock, uint64 feeToProtocolRate, uint64 lastTimestamp, uint64 ratePerSec);
+        returns (
+            uint64 lastBlock,
+            uint64 feeToProtocolRate,
+            uint64 lastTimestamp,
+            uint64 ratePerSec
+        );
     function decimals() external pure returns (uint8);
     function decreaseAllowance(address spender, uint256 subtractedValue) external returns (bool);
-    function deposit(uint256 _amount, address _receiver) external returns (uint256 _sharesReceived);
+    function deposit(
+        uint256 _amount,
+        address _receiver
+    )
+        external
+        returns (uint256 _sharesReceived);
     function dirtyLiquidationFee() external view returns (uint256);
-    function exchangeRateInfo() external view returns (uint32 lastTimestamp, uint224 exchangeRate);
+    function exchangeRateInfo()
+        external
+        view
+        returns (uint32 lastTimestamp, uint224 exchangeRate);
     function getConstants()
         external
         pure
@@ -162,7 +195,11 @@ interface FraxlendVaultInterface {
     function getUserSnapshot(address _address)
         external
         view
-        returns (uint256 _userAssetShares, uint256 _userBorrowShares, uint256 _userCollateralBalance);
+        returns (
+            uint256 _userAssetShares,
+            uint256 _userBorrowShares,
+            uint256 _userCollateralBalance
+        );
     function increaseAllowance(address spender, uint256 addedValue) external returns (bool);
     function initialize(
         string memory _name,
@@ -200,10 +237,21 @@ interface FraxlendVaultInterface {
     function penaltyRate() external view returns (uint256);
     function rateContract() external view returns (address);
     function rateInitCallData() external view returns (bytes memory);
-    function redeem(uint256 _shares, address _receiver, address _owner) external returns (uint256 _amountToReturn);
+    function redeem(
+        uint256 _shares,
+        address _receiver,
+        address _owner
+    )
+        external
+        returns (uint256 _amountToReturn);
     function removeCollateral(uint256 _collateralAmount, address _receiver) external;
     function renounceOwnership() external;
-    function repayAsset(uint256 _shares, address _borrower) external returns (uint256 _amountToRepay);
+    function repayAsset(
+        uint256 _shares,
+        address _borrower
+    )
+        external
+        returns (uint256 _amountToRepay);
     function repayAssetWithCollateral(
         address _swapperAddress,
         uint256 _collateralToSwap,
@@ -234,7 +282,12 @@ interface FraxlendVaultInterface {
     function userBorrowShares(address) external view returns (uint256);
     function userCollateralBalance(address) external view returns (uint256);
     function version() external view returns (string memory);
-    function withdrawFees(uint128 _shares, address _recipient) external returns (uint256 _amountToTransfer);
+    function withdrawFees(
+        uint128 _shares,
+        address _recipient
+    )
+        external
+        returns (uint256 _amountToTransfer);
 }
 
 // THIS FILE WAS AUTOGENERATED FROM THE FOLLOWING ABI JSON:

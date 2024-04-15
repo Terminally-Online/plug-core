@@ -33,7 +33,9 @@ contract PlugBaseFeeTest is Test {
     function test_enforce_BelowBaseFee_Exceeded() public {
         uint256 expected = block.basefee - 1;
         bytes memory terms = connector.encode(belowOperator, expected);
-        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, expected, block.basefee));
+        vm.expectRevert(
+            abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, expected, block.basefee)
+        );
         connector.enforce(terms, plugsHash);
     }
 
@@ -48,7 +50,9 @@ contract PlugBaseFeeTest is Test {
     function testRevert_enforce_AboveBaseFee_Insufficient() public {
         uint256 expected = block.basefee + 1;
         bytes memory terms = connector.encode(aboveOperator, expected);
-        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdInsufficient.selector, expected, block.basefee));
+        vm.expectRevert(
+            abi.encodeWithSelector(PlugLib.ThresholdInsufficient.selector, expected, block.basefee)
+        );
         connector.enforce(terms, plugsHash);
     }
 }

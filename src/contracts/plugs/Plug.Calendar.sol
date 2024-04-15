@@ -115,8 +115,9 @@ contract PlugCalendar is PlugConnectorInterface {
         }
 
         /// @dev Pack the schedule details.
-        $schedule = (uint256($startTime) << START_TIME_SHIFT) | (uint256($repeatsEvery) << REPEATS_EVERY_SHIFT)
-            | (uint256($duration) << DURATION_SHIFT) | uint256($daysOfWeek);
+        $schedule = (uint256($startTime) << START_TIME_SHIFT)
+            | (uint256($repeatsEvery) << REPEATS_EVERY_SHIFT) | (uint256($duration) << DURATION_SHIFT)
+            | uint256($daysOfWeek);
     }
 
     /**
@@ -127,7 +128,8 @@ contract PlugCalendar is PlugConnectorInterface {
      */
     function isWithinCalendar(uint256 $schedule) public view returns (bool) {
         /// @dev Get the schedule details.
-        (uint32 startTime, uint32 repeatsEvery, uint32 duration, uint8 daysOfWeek) = decode($schedule);
+        (uint32 startTime, uint32 repeatsEvery, uint32 duration, uint8 daysOfWeek) =
+            decode($schedule);
 
         /// @dev Ensure the current time is within the calendar.
         return _isWithinCalendar(startTime, repeatsEvery, duration, daysOfWeek);
@@ -174,7 +176,8 @@ contract PlugCalendar is PlugConnectorInterface {
         $calendars = new CalendarFuseLib.Calendar[]($n);
 
         /// @dev Get the schedule details.
-        (uint32 startTime, uint32 repeatsEvery, uint32 duration, uint8 daysOfWeek) = decode($schedule);
+        (uint32 startTime, uint32 repeatsEvery, uint32 duration, uint8 daysOfWeek) =
+            decode($schedule);
 
         /// @dev Calculate the cursor used to get the next batch of results
         ///      after the return of the requested batch.
@@ -182,7 +185,8 @@ contract PlugCalendar is PlugConnectorInterface {
 
         for (startTime; startTime < $cursor;) {
             /// @dev Add the next calendar to the list of calendars.
-            $calendars[(startTime / repeatsEvery) % $n] = _toCalendar(startTime, duration, daysOfWeek);
+            $calendars[(startTime / repeatsEvery) % $n] =
+                _toCalendar(startTime, duration, daysOfWeek);
 
             /// @dev Time travel into the future.
             unchecked {
@@ -198,7 +202,11 @@ contract PlugCalendar is PlugConnectorInterface {
      *      it can be settled.
      * @param $schedule The schedule to check.
      */
-    function toCalendar(uint256 $schedule) external pure returns (CalendarFuseLib.Calendar memory $calendar) {
+    function toCalendar(uint256 $schedule)
+        external
+        pure
+        returns (CalendarFuseLib.Calendar memory $calendar)
+    {
         /// @dev Get the schedule details.
         (uint32 startTime, uint32 repeatsEvery,, uint8 daysOfWeek) = decode($schedule);
 
@@ -289,7 +297,8 @@ contract PlugCalendar is PlugConnectorInterface {
             /// @dev Calculate the start of this period by determining if we have
             ///      gone past the declared start time otherwise it started
             ///      at the top of the day.
-            $calendar.periods[daysInCalendar].startTime = $startTime > topDayTime ? $startTime : topDayTime;
+            $calendar.periods[daysInCalendar].startTime =
+                $startTime > topDayTime ? $startTime : topDayTime;
 
             /// @dev Calculate the last second of the day.
             uint32 bottomDayTime = topDayTime + SECONDS_PER_DAY - 1;

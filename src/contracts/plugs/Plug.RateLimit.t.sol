@@ -22,7 +22,8 @@ contract PlugRateLimitTest is Test {
 
     function test_enforce_Encoding() public {
         bytes memory terms = connector.encode(global, replenishRate, max);
-        (bool decodedGlobal, uint32 decodedReplenishRate, uint32 decodedMax) = connector.decode(terms);
+        (bool decodedGlobal, uint32 decodedReplenishRate, uint32 decodedMax) =
+            connector.decode(terms);
         assertEq(decodedGlobal, global);
         assertEq(decodedReplenishRate, replenishRate);
         assertEq(decodedMax, max);

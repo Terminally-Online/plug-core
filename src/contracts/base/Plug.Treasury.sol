@@ -29,7 +29,14 @@ contract PlugTreasury is Receiver, Ownable, PlugSwapper {
      * @param $targets The targets to set the allowed status for.
      * @param $allowed The allowed status to set.
      */
-    function setTargetsAllowed(address[] calldata $targets, bool $allowed) public virtual onlyOwner {
+    function setTargetsAllowed(
+        address[] calldata $targets,
+        bool $allowed
+    )
+        public
+        virtual
+        onlyOwner
+    {
         for (uint256 i; i < $targets.length; i++) {
             targetToAllowed[$targets[i]] = $allowed;
         }

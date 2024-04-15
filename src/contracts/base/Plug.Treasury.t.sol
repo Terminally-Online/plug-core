@@ -2,7 +2,13 @@
 
 pragma solidity 0.8.23;
 
-import { Test, PlugEtcherLib, LibClone, PlugFactory, PlugVaultSocket } from "../abstracts/test/Plug.Test.sol";
+import {
+    Test,
+    PlugEtcherLib,
+    LibClone,
+    PlugFactory,
+    PlugVaultSocket
+} from "../abstracts/test/Plug.Test.sol";
 import { Ownable } from "solady/auth/Ownable.sol";
 
 contract PlugTreasuryTest is Test {

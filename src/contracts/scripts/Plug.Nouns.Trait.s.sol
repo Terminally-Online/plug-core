@@ -17,7 +17,9 @@ contract PlugNounsTraitDeployment is Script {
     function run() external {
         vm.startBroadcast();
 
-        PlugEtcherLib.FACTORY.safeCreate2(PlugEtcherLib.PLUG_NOUNS_TRAIT_SALT, PlugEtcherLib.PLUG_NOUNS_TRAIT_INITCODE);
+        PlugEtcherLib.FACTORY.safeCreate2(
+            PlugEtcherLib.PLUG_NOUNS_TRAIT_SALT, PlugEtcherLib.PLUG_NOUNS_TRAIT_INITCODE
+        );
 
         vm.stopBroadcast();
     }

@@ -36,7 +36,14 @@ contract PlugFactory is PlugFactoryInterface, PlugTradable {
     /**
      * See { PlugFactoryInterface.initialize }
      */
-    function initialize(address $owner, string memory $baseURI, address $implementation) public virtual {
+    function initialize(
+        address $owner,
+        string memory $baseURI,
+        address $implementation
+    )
+        public
+        virtual
+    {
         /// @dev Configure the starting state of the tradable functionatlity
         ///      that enables non-fungible representation of Socket ownership.
         _initializeTradable($owner, $baseURI);
@@ -85,7 +92,8 @@ contract PlugFactory is PlugFactoryInterface, PlugTradable {
         }
 
         /// @dev Deploy the new vault using a Beacon Proxy pattern.
-        ($alreadyDeployed, $socket) = LibClone.createDeterministicERC1967(msg.value, implementation, $salt);
+        ($alreadyDeployed, $socket) =
+            LibClone.createDeterministicERC1967(msg.value, implementation, $salt);
 
         /// @dev If the vault was not already deployed, initialize it.
         if (!$alreadyDeployed) {
@@ -113,14 +121,26 @@ contract PlugFactory is PlugFactoryInterface, PlugTradable {
     /**
      * See { PlugFactoryInterface.getAddress }
      */
-    function getAddress(address $implementation, bytes32 $salt) public view returns (address $vault) {
+    function getAddress(
+        address $implementation,
+        bytes32 $salt
+    )
+        public
+        view
+        returns (address $vault)
+    {
         $vault = LibClone.predictDeterministicAddressERC1967($implementation, $salt, address(this));
     }
 
     /**
      * See { PlugFactoryInterface.initCodeHash }
      */
-    function initCodeHash(address $implementation) public view virtual returns (bytes32 $initCodeHash) {
+    function initCodeHash(address $implementation)
+        public
+        view
+        virtual
+        returns (bytes32 $initCodeHash)
+    {
         $initCodeHash = LibClone.initCodeHashERC1967($implementation);
     }
 }

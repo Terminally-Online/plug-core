@@ -21,14 +21,27 @@ abstract contract PlugThreshold is PlugConnectorInterface, PlugThresholdEnforce 
     /**
      * @dev Decode the terms to get the logic operator and threshold.
      */
-    function decode(bytes calldata $data) public pure virtual returns (uint8 $operator, uint256 $threshold) {
+    function decode(bytes calldata $data)
+        public
+        pure
+        virtual
+        returns (uint8 $operator, uint256 $threshold)
+    {
         ($operator, $threshold) = abi.decode($data, (uint8, uint256));
     }
 
     /**
      * @dev Encode the logic operator and threshold.
      */
-    function encode(uint8 $operator, uint256 $threshold) public pure virtual returns (bytes memory $data) {
+    function encode(
+        uint8 $operator,
+        uint256 $threshold
+    )
+        public
+        pure
+        virtual
+        returns (bytes memory $data)
+    {
         /// @dev Encode the logic operator and threshold.
         $data = abi.encode($operator, $threshold);
     }

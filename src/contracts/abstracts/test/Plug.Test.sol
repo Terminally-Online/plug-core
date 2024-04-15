@@ -255,7 +255,16 @@ abstract contract TestPlus {
     /// @dev Adapted from `bound`:
     /// https://github.com/foundry-rs/forge-std/blob/ff4bf7db008d096ea5a657f2c20516182252a3ed/src/StdUtils.sol#L10
     /// Differentially fuzzed tested against the original implementation.
-    function _hem(uint256 x, uint256 min, uint256 max) internal pure virtual returns (uint256 result) {
+    function _hem(
+        uint256 x,
+        uint256 min,
+        uint256 max
+    )
+        internal
+        pure
+        virtual
+        returns (uint256 result)
+    {
         require(min <= max, "Max is less than min.");
 
         /// @solidity memory-safe-assembly
@@ -337,7 +346,9 @@ abstract contract TestPlus {
                 for { let i := 0 } lt(i, n) { i := add(0x20, i) } {
                     mstore(add(add(m, 0x80), i), mload(add(add(ic2fBytecode, 0x20), i)))
                 }
-                if iszero(call(gas(), _VM_ADDRESS, 0, add(m, 0x1c), add(n, 0x64), 0x00, 0x00)) { revert(0, 0) }
+                if iszero(call(gas(), _VM_ADDRESS, 0, add(m, 0x1c), add(n, 0x64), 0x00, 0x00)) {
+                    revert(0, 0)
+                }
             }
         }
         /// @solidity memory-safe-assembly
@@ -361,7 +372,13 @@ abstract contract TestPlus {
     }
 
     /// @dev Deploys a contract via 0age's immutable create 2 factory for testing.
-    function _safeCreate2(bytes32 salt, bytes memory initializationCode) internal returns (address deploymentAddress) {
+    function _safeCreate2(
+        bytes32 salt,
+        bytes memory initializationCode
+    )
+        internal
+        returns (address deploymentAddress)
+    {
         deploymentAddress = _safeCreate2(0, salt, initializationCode);
     }
 
@@ -445,7 +462,8 @@ abstract contract TestPlug is TestPlus {
     }
 
     function deployVault() internal virtual returns (PlugVaultSocket $vault) {
-        (, address vaultAddress) = factory.deploy(bytes32(abi.encodePacked(signer, uint96(0))), address(plug));
+        (, address vaultAddress) =
+            factory.deploy(bytes32(abi.encodePacked(signer, uint96(0))), address(plug));
         $vault = PlugVaultSocket(payable(vaultAddress));
     }
 
@@ -459,17 +477,31 @@ abstract contract TestPlug is TestPlus {
         pure
         returns (PlugTypesLib.Plug memory $plug)
     {
-        $plug = PlugTypesLib.Plug({ target: $target, value: $value, data: abi.encodePacked($plugType, $data) });
+        $plug = PlugTypesLib.Plug({
+            target: $target,
+            value: $value,
+            data: abi.encodePacked($plugType, $data)
+        });
     }
 
-    function createPlug(uint256 $value, uint8 $plugType) internal view returns (PlugTypesLib.Plug memory $plug) {
+    function createPlug(
+        uint256 $value,
+        uint8 $plugType
+    )
+        internal
+        view
+        returns (PlugTypesLib.Plug memory $plug)
+    {
         if ($plugType == PLUG_EXECUTION) {
             /// @dev In testing we are operating with the assumption that an undeclared
             ///      Plug setup is due to intention of interacting with the mock echo
             ///      when there is no value.
             if ($value == PLUG_NO_VALUE) {
                 $plug = createPlug(
-                    address(mock), $value, abi.encodeWithSelector(PlugMockEcho.emptyEcho.selector), $plugType
+                    address(mock),
+                    $value,
+                    abi.encodeWithSelector(PlugMockEcho.emptyEcho.selector),
+                    $plugType
                 );
             } else {
                 $plug = createPlug(PlugEtcherLib.PLUG_TREASURY_ADDRESS, $value, "", $plugType);
@@ -515,7 +547,9 @@ abstract contract TestPlug is TestPlus {
         view
         returns (PlugTypesLib.Plugs memory $plugs)
     {
-        $plugs = createPlugs(address(vault), $plugsArray, abi.encode($maxPriorityFeePerGas, $maxFeePerGas, $solver));
+        $plugs = createPlugs(
+            address(vault), $plugsArray, abi.encode($maxPriorityFeePerGas, $maxFeePerGas, $solver)
+        );
     }
 
     function createPlugs(PlugTypesLib.Plug[] memory $plugsArray)
@@ -569,7 +603,8 @@ abstract contract TestPlug is TestPlus {
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
     {
-        PlugTypesLib.Plugs memory plugs = createPlugs($plugsArray, $maxPriorityFeePerGas, $maxFeePerGas, $solver);
+        PlugTypesLib.Plugs memory plugs =
+            createPlugs($plugsArray, $maxPriorityFeePerGas, $maxFeePerGas, $solver);
         $livePlugs = createLivePlugs(vault, plugs);
     }
 
@@ -586,7 +621,10 @@ abstract contract TestPlug is TestPlus {
         $imageHash = keccak256(
             abi.encodePacked(
                 keccak256(
-                    abi.encodePacked(abi.decode(abi.encodePacked(uint96(weight), user), (bytes32)), uint256(threshold))
+                    abi.encodePacked(
+                        abi.decode(abi.encodePacked(uint96(weight), user), (bytes32)),
+                        uint256(threshold)
+                    )
                 ),
                 uint256(checkpoint)
             )
@@ -625,7 +663,8 @@ abstract contract TestPlug is TestPlus {
         uint8 legacySignatureFlag = uint8(0);
 
         /// @dev Pack the signature w/ flag, weight, threshold, checkpoint
-        $packedSignature = abi.encodePacked($threshold, $checkpoint, legacySignatureFlag, $weight, $signature);
+        $packedSignature =
+            abi.encodePacked($threshold, $checkpoint, legacySignatureFlag, $weight, $signature);
     }
 
     function pack(bytes memory $signature) internal pure returns (bytes memory $packedSignature) {

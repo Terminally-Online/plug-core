@@ -17,7 +17,9 @@ contract PlugTimestampDeployment is Script {
     function run() external {
         vm.startBroadcast();
 
-        PlugEtcherLib.FACTORY.safeCreate2(PlugEtcherLib.PLUG_TIMESTAMP_SALT, PlugEtcherLib.PLUG_TIMESTAMP_INITCODE);
+        PlugEtcherLib.FACTORY.safeCreate2(
+            PlugEtcherLib.PLUG_TIMESTAMP_SALT, PlugEtcherLib.PLUG_TIMESTAMP_INITCODE
+        );
 
         vm.stopBroadcast();
     }

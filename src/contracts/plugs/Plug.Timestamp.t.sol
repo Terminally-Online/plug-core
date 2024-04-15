@@ -36,7 +36,9 @@ contract PlugTimestampTest is Test {
     function testRevert_enforce_BeforeTimestamp_Expired() public {
         uint256 expected = beforeTimestamp - 150;
         bytes memory terms = connector.encode(beforeOperator, expected);
-        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, expected, block.timestamp));
+        vm.expectRevert(
+            abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, expected, block.timestamp)
+        );
         connector.enforce(terms, plugsHash);
     }
 
@@ -51,7 +53,11 @@ contract PlugTimestampTest is Test {
     function testRevert_enforce_AfterTimestamp_Early() public {
         uint256 expected = afterTimestamp + 400;
         bytes memory terms = connector.encode(afterOperator, expected);
-        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdInsufficient.selector, expected, block.timestamp));
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                PlugLib.ThresholdInsufficient.selector, expected, block.timestamp
+            )
+        );
         connector.enforce(terms, plugsHash);
     }
 }

@@ -17,7 +17,14 @@ interface NounsAuctionHouseInterface {
     function auction()
         external
         view
-        returns (uint256 nounId, uint256 amount, uint256 startTime, uint256 endTime, address bidder, bool settled);
+        returns (
+            uint256 nounId,
+            uint256 amount,
+            uint256 startTime,
+            uint256 endTime,
+            address bidder,
+            bool settled
+        );
 
     function createBid(uint256 nounId) external payable;
 

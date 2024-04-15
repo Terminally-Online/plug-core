@@ -68,13 +68,16 @@ abstract contract PlugCore is PlugTypes {
                 ///      condition and enforce the outcome of the condition
                 ///      if it is not met (reverts).
                 ($results[i].success, $results[i].result) = plug.target.call{ value: plug.value }(
-                    abi.encodeWithSelector(PlugConnectorInterface.enforce.selector, plug.data[1:], plugsHash)
+                    abi.encodeWithSelector(
+                        PlugConnectorInterface.enforce.selector, plug.data[1:], plugsHash
+                    )
                 );
             }
             /// @dev Make the call to the Plug and bubble up the
             ///      result if it happens to fail.
             else if (plugType & 0x02 == plugType) {
-                ($results[i].success, $results[i].result) = plug.target.call{ value: plug.value }(plug.data[1:]);
+                ($results[i].success, $results[i].result) =
+                    plug.target.call{ value: plug.value }(plug.data[1:]);
             }
             /// @dev If an invalid Plug type was provided revert to protect
             ///      against fund siphoning when no work is done.
@@ -104,7 +107,9 @@ abstract contract PlugCore is PlugTypes {
             /// @dev Determine which gas price to use based on if it is a legacy
             ///      transaction (on a chain that does not support it) or if the
             ///      the transaction is submit post EIP-1559.
-            value = maxFeePerGas == maxPriorityFeePerGas ? maxFeePerGas : maxFeePerGas < value ? maxFeePerGas : value;
+            value = maxFeePerGas == maxPriorityFeePerGas
+                ? maxFeePerGas
+                : maxFeePerGas < value ? maxFeePerGas : value;
 
             /// @dev Augment the native gas price with the Solver "gas" fee.
             value = ($gas - gasleft()) * value;

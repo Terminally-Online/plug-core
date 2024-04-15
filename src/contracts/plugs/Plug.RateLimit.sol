@@ -42,12 +42,16 @@ contract PlugRateLimit is PlugConnectorInterface {
         uint256 tokensToAdd = (block.timestamp - bucket.lastUpdatedAt) / replenishRate;
 
         /// @dev Account for partial tokens by adjusting the refresh window.
-        bucket.lastUpdatedAt = uint32(block.timestamp - ((block.timestamp - bucket.lastUpdatedAt) % replenishRate));
+        bucket.lastUpdatedAt =
+            uint32(block.timestamp - ((block.timestamp - bucket.lastUpdatedAt) % replenishRate));
 
         /// @dev Determine how many tokens are available while acounting for
         ///      the amount of time that has passed since last use.
-        bucket.availableTokens =
-            uint224((bucket.availableTokens + tokensToAdd > max) ? max : bucket.availableTokens + tokensToAdd);
+        bucket.availableTokens = uint224(
+            (bucket.availableTokens + tokensToAdd > max)
+                ? max
+                : bucket.availableTokens + tokensToAdd
+        );
 
         /// @dev Make sure that there are tokens that can be used.
         if (bucket.availableTokens == 0) {
@@ -61,14 +65,26 @@ contract PlugRateLimit is PlugConnectorInterface {
     /**
      * See {PlugConnectorInterface-decode}.
      */
-    function decode(bytes calldata $terms) public pure returns (bool $global, uint32 $replenishRate, uint32 $max) {
+    function decode(bytes calldata $terms)
+        public
+        pure
+        returns (bool $global, uint32 $replenishRate, uint32 $max)
+    {
         ($global, $replenishRate, $max) = abi.decode($terms, (bool, uint32, uint32));
     }
 
     /**
      * See {PlugConnectorInterface-encode}.
      */
-    function encode(bool $global, uint32 $replenishRate, uint128 $max) public pure returns (bytes memory $terms) {
+    function encode(
+        bool $global,
+        uint32 $replenishRate,
+        uint128 $max
+    )
+        public
+        pure
+        returns (bytes memory $terms)
+    {
         $terms = abi.encode($global, $replenishRate, $max);
     }
 }

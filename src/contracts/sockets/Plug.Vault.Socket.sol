@@ -54,7 +54,13 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
      *      function in your contract with the additional logic.
      * @param $router The router of the transaction.
      */
-    function _enforceRouter(address $router) internal view virtual override returns (bool $allowed) {
+    function _enforceRouter(address $router)
+        internal
+        view
+        virtual
+        override
+        returns (bool $allowed)
+    {
         $allowed = $router == router;
     }
 
@@ -89,13 +95,17 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
                 abi.decode($input.signature[1:], (bytes32, bytes32[], bytes));
 
             /// @dev Ensure the merkle tree contains the data of the signed bundle.
-            require(MerkleProofLib.verify(proof, root, getPlugsHash($input.plugs)), "PlugTypes:invalid-proof");
+            require(
+                MerkleProofLib.verify(proof, root, getPlugsHash($input.plugs)),
+                "PlugTypes:invalid-proof"
+            );
 
             /// @dev Calculate the offset needed to extract solely the signature from
             ///      the packed state of the `signature` data provided.
             uint256 offset = proof.length * 32 + 161;
 
-            ($allowed,) = _signatureValidation(plugsHash, $input.signature[offset:offset + signature.length]);
+            ($allowed,) =
+                _signatureValidation(plugsHash, $input.signature[offset:offset + signature.length]);
         }
     }
 

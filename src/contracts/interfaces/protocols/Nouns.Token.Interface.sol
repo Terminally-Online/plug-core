@@ -5,8 +5,12 @@ pragma solidity 0.8.23;
 interface NounsTokenInterface {
     event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
     event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
-    event DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate);
-    event DelegateVotesChanged(address indexed delegate, uint256 previousBalance, uint256 newBalance);
+    event DelegateChanged(
+        address indexed delegator, address indexed fromDelegate, address indexed toDelegate
+    );
+    event DelegateVotesChanged(
+        address indexed delegate, uint256 previousBalance, uint256 newBalance
+    );
     event DescriptorLocked();
     event DescriptorUpdated(address descriptor);
     event MinterLocked();
@@ -39,7 +43,15 @@ interface NounsTokenInterface {
 
     function delegate(address delegatee) external;
 
-    function delegateBySig(address delegatee, uint256 nonce, uint256 expiry, uint8 v, bytes32 r, bytes32 s) external;
+    function delegateBySig(
+        address delegatee,
+        uint256 nonce,
+        uint256 expiry,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    )
+        external;
 
     function delegates(address delegator) external view returns (address);
 
@@ -87,7 +99,13 @@ interface NounsTokenInterface {
 
     function safeTransferFrom(address from, address to, uint256 tokenId) external;
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) external;
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory _data
+    )
+        external;
 
     function seeder() external view returns (address);
 

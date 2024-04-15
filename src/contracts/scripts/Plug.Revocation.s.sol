@@ -17,7 +17,9 @@ contract PlugRevocationDeployment is Script {
     function run() external {
         vm.startBroadcast();
 
-        PlugEtcherLib.FACTORY.safeCreate2(PlugEtcherLib.PLUG_REVOCATION_SALT, PlugEtcherLib.PLUG_REVOCATION_INITCODE);
+        PlugEtcherLib.FACTORY.safeCreate2(
+            PlugEtcherLib.PLUG_REVOCATION_SALT, PlugEtcherLib.PLUG_REVOCATION_INITCODE
+        );
 
         vm.stopBroadcast();
     }

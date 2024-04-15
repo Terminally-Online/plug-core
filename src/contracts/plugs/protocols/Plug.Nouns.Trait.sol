@@ -43,7 +43,12 @@ contract PlugNounsTrait is PlugConnectorInterface {
      * @return $selector The selector of the trait to retrieve.
      * @return $trait The trait to retrieve.
      */
-    function decode(bytes calldata $live) public view virtual returns (bytes32 $selector, bytes32 $trait) {
+    function decode(bytes calldata $live)
+        public
+        view
+        virtual
+        returns (bytes32 $selector, bytes32 $trait)
+    {
         ($selector, $trait) = abi.decode($live, (bytes32, bytes32));
     }
 
@@ -55,8 +60,9 @@ contract PlugNounsTrait is PlugConnectorInterface {
      */
     function encode(bytes32 $selector, bytes32 $trait) public pure virtual returns (bytes memory) {
         if (
-            $selector == HEAD_SELECTOR || $selector == GLASSES_SELECTOR || $selector == BODY_SELECTOR
-                || $selector == ACCESSORY_SELECTOR || $selector == BACKGROUND_SELECTOR
+            $selector == HEAD_SELECTOR || $selector == GLASSES_SELECTOR
+                || $selector == BODY_SELECTOR || $selector == ACCESSORY_SELECTOR
+                || $selector == BACKGROUND_SELECTOR
         ) { } else {
             revert("NounsTraitFuse:invalid-selector");
         }

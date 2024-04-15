@@ -2,7 +2,13 @@
 
 pragma solidity 0.8.23;
 
-import { Test, PlugEtcherLib, LibClone, PlugFactory, PlugVaultSocket } from "../abstracts/test/Plug.Test.sol";
+import {
+    Test,
+    PlugEtcherLib,
+    LibClone,
+    PlugFactory,
+    PlugVaultSocket
+} from "../abstracts/test/Plug.Test.sol";
 
 contract PlugFactoryTest is Test {
     event Transfer(address indexed from, address indexed to, uint256 indexed id);

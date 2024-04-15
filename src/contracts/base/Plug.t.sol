@@ -126,7 +126,10 @@ contract PlugTest is Test {
         vm.prank(solver);
         vm.expectRevert(
             abi.encodeWithSelector(
-                PlugLib.ValueInvalid.selector, PlugEtcherLib.PLUG_TREASURY_ADDRESS, PLUG_VALUE, address(vault).balance
+                PlugLib.ValueInvalid.selector,
+                PlugEtcherLib.PLUG_TREASURY_ADDRESS,
+                PLUG_VALUE,
+                address(vault).balance
             )
         );
         plug.plug(livePlugs);
@@ -142,7 +145,9 @@ contract PlugTest is Test {
         plugsArray[1] = createPlug(PLUG_VALUE, PLUG_EXECUTION);
         PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, 0, 0, solver);
 
-        vm.expectRevert(abi.encodeWithSelector(PlugLib.SolverInvalid.selector, address(solver), address(this)));
+        vm.expectRevert(
+            abi.encodeWithSelector(PlugLib.SolverInvalid.selector, address(solver), address(this))
+        );
         plug.plug(livePlugs);
     }
 }

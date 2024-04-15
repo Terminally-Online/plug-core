@@ -18,7 +18,8 @@ contract PlugBalanceSemiFungibleDeployment is Script {
         vm.startBroadcast();
 
         PlugEtcherLib.FACTORY.safeCreate2(
-            PlugEtcherLib.PLUG_BALANCE_SEMI_FUNGIBLE_SALT, PlugEtcherLib.PLUG_BALANCE_SEMI_FUNGIBLE_INITCODE
+            PlugEtcherLib.PLUG_BALANCE_SEMI_FUNGIBLE_SALT,
+            PlugEtcherLib.PLUG_BALANCE_SEMI_FUNGIBLE_INITCODE
         );
 
         vm.stopBroadcast();

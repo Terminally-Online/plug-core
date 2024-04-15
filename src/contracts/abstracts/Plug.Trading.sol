@@ -60,7 +60,11 @@ abstract contract PlugTrading is PlugTradingInterface, ModuleAuthUpgradable {
         ///      assumption is the definition of a single Socket owner.
         bytes32 expectedImageHash = keccak256(
             abi.encodePacked(
-                keccak256(abi.encodePacked(abi.decode(abi.encodePacked(uint96(1), $newOwner), (bytes32)), uint256(1))),
+                keccak256(
+                    abi.encodePacked(
+                        abi.decode(abi.encodePacked(uint96(1), $newOwner), (bytes32)), uint256(1)
+                    )
+                ),
                 uint256(1)
             )
         );

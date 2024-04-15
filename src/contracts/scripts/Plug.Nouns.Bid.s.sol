@@ -17,7 +17,9 @@ contract PlugNounsBidDeployment is Script {
     function run() external {
         vm.startBroadcast();
 
-        PlugEtcherLib.FACTORY.safeCreate2(PlugEtcherLib.PLUG_NOUNS_BID_SALT, PlugEtcherLib.PLUG_NOUNS_BID_INITCODE);
+        PlugEtcherLib.FACTORY.safeCreate2(
+            PlugEtcherLib.PLUG_NOUNS_BID_SALT, PlugEtcherLib.PLUG_NOUNS_BID_INITCODE
+        );
 
         vm.stopBroadcast();
     }

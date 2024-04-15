@@ -18,14 +18,26 @@ interface PlugFactoryInterface {
      * @return $alreadyDeployed Whether or not the Socket was already deployed.
      * @return $socket The address of the deployed Socket.
      */
-    function deploy(bytes32 $salt, address $router) external payable returns (bool $alreadyDeployed, address $socket);
+    function deploy(
+        bytes32 $salt,
+        address $router
+    )
+        external
+        payable
+        returns (bool $alreadyDeployed, address $socket);
 
     /**
      * @notice Predict the address of a new Plug Vault.
      * @param $salt The salt of the vault.
      * @return $vault The predicted address of the vault.
      */
-    function getAddress(address $implementation, bytes32 $salt) external view returns (address $vault);
+    function getAddress(
+        address $implementation,
+        bytes32 $salt
+    )
+        external
+        view
+        returns (address $vault);
 
     /**
      * @notice Get the init code hash of the vaults.

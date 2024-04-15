@@ -59,7 +59,8 @@ contract PlugFraxlendAPY is PlugConnectorInterface, PlugThresholdEnforce {
         pure
         returns (address $vault, uint8 $vaultOperator, uint8 $operator, uint256 $threshold)
     {
-        ($vault, $vaultOperator, $operator, $threshold) = abi.decode($data, (address, uint8, uint8, uint256));
+        ($vault, $vaultOperator, $operator, $threshold) =
+            abi.decode($data, (address, uint8, uint8, uint256));
     }
 
     /**

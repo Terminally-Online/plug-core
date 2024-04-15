@@ -2,7 +2,13 @@
 
 pragma solidity 0.8.23;
 
-import { Test, PlugLib, PlugTypesLib, PlugMockERC20, PlugMockERC721 } from "../abstracts/test/Plug.Test.sol";
+import {
+    Test,
+    PlugLib,
+    PlugTypesLib,
+    PlugMockERC20,
+    PlugMockERC721
+} from "../abstracts/test/Plug.Test.sol";
 import { PlugBalanceSemiFungible } from "./Plug.Balance.SemiFungible.sol";
 import { Receiver } from "solady/accounts/Receiver.sol";
 
@@ -26,7 +32,9 @@ contract PlugBalanceSemiFungibleTest is Test, Receiver {
     }
 
     function test_enforce_Encoding() public {
-        bytes memory terms = connector.encode(address(this), address(mockERC1155), tokenId, belowOperator, belowBalance);
+        bytes memory terms = connector.encode(
+            address(this), address(mockERC1155), tokenId, belowOperator, belowBalance
+        );
         (
             address decodedHolder,
             address decodedAsset,
@@ -43,25 +51,37 @@ contract PlugBalanceSemiFungibleTest is Test, Receiver {
     }
 
     function test_enforce_BelowERC1155Balance() public view {
-        bytes memory terms = connector.encode(address(this), address(mockERC1155), tokenId, belowOperator, belowBalance);
+        bytes memory terms = connector.encode(
+            address(this), address(mockERC1155), tokenId, belowOperator, belowBalance
+        );
         connector.enforce(terms, plugsHash);
     }
 
     function test_enforce_BelowERC1155Balance_Exceeded() public {
-        bytes memory terms = connector.encode(address(this), address(mockERC1155), tokenId, belowOperator, aboveBalance);
-        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, aboveBalance, balance));
+        bytes memory terms = connector.encode(
+            address(this), address(mockERC1155), tokenId, belowOperator, aboveBalance
+        );
+        vm.expectRevert(
+            abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, aboveBalance, balance)
+        );
         connector.enforce(terms, plugsHash);
     }
 
     function test_enforce_AboveERC1155Balance() public view {
-        bytes memory terms = connector.encode(address(this), address(mockERC1155), tokenId, aboveOperator, aboveBalance);
+        bytes memory terms = connector.encode(
+            address(this), address(mockERC1155), tokenId, aboveOperator, aboveBalance
+        );
 
         connector.enforce(terms, plugsHash);
     }
 
     function testRevert_enforce_AboveERC1155Balance_Insufficient() public {
-        bytes memory terms = connector.encode(address(this), address(mockERC1155), tokenId, aboveOperator, belowBalance);
-        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdInsufficient.selector, belowBalance, balance));
+        bytes memory terms = connector.encode(
+            address(this), address(mockERC1155), tokenId, aboveOperator, belowBalance
+        );
+        vm.expectRevert(
+            abi.encodeWithSelector(PlugLib.ThresholdInsufficient.selector, belowBalance, balance)
+        );
         connector.enforce(terms, plugsHash);
     }
 }

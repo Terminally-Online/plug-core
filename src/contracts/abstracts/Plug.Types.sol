@@ -119,7 +119,8 @@ abstract contract PlugTypes {
      *      { name: 'verifyingContract', type: 'address' }
      * }>>
      */
-    bytes32 constant EIP712_DOMAIN_TYPEHASH = 0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f;
+    bytes32 constant EIP712_DOMAIN_TYPEHASH =
+        0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f;
 
     /**
      * @notice Type hash representing the Plug data type providing EIP-712
@@ -130,7 +131,8 @@ abstract contract PlugTypes {
      *      { name: 'data', type: 'bytes' }
      * }>>
      */
-    bytes32 constant PLUG_TYPEHASH = 0x0d73e94823fdaacb148d9146f00bc268b7834e768ced483d796db05a52e1e395;
+    bytes32 constant PLUG_TYPEHASH =
+        0x0d73e94823fdaacb148d9146f00bc268b7834e768ced483d796db05a52e1e395;
 
     /**
      * @notice Type hash representing the Plugs data type providing EIP-712
@@ -142,7 +144,8 @@ abstract contract PlugTypes {
      *      { name: 'salt', type: 'bytes32' }
      * }>>
      */
-    bytes32 constant PLUGS_TYPEHASH = 0xab17334cacf66e0b0c0e533c2822a50549311ba957ec52ec037e1c8083f023ab;
+    bytes32 constant PLUGS_TYPEHASH =
+        0xab17334cacf66e0b0c0e533c2822a50549311ba957ec52ec037e1c8083f023ab;
 
     /**
      * @notice Type hash representing the LivePlugs data type providing EIP-712
@@ -152,7 +155,8 @@ abstract contract PlugTypes {
      *      { name: 'signature', type: 'bytes' }
      * }>>
      */
-    bytes32 constant LIVE_PLUGS_TYPEHASH = 0x6cd9425d5dd731a623cc0fee82dd49189fd54b9a5d85856406fe9744411d9157;
+    bytes32 constant LIVE_PLUGS_TYPEHASH =
+        0x6cd9425d5dd731a623cc0fee82dd49189fd54b9a5d85856406fe9744411d9157;
     /**
      * @notice Name used for the domain separator.
      * @dev This is implemented this way so that it is easy
@@ -219,7 +223,12 @@ abstract contract PlugTypes {
      * @param $input The EIP712Domain data to encode.
      * @return $hash The packet hash of the encoded EIP712Domain data.
      */
-    function getEIP712DomainHash(PlugTypesLib.EIP712Domain memory $input) public pure virtual returns (bytes32 $hash) {
+    function getEIP712DomainHash(PlugTypesLib.EIP712Domain memory $input)
+        public
+        pure
+        virtual
+        returns (bytes32 $hash)
+    {
         $hash = keccak256(
             abi.encode(
                 EIP712_DOMAIN_TYPEHASH,
@@ -237,8 +246,15 @@ abstract contract PlugTypes {
      * @param $input The Plug data to encode.
      * @return $hash The packet hash of the encoded Plug data.
      */
-    function getPlugHash(PlugTypesLib.Plug memory $input) public pure virtual returns (bytes32 $hash) {
-        $hash = keccak256(abi.encode(PLUG_TYPEHASH, $input.target, $input.value, keccak256($input.data)));
+    function getPlugHash(PlugTypesLib.Plug memory $input)
+        public
+        pure
+        virtual
+        returns (bytes32 $hash)
+    {
+        $hash = keccak256(
+            abi.encode(PLUG_TYPEHASH, $input.target, $input.value, keccak256($input.data))
+        );
     }
 
     /**
@@ -247,10 +263,19 @@ abstract contract PlugTypes {
      * @param $input The Plugs data to encode.
      * @return $hash The packet hash of the encoded Plugs data.
      */
-    function getPlugsHash(PlugTypesLib.Plugs memory $input) public pure virtual returns (bytes32 $hash) {
+    function getPlugsHash(PlugTypesLib.Plugs memory $input)
+        public
+        pure
+        virtual
+        returns (bytes32 $hash)
+    {
         $hash = keccak256(
             abi.encode(
-                PLUGS_TYPEHASH, $input.socket, getPlugArrayHash($input.plugs), keccak256($input.solver), $input.salt
+                PLUGS_TYPEHASH,
+                $input.socket,
+                getPlugArrayHash($input.plugs),
+                keccak256($input.solver),
+                $input.salt
             )
         );
     }
@@ -261,7 +286,12 @@ abstract contract PlugTypes {
      * @param $input The Plug[] data to encode.
      * @return $hash The packet hash of the encoded Plug[] data.
      */
-    function getPlugArrayHash(PlugTypesLib.Plug[] memory $input) public pure virtual returns (bytes32 $hash) {
+    function getPlugArrayHash(PlugTypesLib.Plug[] memory $input)
+        public
+        pure
+        virtual
+        returns (bytes32 $hash)
+    {
         /// @dev Load the stack.
         bytes memory encoded;
         uint256 i;
@@ -282,7 +312,14 @@ abstract contract PlugTypes {
      * @param $input The LivePlugs data to encode.
      * @return $hash The packet hash of the encoded LivePlugs data.
      */
-    function getLivePlugsHash(PlugTypesLib.LivePlugs memory $input) public pure virtual returns (bytes32 $hash) {
-        $hash = keccak256(abi.encode(LIVE_PLUGS_TYPEHASH, getPlugsHash($input.plugs), keccak256($input.signature)));
+    function getLivePlugsHash(PlugTypesLib.LivePlugs memory $input)
+        public
+        pure
+        virtual
+        returns (bytes32 $hash)
+    {
+        $hash = keccak256(
+            abi.encode(LIVE_PLUGS_TYPEHASH, getPlugsHash($input.plugs), keccak256($input.signature))
+        );
     }
 }

@@ -8,7 +8,9 @@ import { PlugAddressesLib } from "./Plug.Addresses.Lib.sol";
 library PlugLib {
     event SocketDeployed(address indexed implementation, address indexed vault, bytes32 salt);
 
-    event SocketOwnershipTransferred(address indexed previousOwner, address indexed newOwner, bytes32 imageHash);
+    event SocketOwnershipTransferred(
+        address indexed previousOwner, address indexed newOwner, bytes32 imageHash
+    );
 
     error NotImplemented();
 
@@ -70,7 +72,13 @@ library PlugLib {
                 let e1 := add(and(errorCode, 0xf), 0x30)
                 let e2 := shl(8, add(shr(4, and(errorCode, 0xf0)), 0x30))
                 reasonWord :=
-                    or(and(reasonWord, 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000), or(e2, e1))
+                    or(
+                        and(
+                            reasonWord,
+                            0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000
+                        ),
+                        or(e2, e1)
+                    )
                 mstore(add(reason, 0x20), reasonWord)
             }
 

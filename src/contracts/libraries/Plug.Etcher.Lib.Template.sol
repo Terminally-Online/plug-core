@@ -6,7 +6,13 @@ import { PlugLib } from "../libraries/Plug.Lib.sol";
 /// @notice INSERT IMPORTS
 
 interface ImmutableCreate2Factory {
-    function safeCreate2(bytes32 salt, bytes calldata initCode) external payable returns (address deploymentAddress);
+    function safeCreate2(
+        bytes32 salt,
+        bytes calldata initCode
+    )
+        external
+        payable
+        returns (address deploymentAddress);
 
     function findCreate2Address(
         bytes32 salt,
@@ -51,7 +57,13 @@ library PlugEtcherLibTemplate {
      * @param $initializationCode The initialization code for the contract.
      * @return $deployment The address of the deployed contract.
      */
-    function safeCreate2(bytes32 $salt, bytes memory $initializationCode) public returns (address $deployment) {
+    function safeCreate2(
+        bytes32 $salt,
+        bytes memory $initializationCode
+    )
+        public
+        returns (address $deployment)
+    {
         // Canonical address of 0age's immutable create 2 factory.
         address c2f = 0x0000000000FFe8B47B3e2130213B802212439497;
         if (_extcodesize(c2f) == 0) {
@@ -69,7 +81,9 @@ library PlugEtcherLibTemplate {
                     mstore(add(add(m, 0x80), i), mload(add(add(ic2fBytecode, 0x20), i)))
                 }
                 let vmAddress := 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
-                if iszero(call(gas(), vmAddress, 0, add(m, 0x1c), add(n, 0x64), 0x00, 0x00)) { revert(0, 0) }
+                if iszero(call(gas(), vmAddress, 0, add(m, 0x1c), add(n, 0x64), 0x00, 0x00)) {
+                    revert(0, 0)
+                }
             }
         }
         /// @solidity memory-safe-assembly
