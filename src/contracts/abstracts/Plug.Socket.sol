@@ -5,7 +5,7 @@ pragma solidity 0.8.23;
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 import { PlugCore } from "./Plug.Core.sol";
 import { PlugEnforce } from "./Plug.Enforce.sol";
-import { ReentrancyGuard } from "solady/src/utils/ReentrancyGuard.sol";
+import { ReentrancyGuard } from "solady/utils/ReentrancyGuard.sol";
 import { PlugTypesLib } from "./Plug.Types.sol";
 
 /**

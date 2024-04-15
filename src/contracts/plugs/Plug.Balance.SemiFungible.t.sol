@@ -4,7 +4,7 @@ pragma solidity 0.8.23;
 
 import { Test, PlugLib, PlugTypesLib, PlugMockERC20, PlugMockERC721 } from "../abstracts/test/Plug.Test.sol";
 import { PlugBalanceSemiFungible } from "./Plug.Balance.SemiFungible.sol";
-import { Receiver } from "solady/src/accounts/Receiver.sol";
+import { Receiver } from "solady/accounts/Receiver.sol";
 
 contract PlugBalanceSemiFungibleTest is Test, Receiver {
     PlugBalanceSemiFungible internal connector;

@@ -7,7 +7,7 @@ import { ModuleAuthUpgradable } from "sequence/modules/commons/ModuleAuthUpgrada
 
 import { PlugLib } from "../libraries/Plug.Lib.sol";
 
-import { ERC721 } from "solady/src/tokens/ERC721.sol";
+import { ERC721 } from "solady/tokens/ERC721.sol";
 
 /**
  * @title Plug Trading

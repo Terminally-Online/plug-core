@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import { ERC1155 } from "solady/src/tokens/ERC1155.sol";
+import { ERC1155 } from "solady/tokens/ERC1155.sol";
 
 contract PlugMockERC1155 is ERC1155 {
     string[] public uris;

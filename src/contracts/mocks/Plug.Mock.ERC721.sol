@@ -2,8 +2,8 @@
 
 pragma solidity 0.8.23;
 
-import { ERC721 } from "solady/src/tokens/ERC721.sol";
-import { LibString } from "solady/src/utils/LibString.sol";
+import { ERC721 } from "solady/tokens/ERC721.sol";
+import { LibString } from "solady/utils/LibString.sol";
 
 contract PlugMockERC721 is ERC721 {
     using LibString for uint256;

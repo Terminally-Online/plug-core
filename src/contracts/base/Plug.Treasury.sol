@@ -2,8 +2,8 @@
 
 pragma solidity 0.8.23;
 
-import { Receiver } from "solady/src/accounts/Receiver.sol";
-import { Ownable } from "solady/src/auth/Ownable.sol";
+import { Receiver } from "solady/accounts/Receiver.sol";
+import { Ownable } from "solady/auth/Ownable.sol";
 import { PlugSwapper, PlugLib } from "../abstracts/Plug.Swapper.sol";
 
 /**

@@ -10,8 +10,8 @@ import { console2 } from "forge-std/console2.sol";
 import { PlugEtcherLib } from "../../libraries/Plug.Etcher.Lib.sol";
 import { PlugLib, PlugTypesLib, PlugAddressesLib } from "../../libraries/Plug.Lib.sol";
 
-import { LibClone } from "solady/src/utils/LibClone.sol";
-import { ECDSA } from "solady/src/utils/ECDSA.sol";
+import { LibClone } from "solady/utils/LibClone.sol";
+import { ECDSA } from "solady/utils/ECDSA.sol";
 
 import { Plug } from "../../base/Plug.sol";
 import { PlugFactory } from "../../base/Plug.Factory.sol";

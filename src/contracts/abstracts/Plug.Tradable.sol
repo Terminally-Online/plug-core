@@ -2,10 +2,10 @@
 
 pragma solidity 0.8.23;
 
-import { ERC721 } from "solady/src/tokens/ERC721.sol";
-import { Ownable } from "solady/src/auth/Ownable.sol";
+import { ERC721 } from "solady/tokens/ERC721.sol";
+import { Ownable } from "solady/auth/Ownable.sol";
 import { PlugTrading } from "./Plug.Trading.sol";
-import { LibString } from "solady/src/utils/LibString.sol";
+import { LibString } from "solady/utils/LibString.sol";
 
 /**
  * @title Plug Tradable

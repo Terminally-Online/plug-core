@@ -6,7 +6,7 @@ import { PlugFactoryInterface } from "../interfaces/Plug.Factory.Interface.sol";
 import { PlugTradable } from "../abstracts/Plug.Tradable.sol";
 
 import { PlugLib, PlugTypesLib } from "../libraries/Plug.Lib.sol";
-import { LibClone } from "solady/src/utils/LibClone.sol";
+import { LibClone } from "solady/utils/LibClone.sol";
 
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 

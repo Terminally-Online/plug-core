@@ -2,11 +2,11 @@
 
 pragma solidity 0.8.23;
 
-import { ReentrancyGuard } from "solady/src/utils/ReentrancyGuard.sol";
+import { ReentrancyGuard } from "solady/utils/ReentrancyGuard.sol";
 import { PlugLib } from "../libraries/Plug.Lib.sol";
 import { PlugBalanceInterface } from "../interfaces/Plug.Balance.Interface.sol";
 
-import { SafeTransferLib } from "solady/src/utils/SafeTransferLib.sol";
+import { SafeTransferLib } from "solady/utils/SafeTransferLib.sol";
 
 /**
  * @title Plug Swapper
