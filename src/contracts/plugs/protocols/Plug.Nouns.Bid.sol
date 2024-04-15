@@ -2,10 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import {
-    PlugConnectorInterface,
-    PlugTypesLib
-} from "../../interfaces/Plug.Connector.Interface.sol";
+import { PlugConnectorInterface, PlugTypesLib } from "../../interfaces/Plug.Connector.Interface.sol";
 import { PlugNounsLib } from "../../libraries/protocols/Plug.Nouns.Lib.sol";
 
 /**
@@ -43,23 +40,12 @@ contract PlugNounsBid is PlugConnectorInterface {
         ///		   the minimum bid.
     }
 
-    function decode(bytes calldata $live)
-        public
-        pure
-        returns (address $bidder, uint256 $bid)
-    {
+    function decode(bytes calldata $live) public pure returns (address $bidder, uint256 $bid) {
         /// @dev Decode the live data.
         ($bidder, $bid) = abi.decode($live, (address, uint256));
     }
 
-    function encode(
-        address $bidder,
-        uint256 $bid
-    )
-        public
-        pure
-        returns (bytes memory $live)
-    {
+    function encode(address $bidder, uint256 $bid) public pure returns (bytes memory $live) {
         /// @dev Encode the live data.
         $live = abi.encode($bidder, $bid);
     }

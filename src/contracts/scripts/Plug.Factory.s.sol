@@ -17,9 +17,7 @@ contract PlugFactoryDeployment is Script {
     function run() external {
         vm.startBroadcast();
 
-        PlugEtcherLib.FACTORY.safeCreate2(
-            PlugEtcherLib.PLUG_FACTORY_SALT, PlugEtcherLib.PLUG_FACTORY_INITCODE
-        );
+        PlugEtcherLib.FACTORY.safeCreate2(PlugEtcherLib.PLUG_FACTORY_SALT, PlugEtcherLib.PLUG_FACTORY_INITCODE);
 
         vm.stopBroadcast();
     }

@@ -22,8 +22,7 @@ contract PlugRateLimitTest is Test {
 
     function test_enforce_Encoding() public {
         bytes memory terms = connector.encode(global, replenishRate, max);
-        (bool decodedGlobal, uint32 decodedReplenishRate, uint32 decodedMax) =
-            connector.decode(terms);
+        (bool decodedGlobal, uint32 decodedReplenishRate, uint32 decodedMax) = connector.decode(terms);
         assertEq(decodedGlobal, global);
         assertEq(decodedReplenishRate, replenishRate);
         assertEq(decodedMax, max);
@@ -44,18 +43,14 @@ contract PlugRateLimitTest is Test {
     function testRevert_enforce_RateLimit_ThresholdExceeded() public {
         bytes memory terms = connector.encode(global, replenishRate, 1);
         connector.enforce(terms, plugsHash);
-        vm.expectRevert(
-            abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, 1, 0)
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, 1, 0));
         connector.enforce(terms, plugsHash);
     }
 
     function test_enforce_RateLimit_Replenished() public {
         bytes memory terms = connector.encode(global, replenishRate, 1);
         connector.enforce(terms, plugsHash);
-        vm.expectRevert(
-            abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, 1, 0)
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, 1, 0));
         connector.enforce(terms, plugsHash);
         skip(61);
         connector.enforce(terms, plugsHash);

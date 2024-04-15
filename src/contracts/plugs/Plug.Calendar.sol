@@ -2,10 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import {
-    PlugConnectorInterface,
-    PlugTypesLib
-} from "../interfaces/Plug.Connector.Interface.sol";
+import { PlugConnectorInterface, PlugTypesLib } from "../interfaces/Plug.Connector.Interface.sol";
 
 library CalendarFuseLib {
     error CalendarLackingDuration();
@@ -76,12 +73,7 @@ contract PlugCalendar is PlugConnectorInterface {
     function decode(uint256 $schedule)
         public
         pure
-        returns (
-            uint32 $startTime,
-            uint32 $repeatsEvery,
-            uint32 $duration,
-            uint8 $daysOfWeek
-        )
+        returns (uint32 $startTime, uint32 $repeatsEvery, uint32 $duration, uint8 $daysOfWeek)
     {
         /// @dev Unpack the schedule details.
         $daysOfWeek = uint8($schedule);
@@ -123,8 +115,7 @@ contract PlugCalendar is PlugConnectorInterface {
         }
 
         /// @dev Pack the schedule details.
-        $schedule = (uint256($startTime) << START_TIME_SHIFT)
-            | (uint256($repeatsEvery) << REPEATS_EVERY_SHIFT)
+        $schedule = (uint256($startTime) << START_TIME_SHIFT) | (uint256($repeatsEvery) << REPEATS_EVERY_SHIFT)
             | (uint256($duration) << DURATION_SHIFT) | uint256($daysOfWeek);
     }
 
@@ -136,12 +127,7 @@ contract PlugCalendar is PlugConnectorInterface {
      */
     function isWithinCalendar(uint256 $schedule) public view returns (bool) {
         /// @dev Get the schedule details.
-        (
-            uint32 startTime,
-            uint32 repeatsEvery,
-            uint32 duration,
-            uint8 daysOfWeek
-        ) = decode($schedule);
+        (uint32 startTime, uint32 repeatsEvery, uint32 duration, uint8 daysOfWeek) = decode($schedule);
 
         /// @dev Ensure the current time is within the calendar.
         return _isWithinCalendar(startTime, repeatsEvery, duration, daysOfWeek);
@@ -164,8 +150,7 @@ contract PlugCalendar is PlugConnectorInterface {
         returns (bool)
     {
         /// @dev Ensure the current time is within the calendar.
-        return
-            _isWithinCalendar($startTime, $repeatsEvery, $duration, $daysOfWeek);
+        return _isWithinCalendar($startTime, $repeatsEvery, $duration, $daysOfWeek);
     }
 
     /**
@@ -189,12 +174,7 @@ contract PlugCalendar is PlugConnectorInterface {
         $calendars = new CalendarFuseLib.Calendar[]($n);
 
         /// @dev Get the schedule details.
-        (
-            uint32 startTime,
-            uint32 repeatsEvery,
-            uint32 duration,
-            uint8 daysOfWeek
-        ) = decode($schedule);
+        (uint32 startTime, uint32 repeatsEvery, uint32 duration, uint8 daysOfWeek) = decode($schedule);
 
         /// @dev Calculate the cursor used to get the next batch of results
         ///      after the return of the requested batch.
@@ -202,8 +182,7 @@ contract PlugCalendar is PlugConnectorInterface {
 
         for (startTime; startTime < $cursor;) {
             /// @dev Add the next calendar to the list of calendars.
-            $calendars[(startTime / repeatsEvery) % $n] =
-                _toCalendar(startTime, duration, daysOfWeek);
+            $calendars[(startTime / repeatsEvery) % $n] = _toCalendar(startTime, duration, daysOfWeek);
 
             /// @dev Time travel into the future.
             unchecked {
@@ -219,14 +198,9 @@ contract PlugCalendar is PlugConnectorInterface {
      *      it can be settled.
      * @param $schedule The schedule to check.
      */
-    function toCalendar(uint256 $schedule)
-        external
-        pure
-        returns (CalendarFuseLib.Calendar memory $calendar)
-    {
+    function toCalendar(uint256 $schedule) external pure returns (CalendarFuseLib.Calendar memory $calendar) {
         /// @dev Get the schedule details.
-        (uint32 startTime, uint32 repeatsEvery,, uint8 daysOfWeek) =
-            decode($schedule);
+        (uint32 startTime, uint32 repeatsEvery,, uint8 daysOfWeek) = decode($schedule);
 
         /// @dev Ensure the current time is within the calendar.
         return _toCalendar(startTime, repeatsEvery, daysOfWeek);
@@ -256,14 +230,7 @@ contract PlugCalendar is PlugConnectorInterface {
      * @param $daysOfWeek The days of the week to check.
      * @param $timestamp The timestamp to check.
      */
-    function _isOnDayOfWeek(
-        uint8 $daysOfWeek,
-        uint32 $timestamp
-    )
-        internal
-        pure
-        returns (bool)
-    {
+    function _isOnDayOfWeek(uint8 $daysOfWeek, uint32 $timestamp) internal pure returns (bool) {
         /// @dev Get the day of the week.
         uint8 dayOfWeek = uint8((($timestamp / SECONDS_PER_DAY) + 4) % 7);
 
@@ -322,8 +289,7 @@ contract PlugCalendar is PlugConnectorInterface {
             /// @dev Calculate the start of this period by determining if we have
             ///      gone past the declared start time otherwise it started
             ///      at the top of the day.
-            $calendar.periods[daysInCalendar].startTime =
-                $startTime > topDayTime ? $startTime : topDayTime;
+            $calendar.periods[daysInCalendar].startTime = $startTime > topDayTime ? $startTime : topDayTime;
 
             /// @dev Calculate the last second of the day.
             uint32 bottomDayTime = topDayTime + SECONDS_PER_DAY - 1;
@@ -331,8 +297,8 @@ contract PlugCalendar is PlugConnectorInterface {
             /// @dev Calculate the end of this period by determining if we have
             ///      gone past the declared end time otherwise it ended
             ///      at the bottom of the day.
-            $calendar.periods[daysInCalendar].endTime = calendarEndTime
-                < bottomDayTime ? calendarEndTime : bottomDayTime;
+            $calendar.periods[daysInCalendar].endTime =
+                calendarEndTime < bottomDayTime ? calendarEndTime : bottomDayTime;
         }
     }
 
@@ -376,11 +342,9 @@ contract PlugCalendar is PlugConnectorInterface {
         }
 
         /// @dev Get the time since the start of the current calendar.
-        uint32 currentCalendarOpen =
-            $startTime + (timeElapsed / $repeatsEvery) * $repeatsEvery;
+        uint32 currentCalendarOpen = $startTime + (timeElapsed / $repeatsEvery) * $repeatsEvery;
 
         /// @dev Ensure the current time is within the current calendar.
-        return currentTime >= currentCalendarOpen
-            && currentTime < currentCalendarOpen + $duration;
+        return currentTime >= currentCalendarOpen && currentTime < currentCalendarOpen + $duration;
     }
 }

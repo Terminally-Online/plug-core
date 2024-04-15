@@ -17,10 +17,7 @@ contract PlugCalendarDeployment is Script {
     function run() external {
         vm.startBroadcast();
 
-        PlugEtcherLib.FACTORY.safeCreate2(
-            PlugEtcherLib.PLUG_CALENDAR_SALT,
-            PlugEtcherLib.PLUG_CALENDAR_INITCODE
-        );
+        PlugEtcherLib.FACTORY.safeCreate2(PlugEtcherLib.PLUG_CALENDAR_SALT, PlugEtcherLib.PLUG_CALENDAR_INITCODE);
 
         vm.stopBroadcast();
     }

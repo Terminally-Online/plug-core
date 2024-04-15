@@ -2,10 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import {
-    PlugConnectorInterface,
-    PlugTypesLib
-} from "../interfaces/Plug.Connector.Interface.sol";
+import { PlugConnectorInterface, PlugTypesLib } from "../interfaces/Plug.Connector.Interface.sol";
 import { PlugLib } from "../libraries/Plug.Lib.sol";
 
 /**
@@ -26,13 +23,7 @@ contract PlugCooldown is PlugConnectorInterface {
     /**
      * See {PlugConnectorInterface-enforce}.
      */
-    function enforce(
-        bytes calldata $terms,
-        bytes32 $plugsHash
-    )
-        public
-        virtual
-    {
+    function enforce(bytes calldata $terms, bytes32 $plugsHash) public virtual {
         /// @dev Snapshot the current state of the cooldown and use.
         uint256 lastUsed = socketToPlugsToLastUsed[msg.sender][$plugsHash];
 
@@ -56,22 +47,14 @@ contract PlugCooldown is PlugConnectorInterface {
     /**
      * See {PlugConnectorInterface-decode}.
      */
-    function decode(bytes calldata $terms)
-        public
-        pure
-        returns (uint256 $cooldown)
-    {
+    function decode(bytes calldata $terms) public pure returns (uint256 $cooldown) {
         $cooldown = abi.decode($terms, (uint256));
     }
 
     /**
      * See {PlugConnectorInterface-encode}.
      */
-    function encode(uint256 $cooldown)
-        public
-        pure
-        returns (bytes memory $terms)
-    {
+    function encode(uint256 $cooldown) public pure returns (bytes memory $terms) {
         $terms = abi.encode($cooldown);
     }
 }

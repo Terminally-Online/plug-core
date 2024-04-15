@@ -37,11 +37,7 @@ contract PlugCooldownTest is Test {
         bytes memory terms = connector.encode(cooldown);
         connector.enforce(terms, plugsHash);
         skip(120);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                PlugLib.ThresholdExceeded.selector, cooldown, 120
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, cooldown, 120));
         connector.enforce(terms, plugsHash);
     }
 }

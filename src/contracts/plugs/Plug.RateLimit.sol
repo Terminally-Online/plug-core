@@ -2,10 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import {
-    PlugConnectorInterface,
-    PlugTypesLib
-} from "../interfaces/Plug.Connector.Interface.sol";
+import { PlugConnectorInterface, PlugTypesLib } from "../interfaces/Plug.Connector.Interface.sol";
 import { PlugLib } from "../libraries/Plug.Lib.sol";
 
 /**
@@ -34,37 +31,23 @@ contract PlugRateLimit is PlugConnectorInterface {
     /**
      * See {PlugConnectorInterface-enforce}.
      */
-    function enforce(
-        bytes calldata $terms,
-        bytes32 $plugsHash
-    )
-        public
-        virtual
-    {
+    function enforce(bytes calldata $terms, bytes32 $plugsHash) public virtual {
         /// @dev Snapshot the current state of the cooldown and use.
         (bool global, uint32 replenishRate, uint32 max) = decode($terms);
 
         /// @dev Retrieve the current state of the timestamp and use from storage.
-        Bucket storage bucket =
-            consumption[msg.sender][global ? bytes32(0) : $plugsHash];
+        Bucket storage bucket = consumption[msg.sender][global ? bytes32(0) : $plugsHash];
 
         /// @dev Determine how many tokens have been replenished since last use.
-        uint256 tokensToAdd =
-            (block.timestamp - bucket.lastUpdatedAt) / replenishRate;
+        uint256 tokensToAdd = (block.timestamp - bucket.lastUpdatedAt) / replenishRate;
 
         /// @dev Account for partial tokens by adjusting the refresh window.
-        bucket.lastUpdatedAt = uint32(
-            block.timestamp
-                - ((block.timestamp - bucket.lastUpdatedAt) % replenishRate)
-        );
+        bucket.lastUpdatedAt = uint32(block.timestamp - ((block.timestamp - bucket.lastUpdatedAt) % replenishRate));
 
         /// @dev Determine how many tokens are available while acounting for
         ///      the amount of time that has passed since last use.
-        bucket.availableTokens = uint224(
-            (bucket.availableTokens + tokensToAdd > max)
-                ? max
-                : bucket.availableTokens + tokensToAdd
-        );
+        bucket.availableTokens =
+            uint224((bucket.availableTokens + tokensToAdd > max) ? max : bucket.availableTokens + tokensToAdd);
 
         /// @dev Make sure that there are tokens that can be used.
         if (bucket.availableTokens == 0) {
@@ -78,27 +61,14 @@ contract PlugRateLimit is PlugConnectorInterface {
     /**
      * See {PlugConnectorInterface-decode}.
      */
-    function decode(bytes calldata $terms)
-        public
-        pure
-        returns (bool $global, uint32 $replenishRate, uint32 $max)
-    {
-        ($global, $replenishRate, $max) =
-            abi.decode($terms, (bool, uint32, uint32));
+    function decode(bytes calldata $terms) public pure returns (bool $global, uint32 $replenishRate, uint32 $max) {
+        ($global, $replenishRate, $max) = abi.decode($terms, (bool, uint32, uint32));
     }
 
     /**
      * See {PlugConnectorInterface-encode}.
      */
-    function encode(
-        bool $global,
-        uint32 $replenishRate,
-        uint128 $max
-    )
-        public
-        pure
-        returns (bytes memory $terms)
-    {
+    function encode(bool $global, uint32 $replenishRate, uint128 $max) public pure returns (bytes memory $terms) {
         $terms = abi.encode($global, $replenishRate, $max);
     }
 }

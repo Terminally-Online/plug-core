@@ -25,12 +25,7 @@ abstract contract PlugTradable is ERC721, Ownable {
      * @param $owner The address of the owner.
      * @param $baseURI The base URI of the factory.
      */
-    function _initializeTradable(
-        address $owner,
-        string memory $baseURI
-    )
-        internal
-    {
+    function _initializeTradable(address $owner, string memory $baseURI) internal {
         /// @dev Initialize the metadata controller.
         _initializeOwner($owner);
 
@@ -67,23 +62,11 @@ abstract contract PlugTradable is ERC721, Ownable {
      * @param $tokenId The token ID to query the URI for.
      * @return $uri The URI for the given token ID.
      */
-    function tokenURI(uint256 $tokenId)
-        public
-        view
-        override
-        returns (string memory $uri)
-    {
+    function tokenURI(uint256 $tokenId) public view override returns (string memory $uri) {
         $uri = string(abi.encodePacked(baseURI, LibString.toString($tokenId)));
     }
 
-    function _afterTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    )
-        internal
-        override
-    {
+    function _afterTokenTransfer(address from, address to, uint256 tokenId) internal override {
         super._afterTokenTransfer(from, to, tokenId);
 
         /// @dev Call into the vault that is representing this asset and update
@@ -96,12 +79,7 @@ abstract contract PlugTradable is ERC721, Ownable {
     /**
      * See {Ownable-_guardInitializeOwner}.
      */
-    function _guardInitializeOwner()
-        internal
-        pure
-        override
-        returns (bool $guard)
-    {
+    function _guardInitializeOwner() internal pure override returns (bool $guard) {
         $guard = true;
     }
 }

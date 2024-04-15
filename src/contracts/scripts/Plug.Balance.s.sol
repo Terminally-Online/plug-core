@@ -17,9 +17,7 @@ contract PlugBalanceDeployment is Script {
     function run() external {
         vm.startBroadcast();
 
-        PlugEtcherLib.FACTORY.safeCreate2(
-            PlugEtcherLib.PLUG_BALANCE_SALT, PlugEtcherLib.PLUG_BALANCE_INITCODE
-        );
+        PlugEtcherLib.FACTORY.safeCreate2(PlugEtcherLib.PLUG_BALANCE_SALT, PlugEtcherLib.PLUG_BALANCE_INITCODE);
 
         vm.stopBroadcast();
     }

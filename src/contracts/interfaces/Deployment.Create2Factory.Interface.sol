@@ -3,13 +3,7 @@
 pragma solidity ^0.8.23;
 
 interface ImmutableCreate2Factory {
-    function safeCreate2(
-        bytes32 salt,
-        bytes calldata initCode
-    )
-        external
-        payable
-        returns (address deploymentAddress);
+    function safeCreate2(bytes32 salt, bytes calldata initCode) external payable returns (address deploymentAddress);
 
     function findCreate2Address(
         bytes32 salt,

@@ -2,17 +2,11 @@
 
 pragma solidity 0.8.23;
 
-import {
-    PlugConnectorInterface,
-    PlugTypesLib
-} from "../../interfaces/Plug.Connector.Interface.sol";
+import { PlugConnectorInterface, PlugTypesLib } from "../../interfaces/Plug.Connector.Interface.sol";
 import { PlugThresholdEnforce } from "./Plug.Threshold.Enforce.sol";
 import { PlugLib } from "../../libraries/Plug.Lib.sol";
 
-abstract contract PlugThreshold is
-    PlugConnectorInterface,
-    PlugThresholdEnforce
-{
+abstract contract PlugThreshold is PlugConnectorInterface, PlugThresholdEnforce {
     /**
      * See {PlugConnectorInterface-enforce}.
      */
@@ -27,27 +21,14 @@ abstract contract PlugThreshold is
     /**
      * @dev Decode the terms to get the logic operator and threshold.
      */
-    function decode(bytes calldata $data)
-        public
-        pure
-        virtual
-        returns (uint8 $operator, uint256 $threshold)
-    {
+    function decode(bytes calldata $data) public pure virtual returns (uint8 $operator, uint256 $threshold) {
         ($operator, $threshold) = abi.decode($data, (uint8, uint256));
     }
 
     /**
      * @dev Encode the logic operator and threshold.
      */
-    function encode(
-        uint8 $operator,
-        uint256 $threshold
-    )
-        public
-        pure
-        virtual
-        returns (bytes memory $data)
-    {
+    function encode(uint8 $operator, uint256 $threshold) public pure virtual returns (bytes memory $data) {
         /// @dev Encode the logic operator and threshold.
         $data = abi.encode($operator, $threshold);
     }

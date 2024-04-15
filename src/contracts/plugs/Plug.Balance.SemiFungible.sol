@@ -2,12 +2,8 @@
 
 pragma solidity 0.8.23;
 
-import {
-    PlugConnectorInterface,
-    PlugTypesLib
-} from "../interfaces/Plug.Connector.Interface.sol";
-import { PlugThresholdEnforce } from
-    "../abstracts/plugs/Plug.Threshold.Enforce.sol";
+import { PlugConnectorInterface, PlugTypesLib } from "../interfaces/Plug.Connector.Interface.sol";
+import { PlugThresholdEnforce } from "../abstracts/plugs/Plug.Threshold.Enforce.sol";
 
 import { PlugBalanceInterface } from "../interfaces/Plug.Balance.Interface.sol";
 
@@ -19,29 +15,16 @@ import { PlugBalanceInterface } from "../interfaces/Plug.Balance.Interface.sol";
  *     - Tier based access and services resolved through the token id balance held.
  * @author nftchance (chance@onplug.io)
  */
-contract PlugBalanceSemiFungible is
-    PlugConnectorInterface,
-    PlugThresholdEnforce
-{
+contract PlugBalanceSemiFungible is PlugConnectorInterface, PlugThresholdEnforce {
     /**
      * See {PlugConnectorInterface-enforce}.
      */
     function enforce(bytes calldata $terms, bytes32) public view {
         /// @dev Determine the balance lookup definition.
-        (
-            address $holder,
-            address $asset,
-            uint256 $tokenId,
-            uint8 $operator,
-            uint256 $threshold
-        ) = decode($terms);
+        (address $holder, address $asset, uint256 $tokenId, uint8 $operator, uint256 $threshold) = decode($terms);
 
         /// @dev Ensure the balance of the 1155 token is within the bounds defined.
-        _enforce(
-            $operator,
-            $threshold,
-            PlugBalanceInterface($asset).balanceOf($holder, $tokenId)
-        );
+        _enforce($operator, $threshold, PlugBalanceInterface($asset).balanceOf($holder, $tokenId));
     }
 
     /**
@@ -50,13 +33,7 @@ contract PlugBalanceSemiFungible is
     function decode(bytes calldata $data)
         public
         pure
-        returns (
-            address $holder,
-            address $asset,
-            uint256 $tokenId,
-            uint8 $operator,
-            uint256 $threshold
-        )
+        returns (address $holder, address $asset, uint256 $tokenId, uint8 $operator, uint256 $threshold)
     {
         ($holder, $asset, $tokenId, $operator, $threshold) =
             abi.decode($data, (address, address, uint256, uint8, uint256));

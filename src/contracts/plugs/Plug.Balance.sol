@@ -2,12 +2,8 @@
 
 pragma solidity 0.8.23;
 
-import {
-    PlugConnectorInterface,
-    PlugTypesLib
-} from "../interfaces/Plug.Connector.Interface.sol";
-import { PlugThresholdEnforce } from
-    "../abstracts/plugs/Plug.Threshold.Enforce.sol";
+import { PlugConnectorInterface, PlugTypesLib } from "../interfaces/Plug.Connector.Interface.sol";
+import { PlugThresholdEnforce } from "../abstracts/plugs/Plug.Threshold.Enforce.sol";
 
 import { PlugBalanceInterface } from "../interfaces/Plug.Balance.Interface.sol";
 
@@ -39,13 +35,7 @@ contract PlugBalance is PlugConnectorInterface, PlugThresholdEnforce {
      */
     function enforce(bytes calldata $terms, bytes32) public view {
         /// @dev Determine the balance lookup definition.
-        (
-            address $holder,
-            address $asset,
-            uint8 $type,
-            uint8 $operator,
-            uint256 $threshold
-        ) = decode($terms);
+        (address $holder, address $asset, uint8 $type, uint8 $operator, uint256 $threshold) = decode($terms);
 
         /// @dev If it is a native asset, ensure the balance is within bounds defined.
         if ($type == 0) {
@@ -54,11 +44,7 @@ contract PlugBalance is PlugConnectorInterface, PlugThresholdEnforce {
         /// @dev Otherwise, ensure the balance of an ERC20 or ERC721 token is within
         ///      specification of the intent.
         else {
-            _enforce(
-                $operator,
-                $threshold,
-                PlugBalanceInterface($asset).balanceOf($holder)
-            );
+            _enforce($operator, $threshold, PlugBalanceInterface($asset).balanceOf($holder));
         }
     }
 
@@ -68,16 +54,9 @@ contract PlugBalance is PlugConnectorInterface, PlugThresholdEnforce {
     function decode(bytes calldata $data)
         public
         pure
-        returns (
-            address $holder,
-            address $asset,
-            uint8 $type,
-            uint8 $operator,
-            uint256 $threshold
-        )
+        returns (address $holder, address $asset, uint8 $type, uint8 $operator, uint256 $threshold)
     {
-        ($holder, $asset, $type, $operator, $threshold) =
-            abi.decode($data, (address, address, uint8, uint8, uint256));
+        ($holder, $asset, $type, $operator, $threshold) = abi.decode($data, (address, address, uint8, uint8, uint256));
     }
 
     /**

@@ -2,10 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import {
-    PlugConnectorInterface,
-    PlugTypesLib
-} from "../interfaces/Plug.Connector.Interface.sol";
+import { PlugConnectorInterface, PlugTypesLib } from "../interfaces/Plug.Connector.Interface.sol";
 
 /**
  * @title Plug Revocation
@@ -34,21 +31,12 @@ contract PlugRevocation is PlugConnectorInterface {
      *      A user cannot "maliciously" revoke a bundle of Plugs with control
      *      outside of the definition of the sender themselves.
      */
-    function enforce(
-        bytes calldata $terms,
-        bytes32 $plugsHash
-    )
-        public
-        view
-        virtual
-    {
+    function enforce(bytes calldata $terms, bytes32 $plugsHash) public view virtual {
         /// @dev Decode the (declared) controller of the bundle of Plugs.
         address sender = decode($terms);
 
         /// @dev Ensure the plug has not been revoked.
-        require(
-            isRevoked[sender][$plugsHash] == false, "PlugRevocation:revoked"
-        );
+        require(isRevoked[sender][$plugsHash] == false, "PlugRevocation:revoked");
     }
 
     /**
@@ -68,11 +56,7 @@ contract PlugRevocation is PlugConnectorInterface {
     /**
      * @dev Decode the clamp data into the two bounds.
      */
-    function decode(bytes calldata $data)
-        public
-        pure
-        returns (address $sender)
-    {
+    function decode(bytes calldata $data) public pure returns (address $sender) {
         $sender = abi.decode($data, (address));
     }
 

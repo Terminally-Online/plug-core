@@ -4,8 +4,7 @@ pragma solidity 0.8.23;
 
 import { PlugTypesLib, PlugTypes } from "./Plug.Types.sol";
 import { PlugLib } from "../libraries/Plug.Lib.sol";
-import { PlugConnectorInterface } from
-    "../interfaces/Plug.Connector.Interface.sol";
+import { PlugConnectorInterface } from "../interfaces/Plug.Connector.Interface.sol";
 
 /**
  * @title Plug Enforce
@@ -50,11 +49,7 @@ abstract contract PlugEnforce is PlugTypes {
      *      function in your contract with the additional logic.
      * @param $router The router of the transaction.
      */
-    function _enforceRouter(address $router)
-        internal
-        view
-        virtual
-        returns (bool $allowed);
+    function _enforceRouter(address $router) internal view virtual returns (bool $allowed);
 
     /**
      * @notice Confirm that signer has permission to declare execution of a
@@ -64,9 +59,5 @@ abstract contract PlugEnforce is PlugTypes {
      * @param $input The LivePlugs object that contains the Plugs object as well as
      *               the signature defining the permission to execute the bundle.
      */
-    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
-        internal
-        view
-        virtual
-        returns (bool $allowed);
+    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input) internal view virtual returns (bool $allowed);
 }

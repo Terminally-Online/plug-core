@@ -2,10 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import {
-    PlugConnectorInterface,
-    PlugTypesLib
-} from "../../interfaces/Plug.Connector.Interface.sol";
+import { PlugConnectorInterface, PlugTypesLib } from "../../interfaces/Plug.Connector.Interface.sol";
 import { PlugNounsLib } from "../../libraries/protocols/Plug.Nouns.Lib.sol";
 
 /**
@@ -19,16 +16,11 @@ import { PlugNounsLib } from "../../libraries/protocols/Plug.Nouns.Lib.sol";
  */
 contract PlugNounsTrait is PlugConnectorInterface {
     /// @dev Function hashes of the trait getters.
-    bytes32 public constant BACKGROUND_SELECTOR =
-        keccak256(abi.encode("background(uint256 index)"));
-    bytes32 public constant HEAD_SELECTOR =
-        keccak256(abi.encode("head(uint256 index)"));
-    bytes32 public constant GLASSES_SELECTOR =
-        keccak256(abi.encode("glasses(uint256 index)"));
-    bytes32 public constant BODY_SELECTOR =
-        keccak256(abi.encode("body(uint256 index)"));
-    bytes32 public constant ACCESSORY_SELECTOR =
-        keccak256(abi.encode("accessory(uint256 index)"));
+    bytes32 public constant BACKGROUND_SELECTOR = keccak256(abi.encode("background(uint256 index)"));
+    bytes32 public constant HEAD_SELECTOR = keccak256(abi.encode("head(uint256 index)"));
+    bytes32 public constant GLASSES_SELECTOR = keccak256(abi.encode("glasses(uint256 index)"));
+    bytes32 public constant BODY_SELECTOR = keccak256(abi.encode("body(uint256 index)"));
+    bytes32 public constant ACCESSORY_SELECTOR = keccak256(abi.encode("accessory(uint256 index)"));
 
     /// @dev Metadata storage contract for Nouns.
     /// @notice We use a raw address instead of interface here because we are
@@ -51,12 +43,7 @@ contract PlugNounsTrait is PlugConnectorInterface {
      * @return $selector The selector of the trait to retrieve.
      * @return $trait The trait to retrieve.
      */
-    function decode(bytes calldata $live)
-        public
-        view
-        virtual
-        returns (bytes32 $selector, bytes32 $trait)
-    {
+    function decode(bytes calldata $live) public view virtual returns (bytes32 $selector, bytes32 $trait) {
         ($selector, $trait) = abi.decode($live, (bytes32, bytes32));
     }
 
@@ -66,19 +53,10 @@ contract PlugNounsTrait is PlugConnectorInterface {
      * @param $trait The trait to retrieve.
      * @return $live The live wire to decode.
      */
-    function encode(
-        bytes32 $selector,
-        bytes32 $trait
-    )
-        public
-        pure
-        virtual
-        returns (bytes memory)
-    {
+    function encode(bytes32 $selector, bytes32 $trait) public pure virtual returns (bytes memory) {
         if (
-            $selector == HEAD_SELECTOR || $selector == GLASSES_SELECTOR
-                || $selector == BODY_SELECTOR || $selector == ACCESSORY_SELECTOR
-                || $selector == BACKGROUND_SELECTOR
+            $selector == HEAD_SELECTOR || $selector == GLASSES_SELECTOR || $selector == BODY_SELECTOR
+                || $selector == ACCESSORY_SELECTOR || $selector == BACKGROUND_SELECTOR
         ) { } else {
             revert("NounsTraitFuse:invalid-selector");
         }
@@ -91,23 +69,13 @@ contract PlugNounsTrait is PlugConnectorInterface {
      * @param $selector The function selector of the trait being checked.
      * @return $traitHash The hash of the trait.
      */
-    function nounTrait(bytes32 $selector)
-        public
-        view
-        virtual
-        returns (bytes32 $traitHash)
-    {
+    function nounTrait(bytes32 $selector) public view virtual returns (bytes32 $traitHash) {
         /// @dev Get the current state of the auction.
         (uint256 nounId,,,,,) = PlugNounsLib.AUCTION_HOUSE.auction();
 
         /// @dev Retrieve the metadata seeds of the current Noun.
-        (
-            uint48 background,
-            uint48 body,
-            uint48 accessory,
-            uint48 head,
-            uint48 glasses
-        ) = PlugNounsLib.TOKEN.seeds(nounId);
+        (uint48 background, uint48 body, uint48 accessory, uint48 head, uint48 glasses) =
+            PlugNounsLib.TOKEN.seeds(nounId);
 
         /// @dev Get the seed for the specified trait from the Seed struct.
         uint256 traitSeed;

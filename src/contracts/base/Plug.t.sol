@@ -45,11 +45,7 @@ contract PlugTest is Test {
         PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray);
 
         plug = new Plug();
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                PlugLib.RouterInvalid.selector, address(plug)
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.RouterInvalid.selector, address(plug)));
         plug.plug(livePlugs);
     }
 
@@ -82,8 +78,7 @@ contract PlugTest is Test {
 
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
-        PlugTypesLib.LivePlugs memory livePlugs =
-            createLivePlugs(plugsArray, 0, 0, solver);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, 0, 0, solver);
 
         vm.prank(solver);
         vm.expectEmit(address(mock));
@@ -101,8 +96,7 @@ contract PlugTest is Test {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](2);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
         plugsArray[1] = createPlug(PLUG_VALUE, PLUG_EXECUTION);
-        PlugTypesLib.LivePlugs memory livePlugs =
-            createLivePlugs(plugsArray, 0.2 ether, 1, solver);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, 0.2 ether, 1, solver);
 
         vm.prank(solver);
         vm.expectEmit(address(mock));
@@ -111,9 +105,7 @@ contract PlugTest is Test {
         assertTrue(preBalance - 1 ether > address(vault).balance);
     }
 
-    function testRevert_PlugEmptyEcho_ExternalSolver_CompensationFailure()
-        public
-    {
+    function testRevert_PlugEmptyEcho_ExternalSolver_CompensationFailure() public {
         address solver = _randomNonZeroAddress();
         vm.deal(solver, 100 ether);
         vm.deal(address(vault), 0);
@@ -121,16 +113,12 @@ contract PlugTest is Test {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](2);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
         plugsArray[1] = createPlug(PLUG_VALUE, PLUG_EXECUTION);
-        PlugTypesLib.LivePlugs memory livePlugs =
-            createLivePlugs(plugsArray, 0.2 ether, 24, solver);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, 0.2 ether, 24, solver);
 
         vm.prank(solver);
         vm.expectRevert(
             abi.encodeWithSelector(
-                PlugLib.ValueInvalid.selector,
-                PlugEtcherLib.PLUG_TREASURY_ADDRESS,
-                PLUG_VALUE,
-                address(vault).balance
+                PlugLib.ValueInvalid.selector, PlugEtcherLib.PLUG_TREASURY_ADDRESS, PLUG_VALUE, address(vault).balance
             )
         );
         plug.plug(livePlugs);
@@ -144,14 +132,9 @@ contract PlugTest is Test {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](2);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
         plugsArray[1] = createPlug(PLUG_VALUE, PLUG_EXECUTION);
-        PlugTypesLib.LivePlugs memory livePlugs =
-            createLivePlugs(plugsArray, 0, 0, solver);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, 0, 0, solver);
 
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                PlugLib.SolverInvalid.selector, address(solver), address(this)
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.SolverInvalid.selector, address(solver), address(this)));
         plug.plug(livePlugs);
     }
 }

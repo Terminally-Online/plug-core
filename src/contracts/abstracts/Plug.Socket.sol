@@ -15,12 +15,7 @@ import { PlugTypesLib } from "./Plug.Types.sol";
  *         granular pin and execution paths.
  * @author @nftchance (chance@onplug.io)
  */
-abstract contract PlugSocket is
-    PlugSocketInterface,
-    PlugCore,
-    PlugEnforce,
-    ReentrancyGuard
-{
+abstract contract PlugSocket is PlugSocketInterface, PlugCore, PlugEnforce, ReentrancyGuard {
     /**
      * See {PlugSocketInterface-plug}.
      */

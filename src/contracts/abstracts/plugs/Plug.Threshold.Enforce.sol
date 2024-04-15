@@ -5,14 +5,7 @@ pragma solidity 0.8.23;
 import { PlugLib } from "../../libraries/Plug.Lib.sol";
 
 abstract contract PlugThresholdEnforce {
-    function _enforce(
-        uint8 $operator,
-        uint256 $threshold,
-        uint256 $denominator
-    )
-        internal
-        pure
-    {
+    function _enforce(uint8 $operator, uint256 $threshold, uint256 $denominator) internal pure {
         /// @dev Make sure the base denominator is below (or before) the threshold.
         if ($operator == 0) {
             if ($threshold < $denominator) {

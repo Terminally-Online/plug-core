@@ -27,8 +27,7 @@ contract PlugTimestampTest is Test {
 
     function test_enforce_BeforeTimestamp() public {
         bytes memory terms = connector.encode(beforeOperator, beforeTimestamp);
-        (uint256 decodedOperator, uint256 decodedTimestamp) =
-            connector.decode(terms);
+        (uint256 decodedOperator, uint256 decodedTimestamp) = connector.decode(terms);
         assertEq(decodedOperator, beforeOperator);
         assertEq(decodedTimestamp, beforeTimestamp);
         connector.enforce(terms, plugsHash);
@@ -37,18 +36,13 @@ contract PlugTimestampTest is Test {
     function testRevert_enforce_BeforeTimestamp_Expired() public {
         uint256 expected = beforeTimestamp - 150;
         bytes memory terms = connector.encode(beforeOperator, expected);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                PlugLib.ThresholdExceeded.selector, expected, block.timestamp
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, expected, block.timestamp));
         connector.enforce(terms, plugsHash);
     }
 
     function test_enforce_AfterTimestamp() public {
         bytes memory terms = connector.encode(afterOperator, afterTimestamp);
-        (uint256 decodedOperator, uint256 decodedTimestamp) =
-            connector.decode(terms);
+        (uint256 decodedOperator, uint256 decodedTimestamp) = connector.decode(terms);
         assertEq(decodedOperator, afterOperator);
         assertEq(decodedTimestamp, afterTimestamp);
         connector.enforce(terms, plugsHash);
@@ -57,13 +51,7 @@ contract PlugTimestampTest is Test {
     function testRevert_enforce_AfterTimestamp_Early() public {
         uint256 expected = afterTimestamp + 400;
         bytes memory terms = connector.encode(afterOperator, expected);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                PlugLib.ThresholdInsufficient.selector,
-                expected,
-                block.timestamp
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdInsufficient.selector, expected, block.timestamp));
         connector.enforce(terms, plugsHash);
     }
 }

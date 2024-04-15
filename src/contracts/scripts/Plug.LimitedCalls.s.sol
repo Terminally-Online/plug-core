@@ -18,8 +18,7 @@ contract PlugLimitedCallsDeployment is Script {
         vm.startBroadcast();
 
         PlugEtcherLib.FACTORY.safeCreate2(
-            PlugEtcherLib.PLUG_LIMITED_CALLS_SALT,
-            PlugEtcherLib.PLUG_LIMITED_CALLS_INITCODE
+            PlugEtcherLib.PLUG_LIMITED_CALLS_SALT, PlugEtcherLib.PLUG_LIMITED_CALLS_INITCODE
         );
 
         vm.stopBroadcast();

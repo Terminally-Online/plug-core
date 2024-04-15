@@ -18,8 +18,7 @@ contract PlugFraxlendAPYDeployment is Script {
         vm.startBroadcast();
 
         PlugEtcherLib.FACTORY.safeCreate2(
-            PlugEtcherLib.PLUG_FRAXLEND_APY_SALT,
-            PlugEtcherLib.PLUG_FRAXLEND_APY_INITCODE
+            PlugEtcherLib.PLUG_FRAXLEND_APY_SALT, PlugEtcherLib.PLUG_FRAXLEND_APY_INITCODE
         );
 
         vm.stopBroadcast();

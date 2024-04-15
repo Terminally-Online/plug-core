@@ -5,11 +5,8 @@ pragma solidity 0.8.23;
 import { console2 } from "forge-std/console2.sol";
 
 import { PlugTypes } from "./Plug.Types.sol";
-import {
-    PlugLib, PlugTypesLib, PlugAddressesLib
-} from "../libraries/Plug.Lib.sol";
-import { PlugConnectorInterface } from
-    "../interfaces/Plug.Connector.Interface.sol";
+import { PlugLib, PlugTypesLib, PlugAddressesLib } from "../libraries/Plug.Lib.sol";
+import { PlugConnectorInterface } from "../interfaces/Plug.Connector.Interface.sol";
 
 /**
  * @title PlugCore
@@ -54,15 +51,12 @@ abstract contract PlugCore is PlugTypes {
             ///      instead of declaring multiple EIP712 types, we are using
             ///      a single type and encoding the data in a way that is
             ///      recoverable and solvable in a single type and call.
-            (bytes memory plugData, uint8 plugType) =
-                abi.decode(plug.data, (bytes, uint8));
+            (bytes memory plugData, uint8 plugType) = abi.decode(plug.data, (bytes, uint8));
 
             /// @dev If the call has an associated value, ensure the contract
             ///      has enough balance to cover the cost of the call.
             if (address(this).balance < plug.value) {
-                revert PlugLib.ValueInvalid(
-                    plug.target, plug.value, address(this).balance
-                );
+                revert PlugLib.ValueInvalid(plug.target, plug.value, address(this).balance);
             }
 
             /// @dev This check is a conditional Plug that requires access
@@ -72,21 +66,14 @@ abstract contract PlugCore is PlugTypes {
                 /// @dev Call the Plug to determine that is operating as a
                 ///      condition and enforce the outcome of the condition
                 ///      if it is not met (reverts).
-                ($results[i].success, $results[i].result) = plug.target.call{
-                    value: plug.value
-                }(
-                    abi.encodeWithSelector(
-                        PlugConnectorInterface.enforce.selector,
-                        plug.data[1:],
-                        plugsHash
-                    )
+                ($results[i].success, $results[i].result) = plug.target.call{ value: plug.value }(
+                    abi.encodeWithSelector(PlugConnectorInterface.enforce.selector, plug.data[1:], plugsHash)
                 );
             }
             /// @dev Make the call to the Plug and bubble up the
             ///      result if it happens to fail.
             else if (plugType == 2) {
-                ($results[i].success, $results[i].result) =
-                    plug.target.call{ value: plug.value }(plugData);
+                ($results[i].success, $results[i].result) = plug.target.call{ value: plug.value }(plugData);
             }
             /// @dev If an invalid Plug type was provided revert to protect
             ///      against fund siphoning when no work is done.
@@ -116,9 +103,7 @@ abstract contract PlugCore is PlugTypes {
             /// @dev Determine which gas price to use based on if it is a legacy
             ///      transaction (on a chain that does not support it) or if the
             ///      the transaction is submit post EIP-1559.
-            value = maxFeePerGas == maxPriorityFeePerGas
-                ? maxFeePerGas
-                : maxFeePerGas < value ? maxFeePerGas : value;
+            value = maxFeePerGas == maxPriorityFeePerGas ? maxFeePerGas : maxFeePerGas < value ? maxFeePerGas : value;
 
             /// @dev Augment the native gas price with the Solver "gas" fee.
             value = ($gas - gasleft()) * value;

@@ -24,8 +24,7 @@ contract PlugBaseFeeTest is Test {
 
     function test_enforce_BelowBaseFee() public {
         bytes memory terms = connector.encode(belowOperator, belowBaseFee);
-        (uint256 decodedOperator, uint256 decodedBaseFee) =
-            connector.decode(terms);
+        (uint256 decodedOperator, uint256 decodedBaseFee) = connector.decode(terms);
         assertEq(decodedOperator, belowOperator);
         assertEq(decodedBaseFee, belowBaseFee);
         connector.enforce(terms, plugsHash);
@@ -34,18 +33,13 @@ contract PlugBaseFeeTest is Test {
     function test_enforce_BelowBaseFee_Exceeded() public {
         uint256 expected = block.basefee - 1;
         bytes memory terms = connector.encode(belowOperator, expected);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                PlugLib.ThresholdExceeded.selector, expected, block.basefee
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, expected, block.basefee));
         connector.enforce(terms, plugsHash);
     }
 
     function test_enforce_AboveBaseFee() public {
         bytes memory terms = connector.encode(aboveOperator, aboveBaseFee);
-        (uint256 decodedOperator, uint256 decodedBaseFee) =
-            connector.decode(terms);
+        (uint256 decodedOperator, uint256 decodedBaseFee) = connector.decode(terms);
         assertEq(decodedOperator, aboveOperator);
         assertEq(decodedBaseFee, aboveBaseFee);
         connector.enforce(terms, plugsHash);
@@ -54,11 +48,7 @@ contract PlugBaseFeeTest is Test {
     function testRevert_enforce_AboveBaseFee_Insufficient() public {
         uint256 expected = block.basefee + 1;
         bytes memory terms = connector.encode(aboveOperator, expected);
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                PlugLib.ThresholdInsufficient.selector, expected, block.basefee
-            )
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdInsufficient.selector, expected, block.basefee));
         connector.enforce(terms, plugsHash);
     }
 }

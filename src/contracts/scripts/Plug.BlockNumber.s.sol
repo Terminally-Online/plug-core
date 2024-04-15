@@ -18,8 +18,7 @@ contract PlugBlockNumberDeployment is Script {
         vm.startBroadcast();
 
         PlugEtcherLib.FACTORY.safeCreate2(
-            PlugEtcherLib.PLUG_BLOCK_NUMBER_SALT,
-            PlugEtcherLib.PLUG_BLOCK_NUMBER_INITCODE
+            PlugEtcherLib.PLUG_BLOCK_NUMBER_SALT, PlugEtcherLib.PLUG_BLOCK_NUMBER_INITCODE
         );
 
         vm.stopBroadcast();

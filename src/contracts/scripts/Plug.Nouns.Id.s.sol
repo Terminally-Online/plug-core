@@ -17,10 +17,7 @@ contract PlugNounsIdDeployment is Script {
     function run() external {
         vm.startBroadcast();
 
-        PlugEtcherLib.FACTORY.safeCreate2(
-            PlugEtcherLib.PLUG_NOUNS_ID_SALT,
-            PlugEtcherLib.PLUG_NOUNS_ID_INITCODE
-        );
+        PlugEtcherLib.FACTORY.safeCreate2(PlugEtcherLib.PLUG_NOUNS_ID_SALT, PlugEtcherLib.PLUG_NOUNS_ID_INITCODE);
 
         vm.stopBroadcast();
     }

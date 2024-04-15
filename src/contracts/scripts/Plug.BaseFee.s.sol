@@ -17,10 +17,7 @@ contract PlugBaseFeeDeployment is Script {
     function run() external {
         vm.startBroadcast();
 
-        PlugEtcherLib.FACTORY.safeCreate2(
-            PlugEtcherLib.PLUG_BASE_FEE_SALT,
-            PlugEtcherLib.PLUG_BASE_FEE_INITCODE
-        );
+        PlugEtcherLib.FACTORY.safeCreate2(PlugEtcherLib.PLUG_BASE_FEE_SALT, PlugEtcherLib.PLUG_BASE_FEE_INITCODE);
 
         vm.stopBroadcast();
     }

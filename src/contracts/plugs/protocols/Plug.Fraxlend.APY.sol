@@ -2,15 +2,10 @@
 
 pragma solidity 0.8.23;
 
-import {
-    PlugConnectorInterface,
-    PlugTypesLib
-} from "../../interfaces/Plug.Connector.Interface.sol";
-import { PlugThresholdEnforce } from
-    "../../abstracts/plugs/Plug.Threshold.Enforce.sol";
+import { PlugConnectorInterface, PlugTypesLib } from "../../interfaces/Plug.Connector.Interface.sol";
+import { PlugThresholdEnforce } from "../../abstracts/plugs/Plug.Threshold.Enforce.sol";
 
-import { FraxlendVaultInterface } from
-    "../../interfaces/protocols/Fraxlend.Vault.Interface.sol";
+import { FraxlendVaultInterface } from "../../interfaces/protocols/Fraxlend.Vault.Interface.sol";
 
 /**
  * @title Plug Fraxlend APY
@@ -30,12 +25,7 @@ contract PlugFraxlendAPY is PlugConnectorInterface, PlugThresholdEnforce {
      */
     function enforce(bytes calldata $terms, bytes32) public view {
         /// @dev Determine the balance lookup definition.
-        (
-            address $vault,
-            uint8 $vaultOperator,
-            uint8 $operator,
-            uint256 $threshold
-        ) = decode($terms);
+        (address $vault, uint8 $vaultOperator, uint8 $operator, uint256 $threshold) = decode($terms);
 
         /// @dev Connect to the vault and retrieve the current rate information.
         FraxlendVaultInterface vault = FraxlendVaultInterface($vault);
@@ -52,13 +42,10 @@ contract PlugFraxlendAPY is PlugConnectorInterface, PlugThresholdEnforce {
         uint256 apyBaseBorrow = ((ratePerSec * 365 days) / 10 ** 18) / 100;
 
         /// @dev Determine the amount of apy boosting that is taking place.
-        uint256 apyRewardBorrow =
-            (apyBaseBorrow * totalBorrowAmount) / totalAssetAmount;
+        uint256 apyRewardBorrow = (apyBaseBorrow * totalBorrowAmount) / totalAssetAmount;
 
         /// @dev Account for the APY if it is a lend or borrow action.
-        uint256 apy = $vaultOperator == 0
-            ? apyRewardBorrow
-            : apyBaseBorrow + apyRewardBorrow;
+        uint256 apy = $vaultOperator == 0 ? apyRewardBorrow : apyBaseBorrow + apyRewardBorrow;
 
         /// @dev Enforce that the APY is within bounds.
         _enforce($operator, $threshold, apy);
@@ -70,15 +57,9 @@ contract PlugFraxlendAPY is PlugConnectorInterface, PlugThresholdEnforce {
     function decode(bytes calldata $data)
         public
         pure
-        returns (
-            address $vault,
-            uint8 $vaultOperator,
-            uint8 $operator,
-            uint256 $threshold
-        )
+        returns (address $vault, uint8 $vaultOperator, uint8 $operator, uint256 $threshold)
     {
-        ($vault, $vaultOperator, $operator, $threshold) =
-            abi.decode($data, (address, uint8, uint8, uint256));
+        ($vault, $vaultOperator, $operator, $threshold) = abi.decode($data, (address, uint8, uint8, uint256));
     }
 
     /**

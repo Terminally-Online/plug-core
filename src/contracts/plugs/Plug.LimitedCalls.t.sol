@@ -2,12 +2,7 @@
 
 pragma solidity 0.8.23;
 
-import {
-    Test,
-    PlugLib,
-    PlugTypesLib,
-    LibClone
-} from "../abstracts/test/Plug.Test.sol";
+import { Test, PlugLib, PlugTypesLib, LibClone } from "../abstracts/test/Plug.Test.sol";
 import { PlugLimitedCalls } from "./Plug.LimitedCalls.sol";
 
 contract PlugLimitedCallsTest is Test {
@@ -31,18 +26,14 @@ contract PlugLimitedCallsTest is Test {
         uint256 calls = 1;
         bytes memory terms = connector.encode(calls);
         connector.enforce(terms, plugsHash);
-        vm.expectRevert(
-            abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, calls, 2)
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, calls, 2));
         connector.enforce(terms, plugsHash);
     }
 
     function testRevert_enforce_ZeroCalls() public {
         uint256 calls = 0;
         bytes memory terms = connector.encode(calls);
-        vm.expectRevert(
-            abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, calls, 1)
-        );
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.ThresholdExceeded.selector, calls, 1));
         connector.enforce(terms, plugsHash);
     }
 }
