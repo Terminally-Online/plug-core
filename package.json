@@ -51,7 +51,7 @@
     },
     "dependencies": {
         "@0xsequence/wallet-contracts": "^2.0.0",
-        "@nftchance/plug-types": "^0.9.12",
+        "@nftchance/plug-types": "^0.9.13",
         "abitype": "^1.0.2",
         "solady": "^0.0.181",
         "viem": "^2.9.6",
