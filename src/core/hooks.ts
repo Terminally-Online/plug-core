@@ -127,10 +127,10 @@ export const plugAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugBalanceFuse
+// PlugBalance
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugBalanceFuseAbi = [
+export const plugBalanceAbi = [
   {
     type: 'function',
     inputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
@@ -163,7 +163,7 @@ export const plugBalanceFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
@@ -186,10 +186,10 @@ export const plugBalanceFuseAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugBalanceSemiFungibleFuse
+// PlugBalanceSemiFungible
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugBalanceSemiFungibleFuseAbi = [
+export const plugBalanceSemiFungibleAbi = [
   {
     type: 'function',
     inputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
@@ -222,7 +222,7 @@ export const plugBalanceSemiFungibleFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
@@ -245,10 +245,10 @@ export const plugBalanceSemiFungibleFuseAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugBaseFeeFuse
+// PlugBaseFee
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugBaseFeeFuseAbi = [
+export const plugBaseFeeAbi = [
   {
     type: 'function',
     inputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
@@ -275,7 +275,7 @@ export const plugBaseFeeFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
@@ -298,10 +298,10 @@ export const plugBaseFeeFuseAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugBlockNumberFuse
+// PlugBlockNumber
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugBlockNumberFuseAbi = [
+export const plugBlockNumberAbi = [
   {
     type: 'function',
     inputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
@@ -328,7 +328,7 @@ export const plugBlockNumberFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
@@ -351,10 +351,10 @@ export const plugBlockNumberFuseAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugCalendarFuse
+// PlugCalendar
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugCalendarFuseAbi = [
+export const plugCalendarAbi = [
   {
     type: 'function',
     inputs: [{ name: '$schedule', internalType: 'uint256', type: 'uint256' }],
@@ -385,7 +385,7 @@ export const plugCalendarFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
@@ -886,10 +886,10 @@ export const plugFactoryAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugFraxlendAPYFuse
+// PlugFraxlendAPY
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugFraxlendApyFuseAbi = [
+export const plugFraxlendApyAbi = [
   {
     type: 'function',
     inputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
@@ -920,7 +920,7 @@ export const plugFraxlendApyFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
@@ -943,10 +943,10 @@ export const plugFraxlendApyFuseAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugLimitedCallsFuse
+// PlugLimitedCalls
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugLimitedCallsFuseAbi = [
+export const plugLimitedCallsAbi = [
   {
     type: 'function',
     inputs: [{ name: '$terms', internalType: 'bytes', type: 'bytes' }],
@@ -967,7 +967,7 @@ export const plugLimitedCallsFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '$plugsHash', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'nonpayable',
   },
@@ -982,10 +982,10 @@ export const plugLimitedCallsFuseAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugNounsBidFuse
+// PlugNounsBid
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugNounsBidFuseAbi = [
+export const plugNounsBidAbi = [
   {
     type: 'function',
     inputs: [{ name: '$live', internalType: 'bytes', type: 'bytes' }],
@@ -1012,7 +1012,7 @@ export const plugNounsBidFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
@@ -1021,10 +1021,10 @@ export const plugNounsBidFuseAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugNounsIdFuse
+// PlugNounsId
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugNounsIdFuseAbi = [
+export const plugNounsIdAbi = [
   {
     type: 'function',
     inputs: [{ name: '$live', internalType: 'bytes', type: 'bytes' }],
@@ -1045,17 +1045,17 @@ export const plugNounsIdFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugNounsTraitFuse
+// PlugNounsTrait
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugNounsTraitFuseAbi = [
+export const plugNounsTraitAbi = [
   {
     type: 'function',
     inputs: [],
@@ -1117,7 +1117,7 @@ export const plugNounsTraitFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
@@ -1131,10 +1131,10 @@ export const plugNounsTraitFuseAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugRevocationFuse
+// PlugRevocation
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugRevocationFuseAbi = [
+export const plugRevocationAbi = [
   {
     type: 'function',
     inputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
@@ -1155,7 +1155,7 @@ export const plugRevocationFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '$plugsHash', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
@@ -1182,10 +1182,10 @@ export const plugRevocationFuseAbi = [
 ] as const
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// PlugTimestampFuse
+// PlugTimestamp
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const plugTimestampFuseAbi = [
+export const plugTimestampAbi = [
   {
     type: 'function',
     inputs: [{ name: '$data', internalType: 'bytes', type: 'bytes' }],
@@ -1212,7 +1212,7 @@ export const plugTimestampFuseAbi = [
       { name: '$terms', internalType: 'bytes', type: 'bytes' },
       { name: '', internalType: 'bytes32', type: 'bytes32' },
     ],
-    name: 'enforceFuse',
+    name: 'enforce',
     outputs: [],
     stateMutability: 'view',
   },
@@ -2054,190 +2054,185 @@ export const useSimulatePlugPlug = /*#__PURE__*/ createUseSimulateContract({
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceFuseAbi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceAbi}__
  */
-export const useReadPlugBalanceFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugBalanceFuseAbi,
+export const useReadPlugBalance = /*#__PURE__*/ createUseReadContract({
+  abi: plugBalanceAbi,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceAbi}__ and `functionName` set to `"decode"`
  */
-export const useReadPlugBalanceFuseDecode = /*#__PURE__*/ createUseReadContract(
-  { abi: plugBalanceFuseAbi, functionName: 'decode' },
-)
+export const useReadPlugBalanceDecode = /*#__PURE__*/ createUseReadContract({
+  abi: plugBalanceAbi,
+  functionName: 'decode',
+})
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceFuseAbi}__ and `functionName` set to `"encode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceAbi}__ and `functionName` set to `"encode"`
  */
-export const useReadPlugBalanceFuseEncode = /*#__PURE__*/ createUseReadContract(
-  { abi: plugBalanceFuseAbi, functionName: 'encode' },
-)
+export const useReadPlugBalanceEncode = /*#__PURE__*/ createUseReadContract({
+  abi: plugBalanceAbi,
+  functionName: 'encode',
+})
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceFuseAbi}__ and `functionName` set to `"enforceFuse"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceAbi}__ and `functionName` set to `"enforce"`
  */
-export const useReadPlugBalanceFuseEnforceFuse =
+export const useReadPlugBalanceEnforce = /*#__PURE__*/ createUseReadContract({
+  abi: plugBalanceAbi,
+  functionName: 'enforce',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceSemiFungibleAbi}__
+ */
+export const useReadPlugBalanceSemiFungible =
+  /*#__PURE__*/ createUseReadContract({ abi: plugBalanceSemiFungibleAbi })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceSemiFungibleAbi}__ and `functionName` set to `"decode"`
+ */
+export const useReadPlugBalanceSemiFungibleDecode =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugBalanceFuseAbi,
-    functionName: 'enforceFuse',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceSemiFungibleFuseAbi}__
- */
-export const useReadPlugBalanceSemiFungibleFuse =
-  /*#__PURE__*/ createUseReadContract({ abi: plugBalanceSemiFungibleFuseAbi })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceSemiFungibleFuseAbi}__ and `functionName` set to `"decode"`
- */
-export const useReadPlugBalanceSemiFungibleFuseDecode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugBalanceSemiFungibleFuseAbi,
+    abi: plugBalanceSemiFungibleAbi,
     functionName: 'decode',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceSemiFungibleFuseAbi}__ and `functionName` set to `"encode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceSemiFungibleAbi}__ and `functionName` set to `"encode"`
  */
-export const useReadPlugBalanceSemiFungibleFuseEncode =
+export const useReadPlugBalanceSemiFungibleEncode =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugBalanceSemiFungibleFuseAbi,
+    abi: plugBalanceSemiFungibleAbi,
     functionName: 'encode',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceSemiFungibleFuseAbi}__ and `functionName` set to `"enforceFuse"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBalanceSemiFungibleAbi}__ and `functionName` set to `"enforce"`
  */
-export const useReadPlugBalanceSemiFungibleFuseEnforceFuse =
+export const useReadPlugBalanceSemiFungibleEnforce =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugBalanceSemiFungibleFuseAbi,
-    functionName: 'enforceFuse',
+    abi: plugBalanceSemiFungibleAbi,
+    functionName: 'enforce',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBaseFeeFuseAbi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBaseFeeAbi}__
  */
-export const useReadPlugBaseFeeFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugBaseFeeFuseAbi,
+export const useReadPlugBaseFee = /*#__PURE__*/ createUseReadContract({
+  abi: plugBaseFeeAbi,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBaseFeeFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBaseFeeAbi}__ and `functionName` set to `"decode"`
  */
-export const useReadPlugBaseFeeFuseDecode = /*#__PURE__*/ createUseReadContract(
-  { abi: plugBaseFeeFuseAbi, functionName: 'decode' },
+export const useReadPlugBaseFeeDecode = /*#__PURE__*/ createUseReadContract({
+  abi: plugBaseFeeAbi,
+  functionName: 'decode',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBaseFeeAbi}__ and `functionName` set to `"encode"`
+ */
+export const useReadPlugBaseFeeEncode = /*#__PURE__*/ createUseReadContract({
+  abi: plugBaseFeeAbi,
+  functionName: 'encode',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBaseFeeAbi}__ and `functionName` set to `"enforce"`
+ */
+export const useReadPlugBaseFeeEnforce = /*#__PURE__*/ createUseReadContract({
+  abi: plugBaseFeeAbi,
+  functionName: 'enforce',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBlockNumberAbi}__
+ */
+export const useReadPlugBlockNumber = /*#__PURE__*/ createUseReadContract({
+  abi: plugBlockNumberAbi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBlockNumberAbi}__ and `functionName` set to `"decode"`
+ */
+export const useReadPlugBlockNumberDecode = /*#__PURE__*/ createUseReadContract(
+  { abi: plugBlockNumberAbi, functionName: 'decode' },
 )
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBaseFeeFuseAbi}__ and `functionName` set to `"encode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBlockNumberAbi}__ and `functionName` set to `"encode"`
  */
-export const useReadPlugBaseFeeFuseEncode = /*#__PURE__*/ createUseReadContract(
-  { abi: plugBaseFeeFuseAbi, functionName: 'encode' },
+export const useReadPlugBlockNumberEncode = /*#__PURE__*/ createUseReadContract(
+  { abi: plugBlockNumberAbi, functionName: 'encode' },
 )
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBaseFeeFuseAbi}__ and `functionName` set to `"enforceFuse"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBlockNumberAbi}__ and `functionName` set to `"enforce"`
  */
-export const useReadPlugBaseFeeFuseEnforceFuse =
+export const useReadPlugBlockNumberEnforce =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugBaseFeeFuseAbi,
-    functionName: 'enforceFuse',
+    abi: plugBlockNumberAbi,
+    functionName: 'enforce',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBlockNumberFuseAbi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarAbi}__
  */
-export const useReadPlugBlockNumberFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugBlockNumberFuseAbi,
+export const useReadPlugCalendar = /*#__PURE__*/ createUseReadContract({
+  abi: plugCalendarAbi,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBlockNumberFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarAbi}__ and `functionName` set to `"decode"`
  */
-export const useReadPlugBlockNumberFuseDecode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugBlockNumberFuseAbi,
-    functionName: 'decode',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBlockNumberFuseAbi}__ and `functionName` set to `"encode"`
- */
-export const useReadPlugBlockNumberFuseEncode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugBlockNumberFuseAbi,
-    functionName: 'encode',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugBlockNumberFuseAbi}__ and `functionName` set to `"enforceFuse"`
- */
-export const useReadPlugBlockNumberFuseEnforceFuse =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugBlockNumberFuseAbi,
-    functionName: 'enforceFuse',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarFuseAbi}__
- */
-export const useReadPlugCalendarFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugCalendarFuseAbi,
+export const useReadPlugCalendarDecode = /*#__PURE__*/ createUseReadContract({
+  abi: plugCalendarAbi,
+  functionName: 'decode',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarAbi}__ and `functionName` set to `"encode"`
  */
-export const useReadPlugCalendarFuseDecode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugCalendarFuseAbi,
-    functionName: 'decode',
-  })
+export const useReadPlugCalendarEncode = /*#__PURE__*/ createUseReadContract({
+  abi: plugCalendarAbi,
+  functionName: 'encode',
+})
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarFuseAbi}__ and `functionName` set to `"encode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarAbi}__ and `functionName` set to `"enforce"`
  */
-export const useReadPlugCalendarFuseEncode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugCalendarFuseAbi,
-    functionName: 'encode',
-  })
+export const useReadPlugCalendarEnforce = /*#__PURE__*/ createUseReadContract({
+  abi: plugCalendarAbi,
+  functionName: 'enforce',
+})
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarFuseAbi}__ and `functionName` set to `"enforceFuse"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarAbi}__ and `functionName` set to `"isWithinCalendar"`
  */
-export const useReadPlugCalendarFuseEnforceFuse =
+export const useReadPlugCalendarIsWithinCalendar =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugCalendarFuseAbi,
-    functionName: 'enforceFuse',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarFuseAbi}__ and `functionName` set to `"isWithinCalendar"`
- */
-export const useReadPlugCalendarFuseIsWithinCalendar =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugCalendarFuseAbi,
+    abi: plugCalendarAbi,
     functionName: 'isWithinCalendar',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarFuseAbi}__ and `functionName` set to `"toCalendar"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarAbi}__ and `functionName` set to `"toCalendar"`
  */
-export const useReadPlugCalendarFuseToCalendar =
+export const useReadPlugCalendarToCalendar =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugCalendarFuseAbi,
+    abi: plugCalendarAbi,
     functionName: 'toCalendar',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarFuseAbi}__ and `functionName` set to `"toCalendars"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugCalendarAbi}__ and `functionName` set to `"toCalendars"`
  */
-export const useReadPlugCalendarFuseToCalendars =
+export const useReadPlugCalendarToCalendars =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugCalendarFuseAbi,
+    abi: plugCalendarAbi,
     functionName: 'toCalendars',
   })
 
@@ -2673,353 +2668,337 @@ export const useWatchPlugFactoryTransferEvent =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFraxlendApyFuseAbi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFraxlendApyAbi}__
  */
-export const useReadPlugFraxlendApyFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugFraxlendApyFuseAbi,
+export const useReadPlugFraxlendApy = /*#__PURE__*/ createUseReadContract({
+  abi: plugFraxlendApyAbi,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFraxlendApyFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFraxlendApyAbi}__ and `functionName` set to `"decode"`
  */
-export const useReadPlugFraxlendApyFuseDecode =
+export const useReadPlugFraxlendApyDecode = /*#__PURE__*/ createUseReadContract(
+  { abi: plugFraxlendApyAbi, functionName: 'decode' },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFraxlendApyAbi}__ and `functionName` set to `"encode"`
+ */
+export const useReadPlugFraxlendApyEncode = /*#__PURE__*/ createUseReadContract(
+  { abi: plugFraxlendApyAbi, functionName: 'encode' },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFraxlendApyAbi}__ and `functionName` set to `"enforce"`
+ */
+export const useReadPlugFraxlendApyEnforce =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugFraxlendApyFuseAbi,
+    abi: plugFraxlendApyAbi,
+    functionName: 'enforce',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugLimitedCallsAbi}__
+ */
+export const useReadPlugLimitedCalls = /*#__PURE__*/ createUseReadContract({
+  abi: plugLimitedCallsAbi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugLimitedCallsAbi}__ and `functionName` set to `"decode"`
+ */
+export const useReadPlugLimitedCallsDecode =
+  /*#__PURE__*/ createUseReadContract({
+    abi: plugLimitedCallsAbi,
     functionName: 'decode',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFraxlendApyFuseAbi}__ and `functionName` set to `"encode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugLimitedCallsAbi}__ and `functionName` set to `"encode"`
  */
-export const useReadPlugFraxlendApyFuseEncode =
+export const useReadPlugLimitedCallsEncode =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugFraxlendApyFuseAbi,
+    abi: plugLimitedCallsAbi,
     functionName: 'encode',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFraxlendApyFuseAbi}__ and `functionName` set to `"enforceFuse"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugLimitedCallsAbi}__
  */
-export const useReadPlugFraxlendApyFuseEnforceFuse =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugFraxlendApyFuseAbi,
-    functionName: 'enforceFuse',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugLimitedCallsFuseAbi}__
- */
-export const useReadPlugLimitedCallsFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugLimitedCallsFuseAbi,
+export const useWritePlugLimitedCalls = /*#__PURE__*/ createUseWriteContract({
+  abi: plugLimitedCallsAbi,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugLimitedCallsFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugLimitedCallsAbi}__ and `functionName` set to `"enforce"`
  */
-export const useReadPlugLimitedCallsFuseDecode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugLimitedCallsFuseAbi,
-    functionName: 'decode',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugLimitedCallsFuseAbi}__ and `functionName` set to `"encode"`
- */
-export const useReadPlugLimitedCallsFuseEncode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugLimitedCallsFuseAbi,
-    functionName: 'encode',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugLimitedCallsFuseAbi}__
- */
-export const useWritePlugLimitedCallsFuse =
-  /*#__PURE__*/ createUseWriteContract({ abi: plugLimitedCallsFuseAbi })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugLimitedCallsFuseAbi}__ and `functionName` set to `"enforceFuse"`
- */
-export const useWritePlugLimitedCallsFuseEnforceFuse =
+export const useWritePlugLimitedCallsEnforce =
   /*#__PURE__*/ createUseWriteContract({
-    abi: plugLimitedCallsFuseAbi,
-    functionName: 'enforceFuse',
+    abi: plugLimitedCallsAbi,
+    functionName: 'enforce',
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugLimitedCallsFuseAbi}__
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugLimitedCallsAbi}__
  */
-export const useSimulatePlugLimitedCallsFuse =
-  /*#__PURE__*/ createUseSimulateContract({ abi: plugLimitedCallsFuseAbi })
+export const useSimulatePlugLimitedCalls =
+  /*#__PURE__*/ createUseSimulateContract({ abi: plugLimitedCallsAbi })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugLimitedCallsFuseAbi}__ and `functionName` set to `"enforceFuse"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugLimitedCallsAbi}__ and `functionName` set to `"enforce"`
  */
-export const useSimulatePlugLimitedCallsFuseEnforceFuse =
+export const useSimulatePlugLimitedCallsEnforce =
   /*#__PURE__*/ createUseSimulateContract({
-    abi: plugLimitedCallsFuseAbi,
-    functionName: 'enforceFuse',
+    abi: plugLimitedCallsAbi,
+    functionName: 'enforce',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsBidFuseAbi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsBidAbi}__
  */
-export const useReadPlugNounsBidFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugNounsBidFuseAbi,
+export const useReadPlugNounsBid = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsBidAbi,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsBidFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsBidAbi}__ and `functionName` set to `"decode"`
  */
-export const useReadPlugNounsBidFuseDecode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsBidFuseAbi,
-    functionName: 'decode',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsBidFuseAbi}__ and `functionName` set to `"encode"`
- */
-export const useReadPlugNounsBidFuseEncode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsBidFuseAbi,
-    functionName: 'encode',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsBidFuseAbi}__ and `functionName` set to `"enforceFuse"`
- */
-export const useReadPlugNounsBidFuseEnforceFuse =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsBidFuseAbi,
-    functionName: 'enforceFuse',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsIdFuseAbi}__
- */
-export const useReadPlugNounsIdFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugNounsIdFuseAbi,
+export const useReadPlugNounsBidDecode = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsBidAbi,
+  functionName: 'decode',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsIdFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsBidAbi}__ and `functionName` set to `"encode"`
  */
-export const useReadPlugNounsIdFuseDecode = /*#__PURE__*/ createUseReadContract(
-  { abi: plugNounsIdFuseAbi, functionName: 'decode' },
-)
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsIdFuseAbi}__ and `functionName` set to `"encode"`
- */
-export const useReadPlugNounsIdFuseEncode = /*#__PURE__*/ createUseReadContract(
-  { abi: plugNounsIdFuseAbi, functionName: 'encode' },
-)
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsIdFuseAbi}__ and `functionName` set to `"enforceFuse"`
- */
-export const useReadPlugNounsIdFuseEnforceFuse =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsIdFuseAbi,
-    functionName: 'enforceFuse',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitFuseAbi}__
- */
-export const useReadPlugNounsTraitFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugNounsTraitFuseAbi,
+export const useReadPlugNounsBidEncode = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsBidAbi,
+  functionName: 'encode',
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitFuseAbi}__ and `functionName` set to `"ACCESSORY_SELECTOR"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsBidAbi}__ and `functionName` set to `"enforce"`
  */
-export const useReadPlugNounsTraitFuseAccessorySelector =
+export const useReadPlugNounsBidEnforce = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsBidAbi,
+  functionName: 'enforce',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsIdAbi}__
+ */
+export const useReadPlugNounsId = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsIdAbi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsIdAbi}__ and `functionName` set to `"decode"`
+ */
+export const useReadPlugNounsIdDecode = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsIdAbi,
+  functionName: 'decode',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsIdAbi}__ and `functionName` set to `"encode"`
+ */
+export const useReadPlugNounsIdEncode = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsIdAbi,
+  functionName: 'encode',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsIdAbi}__ and `functionName` set to `"enforce"`
+ */
+export const useReadPlugNounsIdEnforce = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsIdAbi,
+  functionName: 'enforce',
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitAbi}__
+ */
+export const useReadPlugNounsTrait = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsTraitAbi,
+})
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitAbi}__ and `functionName` set to `"ACCESSORY_SELECTOR"`
+ */
+export const useReadPlugNounsTraitAccessorySelector =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsTraitFuseAbi,
+    abi: plugNounsTraitAbi,
     functionName: 'ACCESSORY_SELECTOR',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitFuseAbi}__ and `functionName` set to `"BACKGROUND_SELECTOR"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitAbi}__ and `functionName` set to `"BACKGROUND_SELECTOR"`
  */
-export const useReadPlugNounsTraitFuseBackgroundSelector =
+export const useReadPlugNounsTraitBackgroundSelector =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsTraitFuseAbi,
+    abi: plugNounsTraitAbi,
     functionName: 'BACKGROUND_SELECTOR',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitFuseAbi}__ and `functionName` set to `"BODY_SELECTOR"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitAbi}__ and `functionName` set to `"BODY_SELECTOR"`
  */
-export const useReadPlugNounsTraitFuseBodySelector =
+export const useReadPlugNounsTraitBodySelector =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsTraitFuseAbi,
+    abi: plugNounsTraitAbi,
     functionName: 'BODY_SELECTOR',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitFuseAbi}__ and `functionName` set to `"GLASSES_SELECTOR"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitAbi}__ and `functionName` set to `"GLASSES_SELECTOR"`
  */
-export const useReadPlugNounsTraitFuseGlassesSelector =
+export const useReadPlugNounsTraitGlassesSelector =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsTraitFuseAbi,
+    abi: plugNounsTraitAbi,
     functionName: 'GLASSES_SELECTOR',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitFuseAbi}__ and `functionName` set to `"HEAD_SELECTOR"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitAbi}__ and `functionName` set to `"HEAD_SELECTOR"`
  */
-export const useReadPlugNounsTraitFuseHeadSelector =
+export const useReadPlugNounsTraitHeadSelector =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsTraitFuseAbi,
+    abi: plugNounsTraitAbi,
     functionName: 'HEAD_SELECTOR',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitAbi}__ and `functionName` set to `"decode"`
  */
-export const useReadPlugNounsTraitFuseDecode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsTraitFuseAbi,
-    functionName: 'decode',
-  })
+export const useReadPlugNounsTraitDecode = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsTraitAbi,
+  functionName: 'decode',
+})
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitFuseAbi}__ and `functionName` set to `"encode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitAbi}__ and `functionName` set to `"encode"`
  */
-export const useReadPlugNounsTraitFuseEncode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsTraitFuseAbi,
-    functionName: 'encode',
-  })
+export const useReadPlugNounsTraitEncode = /*#__PURE__*/ createUseReadContract({
+  abi: plugNounsTraitAbi,
+  functionName: 'encode',
+})
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitFuseAbi}__ and `functionName` set to `"enforceFuse"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitAbi}__ and `functionName` set to `"enforce"`
  */
-export const useReadPlugNounsTraitFuseEnforceFuse =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsTraitFuseAbi,
-    functionName: 'enforceFuse',
-  })
+export const useReadPlugNounsTraitEnforce = /*#__PURE__*/ createUseReadContract(
+  { abi: plugNounsTraitAbi, functionName: 'enforce' },
+)
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitFuseAbi}__ and `functionName` set to `"nounTrait"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugNounsTraitAbi}__ and `functionName` set to `"nounTrait"`
  */
-export const useReadPlugNounsTraitFuseNounTrait =
+export const useReadPlugNounsTraitNounTrait =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugNounsTraitFuseAbi,
+    abi: plugNounsTraitAbi,
     functionName: 'nounTrait',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugRevocationFuseAbi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugRevocationAbi}__
  */
-export const useReadPlugRevocationFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugRevocationFuseAbi,
+export const useReadPlugRevocation = /*#__PURE__*/ createUseReadContract({
+  abi: plugRevocationAbi,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugRevocationFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugRevocationAbi}__ and `functionName` set to `"decode"`
  */
-export const useReadPlugRevocationFuseDecode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugRevocationFuseAbi,
-    functionName: 'decode',
-  })
+export const useReadPlugRevocationDecode = /*#__PURE__*/ createUseReadContract({
+  abi: plugRevocationAbi,
+  functionName: 'decode',
+})
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugRevocationFuseAbi}__ and `functionName` set to `"encode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugRevocationAbi}__ and `functionName` set to `"encode"`
  */
-export const useReadPlugRevocationFuseEncode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugRevocationFuseAbi,
-    functionName: 'encode',
-  })
+export const useReadPlugRevocationEncode = /*#__PURE__*/ createUseReadContract({
+  abi: plugRevocationAbi,
+  functionName: 'encode',
+})
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugRevocationFuseAbi}__ and `functionName` set to `"enforceFuse"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugRevocationAbi}__ and `functionName` set to `"enforce"`
  */
-export const useReadPlugRevocationFuseEnforceFuse =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugRevocationFuseAbi,
-    functionName: 'enforceFuse',
-  })
+export const useReadPlugRevocationEnforce = /*#__PURE__*/ createUseReadContract(
+  { abi: plugRevocationAbi, functionName: 'enforce' },
+)
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugRevocationFuseAbi}__ and `functionName` set to `"isRevoked"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugRevocationAbi}__ and `functionName` set to `"isRevoked"`
  */
-export const useReadPlugRevocationFuseIsRevoked =
+export const useReadPlugRevocationIsRevoked =
   /*#__PURE__*/ createUseReadContract({
-    abi: plugRevocationFuseAbi,
+    abi: plugRevocationAbi,
     functionName: 'isRevoked',
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugRevocationFuseAbi}__
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugRevocationAbi}__
  */
-export const useWritePlugRevocationFuse = /*#__PURE__*/ createUseWriteContract({
-  abi: plugRevocationFuseAbi,
+export const useWritePlugRevocation = /*#__PURE__*/ createUseWriteContract({
+  abi: plugRevocationAbi,
 })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugRevocationFuseAbi}__ and `functionName` set to `"revoke"`
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugRevocationAbi}__ and `functionName` set to `"revoke"`
  */
-export const useWritePlugRevocationFuseRevoke =
+export const useWritePlugRevocationRevoke =
   /*#__PURE__*/ createUseWriteContract({
-    abi: plugRevocationFuseAbi,
+    abi: plugRevocationAbi,
     functionName: 'revoke',
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugRevocationFuseAbi}__
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugRevocationAbi}__
  */
-export const useSimulatePlugRevocationFuse =
-  /*#__PURE__*/ createUseSimulateContract({ abi: plugRevocationFuseAbi })
+export const useSimulatePlugRevocation =
+  /*#__PURE__*/ createUseSimulateContract({ abi: plugRevocationAbi })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugRevocationFuseAbi}__ and `functionName` set to `"revoke"`
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugRevocationAbi}__ and `functionName` set to `"revoke"`
  */
-export const useSimulatePlugRevocationFuseRevoke =
+export const useSimulatePlugRevocationRevoke =
   /*#__PURE__*/ createUseSimulateContract({
-    abi: plugRevocationFuseAbi,
+    abi: plugRevocationAbi,
     functionName: 'revoke',
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugTimestampFuseAbi}__
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugTimestampAbi}__
  */
-export const useReadPlugTimestampFuse = /*#__PURE__*/ createUseReadContract({
-  abi: plugTimestampFuseAbi,
+export const useReadPlugTimestamp = /*#__PURE__*/ createUseReadContract({
+  abi: plugTimestampAbi,
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugTimestampFuseAbi}__ and `functionName` set to `"decode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugTimestampAbi}__ and `functionName` set to `"decode"`
  */
-export const useReadPlugTimestampFuseDecode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugTimestampFuseAbi,
-    functionName: 'decode',
-  })
+export const useReadPlugTimestampDecode = /*#__PURE__*/ createUseReadContract({
+  abi: plugTimestampAbi,
+  functionName: 'decode',
+})
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugTimestampFuseAbi}__ and `functionName` set to `"encode"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugTimestampAbi}__ and `functionName` set to `"encode"`
  */
-export const useReadPlugTimestampFuseEncode =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugTimestampFuseAbi,
-    functionName: 'encode',
-  })
+export const useReadPlugTimestampEncode = /*#__PURE__*/ createUseReadContract({
+  abi: plugTimestampAbi,
+  functionName: 'encode',
+})
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugTimestampFuseAbi}__ and `functionName` set to `"enforceFuse"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugTimestampAbi}__ and `functionName` set to `"enforce"`
  */
-export const useReadPlugTimestampFuseEnforceFuse =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugTimestampFuseAbi,
-    functionName: 'enforceFuse',
-  })
+export const useReadPlugTimestampEnforce = /*#__PURE__*/ createUseReadContract({
+  abi: plugTimestampAbi,
+  functionName: 'enforce',
+})
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugTreasuryAbi}__

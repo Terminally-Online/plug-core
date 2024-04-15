@@ -1,139 +1,6 @@
 export const contracts = [
     {
-        "name": "PlugBalanceFuse",
-        "abi": [
-            {
-                "type": "function",
-                "name": "decode",
-                "inputs": [
-                    {
-                        "name": "$data",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "$holder",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$asset",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$type",
-                        "type": "uint8",
-                        "internalType": "uint8"
-                    },
-                    {
-                        "name": "$operator",
-                        "type": "uint8",
-                        "internalType": "uint8"
-                    },
-                    {
-                        "name": "$threshold",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "stateMutability": "pure"
-            },
-            {
-                "type": "function",
-                "name": "encode",
-                "inputs": [
-                    {
-                        "name": "$holder",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$asset",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$type",
-                        "type": "uint8",
-                        "internalType": "uint8"
-                    },
-                    {
-                        "name": "$operator",
-                        "type": "uint8",
-                        "internalType": "uint8"
-                    },
-                    {
-                        "name": "$threshold",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "$data",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    }
-                ],
-                "stateMutability": "pure"
-            },
-            {
-                "type": "function",
-                "name": "enforceFuse",
-                "inputs": [
-                    {
-                        "name": "$terms",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "view"
-            },
-            {
-                "type": "error",
-                "name": "ThresholdExceeded",
-                "inputs": [
-                    {
-                        "name": "$expected",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "$reality",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "name": "ThresholdInsufficient",
-                "inputs": [
-                    {
-                        "name": "$expected",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "$reality",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "name": "PlugBalanceSemiFungibleFuse",
+        "name": "PlugBalanceSemiFungible",
         "abi": [
             {
                 "type": "function",
@@ -215,7 +82,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",
@@ -266,7 +133,140 @@ export const contracts = [
         ]
     },
     {
-        "name": "PlugBaseFeeFuse",
+        "name": "PlugBalance",
+        "abi": [
+            {
+                "type": "function",
+                "name": "decode",
+                "inputs": [
+                    {
+                        "name": "$data",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "$holder",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$asset",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$type",
+                        "type": "uint8",
+                        "internalType": "uint8"
+                    },
+                    {
+                        "name": "$operator",
+                        "type": "uint8",
+                        "internalType": "uint8"
+                    },
+                    {
+                        "name": "$threshold",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ],
+                "stateMutability": "pure"
+            },
+            {
+                "type": "function",
+                "name": "encode",
+                "inputs": [
+                    {
+                        "name": "$holder",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$asset",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$type",
+                        "type": "uint8",
+                        "internalType": "uint8"
+                    },
+                    {
+                        "name": "$operator",
+                        "type": "uint8",
+                        "internalType": "uint8"
+                    },
+                    {
+                        "name": "$threshold",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "$data",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    }
+                ],
+                "stateMutability": "pure"
+            },
+            {
+                "type": "function",
+                "name": "enforce",
+                "inputs": [
+                    {
+                        "name": "$terms",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "view"
+            },
+            {
+                "type": "error",
+                "name": "ThresholdExceeded",
+                "inputs": [
+                    {
+                        "name": "$expected",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            },
+            {
+                "type": "error",
+                "name": "ThresholdInsufficient",
+                "inputs": [
+                    {
+                        "name": "$expected",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$reality",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "PlugBaseFee",
         "abi": [
             {
                 "type": "function",
@@ -318,7 +318,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",
@@ -369,7 +369,7 @@ export const contracts = [
         ]
     },
     {
-        "name": "PlugBlockNumberFuse",
+        "name": "PlugBlockNumber",
         "abi": [
             {
                 "type": "function",
@@ -421,7 +421,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",
@@ -472,7 +472,7 @@ export const contracts = [
         ]
     },
     {
-        "name": "PlugCalendarFuse",
+        "name": "PlugCalendar",
         "abi": [
             {
                 "type": "function",
@@ -544,7 +544,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",
@@ -1491,7 +1491,7 @@ export const contracts = [
         ]
     },
     {
-        "name": "PlugFraxlendAPYFuse",
+        "name": "PlugFraxlendAPY",
         "abi": [
             {
                 "type": "function",
@@ -1563,7 +1563,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",
@@ -1614,7 +1614,7 @@ export const contracts = [
         ]
     },
     {
-        "name": "PlugLimitedCallsFuse",
+        "name": "PlugLimitedCalls",
         "abi": [
             {
                 "type": "function",
@@ -1656,7 +1656,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",
@@ -1691,7 +1691,7 @@ export const contracts = [
         ]
     },
     {
-        "name": "PlugNounsBidFuse",
+        "name": "PlugNounsBid",
         "abi": [
             {
                 "type": "function",
@@ -1743,7 +1743,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",
@@ -1772,7 +1772,7 @@ export const contracts = [
         ]
     },
     {
-        "name": "PlugNounsIdFuse",
+        "name": "PlugNounsId",
         "abi": [
             {
                 "type": "function",
@@ -1814,7 +1814,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",
@@ -1833,7 +1833,7 @@ export const contracts = [
         ]
     },
     {
-        "name": "PlugNounsTraitFuse",
+        "name": "PlugNounsTrait",
         "abi": [
             {
                 "type": "function",
@@ -1950,7 +1950,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",
@@ -1988,7 +1988,7 @@ export const contracts = [
         ]
     },
     {
-        "name": "PlugRevocationFuse",
+        "name": "PlugRevocation",
         "abi": [
             {
                 "type": "function",
@@ -2030,7 +2030,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",
@@ -2091,7 +2091,7 @@ export const contracts = [
         ]
     },
     {
-        "name": "PlugTimestampFuse",
+        "name": "PlugTimestamp",
         "abi": [
             {
                 "type": "function",
@@ -2143,7 +2143,7 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "enforceFuse",
+                "name": "enforce",
                 "inputs": [
                     {
                         "name": "$terms",

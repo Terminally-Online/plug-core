@@ -8,7 +8,8 @@ import { PlugTypes } from "./Plug.Types.sol";
 import {
     PlugLib, PlugTypesLib, PlugAddressesLib
 } from "../libraries/Plug.Lib.sol";
-import { PlugFuseInterface } from "../interfaces/Plug.Fuse.Interface.sol";
+import { PlugConnectorInterface } from
+    "../interfaces/Plug.Connector.Interface.sol";
 
 /**
  * @title PlugCore
@@ -75,7 +76,7 @@ abstract contract PlugCore is PlugTypes {
                     value: plug.value
                 }(
                     abi.encodeWithSelector(
-                        PlugFuseInterface.enforceFuse.selector,
+                        PlugConnectorInterface.enforce.selector,
                         plug.data[1:],
                         plugsHash
                     )
