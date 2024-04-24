@@ -3,7 +3,7 @@
 pragma solidity 0.8.23;
 
 import { PlugSocket } from "../abstracts/Plug.Socket.sol";
-import { PlugTrading } from "../abstracts/Plug.Trading.sol";
+import { PlugLib, PlugTrading } from "../abstracts/Plug.Trading.sol";
 import { Receiver } from "solady/accounts/Receiver.sol";
 import { UUPSUpgradeable } from "solady/utils/UUPSUpgradeable.sol";
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
@@ -14,6 +14,21 @@ import { MerkleProofLib } from "solady/utils/MerkleProofLib.sol";
  * @author @nftchance (chance@onplug.io)
  */
 contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
+    /**
+     * @notice Only allow calls from senders that represent the Socket owner
+     *         or the Socket itself to allow owner-only action as well as
+     *         internal actions declared by the Socket owner.
+     */
+    modifier onlyThis() {
+        if (msg.sender != owner()) {
+            if (msg.sender != address(this)) {
+                /// @dev If the sender is an invalid caller, revert.
+                revert PlugLib.CallerInvalid(address(this), msg.sender);
+            }
+        }
+        _;
+    }
+
     /*
     * @notice The constructor for the Plug Vault Socket will
     *         initialize to address(1) when not deployed through
@@ -36,14 +51,26 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
 
     /**
      * See { PlugSocket-revoke }
-     *
-     * @notice Revocation cannot be signed and delegated to a Solver as unexpected
-     *         delay in revocation could lead to unexpected behavior. Therefore,
-     *         revocation is only allowed by the owner of the Socket.
      */
-    function revoke(bytes32 $plugsHash, bool $isRevoked) public override onlyOwner {
+    function revoke(bytes32 $plugsHash, bool $isRevoked) public override onlyThis {
         /// @dev Utilize the core revocation functionality that blocks usage.
         _revoke($plugsHash, $isRevoked);
+    }
+
+    /**
+     * @notice Batch implementation of Plug bundle revocation.
+     * @param $plugsHash The array of Plugs hashes to revoke.
+     * @param $isRevoked The array of boolean values to revoke the Plugs.
+     */
+    function revoke(bytes32[] calldata $plugsHash, bool[] calldata $isRevoked) public onlyThis {
+        /// @dev Capture the length of the hashes loop.
+        uint256 length = $plugsHash.length;
+
+        /// @dev Loop through all of the Plugs hashes that are being revoked.
+        for (uint256 i = length - 1; i > 0; i--) {
+            /// @dev Utilize the core revocation functionality that blocks usage.
+            _revoke($plugsHash[i], $isRevoked[i]);
+        }
     }
 
     /**
@@ -124,7 +151,7 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
     /**
      * See { UUPSUpgradeable._authorizeUpgrade }
      */
-    function _authorizeUpgrade(address) internal virtual override onlyOwner { }
+    function _authorizeUpgrade(address) internal virtual override onlyThis { }
 
     /**
      * See { PlugTrading._guardInitializeOwnership }
