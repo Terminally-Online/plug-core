@@ -51,11 +51,11 @@
   },
   "dependencies": {
     "@0xsequence/wallet-contracts": "^2.0.0",
-    "@nftchance/plug-types": "^0.9.13",
-    "abitype": "^1.0.2",
-    "solady": "^0.0.191",
-    "viem": "^2.9.17",
-    "wagmi": "^2.5.19"
+    "@nftchance/plug-types": "^0.9.15",
+    "abitype": "^1.0.4",
+    "solady": "^0.0.213",
+    "viem": "^2.16.2",
+    "wagmi": "^2.10.7"
   },
   "repository": {
     "type": "git",
