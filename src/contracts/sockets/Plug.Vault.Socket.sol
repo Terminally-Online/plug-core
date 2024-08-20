@@ -69,7 +69,9 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
      *      function in your contract with the additional logic.
      * @param $router The router of the transaction.
      */
-    function _enforceRouter(address $router)
+    function _enforceRouter(
+        address $router
+    )
         internal
         view
         virtual
@@ -82,7 +84,9 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
     /**
      * See { PlugEnforce._enforceSignature }
      */
-    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
+    function _enforceSignature(
+        PlugTypesLib.LivePlugs calldata $input
+    )
         internal
         view
         virtual
@@ -127,7 +131,9 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
     /**
      * See { PlugEnforce._enforceSender }
      */
-    function _enforceSender(address $sender)
+    function _enforceSender(
+        address $sender
+    )
         internal
         view
         virtual
