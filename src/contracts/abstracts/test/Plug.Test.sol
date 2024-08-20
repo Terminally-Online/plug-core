@@ -462,8 +462,7 @@ abstract contract TestPlug is TestPlus {
     }
 
     function deployVault() internal virtual returns (PlugVaultSocket $vault) {
-        (, address vaultAddress) =
-            factory.deploy(bytes32(abi.encodePacked(signer, uint96(0))), address(plug));
+        (, address vaultAddress) = factory.deploy(bytes32(abi.encodePacked(signer, uint96(0))));
         $vault = PlugVaultSocket(payable(vaultAddress));
     }
 

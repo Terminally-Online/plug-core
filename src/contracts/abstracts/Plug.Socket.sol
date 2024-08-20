@@ -10,9 +10,7 @@ import { PlugTypesLib } from "./Plug.Types.sol";
 
 /**
  * @title Plug
- * @notice The core contract for the Plug framework that enables
- *         counterfactual revokable pin of extremely
- *         granular pin and execution paths.
+ * @notice The core contract for the Plug framework extremely execution paths.
  * @author @nftchance (chance@onplug.io)
  */
 abstract contract PlugSocket is PlugSocketInterface, PlugCore, PlugEnforce, ReentrancyGuard {

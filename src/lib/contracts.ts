@@ -9,43 +9,6 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "approve",
-                "inputs": [
-                    {
-                        "name": "account",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "id",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "balanceOf",
-                "inputs": [
-                    {
-                        "name": "owner",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "result",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
                 "name": "cancelOwnershipHandover",
                 "inputs": [],
                 "outputs": [],
@@ -72,11 +35,6 @@ export const contracts = [
                         "name": "$salt",
                         "type": "bytes32",
                         "internalType": "bytes32"
-                    },
-                    {
-                        "name": "$router",
-                        "type": "address",
-                        "internalType": "address"
                     }
                 ],
                 "outputs": [
@@ -111,25 +69,6 @@ export const contracts = [
                 "outputs": [
                     {
                         "name": "$vault",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "getApproved",
-                "inputs": [
-                    {
-                        "name": "id",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "result",
                         "type": "address",
                         "internalType": "address"
                     }
@@ -199,64 +138,8 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "isApprovedForAll",
-                "inputs": [
-                    {
-                        "name": "owner",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "operator",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "result",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "name",
-                "inputs": [],
-                "outputs": [
-                    {
-                        "name": "$name",
-                        "type": "string",
-                        "internalType": "string"
-                    }
-                ],
-                "stateMutability": "pure"
-            },
-            {
-                "type": "function",
                 "name": "owner",
                 "inputs": [],
-                "outputs": [
-                    {
-                        "name": "result",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "ownerOf",
-                "inputs": [
-                    {
-                        "name": "id",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
                 "outputs": [
                     {
                         "name": "result",
@@ -301,88 +184,6 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "safeTransferFrom",
-                "inputs": [
-                    {
-                        "name": "from",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "to",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "id",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "safeTransferFrom",
-                "inputs": [
-                    {
-                        "name": "from",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "to",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "id",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "data",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "setApprovalForAll",
-                "inputs": [
-                    {
-                        "name": "operator",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "isApproved",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
-                "name": "setBaseURI",
-                "inputs": [
-                    {
-                        "name": "$baseURI",
-                        "type": "string",
-                        "internalType": "string"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
                 "name": "setImplementation",
                 "inputs": [
                     {
@@ -401,80 +202,6 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "supportsInterface",
-                "inputs": [
-                    {
-                        "name": "interfaceId",
-                        "type": "bytes4",
-                        "internalType": "bytes4"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "result",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "symbol",
-                "inputs": [],
-                "outputs": [
-                    {
-                        "name": "$symbol",
-                        "type": "string",
-                        "internalType": "string"
-                    }
-                ],
-                "stateMutability": "pure"
-            },
-            {
-                "type": "function",
-                "name": "tokenURI",
-                "inputs": [
-                    {
-                        "name": "$tokenId",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "$uri",
-                        "type": "string",
-                        "internalType": "string"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "transferFrom",
-                "inputs": [
-                    {
-                        "name": "from",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "to",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "id",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
                 "name": "transferOwnership",
                 "inputs": [
                     {
@@ -485,56 +212,6 @@ export const contracts = [
                 ],
                 "outputs": [],
                 "stateMutability": "payable"
-            },
-            {
-                "type": "event",
-                "name": "Approval",
-                "inputs": [
-                    {
-                        "name": "owner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "account",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "id",
-                        "type": "uint256",
-                        "indexed": true,
-                        "internalType": "uint256"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
-                "name": "ApprovalForAll",
-                "inputs": [
-                    {
-                        "name": "owner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "operator",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "isApproved",
-                        "type": "bool",
-                        "indexed": false,
-                        "internalType": "bool"
-                    }
-                ],
-                "anonymous": false
             },
             {
                 "type": "event",
@@ -607,43 +284,8 @@ export const contracts = [
                 "anonymous": false
             },
             {
-                "type": "event",
-                "name": "Transfer",
-                "inputs": [
-                    {
-                        "name": "from",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "to",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "id",
-                        "type": "uint256",
-                        "indexed": true,
-                        "internalType": "uint256"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "error",
-                "name": "AccountBalanceOverflow",
-                "inputs": []
-            },
-            {
                 "type": "error",
                 "name": "AlreadyInitialized",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "BalanceQueryForZeroAddress",
                 "inputs": []
             },
             {
@@ -676,36 +318,6 @@ export const contracts = [
             {
                 "type": "error",
                 "name": "NoHandoverRequest",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "NotOwnerNorApproved",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "TokenAlreadyExists",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "TokenDoesNotExist",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "TransferFromIncorrectOwner",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "TransferToNonERC721ReceiverImplementer",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "TransferToZeroAddress",
                 "inputs": []
             },
             {
@@ -1154,16 +766,23 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "SET_IMAGE_HASH_TYPE_HASH",
+                "name": "cancelOwnershipHandover",
                 "inputs": [],
-                "outputs": [
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "completeOwnershipHandover",
+                "inputs": [
                     {
-                        "name": "",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
+                        "name": "pendingOwner",
+                        "type": "address",
+                        "internalType": "address"
                     }
                 ],
-                "stateMutability": "view"
+                "outputs": [],
+                "stateMutability": "payable"
             },
             {
                 "type": "function",
@@ -1408,82 +1027,16 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "imageHash",
-                "inputs": [],
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
                 "name": "initialize",
                 "inputs": [
                     {
-                        "name": "$ownership",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$router",
+                        "name": "$owner",
                         "type": "address",
                         "internalType": "address"
                     }
                 ],
                 "outputs": [],
                 "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
-                "name": "isValidSignature",
-                "inputs": [
-                    {
-                        "name": "_hash",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    },
-                    {
-                        "name": "_signatures",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "bytes4",
-                        "internalType": "bytes4"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "isValidSignature",
-                "inputs": [
-                    {
-                        "name": "_data",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "_signatures",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "bytes4",
-                        "internalType": "bytes4"
-                    }
-                ],
-                "stateMutability": "view"
             },
             {
                 "type": "function",
@@ -1504,7 +1057,7 @@ export const contracts = [
                 "inputs": [],
                 "outputs": [
                     {
-                        "name": "$owner",
+                        "name": "result",
                         "type": "address",
                         "internalType": "address"
                     }
@@ -1513,13 +1066,19 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "ownership",
-                "inputs": [],
-                "outputs": [
+                "name": "ownershipHandoverExpiresAt",
+                "inputs": [
                     {
-                        "name": "",
+                        "name": "pendingOwner",
                         "type": "address",
                         "internalType": "address"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "result",
+                        "type": "uint256",
+                        "internalType": "uint256"
                     }
                 ],
                 "stateMutability": "view"
@@ -1701,79 +1260,17 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "router",
+                "name": "renounceOwnership",
                 "inputs": [],
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "stateMutability": "view"
+                "outputs": [],
+                "stateMutability": "payable"
             },
             {
                 "type": "function",
-                "name": "signatureRecovery",
-                "inputs": [
-                    {
-                        "name": "_digest",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    },
-                    {
-                        "name": "_signature",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "threshold",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "weight",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "imageHash",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    },
-                    {
-                        "name": "subdigest",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    },
-                    {
-                        "name": "checkpoint",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "supportsInterface",
-                "inputs": [
-                    {
-                        "name": "_interfaceID",
-                        "type": "bytes4",
-                        "internalType": "bytes4"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ],
-                "stateMutability": "pure"
+                "name": "requestOwnershipHandover",
+                "inputs": [],
+                "outputs": [],
+                "stateMutability": "payable"
             },
             {
                 "type": "function",
@@ -1790,42 +1287,16 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "tokenId",
-                "inputs": [],
-                "outputs": [
-                    {
-                        "name": "$tokenId",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
                 "name": "transferOwnership",
                 "inputs": [
                     {
-                        "name": "$newOwner",
+                        "name": "newOwner",
                         "type": "address",
                         "internalType": "address"
                     }
                 ],
                 "outputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
-                "name": "updateImageHash",
-                "inputs": [
-                    {
-                        "name": "_imageHash",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
+                "stateMutability": "payable"
             },
             {
                 "type": "function",
@@ -1860,13 +1331,45 @@ export const contracts = [
             },
             {
                 "type": "event",
-                "name": "ImageHashUpdated",
+                "name": "OwnershipHandoverCanceled",
                 "inputs": [
                     {
-                        "name": "newImageHash",
-                        "type": "bytes32",
-                        "indexed": false,
-                        "internalType": "bytes32"
+                        "name": "pendingOwner",
+                        "type": "address",
+                        "indexed": true,
+                        "internalType": "address"
+                    }
+                ],
+                "anonymous": false
+            },
+            {
+                "type": "event",
+                "name": "OwnershipHandoverRequested",
+                "inputs": [
+                    {
+                        "name": "pendingOwner",
+                        "type": "address",
+                        "indexed": true,
+                        "internalType": "address"
+                    }
+                ],
+                "anonymous": false
+            },
+            {
+                "type": "event",
+                "name": "OwnershipTransferred",
+                "inputs": [
+                    {
+                        "name": "oldOwner",
+                        "type": "address",
+                        "indexed": true,
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "newOwner",
+                        "type": "address",
+                        "indexed": true,
+                        "internalType": "address"
                     }
                 ],
                 "anonymous": false
@@ -1904,31 +1407,6 @@ export const contracts = [
             },
             {
                 "type": "event",
-                "name": "SocketOwnershipTransferred",
-                "inputs": [
-                    {
-                        "name": "previousOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "newOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "imageHash",
-                        "type": "bytes32",
-                        "indexed": false,
-                        "internalType": "bytes32"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
                 "name": "Upgraded",
                 "inputs": [
                     {
@@ -1939,6 +1417,11 @@ export const contracts = [
                     }
                 ],
                 "anonymous": false
+            },
+            {
+                "type": "error",
+                "name": "AlreadyInitialized",
+                "inputs": []
             },
             {
                 "type": "error",
@@ -1974,136 +1457,13 @@ export const contracts = [
             },
             {
                 "type": "error",
-                "name": "EmptySignature",
+                "name": "NewOwnerIsZeroAddress",
                 "inputs": []
             },
             {
                 "type": "error",
-                "name": "ImageHashIsZero",
+                "name": "NoHandoverRequest",
                 "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "InvalidNestedSignature",
-                "inputs": [
-                    {
-                        "name": "_hash",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    },
-                    {
-                        "name": "_addr",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "_signature",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "name": "InvalidSValue",
-                "inputs": [
-                    {
-                        "name": "_signature",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "_s",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "name": "InvalidSignatureFlag",
-                "inputs": [
-                    {
-                        "name": "_flag",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "name": "InvalidSignatureLength",
-                "inputs": [
-                    {
-                        "name": "_signature",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "name": "InvalidSignatureType",
-                "inputs": [
-                    {
-                        "name": "_type",
-                        "type": "bytes1",
-                        "internalType": "bytes1"
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "name": "InvalidVValue",
-                "inputs": [
-                    {
-                        "name": "_signature",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "_v",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "name": "LowWeightChainedSignature",
-                "inputs": [
-                    {
-                        "name": "_signature",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "threshold",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "_weight",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "name": "OnlySelfAuth",
-                "inputs": [
-                    {
-                        "name": "_sender",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "_self",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ]
             },
             {
                 "type": "error",
@@ -2144,17 +1504,6 @@ export const contracts = [
             },
             {
                 "type": "error",
-                "name": "SignerIsAddress0",
-                "inputs": [
-                    {
-                        "name": "_signature",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    }
-                ]
-            },
-            {
-                "type": "error",
                 "name": "SolverInvalid",
                 "inputs": [
                     {
@@ -2171,34 +1520,13 @@ export const contracts = [
             },
             {
                 "type": "error",
-                "name": "TradingAlreadyInitialized",
+                "name": "Unauthorized",
                 "inputs": []
             },
             {
                 "type": "error",
                 "name": "UnauthorizedCallContext",
                 "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "UnsupportedSignatureType",
-                "inputs": [
-                    {
-                        "name": "_signature",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "_type",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "_recoverMode",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ]
             },
             {
                 "type": "error",
@@ -2221,22 +1549,6 @@ export const contracts = [
                     },
                     {
                         "name": "$reality",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ]
-            },
-            {
-                "type": "error",
-                "name": "WrongChainedCheckpointOrder",
-                "inputs": [
-                    {
-                        "name": "_current",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "_prev",
                         "type": "uint256",
                         "internalType": "uint256"
                     }

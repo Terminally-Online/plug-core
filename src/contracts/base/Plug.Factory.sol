@@ -3,10 +3,10 @@
 pragma solidity 0.8.23;
 
 import { PlugFactoryInterface } from "../interfaces/Plug.Factory.Interface.sol";
-import { PlugTradable } from "../abstracts/Plug.Tradable.sol";
 
 import { PlugLib, PlugTypesLib } from "../libraries/Plug.Lib.sol";
 import { LibClone } from "solady/utils/LibClone.sol";
+import { Ownable } from "solady/auth/Ownable.sol";
 
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 
@@ -21,7 +21,7 @@ import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
  *         Sockets to be traded on any major marketplace with ease.
  * @author @nftchance (chance@onplug.io)
  */
-contract PlugFactory is PlugFactoryInterface, PlugTradable {
+contract PlugFactory is PlugFactoryInterface, Ownable {
     /// @dev The mapping of the implementations of the vaults.
     mapping(uint16 => address) public implementations;
 
@@ -30,7 +30,7 @@ contract PlugFactory is PlugFactoryInterface, PlugTradable {
      *         with real intent of consumption.
      */
     constructor() {
-        _initializeTradable(address(1), "");
+        _initializeOwner(address(1));
     }
 
     /**
@@ -46,7 +46,7 @@ contract PlugFactory is PlugFactoryInterface, PlugTradable {
     {
         /// @dev Configure the starting state of the tradable functionatlity
         ///      that enables non-fungible representation of Socket ownership.
-        _initializeTradable($owner, $baseURI);
+        _initializeOwner($owner);
 
         /// @dev Set the implementation of the first live version.
         implementations[0] = $implementation;
@@ -70,10 +70,7 @@ contract PlugFactory is PlugFactoryInterface, PlugTradable {
     /**
      * See { PlugFactoryInterface.deploy }
      */
-    function deploy(
-        bytes32 $salt,
-        address $router
-    )
+    function deploy(bytes32 $salt)
         public
         payable
         virtual
@@ -108,13 +105,7 @@ contract PlugFactory is PlugFactoryInterface, PlugTradable {
 
             /// @dev Initialize the Socket with the ownership proxy pointing
             ///      this factory that is deploying the Socket.
-            PlugSocketInterface($socket).initialize(address(this), $router);
-
-            /// @dev Mint the transferable ownership token to the signer that
-            ///      created the intent which is implicitly the Socket admin
-            ///      with the id of the token as integer representation of
-            ///      the address the Socket was deployed to.
-            _mint(admin, uint256(uint160(address($socket))));
+            PlugSocketInterface($socket).initialize(admin);
         }
     }
 

@@ -134,23 +134,6 @@ export const plugFactoryAbi = [
   { type: 'constructor', inputs: [], stateMutability: 'nonpayable' },
   {
     type: 'function',
-    inputs: [
-      { name: 'account', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'approve',
-    outputs: [],
-    stateMutability: 'payable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'owner', internalType: 'address', type: 'address' }],
-    name: 'balanceOf',
-    outputs: [{ name: 'result', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
     inputs: [],
     name: 'cancelOwnershipHandover',
     outputs: [],
@@ -167,10 +150,7 @@ export const plugFactoryAbi = [
   },
   {
     type: 'function',
-    inputs: [
-      { name: '$salt', internalType: 'bytes32', type: 'bytes32' },
-      { name: '$router', internalType: 'address', type: 'address' },
-    ],
+    inputs: [{ name: '$salt', internalType: 'bytes32', type: 'bytes32' }],
     name: 'deploy',
     outputs: [
       { name: '$alreadyDeployed', internalType: 'bool', type: 'bool' },
@@ -186,13 +166,6 @@ export const plugFactoryAbi = [
     ],
     name: 'getAddress',
     outputs: [{ name: '$vault', internalType: 'address', type: 'address' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
-    name: 'getApproved',
-    outputs: [{ name: 'result', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -226,32 +199,8 @@ export const plugFactoryAbi = [
   },
   {
     type: 'function',
-    inputs: [
-      { name: 'owner', internalType: 'address', type: 'address' },
-      { name: 'operator', internalType: 'address', type: 'address' },
-    ],
-    name: 'isApprovedForAll',
-    outputs: [{ name: 'result', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'name',
-    outputs: [{ name: '$name', internalType: 'string', type: 'string' }],
-    stateMutability: 'pure',
-  },
-  {
-    type: 'function',
     inputs: [],
     name: 'owner',
-    outputs: [{ name: 'result', internalType: 'address', type: 'address' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: 'id', internalType: 'uint256', type: 'uint256' }],
-    name: 'ownerOf',
     outputs: [{ name: 'result', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
@@ -281,46 +230,6 @@ export const plugFactoryAbi = [
   {
     type: 'function',
     inputs: [
-      { name: 'from', internalType: 'address', type: 'address' },
-      { name: 'to', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'payable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'from', internalType: 'address', type: 'address' },
-      { name: 'to', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-      { name: 'data', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'safeTransferFrom',
-    outputs: [],
-    stateMutability: 'payable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'operator', internalType: 'address', type: 'address' },
-      { name: 'isApproved', internalType: 'bool', type: 'bool' },
-    ],
-    name: 'setApprovalForAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: '$baseURI', internalType: 'string', type: 'string' }],
-    name: 'setBaseURI',
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
       { name: '$version', internalType: 'uint16', type: 'uint16' },
       { name: '$implementation', internalType: 'address', type: 'address' },
     ],
@@ -330,87 +239,10 @@ export const plugFactoryAbi = [
   },
   {
     type: 'function',
-    inputs: [{ name: 'interfaceId', internalType: 'bytes4', type: 'bytes4' }],
-    name: 'supportsInterface',
-    outputs: [{ name: 'result', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [],
-    name: 'symbol',
-    outputs: [{ name: '$symbol', internalType: 'string', type: 'string' }],
-    stateMutability: 'pure',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: '$tokenId', internalType: 'uint256', type: 'uint256' }],
-    name: 'tokenURI',
-    outputs: [{ name: '$uri', internalType: 'string', type: 'string' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: 'from', internalType: 'address', type: 'address' },
-      { name: 'to', internalType: 'address', type: 'address' },
-      { name: 'id', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'transferFrom',
-    outputs: [],
-    stateMutability: 'payable',
-  },
-  {
-    type: 'function',
     inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
     name: 'transferOwnership',
     outputs: [],
     stateMutability: 'payable',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'owner',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'account',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: true },
-    ],
-    name: 'Approval',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
-        name: 'owner',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'operator',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'isApproved',
-        internalType: 'bool',
-        type: 'bool',
-        indexed: false,
-      },
-    ],
-    name: 'ApprovalForAll',
   },
   {
     type: 'event',
@@ -482,19 +314,7 @@ export const plugFactoryAbi = [
     ],
     name: 'SocketDeployed',
   },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      { name: 'from', internalType: 'address', type: 'address', indexed: true },
-      { name: 'to', internalType: 'address', type: 'address', indexed: true },
-      { name: 'id', internalType: 'uint256', type: 'uint256', indexed: true },
-    ],
-    name: 'Transfer',
-  },
-  { type: 'error', inputs: [], name: 'AccountBalanceOverflow' },
   { type: 'error', inputs: [], name: 'AlreadyInitialized' },
-  { type: 'error', inputs: [], name: 'BalanceQueryForZeroAddress' },
   {
     type: 'error',
     inputs: [{ name: '$version', internalType: 'uint16', type: 'uint16' }],
@@ -507,12 +327,6 @@ export const plugFactoryAbi = [
   },
   { type: 'error', inputs: [], name: 'NewOwnerIsZeroAddress' },
   { type: 'error', inputs: [], name: 'NoHandoverRequest' },
-  { type: 'error', inputs: [], name: 'NotOwnerNorApproved' },
-  { type: 'error', inputs: [], name: 'TokenAlreadyExists' },
-  { type: 'error', inputs: [], name: 'TokenDoesNotExist' },
-  { type: 'error', inputs: [], name: 'TransferFromIncorrectOwner' },
-  { type: 'error', inputs: [], name: 'TransferToNonERC721ReceiverImplementer' },
-  { type: 'error', inputs: [], name: 'TransferToZeroAddress' },
   { type: 'error', inputs: [], name: 'Unauthorized' },
 ] as const
 
@@ -744,9 +558,18 @@ export const plugVaultSocketAbi = [
   {
     type: 'function',
     inputs: [],
-    name: 'SET_IMAGE_HASH_TYPE_HASH',
-    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
-    stateMutability: 'view',
+    name: 'cancelOwnershipHandover',
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      { name: 'pendingOwner', internalType: 'address', type: 'address' },
+    ],
+    name: 'completeOwnershipHandover',
+    outputs: [],
+    stateMutability: 'payable',
   },
   {
     type: 'function',
@@ -873,40 +696,10 @@ export const plugVaultSocketAbi = [
   },
   {
     type: 'function',
-    inputs: [],
-    name: 'imageHash',
-    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: '$ownership', internalType: 'address', type: 'address' },
-      { name: '$router', internalType: 'address', type: 'address' },
-    ],
+    inputs: [{ name: '$owner', internalType: 'address', type: 'address' }],
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: '_hash', internalType: 'bytes32', type: 'bytes32' },
-      { name: '_signatures', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'isValidSignature',
-    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: '_data', internalType: 'bytes', type: 'bytes' },
-      { name: '_signatures', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'isValidSignature',
-    outputs: [{ name: '', internalType: 'bytes4', type: 'bytes4' }],
-    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -919,14 +712,16 @@ export const plugVaultSocketAbi = [
     type: 'function',
     inputs: [],
     name: 'owner',
-    outputs: [{ name: '$owner', internalType: 'address', type: 'address' }],
+    outputs: [{ name: 'result', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
   {
     type: 'function',
-    inputs: [],
-    name: 'ownership',
-    outputs: [{ name: '', internalType: 'address', type: 'address' }],
+    inputs: [
+      { name: 'pendingOwner', internalType: 'address', type: 'address' },
+    ],
+    name: 'ownershipHandoverExpiresAt',
+    outputs: [{ name: 'result', internalType: 'uint256', type: 'uint256' }],
     stateMutability: 'view',
   },
   {
@@ -1025,32 +820,16 @@ export const plugVaultSocketAbi = [
   {
     type: 'function',
     inputs: [],
-    name: 'router',
-    outputs: [{ name: '', internalType: 'address', type: 'address' }],
-    stateMutability: 'view',
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'payable',
   },
   {
     type: 'function',
-    inputs: [
-      { name: '_digest', internalType: 'bytes32', type: 'bytes32' },
-      { name: '_signature', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'signatureRecovery',
-    outputs: [
-      { name: 'threshold', internalType: 'uint256', type: 'uint256' },
-      { name: 'weight', internalType: 'uint256', type: 'uint256' },
-      { name: 'imageHash', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'subdigest', internalType: 'bytes32', type: 'bytes32' },
-      { name: 'checkpoint', internalType: 'uint256', type: 'uint256' },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: '_interfaceID', internalType: 'bytes4', type: 'bytes4' }],
-    name: 'supportsInterface',
-    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
-    stateMutability: 'pure',
+    inputs: [],
+    name: 'requestOwnershipHandover',
+    outputs: [],
+    stateMutability: 'payable',
   },
   {
     type: 'function',
@@ -1061,24 +840,10 @@ export const plugVaultSocketAbi = [
   },
   {
     type: 'function',
-    inputs: [],
-    name: 'tokenId',
-    outputs: [{ name: '$tokenId', internalType: 'uint256', type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: '$newOwner', internalType: 'address', type: 'address' }],
+    inputs: [{ name: 'newOwner', internalType: 'address', type: 'address' }],
     name: 'transferOwnership',
     outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: '_imageHash', internalType: 'bytes32', type: 'bytes32' }],
-    name: 'updateImageHash',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
   },
   {
     type: 'function',
@@ -1102,13 +867,45 @@ export const plugVaultSocketAbi = [
     anonymous: false,
     inputs: [
       {
-        name: 'newImageHash',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: false,
+        name: 'pendingOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
       },
     ],
-    name: 'ImageHashUpdated',
+    name: 'OwnershipHandoverCanceled',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'pendingOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipHandoverRequested',
+  },
+  {
+    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        name: 'oldOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+      {
+        name: 'newOwner',
+        internalType: 'address',
+        type: 'address',
+        indexed: true,
+      },
+    ],
+    name: 'OwnershipTransferred',
   },
   {
     type: 'event',
@@ -1138,31 +935,6 @@ export const plugVaultSocketAbi = [
     anonymous: false,
     inputs: [
       {
-        name: 'previousOwner',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'newOwner',
-        internalType: 'address',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        name: 'imageHash',
-        internalType: 'bytes32',
-        type: 'bytes32',
-        indexed: false,
-      },
-    ],
-    name: 'SocketOwnershipTransferred',
-  },
-  {
-    type: 'event',
-    anonymous: false,
-    inputs: [
-      {
         name: 'implementation',
         internalType: 'address',
         type: 'address',
@@ -1171,6 +943,7 @@ export const plugVaultSocketAbi = [
     ],
     name: 'Upgraded',
   },
+  { type: 'error', inputs: [], name: 'AlreadyInitialized' },
   {
     type: 'error',
     inputs: [
@@ -1187,65 +960,8 @@ export const plugVaultSocketAbi = [
     ],
     name: 'CompensationFailed',
   },
-  { type: 'error', inputs: [], name: 'EmptySignature' },
-  { type: 'error', inputs: [], name: 'ImageHashIsZero' },
-  {
-    type: 'error',
-    inputs: [
-      { name: '_hash', internalType: 'bytes32', type: 'bytes32' },
-      { name: '_addr', internalType: 'address', type: 'address' },
-      { name: '_signature', internalType: 'bytes', type: 'bytes' },
-    ],
-    name: 'InvalidNestedSignature',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: '_signature', internalType: 'bytes', type: 'bytes' },
-      { name: '_s', internalType: 'bytes32', type: 'bytes32' },
-    ],
-    name: 'InvalidSValue',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: '_flag', internalType: 'uint256', type: 'uint256' }],
-    name: 'InvalidSignatureFlag',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: '_signature', internalType: 'bytes', type: 'bytes' }],
-    name: 'InvalidSignatureLength',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: '_type', internalType: 'bytes1', type: 'bytes1' }],
-    name: 'InvalidSignatureType',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: '_signature', internalType: 'bytes', type: 'bytes' },
-      { name: '_v', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'InvalidVValue',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: '_signature', internalType: 'bytes', type: 'bytes' },
-      { name: 'threshold', internalType: 'uint256', type: 'uint256' },
-      { name: '_weight', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'LowWeightChainedSignature',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: '_sender', internalType: 'address', type: 'address' },
-      { name: '_self', internalType: 'address', type: 'address' },
-    ],
-    name: 'OnlySelfAuth',
-  },
+  { type: 'error', inputs: [], name: 'NewOwnerIsZeroAddress' },
+  { type: 'error', inputs: [], name: 'NoHandoverRequest' },
   { type: 'error', inputs: [], name: 'PlugFailed' },
   { type: 'error', inputs: [], name: 'Reentrancy' },
   {
@@ -1261,28 +977,14 @@ export const plugVaultSocketAbi = [
   { type: 'error', inputs: [], name: 'SignatureInvalid' },
   {
     type: 'error',
-    inputs: [{ name: '_signature', internalType: 'bytes', type: 'bytes' }],
-    name: 'SignerIsAddress0',
-  },
-  {
-    type: 'error',
     inputs: [
       { name: '$expected', internalType: 'address', type: 'address' },
       { name: '$reality', internalType: 'address', type: 'address' },
     ],
     name: 'SolverInvalid',
   },
-  { type: 'error', inputs: [], name: 'TradingAlreadyInitialized' },
+  { type: 'error', inputs: [], name: 'Unauthorized' },
   { type: 'error', inputs: [], name: 'UnauthorizedCallContext' },
-  {
-    type: 'error',
-    inputs: [
-      { name: '_signature', internalType: 'bytes', type: 'bytes' },
-      { name: '_type', internalType: 'uint256', type: 'uint256' },
-      { name: '_recoverMode', internalType: 'bool', type: 'bool' },
-    ],
-    name: 'UnsupportedSignatureType',
-  },
   { type: 'error', inputs: [], name: 'UpgradeFailed' },
   {
     type: 'error',
@@ -1292,14 +994,6 @@ export const plugVaultSocketAbi = [
       { name: '$reality', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'ValueInvalid',
-  },
-  {
-    type: 'error',
-    inputs: [
-      { name: '_current', internalType: 'uint256', type: 'uint256' },
-      { name: '_prev', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'WrongChainedCheckpointOrder',
   },
 ] as const
 
@@ -1366,28 +1060,11 @@ export const useReadPlugFactory = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"balanceOf"`
- */
-export const useReadPlugFactoryBalanceOf = /*#__PURE__*/ createUseReadContract({
-  abi: plugFactoryAbi,
-  functionName: 'balanceOf',
-})
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"getAddress"`
  */
 export const useReadPlugFactoryGetAddress = /*#__PURE__*/ createUseReadContract(
   { abi: plugFactoryAbi, functionName: 'getAddress' },
 )
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"getApproved"`
- */
-export const useReadPlugFactoryGetApproved =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugFactoryAbi,
-    functionName: 'getApproved',
-  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"implementations"`
@@ -1408,36 +1085,11 @@ export const useReadPlugFactoryInitCodeHash =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"isApprovedForAll"`
- */
-export const useReadPlugFactoryIsApprovedForAll =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugFactoryAbi,
-    functionName: 'isApprovedForAll',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"name"`
- */
-export const useReadPlugFactoryName = /*#__PURE__*/ createUseReadContract({
-  abi: plugFactoryAbi,
-  functionName: 'name',
-})
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"owner"`
  */
 export const useReadPlugFactoryOwner = /*#__PURE__*/ createUseReadContract({
   abi: plugFactoryAbi,
   functionName: 'owner',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"ownerOf"`
- */
-export const useReadPlugFactoryOwnerOf = /*#__PURE__*/ createUseReadContract({
-  abi: plugFactoryAbi,
-  functionName: 'ownerOf',
 })
 
 /**
@@ -1450,43 +1102,10 @@ export const useReadPlugFactoryOwnershipHandoverExpiresAt =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"supportsInterface"`
- */
-export const useReadPlugFactorySupportsInterface =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugFactoryAbi,
-    functionName: 'supportsInterface',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"symbol"`
- */
-export const useReadPlugFactorySymbol = /*#__PURE__*/ createUseReadContract({
-  abi: plugFactoryAbi,
-  functionName: 'symbol',
-})
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"tokenURI"`
- */
-export const useReadPlugFactoryTokenUri = /*#__PURE__*/ createUseReadContract({
-  abi: plugFactoryAbi,
-  functionName: 'tokenURI',
-})
-
-/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__
  */
 export const useWritePlugFactory = /*#__PURE__*/ createUseWriteContract({
   abi: plugFactoryAbi,
-})
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"approve"`
- */
-export const useWritePlugFactoryApprove = /*#__PURE__*/ createUseWriteContract({
-  abi: plugFactoryAbi,
-  functionName: 'approve',
 })
 
 /**
@@ -1543,48 +1162,12 @@ export const useWritePlugFactoryRequestOwnershipHandover =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"safeTransferFrom"`
- */
-export const useWritePlugFactorySafeTransferFrom =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: plugFactoryAbi,
-    functionName: 'safeTransferFrom',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"setApprovalForAll"`
- */
-export const useWritePlugFactorySetApprovalForAll =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: plugFactoryAbi,
-    functionName: 'setApprovalForAll',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"setBaseURI"`
- */
-export const useWritePlugFactorySetBaseUri =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: plugFactoryAbi,
-    functionName: 'setBaseURI',
-  })
-
-/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"setImplementation"`
  */
 export const useWritePlugFactorySetImplementation =
   /*#__PURE__*/ createUseWriteContract({
     abi: plugFactoryAbi,
     functionName: 'setImplementation',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"transferFrom"`
- */
-export const useWritePlugFactoryTransferFrom =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: plugFactoryAbi,
-    functionName: 'transferFrom',
   })
 
 /**
@@ -1602,15 +1185,6 @@ export const useWritePlugFactoryTransferOwnership =
 export const useSimulatePlugFactory = /*#__PURE__*/ createUseSimulateContract({
   abi: plugFactoryAbi,
 })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"approve"`
- */
-export const useSimulatePlugFactoryApprove =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: plugFactoryAbi,
-    functionName: 'approve',
-  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"cancelOwnershipHandover"`
@@ -1667,48 +1241,12 @@ export const useSimulatePlugFactoryRequestOwnershipHandover =
   })
 
 /**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"safeTransferFrom"`
- */
-export const useSimulatePlugFactorySafeTransferFrom =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: plugFactoryAbi,
-    functionName: 'safeTransferFrom',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"setApprovalForAll"`
- */
-export const useSimulatePlugFactorySetApprovalForAll =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: plugFactoryAbi,
-    functionName: 'setApprovalForAll',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"setBaseURI"`
- */
-export const useSimulatePlugFactorySetBaseUri =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: plugFactoryAbi,
-    functionName: 'setBaseURI',
-  })
-
-/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"setImplementation"`
  */
 export const useSimulatePlugFactorySetImplementation =
   /*#__PURE__*/ createUseSimulateContract({
     abi: plugFactoryAbi,
     functionName: 'setImplementation',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"transferFrom"`
- */
-export const useSimulatePlugFactoryTransferFrom =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: plugFactoryAbi,
-    functionName: 'transferFrom',
   })
 
 /**
@@ -1725,24 +1263,6 @@ export const useSimulatePlugFactoryTransferOwnership =
  */
 export const useWatchPlugFactoryEvent =
   /*#__PURE__*/ createUseWatchContractEvent({ abi: plugFactoryAbi })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugFactoryAbi}__ and `eventName` set to `"Approval"`
- */
-export const useWatchPlugFactoryApprovalEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: plugFactoryAbi,
-    eventName: 'Approval',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugFactoryAbi}__ and `eventName` set to `"ApprovalForAll"`
- */
-export const useWatchPlugFactoryApprovalForAllEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: plugFactoryAbi,
-    eventName: 'ApprovalForAll',
-  })
 
 /**
  * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugFactoryAbi}__ and `eventName` set to `"OwnershipHandoverCanceled"`
@@ -1778,15 +1298,6 @@ export const useWatchPlugFactorySocketDeployedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: plugFactoryAbi,
     eventName: 'SocketDeployed',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugFactoryAbi}__ and `eventName` set to `"Transfer"`
- */
-export const useWatchPlugFactoryTransferEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: plugFactoryAbi,
-    eventName: 'Transfer',
   })
 
 /**
@@ -2109,15 +1620,6 @@ export const useReadPlugVaultSocket = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"SET_IMAGE_HASH_TYPE_HASH"`
- */
-export const useReadPlugVaultSocketSetImageHashTypeHash =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'SET_IMAGE_HASH_TYPE_HASH',
-  })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"getEIP712DomainHash"`
  */
 export const useReadPlugVaultSocketGetEip712DomainHash =
@@ -2163,24 +1665,6 @@ export const useReadPlugVaultSocketGetPlugsHash =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"imageHash"`
- */
-export const useReadPlugVaultSocketImageHash =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'imageHash',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"isValidSignature"`
- */
-export const useReadPlugVaultSocketIsValidSignature =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'isValidSignature',
-  })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"name"`
  */
 export const useReadPlugVaultSocketName = /*#__PURE__*/ createUseReadContract({
@@ -2197,12 +1681,12 @@ export const useReadPlugVaultSocketOwner = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"ownership"`
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"ownershipHandoverExpiresAt"`
  */
-export const useReadPlugVaultSocketOwnership =
+export const useReadPlugVaultSocketOwnershipHandoverExpiresAt =
   /*#__PURE__*/ createUseReadContract({
     abi: plugVaultSocketAbi,
-    functionName: 'ownership',
+    functionName: 'ownershipHandoverExpiresAt',
   })
 
 /**
@@ -2215,45 +1699,11 @@ export const useReadPlugVaultSocketProxiableUuid =
   })
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"router"`
- */
-export const useReadPlugVaultSocketRouter = /*#__PURE__*/ createUseReadContract(
-  { abi: plugVaultSocketAbi, functionName: 'router' },
-)
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"signatureRecovery"`
- */
-export const useReadPlugVaultSocketSignatureRecovery =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'signatureRecovery',
-  })
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"supportsInterface"`
- */
-export const useReadPlugVaultSocketSupportsInterface =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'supportsInterface',
-  })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"symbol"`
  */
 export const useReadPlugVaultSocketSymbol = /*#__PURE__*/ createUseReadContract(
   { abi: plugVaultSocketAbi, functionName: 'symbol' },
 )
-
-/**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"tokenId"`
- */
-export const useReadPlugVaultSocketTokenId =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'tokenId',
-  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"version"`
@@ -2272,6 +1722,24 @@ export const useWritePlugVaultSocket = /*#__PURE__*/ createUseWriteContract({
 })
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"cancelOwnershipHandover"`
+ */
+export const useWritePlugVaultSocketCancelOwnershipHandover =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'cancelOwnershipHandover',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"completeOwnershipHandover"`
+ */
+export const useWritePlugVaultSocketCompleteOwnershipHandover =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'completeOwnershipHandover',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"initialize"`
  */
 export const useWritePlugVaultSocketInitialize =
@@ -2288,21 +1756,30 @@ export const useWritePlugVaultSocketPlug = /*#__PURE__*/ createUseWriteContract(
 )
 
 /**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useWritePlugVaultSocketRenounceOwnership =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"requestOwnershipHandover"`
+ */
+export const useWritePlugVaultSocketRequestOwnershipHandover =
+  /*#__PURE__*/ createUseWriteContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'requestOwnershipHandover',
+  })
+
+/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"transferOwnership"`
  */
 export const useWritePlugVaultSocketTransferOwnership =
   /*#__PURE__*/ createUseWriteContract({
     abi: plugVaultSocketAbi,
     functionName: 'transferOwnership',
-  })
-
-/**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"updateImageHash"`
- */
-export const useWritePlugVaultSocketUpdateImageHash =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'updateImageHash',
   })
 
 /**
@@ -2319,6 +1796,24 @@ export const useWritePlugVaultSocketUpgradeToAndCall =
  */
 export const useSimulatePlugVaultSocket =
   /*#__PURE__*/ createUseSimulateContract({ abi: plugVaultSocketAbi })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"cancelOwnershipHandover"`
+ */
+export const useSimulatePlugVaultSocketCancelOwnershipHandover =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'cancelOwnershipHandover',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"completeOwnershipHandover"`
+ */
+export const useSimulatePlugVaultSocketCompleteOwnershipHandover =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'completeOwnershipHandover',
+  })
 
 /**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"initialize"`
@@ -2339,21 +1834,30 @@ export const useSimulatePlugVaultSocketPlug =
   })
 
 /**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"renounceOwnership"`
+ */
+export const useSimulatePlugVaultSocketRenounceOwnership =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'renounceOwnership',
+  })
+
+/**
+ * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"requestOwnershipHandover"`
+ */
+export const useSimulatePlugVaultSocketRequestOwnershipHandover =
+  /*#__PURE__*/ createUseSimulateContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'requestOwnershipHandover',
+  })
+
+/**
  * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"transferOwnership"`
  */
 export const useSimulatePlugVaultSocketTransferOwnership =
   /*#__PURE__*/ createUseSimulateContract({
     abi: plugVaultSocketAbi,
     functionName: 'transferOwnership',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"updateImageHash"`
- */
-export const useSimulatePlugVaultSocketUpdateImageHash =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: plugVaultSocketAbi,
-    functionName: 'updateImageHash',
   })
 
 /**
@@ -2372,12 +1876,30 @@ export const useWatchPlugVaultSocketEvent =
   /*#__PURE__*/ createUseWatchContractEvent({ abi: plugVaultSocketAbi })
 
 /**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `eventName` set to `"ImageHashUpdated"`
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `eventName` set to `"OwnershipHandoverCanceled"`
  */
-export const useWatchPlugVaultSocketImageHashUpdatedEvent =
+export const useWatchPlugVaultSocketOwnershipHandoverCanceledEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: plugVaultSocketAbi,
-    eventName: 'ImageHashUpdated',
+    eventName: 'OwnershipHandoverCanceled',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `eventName` set to `"OwnershipHandoverRequested"`
+ */
+export const useWatchPlugVaultSocketOwnershipHandoverRequestedEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: plugVaultSocketAbi,
+    eventName: 'OwnershipHandoverRequested',
+  })
+
+/**
+ * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `eventName` set to `"OwnershipTransferred"`
+ */
+export const useWatchPlugVaultSocketOwnershipTransferredEvent =
+  /*#__PURE__*/ createUseWatchContractEvent({
+    abi: plugVaultSocketAbi,
+    eventName: 'OwnershipTransferred',
   })
 
 /**
@@ -2387,15 +1909,6 @@ export const useWatchPlugVaultSocketPlugsExecutedEvent =
   /*#__PURE__*/ createUseWatchContractEvent({
     abi: plugVaultSocketAbi,
     eventName: 'PlugsExecuted',
-  })
-
-/**
- * Wraps __{@link useWatchContractEvent}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `eventName` set to `"SocketOwnershipTransferred"`
- */
-export const useWatchPlugVaultSocketSocketOwnershipTransferredEvent =
-  /*#__PURE__*/ createUseWatchContractEvent({
-    abi: plugVaultSocketAbi,
-    eventName: 'SocketOwnershipTransferred',
   })
 
 /**

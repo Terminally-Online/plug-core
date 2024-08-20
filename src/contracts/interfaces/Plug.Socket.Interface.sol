@@ -8,11 +8,9 @@ import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 interface PlugSocketInterface {
     /**
      * @notice Initialize the Socket with the ownership proxy of the Socket.
-     * @param $ownership The address of the owner of the Socket.
-     * @param $router The address of the Router that has permission to orchestate
-     *                the execution of intents.
+     * @param $owner The address of the owner.
      */
-    function initialize(address $ownership, address $router) external;
+    function initialize(address $owner) external;
 
     /**
      * @notice Allows anyone to submit a plugs of signed plugs for processing.

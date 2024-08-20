@@ -89,7 +89,7 @@ contract Plug is PlugInterface {
         /// @dev If the Socket has not yet been deployed, deploy it.
         if (socketAddress.code.length == 0) {
             /// @dev Call the factory that will handle the intent based deployment.
-            (, address $socketAddress) = factory.deploy($livePlugs.plugs.salt, address(this));
+            (, address $socketAddress) = factory.deploy($livePlugs.plugs.salt);
 
             /// @dev Confirm the Socket was deployed to the right address.
             if (socketAddress != $socketAddress) {
