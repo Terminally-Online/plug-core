@@ -50,30 +50,6 @@ contract PlugVaultSocket is PlugSocket, PlugTrading, Receiver, UUPSUpgradeable {
     }
 
     /**
-     * See { PlugSocket-revoke }
-     */
-    function revoke(bytes32 $plugsHash, bool $isRevoked) public override onlyThis {
-        /// @dev Utilize the core revocation functionality that blocks usage.
-        _revoke($plugsHash, $isRevoked);
-    }
-
-    /**
-     * @notice Batch implementation of Plug bundle revocation.
-     * @param $plugsHash The array of Plugs hashes to revoke.
-     * @param $isRevoked The array of boolean values to revoke the Plugs.
-     */
-    function revoke(bytes32[] calldata $plugsHash, bool[] calldata $isRevoked) public onlyThis {
-        /// @dev Capture the length of the hashes loop.
-        uint256 length = $plugsHash.length;
-
-        /// @dev Loop through all of the Plugs hashes that are being revoked.
-        for (uint256 i = length - 1; i > 0; i--) {
-            /// @dev Utilize the core revocation functionality that blocks usage.
-            _revoke($plugsHash[i], $isRevoked[i]);
-        }
-    }
-
-    /**
      * See { PlugSocket-name }
      */
     function name() public pure override returns (string memory $name) {

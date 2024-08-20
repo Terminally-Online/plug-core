@@ -1439,25 +1439,6 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "isRevoked",
-                "inputs": [
-                    {
-                        "name": "",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
                 "name": "isValidSignature",
                 "inputs": [
                     {
@@ -1720,42 +1701,6 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "revoke",
-                "inputs": [
-                    {
-                        "name": "$plugsHash",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
-                    },
-                    {
-                        "name": "$isRevoked",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
-                "name": "revoke",
-                "inputs": [
-                    {
-                        "name": "$plugsHash",
-                        "type": "bytes32[]",
-                        "internalType": "bytes32[]"
-                    },
-                    {
-                        "name": "$isRevoked",
-                        "type": "bool[]",
-                        "internalType": "bool[]"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
                 "name": "router",
                 "inputs": [],
                 "outputs": [
@@ -1953,25 +1898,6 @@ export const contracts = [
                                 "internalType": "bytes"
                             }
                         ]
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
-                "name": "PlugsRevocationUpdated",
-                "inputs": [
-                    {
-                        "name": "$plugsHash",
-                        "type": "bytes32",
-                        "indexed": true,
-                        "internalType": "bytes32"
-                    },
-                    {
-                        "name": "$revoked",
-                        "type": "bool",
-                        "indexed": true,
-                        "internalType": "bool"
                     }
                 ],
                 "anonymous": false
@@ -2182,11 +2108,6 @@ export const contracts = [
             {
                 "type": "error",
                 "name": "PlugFailed",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "PlugsRevoked",
                 "inputs": []
             },
             {

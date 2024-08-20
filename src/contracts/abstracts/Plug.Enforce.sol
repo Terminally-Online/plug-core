@@ -35,7 +35,6 @@ abstract contract PlugEnforce is PlugTypes {
      *               signature used to verify the execution permission.
      */
     modifier enforceSignature(PlugTypesLib.LivePlugs calldata $input) {
-        // require(_enforceSignature($input), "Plug:invalid-signature");
         if (_enforceSignature($input) == false) {
             revert PlugLib.SignatureInvalid();
         }

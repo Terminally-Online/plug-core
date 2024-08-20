@@ -12,7 +12,6 @@ library PlugLib {
         address indexed previousOwner, address indexed newOwner, bytes32 imageHash
     );
 
-    event PlugsRevocationUpdated(bytes32 indexed $plugsHash, bool indexed $revoked);
     event PlugsExecuted(bytes32 indexed $plugsHash, PlugTypesLib.Result[] $results);
 
     error NotImplemented();
@@ -35,7 +34,6 @@ library PlugLib {
     error ValueInvalid(address $recipient, uint256 $expected, uint256 $reality);
 
     error PlugFailed();
-    error PlugsRevoked();
 
     error CompensationFailed(address $recipient, uint256 $value);
 

@@ -48,9 +48,4 @@ abstract contract PlugSocket is PlugSocketInterface, PlugCore, PlugEnforce, Reen
     {
         $results = _plug($plugs, address(0), 0);
     }
-
-    /**
-     * See {PlugSocketInterface-revoke}.
-     */
-    function revoke(bytes32 $plugsHash, bool $isRevoked) public virtual;
 }
