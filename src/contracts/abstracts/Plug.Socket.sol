@@ -38,7 +38,9 @@ abstract contract PlugSocket is PlugSocketInterface, PlugCore, PlugEnforce, Reen
     /**
      * See {PlugSocketInterface-plug}.
      */
-    function plug(PlugTypesLib.Plugs calldata $plugs)
+    function plug(
+        PlugTypesLib.Plugs calldata $plugs
+    )
         external
         payable
         virtual
