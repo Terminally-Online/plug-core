@@ -2,128 +2,32 @@
   "Plug.Factory.sol": {
     "initCodeHash": "0xcd44666474d5036ac04260c83b851d03b5b66471c5e62af7b798f2f560998d46",
     "deployment": {
-      "salt": "0x00000000000000000000000000000000000000000c6e4d5fbaffff3f8e4c907a",
-      "address": "0x458A362E1f00a78A2e8440F76f00FfC1cE22Ba94",
+      "salt": "0x0000000000000000000000000000000000000000ff5ebd844bffff3f6f1fec29",
+      "address": "0x0ae10E6700Ea001AB14a7B57a2fF2d55426275Bc",
       "rarity": "0"
     }
   },
   "Plug.sol": {
-    "initCodeHash": "0x6557c859045f99616bc385d4d9cf1df895fe648637a340fc122aac1a4fbac15a",
+    "initCodeHash": "0x856e76a97d89bd90ba7c43098fc0d53c8e2a51f30092d7c91dd4a7c249c273c8",
     "deployment": {
-      "salt": "0x00000000000000000000000000000000000000009606cd6ee2f7ff3f65f9687c",
-      "address": "0x007cf8c29Bdede7D41b4718aFE08bf242Ab7e63B",
+      "salt": "0x000000000000000000000000000000000000000004b5d071c5f7ff3f6169d4e7",
+      "address": "0x008b2AbFcBCB899DdE34E992406b9d08eBFc21f7",
       "rarity": "0"
     }
   },
   "Plug.Treasury.sol": {
     "initCodeHash": "0x7d42c3847e02299076d60b70e190d832482138b364b44d25398447cea19cfbc6",
     "deployment": {
-      "salt": "0x00000000000000000000000000000000000000002585362fadfbff3f1134bc2d",
-      "address": "0x004bC6D23A0dC7b649Bbb36bae4D26E0EDE35242",
+      "salt": "0x000000000000000000000000000000000000000011b6eff9eee3ff3f3ed4b63a",
+      "address": "0x00b35Ab3ad8526b1aF6b60Aa0A7c7f276644ED43",
       "rarity": "0"
     }
   },
   "Plug.Vault.Socket.sol": {
     "initCodeHash": "0x70ce24d6b8ab0ae202d4f6bded3389d1fd3f652cc9791a962a6fa4d70e678658",
     "deployment": {
-      "salt": "0x0000000000000000000000000000000000000000859c74ba46e0ff3f6ec95af9",
-      "address": "0x00BCC1db7b4e98D4Fe887Ed6e4Cf4bc8503e4d56",
-      "rarity": "0"
-    }
-  },
-  "Plug.Balance.sol": {
-    "initCodeHash": "0xe7e74d01ab07550139a4fad4ec4973a96173333249260138bac4603939c161b8",
-    "deployment": {
-      "salt": "0x0000000000000000000000000000000000000000c8d43cb46decff3f30a67713",
-      "address": "0xcD00A77A2E1Eb619567DF61A8b88007FEC22D7f0",
-      "rarity": "0"
-    }
-  },
-  "Plug.Balance.SemiFungible.sol": {
-    "initCodeHash": "0x37b5c6826244f669d83c6002908fd6b9a8e5dee79a4650732dd6a76e0d530ca1",
-    "deployment": {
-      "salt": "0x00000000000000000000000000000000000000004d77a2f411e6ff3ff6c422f2",
-      "address": "0x0079bfd8e72970B3e21fC840d177Eed1C2c348B8",
-      "rarity": "0"
-    }
-  },
-  "Plug.BaseFee.sol": {
-    "initCodeHash": "0xa46aa1f93b22ab5d2e0695b22c39ab3d7f3359658953575bca540b40404821ce",
-    "deployment": {
-      "salt": "0x00000000000000000000000000000000000000001b3c419ec9efff3f58b54c77",
-      "address": "0x7d35dD05C404305F00A64226476e00563196361c",
-      "rarity": "0"
-    }
-  },
-  "Plug.BlockNumber.sol": {
-    "initCodeHash": "0x6851f0b9e4d874508ec6c87458b14a82d9c85eca45c4cf54ab593c5163ee8c25",
-    "deployment": {
-      "salt": "0x000000000000000000000000000000000000000023a7603757f0ff3ffb1e664c",
-      "address": "0x0058141A85De2A7bB8912F617b824408B03559f7",
-      "rarity": "0"
-    }
-  },
-  "Plug.Calendar.sol": {
-    "initCodeHash": "0xda1b8b28d33d241393a1b1a5a25bfd88bfc2b6947bf11a1c3ee65d8917d28b87",
-    "deployment": {
-      "salt": "0x0000000000000000000000000000000000000000e5f2b458e1daff3f9097611d",
-      "address": "0x9b2D4ddE09C31d94EDA000F5C2d7B200369D2a35",
-      "rarity": "0"
-    }
-  },
-  "Plug.LimitedCalls.sol": {
-    "initCodeHash": "0x4583a991619d48ca1aa06ffeae962df41310c1913a1ce1548bb2f5aae28e555e",
-    "deployment": {
-      "salt": "0x0000000000000000000000000000000000000000bc08d308d2ecff3f40efafab",
-      "address": "0x00b6FcE0aFAeA43BBC41CeeE7Bfb695f3CdaB475",
-      "rarity": "0"
-    }
-  },
-  "Plug.Revocation.sol": {
-    "initCodeHash": "0xb0b7dc3a8c11e6dfa9091c4fea8016447ce5609d10c9176e9c0169d1723ef45f",
-    "deployment": {
-      "salt": "0x0000000000000000000000000000000000000000df760e0447f6ff3f59ab3c9d",
-      "address": "0x0030bE4d54285DaBec578B747EEdDE580cBaD570",
-      "rarity": "0"
-    }
-  },
-  "Plug.Timestamp.sol": {
-    "initCodeHash": "0x81ecf6e6f62643f948e2db5f2912630937a4fbe2fa51928150eb33d80d6fee3e",
-    "deployment": {
-      "salt": "0x000000000000000000000000000000000000000029534f2348d7ff3f507b8990",
-      "address": "0x00205D50392CA798BE47b54AB4DaDf4A39d51109",
-      "rarity": "0"
-    }
-  },
-  "Plug.Fraxlend.APY.sol": {
-    "initCodeHash": "0xde37d8085f43cfe8ac02220b4d816af9395d23e3509667c5c316aeffaf266694",
-    "deployment": {
-      "salt": "0x00000000000000000000000000000000000000001fdde0111df8ff3f6172bd8e",
-      "address": "0x00Cf5bcAe72577a67f03626A626D1eA6391aAD25",
-      "rarity": "0"
-    }
-  },
-  "Plug.Nouns.Bid.sol": {
-    "initCodeHash": "0xf17e7a4d28d23caa5c810da16cad69ddcb9dfe0e58cc693b3e75df4ac3c77cbe",
-    "deployment": {
-      "salt": "0x00000000000000000000000000000000000000008c3ec03959f4ff3f5d2b623b",
-      "address": "0x0094365bd746663d738B20c424CA475f4f185021",
-      "rarity": "0"
-    }
-  },
-  "Plug.Nouns.Id.sol": {
-    "initCodeHash": "0x820bf7384f6a046789f8be4490394660fa84d4ace27ada998efe06762bf78ecd",
-    "deployment": {
-      "salt": "0x0000000000000000000000000000000000000000b2f71be8b0f9ff3fdb191785",
-      "address": "0x00A566e189B8A90C489ddb9B39C2288337b0A2D4",
-      "rarity": "0"
-    }
-  },
-  "Plug.Nouns.Trait.sol": {
-    "initCodeHash": "0x562109adedc7554ebe7f3d91e976afa2cf9ec7b8288a6258b09ec6d244f3d054",
-    "deployment": {
-      "salt": "0x00000000000000000000000000000000000000002e154d086bd5ff3fb54b4955",
-      "address": "0x00C5f2Cb0Fde0050DAc67f7FB6d1bB3362F43c40",
+      "salt": "0x00000000000000000000000000000000000000006ee8778130fdff3ff5145375",
+      "address": "0x00562eE9BcFdDC88C857b2564451481Ae6Aa9567",
       "rarity": "0"
     }
   }
