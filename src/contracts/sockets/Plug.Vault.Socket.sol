@@ -21,7 +21,7 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
 	 *         a Socket factory.
 	 */
 	constructor() {
-		initialize(address(type(uint160).max));
+		initialize(address(1));
 	}
 
 	/**
