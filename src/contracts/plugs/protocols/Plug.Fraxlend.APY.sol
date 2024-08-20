@@ -54,7 +54,9 @@ contract PlugFraxlendAPY is PlugConnectorInterface, PlugThresholdEnforce {
     /**
      * See { PlugConnectorInterface-decode }.
      */
-    function decode(bytes calldata $data)
+    function decode(
+        bytes calldata $data
+    )
         public
         pure
         returns (address $vault, uint8 $vaultOperator, uint8 $operator, uint256 $threshold)

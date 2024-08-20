@@ -192,7 +192,9 @@ interface FraxlendVaultInterface {
             uint128 _totalBorrowShares,
             uint256 _totalCollateral
         );
-    function getUserSnapshot(address _address)
+    function getUserSnapshot(
+        address _address
+    )
         external
         view
         returns (

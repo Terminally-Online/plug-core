@@ -70,7 +70,9 @@ contract PlugCron is PlugConnectorInterface {
     /**
      * See {PlugConnectorInterface-decode}.
      */
-    function decode(bytes calldata $terms)
+    function decode(
+        bytes calldata $terms
+    )
         public
         pure
         returns (
@@ -219,7 +221,9 @@ contract PlugCron is PlugConnectorInterface {
      * @return $hour The hour of the timestamp.
      * @return $minute The minute of the timestamp.
      */
-    function _datetime(uint256 $timestamp)
+    function _datetime(
+        uint256 $timestamp
+    )
         internal
         pure
         returns (uint256 $month, uint256 $day, uint256 $hour, uint256 $minute)
@@ -237,7 +241,9 @@ contract PlugCron is PlugConnectorInterface {
      * @return $minute The minute of the timestamp.
      * @return $dow The day of the week for the given timestamp.
      */
-    function _cron(uint256 $timestamp)
+    function _cron(
+        uint256 $timestamp
+    )
         internal
         pure
         returns (uint256 $month, uint256 $day, uint256 $hour, uint256 $minute, uint256 $dow)

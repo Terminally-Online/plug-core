@@ -21,7 +21,9 @@ abstract contract PlugThreshold is PlugConnectorInterface, PlugThresholdEnforce 
     /**
      * @dev Decode the terms to get the logic operator and threshold.
      */
-    function decode(bytes calldata $data)
+    function decode(
+        bytes calldata $data
+    )
         public
         pure
         virtual

@@ -70,7 +70,9 @@ contract PlugCalendar is PlugConnectorInterface {
      * @return $duration The number of seconds each calendar lasts.
      * @return $daysOfWeek The days of the week the calendar is active.
      */
-    function decode(uint256 $schedule)
+    function decode(
+        uint256 $schedule
+    )
         public
         pure
         returns (uint32 $startTime, uint32 $repeatsEvery, uint32 $duration, uint8 $daysOfWeek)
@@ -202,7 +204,9 @@ contract PlugCalendar is PlugConnectorInterface {
      *      it can be settled.
      * @param $schedule The schedule to check.
      */
-    function toCalendar(uint256 $schedule)
+    function toCalendar(
+        uint256 $schedule
+    )
         external
         pure
         returns (CalendarFuseLib.Calendar memory $calendar)

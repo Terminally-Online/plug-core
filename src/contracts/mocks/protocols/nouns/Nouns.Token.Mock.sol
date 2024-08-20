@@ -5,7 +5,9 @@ pragma solidity 0.8.23;
 import { NounsTokenInterface } from "../../../libraries/protocols/nouns/Plug.Nouns.Lib.sol";
 
 contract NounsTokenMock is NounsTokenInterface {
-    function seeds(uint256)
+    function seeds(
+        uint256
+    )
         public
         pure
         override

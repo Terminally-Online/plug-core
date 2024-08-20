@@ -65,7 +65,9 @@ contract PlugRateLimit is PlugConnectorInterface {
     /**
      * See {PlugConnectorInterface-decode}.
      */
-    function decode(bytes calldata $terms)
+    function decode(
+        bytes calldata $terms
+    )
         public
         pure
         returns (bool $global, uint32 $replenishRate, uint32 $max)

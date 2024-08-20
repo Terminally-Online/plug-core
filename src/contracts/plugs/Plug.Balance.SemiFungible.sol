@@ -31,7 +31,9 @@ contract PlugBalanceSemiFungible is PlugConnectorInterface, PlugThresholdEnforce
     /**
      * See { PlugConnectorInterface-decode }.
      */
-    function decode(bytes calldata $data)
+    function decode(
+        bytes calldata $data
+    )
         public
         pure
         returns (

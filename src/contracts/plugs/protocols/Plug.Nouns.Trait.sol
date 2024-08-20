@@ -34,7 +34,9 @@ contract PlugNounsTrait is PlugConnectorInterface {
      * @return $selector The selector of the trait to retrieve.
      * @return $trait The trait to retrieve.
      */
-    function decode(bytes calldata $live)
+    function decode(
+        bytes calldata $live
+    )
         public
         view
         virtual
@@ -63,9 +65,8 @@ contract PlugNounsTrait is PlugConnectorInterface {
                 || $selector == PlugNounsLib.BODY_SELECTOR
                 || $selector == PlugNounsLib.ACCESSORY_SELECTOR
                 || $selector == PlugNounsLib.BACKGROUND_SELECTOR
-        ) { } else {
-            revert PlugNounsLib.InvalidSelector($selector);
-        }
+        ) { }
+        else revert PlugNounsLib.InvalidSelector($selector);
 
         $live = abi.encode($selector, $trait);
     }

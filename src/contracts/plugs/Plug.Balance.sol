@@ -51,7 +51,9 @@ contract PlugBalance is PlugConnectorInterface, PlugThresholdEnforce {
     /**
      * See { PlugConnectorInterface-decode }.
      */
-    function decode(bytes calldata $data)
+    function decode(
+        bytes calldata $data
+    )
         public
         pure
         returns (address $holder, address $asset, uint8 $operator, uint256 $threshold)
