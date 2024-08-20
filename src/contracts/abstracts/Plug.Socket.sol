@@ -2,50 +2,191 @@
 
 pragma solidity 0.8.23;
 
-import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
-import { PlugCore } from "./Plug.Core.sol";
-import { PlugEnforce } from "./Plug.Enforce.sol";
-import { ReentrancyGuard } from "solady/utils/ReentrancyGuard.sol";
-import { PlugTypesLib } from "./Plug.Types.sol";
+import {PlugSocketInterface} from '../interfaces/Plug.Socket.Interface.sol';
+import {PlugTypes} from './Plug.Types.sol';
+import {ReentrancyGuard} from 'solady/utils/ReentrancyGuard.sol';
+import {PlugLib, PlugTypesLib} from '../libraries/Plug.Lib.sol';
 
 /**
  * @title Plug
  * @notice The core contract for the Plug framework extremely execution paths.
  * @author @nftchance (chance@onplug.io)
  */
-abstract contract PlugSocket is PlugSocketInterface, PlugCore, PlugEnforce, ReentrancyGuard {
-    /**
-     * See {PlugSocketInterface-plug}.
-     */
-    function plug(
-        PlugTypesLib.LivePlugs calldata $livePlugs,
-        address $solver,
-        uint256 $gas
-    )
-        external
-        payable
-        virtual
-        enforceRouter
-        enforceSignature($livePlugs)
-        nonReentrant
-        returns (PlugTypesLib.Result[] memory $results)
-    {
-        $results = _plug($livePlugs.plugs, $solver, $gas);
-    }
+abstract contract PlugSocket is
+	PlugSocketInterface,
+	PlugTypes,
+	ReentrancyGuard
+{
+	/**
+	 * @notice Modifier to enforce the signer of the transaction.
+	 * @dev Apply to this to functions that are designed to execute a bundle
+	 *      of Plugs regardless of whether through a Router or or direct access.
+	 * @param $input The LivePlugs the definition of execution as well as the
+	 *               signature used to verify the execution permission.
+	 */
+	modifier enforceSignature(PlugTypesLib.LivePlugs calldata $input) {
+		if (_enforceSignature($input) == false) {
+			revert PlugLib.SignatureInvalid();
+		}
+		_;
+	}
 
-    /**
-     * See {PlugSocketInterface-plug}.
-     */
-    function plug(
-        PlugTypesLib.Plugs calldata $plugs
-    )
-        external
-        payable
-        virtual
-        enforceSender
-        nonReentrant
-        returns (PlugTypesLib.Result[] memory $results)
-    {
-        $results = _plug($plugs, address(0), 0);
-    }
+	/**
+	 * @notice Modifier to enforce the sender of the transaction.
+	 * @dev Apply to this to functions that are designed to execute a bundle
+	 *      of Plugs directly from the sender or a recursive call from the contract.
+	 */
+	modifier enforceSender() {
+		if (_enforceSender(msg.sender) == false) {
+			revert PlugLib.SenderInvalid(msg.sender);
+		}
+		_;
+	}
+
+	/**
+	 * See {PlugSocketInterface-plug}.
+	 */
+	function plug(
+		PlugTypesLib.LivePlugs calldata $livePlugs,
+		address $solver,
+		uint256 $gas
+	)
+		external
+		payable
+		virtual
+		enforceSignature($livePlugs)
+		nonReentrant
+		returns (PlugTypesLib.Result[] memory $results)
+	{
+		$results = _plug($livePlugs.plugs, $solver, $gas);
+	}
+
+	/**
+	 * See {PlugSocketInterface-plug}.
+	 */
+	function plug(
+		PlugTypesLib.Plugs calldata $plugs
+	)
+		external
+		payable
+		virtual
+		enforceSender
+		nonReentrant
+		returns (PlugTypesLib.Result[] memory $results)
+	{
+		$results = _plug($plugs, address(0), 0);
+	}
+
+	/**
+	 * @notice Execute a bundle of Plugs.
+	 * @param $plugs The Plugs to execute containing the bundle and side effects.
+	 * @param $solver Encoded data defining the Solver and compensation.
+	 * @param $gas Snapshot of gas at the start of interaction.
+	 * @return $results The return data of the plugs.
+	 */
+	function _plug(
+		PlugTypesLib.Plugs calldata $plugs,
+		address $solver,
+		uint256 $gas
+	) internal returns (PlugTypesLib.Result[] memory $results) {
+		/// @dev Hash the body of the object to ensure the integrity of
+		///      the (bundle of) Plugs that are being executed.
+		bytes32 plugsHash = getPlugsHash($plugs);
+
+		/// @dev Load the Plug stack into memory for cheaper access.
+		uint256 length = $plugs.plugs.length;
+		$results = new PlugTypesLib.Result[](length);
+
+		/// @dev Save the object into memory to avoid multiple creations
+		///      of the same object.
+		PlugTypesLib.Plug calldata plug;
+
+		/// @dev Iterate over the Plugs that are held within this bundle
+		///      an execute each of them. Each respectively may be a
+		///      condition being enforced or an outcome focused transaction.
+		for (uint256 i; i < length; i++) {
+			/// @dev Place the active Plug in the shorter reference stack.
+			plug = $plugs.plugs[i];
+
+			/// @dev If the call has an associated value, ensure the contract
+			///      has enough balance to cover the cost of the call.
+			if (address(this).balance < plug.value) {
+				revert PlugLib.ValueInvalid(
+					plug.target,
+					plug.value,
+					address(this).balance
+				);
+			}
+
+			($results[i].success, $results[i].result) = plug.target.call{
+				value: plug.value
+			}(plug.data[1:]);
+
+			/// @dev If the call failed, bubble up the revert reason if needed.
+			PlugLib.bubbleRevert($results[i].success, $results[i].result);
+		}
+
+		/// @dev Pay the Solver for the gas used if it was not open-access.
+		if ($plugs.solver.length != 0) {
+			/// @dev Unpack the solver data from the encoded Solver data.
+			(
+				uint96 maxPriorityFeePerGas,
+				uint96 maxFeePerGas,
+				address solver
+			) = abi.decode($plugs.solver, (uint96, uint96, address));
+
+			/// @dev Confirm the Solver is allowed to execute the transaction.
+			///      This is done here instead of a modifier so that the gas
+			///      snapshot accounts for the additional gas cost of the require.
+			if (solver != $solver) {
+				revert PlugLib.SolverInvalid(solver, $solver);
+			}
+
+			/// @dev Calculate the gas price based on the current block.
+			uint256 value = maxPriorityFeePerGas + block.basefee;
+			/// @dev Determine which gas price to use based on if it is a legacy
+			///      transaction (on a chain that does not support it) or if the
+			///      the transaction is submit post EIP-1559.
+			value = maxFeePerGas == maxPriorityFeePerGas
+				? maxFeePerGas
+				: maxFeePerGas < value
+					? maxFeePerGas
+					: value;
+
+			/// @dev Augment the native gas price with the Solver "gas" fee.
+			value = ($gas - gasleft()) * value;
+
+			/// @dev Transfer the money the Solver is owed and confirm it
+			///      the transfer is successful.
+			(bool success, ) = solver.call{value: value}('');
+			if (success == false) {
+				revert PlugLib.CompensationFailed(solver, value);
+			}
+		}
+
+		emit PlugLib.PlugsExecuted(plugsHash, $results);
+	}
+
+	/**
+	 * @notice Confirm that signer has permission to declare execution of a
+	 *         Plug bundle on the parent-socket that inherits this contract.
+	 * @dev Inheriting contracts must implement the logic of this function to make
+	 *      sure that only signatures intended for this scope are allowed.
+	 * @param $input The LivePlugs object that contains the Plugs object as well as
+	 *               the signature defining the permission to execute the bundle.
+	 */
+	function _enforceSignature(
+		PlugTypesLib.LivePlugs calldata $input
+	) internal view virtual returns (bool $allowed);
+
+	/**
+	 * @notice Confirm that the sender of the transaction is allowed as the Socket
+	 *         was directly interacted with.
+	 * @dev Inheriting contracts must implement the logic of this function to make
+	 *      sure that only senders intended for this scope are allowed.
+	 * @param $sender The sender of the transaction.
+	 */
+	function _enforceSender(
+		address $sender
+	) internal view virtual returns (bool $allowed);
 }

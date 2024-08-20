@@ -20,7 +20,7 @@
     "build:ts": "pnpm tsup && pnpm build:format",
     "build:lint": "tsc",
     "dev": "npm-run-all -p dev:*",
-    "dev:contracts": "nodemon --watch \"src/contracts/**\" --ext \"sol\" --exec \"forge test -vvv && forge coverage --report lcov && genhtml -o report lcov.info --branch-coverage\"",
+    "dev:contracts": "nodemon --watch \"src/contracts/**\" --ext \"sol\" --exec \"forge build && forge test -vvv && forge coverage --report lcov && genhtml -o report lcov.info --branch-coverage\"",
     "dev:package": "pnpm tsup --watch"
   },
   "devDependencies": {
