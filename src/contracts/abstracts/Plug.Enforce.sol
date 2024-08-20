@@ -4,7 +4,6 @@ pragma solidity 0.8.23;
 
 import { PlugTypesLib, PlugTypes } from "./Plug.Types.sol";
 import { PlugLib } from "../libraries/Plug.Lib.sol";
-import { PlugConnectorInterface } from "../interfaces/Plug.Connector.Interface.sol";
 
 /**
  * @title Plug Enforce
@@ -71,9 +70,7 @@ abstract contract PlugEnforce is PlugTypes {
      * @param $input The LivePlugs object that contains the Plugs object as well as
      *               the signature defining the permission to execute the bundle.
      */
-    function _enforceSignature(
-        PlugTypesLib.LivePlugs calldata $input
-    )
+    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
         internal
         view
         virtual

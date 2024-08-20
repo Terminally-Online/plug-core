@@ -6,7 +6,6 @@ import { console2 } from "forge-std/console2.sol";
 
 import { PlugTypes } from "./Plug.Types.sol";
 import { PlugLib, PlugTypesLib, PlugAddressesLib } from "../libraries/Plug.Lib.sol";
-import { PlugConnectorInterface } from "../interfaces/Plug.Connector.Interface.sol";
 
 /**
  * @title PlugCore

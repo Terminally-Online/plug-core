@@ -552,9 +552,7 @@ abstract contract TestPlug is TestPlus {
         );
     }
 
-    function createPlugs(
-        PlugTypesLib.Plug[] memory $plugsArray
-    )
+    function createPlugs(PlugTypesLib.Plug[] memory $plugsArray)
         internal
         view
         returns (PlugTypesLib.Plugs memory $plugs)
@@ -578,9 +576,7 @@ abstract contract TestPlug is TestPlus {
         });
     }
 
-    function createLivePlugs(
-        PlugTypesLib.Plugs memory $plugs
-    )
+    function createLivePlugs(PlugTypesLib.Plugs memory $plugs)
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
@@ -588,9 +584,7 @@ abstract contract TestPlug is TestPlus {
         $livePlugs = createLivePlugs(vault, $plugs);
     }
 
-    function createLivePlugs(
-        PlugTypesLib.Plug[] memory $plugsArray
-    )
+    function createLivePlugs(PlugTypesLib.Plug[] memory $plugsArray)
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
