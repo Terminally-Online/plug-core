@@ -8,6 +8,7 @@ import {Receiver} from 'solady/accounts/Receiver.sol';
 import {Ownable} from 'solady/auth/Ownable.sol';
 import {UUPSUpgradeable} from 'solady/utils/UUPSUpgradeable.sol';
 import {PlugTypesLib} from '../abstracts/Plug.Types.sol';
+import {ECDSA} from 'solady/utils/ECDSA.sol';
 import {MerkleProofLib} from 'solady/utils/MerkleProofLib.sol';
 
 /**
@@ -15,6 +16,9 @@ import {MerkleProofLib} from 'solady/utils/MerkleProofLib.sol';
  * @author @nftchance (chance@onplug.io)
  */
 contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
+	/// @notice Use the ECDSA library for signature verification.
+	using ECDSA for bytes32;
+
 	/*
 	 * @notice The constructor for the Plug Vault Socket will
 	 *         initialize to address(1) when not deployed through
@@ -46,26 +50,12 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
 		$version = '0.0.1';
 	}
 
-	function _signatureValidation(
-		bytes32 $plugsHash,
-		bytes memory $signature
-	) internal view returns (bool $valid, bytes memory $result) {
-		$plugsHash;
-		$signature;
-
-		$valid = false;
-	}
-
 	/**
 	 * See { PlugEnforce._enforceSignature }
 	 */
 	function _enforceSignature(
 		PlugTypesLib.LivePlugs calldata $input
 	) internal view virtual override returns (bool $allowed) {
-		/// @dev The hash of the Plugs bundle that is used to represent the unique
-		///      state of declaration and execution intent.
-		bytes32 plugsHash = getPlugsHash($input.plugs);
-
 		/// @dev The last bit denotes whether it is a standard signature
 		///      or a merkle proof signature.
 		bytes1 signatureType = $input.signature[0];
@@ -73,7 +63,9 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
 		/// @dev Utilize a standard signature recovery method that is only designed
 		///      to support one domain and intent at a time.
 		if (signatureType & 0x03 == signatureType) {
-			($allowed, ) = _signatureValidation(plugsHash, $input.signature);
+			$allowed =
+				owner() ==
+				getPlugsDigest($input.plugs).recover($input.signature);
 		}
 		/// @dev Utilize a merkle proof signature recovery method that holds several
 		///      domains and intents at a time inside a single signature.
@@ -83,19 +75,23 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
 				.decode($input.signature[1:], (bytes32, bytes32[], bytes));
 
 			/// @dev Ensure the merkle tree contains the data of the signed bundle.
-			require(
-				MerkleProofLib.verify(proof, root, getPlugsHash($input.plugs)),
-				'PlugTypes:invalid-proof'
-			);
+			if (
+				MerkleProofLib.verify(
+					proof,
+					root,
+					getPlugsHash($input.plugs)
+				) == false
+			) revert PlugLib.ProofInvalid();
 
 			/// @dev Calculate the offset needed to extract solely the signature from
 			///      the packed state of the `signature` data provided.
 			uint256 offset = proof.length * 32 + 161;
 
-			($allowed, ) = _signatureValidation(
-				plugsHash,
-				$input.signature[offset:offset + signature.length]
-			);
+			$allowed =
+				owner() ==
+				getPlugsDigest($input.plugs).recover(
+					$input.signature[offset:offset + signature.length]
+				);
 		}
 	}
 
