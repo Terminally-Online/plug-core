@@ -63,7 +63,9 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
     /**
      * See { PlugFactoryInterface.deploy }
      */
-    function deploy(bytes32 $salt)
+    function deploy(
+        bytes32 $salt
+    )
         public
         payable
         virtual
@@ -119,7 +121,9 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
     /**
      * See { PlugFactoryInterface.initCodeHash }
      */
-    function initCodeHash(address $implementation)
+    function initCodeHash(
+        address $implementation
+    )
         public
         view
         virtual
