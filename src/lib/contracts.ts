@@ -786,6 +786,54 @@ export const contracts = [
             },
             {
                 "type": "function",
+                "name": "domain",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "$domain",
+                        "type": "tuple",
+                        "internalType": "struct PlugTypesLib.EIP712Domain",
+                        "components": [
+                            {
+                                "name": "name",
+                                "type": "string",
+                                "internalType": "string"
+                            },
+                            {
+                                "name": "version",
+                                "type": "string",
+                                "internalType": "string"
+                            },
+                            {
+                                "name": "chainId",
+                                "type": "uint256",
+                                "internalType": "uint256"
+                            },
+                            {
+                                "name": "verifyingContract",
+                                "type": "address",
+                                "internalType": "address"
+                            }
+                        ]
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
+                "name": "domainHash",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
                 "name": "getEIP712DomainHash",
                 "inputs": [
                     {
@@ -818,7 +866,7 @@ export const contracts = [
                 ],
                 "outputs": [
                     {
-                        "name": "$hash",
+                        "name": "$typeHash",
                         "type": "bytes32",
                         "internalType": "bytes32"
                     }
@@ -888,12 +936,82 @@ export const contracts = [
                 ],
                 "outputs": [
                     {
-                        "name": "$hash",
+                        "name": "$typeHash",
                         "type": "bytes32",
                         "internalType": "bytes32"
                     }
                 ],
                 "stateMutability": "pure"
+            },
+            {
+                "type": "function",
+                "name": "getLivePlugsSigner",
+                "inputs": [
+                    {
+                        "name": "$input",
+                        "type": "tuple",
+                        "internalType": "struct PlugTypesLib.LivePlugs",
+                        "components": [
+                            {
+                                "name": "plugs",
+                                "type": "tuple",
+                                "internalType": "struct PlugTypesLib.Plugs",
+                                "components": [
+                                    {
+                                        "name": "socket",
+                                        "type": "address",
+                                        "internalType": "address"
+                                    },
+                                    {
+                                        "name": "plugs",
+                                        "type": "tuple[]",
+                                        "internalType": "struct PlugTypesLib.Plug[]",
+                                        "components": [
+                                            {
+                                                "name": "target",
+                                                "type": "address",
+                                                "internalType": "address"
+                                            },
+                                            {
+                                                "name": "value",
+                                                "type": "uint256",
+                                                "internalType": "uint256"
+                                            },
+                                            {
+                                                "name": "data",
+                                                "type": "bytes",
+                                                "internalType": "bytes"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "solver",
+                                        "type": "bytes",
+                                        "internalType": "bytes"
+                                    },
+                                    {
+                                        "name": "salt",
+                                        "type": "bytes32",
+                                        "internalType": "bytes32"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "signature",
+                                "type": "bytes",
+                                "internalType": "bytes"
+                            }
+                        ]
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "$signer",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ],
+                "stateMutability": "view"
             },
             {
                 "type": "function",
@@ -924,7 +1042,7 @@ export const contracts = [
                 ],
                 "outputs": [
                     {
-                        "name": "$hash",
+                        "name": "$typeHash",
                         "type": "bytes32",
                         "internalType": "bytes32"
                     }
@@ -960,12 +1078,70 @@ export const contracts = [
                 ],
                 "outputs": [
                     {
-                        "name": "$hash",
+                        "name": "$typeHash",
                         "type": "bytes32",
                         "internalType": "bytes32"
                     }
                 ],
                 "stateMutability": "pure"
+            },
+            {
+                "type": "function",
+                "name": "getPlugsDigest",
+                "inputs": [
+                    {
+                        "name": "$input",
+                        "type": "tuple",
+                        "internalType": "struct PlugTypesLib.Plugs",
+                        "components": [
+                            {
+                                "name": "socket",
+                                "type": "address",
+                                "internalType": "address"
+                            },
+                            {
+                                "name": "plugs",
+                                "type": "tuple[]",
+                                "internalType": "struct PlugTypesLib.Plug[]",
+                                "components": [
+                                    {
+                                        "name": "target",
+                                        "type": "address",
+                                        "internalType": "address"
+                                    },
+                                    {
+                                        "name": "value",
+                                        "type": "uint256",
+                                        "internalType": "uint256"
+                                    },
+                                    {
+                                        "name": "data",
+                                        "type": "bytes",
+                                        "internalType": "bytes"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "solver",
+                                "type": "bytes",
+                                "internalType": "bytes"
+                            },
+                            {
+                                "name": "salt",
+                                "type": "bytes32",
+                                "internalType": "bytes32"
+                            }
+                        ]
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "$digest",
+                        "type": "bytes32",
+                        "internalType": "bytes32"
+                    }
+                ],
+                "stateMutability": "view"
             },
             {
                 "type": "function",
@@ -1018,7 +1194,7 @@ export const contracts = [
                 ],
                 "outputs": [
                     {
-                        "name": "$hash",
+                        "name": "$typeHash",
                         "type": "bytes32",
                         "internalType": "bytes32"
                     }
@@ -1425,22 +1601,6 @@ export const contracts = [
             },
             {
                 "type": "error",
-                "name": "CallerInvalid",
-                "inputs": [
-                    {
-                        "name": "$expected",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$reality",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ]
-            },
-            {
-                "type": "error",
                 "name": "CompensationFailed",
                 "inputs": [
                     {
@@ -1472,19 +1632,13 @@ export const contracts = [
             },
             {
                 "type": "error",
-                "name": "Reentrancy",
+                "name": "ProofInvalid",
                 "inputs": []
             },
             {
                 "type": "error",
-                "name": "RouterInvalid",
-                "inputs": [
-                    {
-                        "name": "$reality",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ]
+                "name": "Reentrancy",
+                "inputs": []
             },
             {
                 "type": "error",

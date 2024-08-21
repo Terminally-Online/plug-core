@@ -573,6 +573,36 @@ export const plugVaultSocketAbi = [
   },
   {
     type: 'function',
+    inputs: [],
+    name: 'domain',
+    outputs: [
+      {
+        name: '$domain',
+        internalType: 'struct PlugTypesLib.EIP712Domain',
+        type: 'tuple',
+        components: [
+          { name: 'name', internalType: 'string', type: 'string' },
+          { name: 'version', internalType: 'string', type: 'string' },
+          { name: 'chainId', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'verifyingContract',
+            internalType: 'address',
+            type: 'address',
+          },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [],
+    name: 'domainHash',
+    outputs: [{ name: '', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     inputs: [
       {
         name: '$input',
@@ -591,7 +621,7 @@ export const plugVaultSocketAbi = [
       },
     ],
     name: 'getEIP712DomainHash',
-    outputs: [{ name: '$hash', internalType: 'bytes32', type: 'bytes32' }],
+    outputs: [{ name: '$typeHash', internalType: 'bytes32', type: 'bytes32' }],
     stateMutability: 'pure',
   },
   {
@@ -627,8 +657,44 @@ export const plugVaultSocketAbi = [
       },
     ],
     name: 'getLivePlugsHash',
-    outputs: [{ name: '$hash', internalType: 'bytes32', type: 'bytes32' }],
+    outputs: [{ name: '$typeHash', internalType: 'bytes32', type: 'bytes32' }],
     stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: '$input',
+        internalType: 'struct PlugTypesLib.LivePlugs',
+        type: 'tuple',
+        components: [
+          {
+            name: 'plugs',
+            internalType: 'struct PlugTypesLib.Plugs',
+            type: 'tuple',
+            components: [
+              { name: 'socket', internalType: 'address', type: 'address' },
+              {
+                name: 'plugs',
+                internalType: 'struct PlugTypesLib.Plug[]',
+                type: 'tuple[]',
+                components: [
+                  { name: 'target', internalType: 'address', type: 'address' },
+                  { name: 'value', internalType: 'uint256', type: 'uint256' },
+                  { name: 'data', internalType: 'bytes', type: 'bytes' },
+                ],
+              },
+              { name: 'solver', internalType: 'bytes', type: 'bytes' },
+              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+            ],
+          },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    name: 'getLivePlugsSigner',
+    outputs: [{ name: '$signer', internalType: 'address', type: 'address' }],
+    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -645,7 +711,7 @@ export const plugVaultSocketAbi = [
       },
     ],
     name: 'getPlugArrayHash',
-    outputs: [{ name: '$hash', internalType: 'bytes32', type: 'bytes32' }],
+    outputs: [{ name: '$typeHash', internalType: 'bytes32', type: 'bytes32' }],
     stateMutability: 'pure',
   },
   {
@@ -663,7 +729,7 @@ export const plugVaultSocketAbi = [
       },
     ],
     name: 'getPlugHash',
-    outputs: [{ name: '$hash', internalType: 'bytes32', type: 'bytes32' }],
+    outputs: [{ name: '$typeHash', internalType: 'bytes32', type: 'bytes32' }],
     stateMutability: 'pure',
   },
   {
@@ -690,8 +756,36 @@ export const plugVaultSocketAbi = [
         ],
       },
     ],
+    name: 'getPlugsDigest',
+    outputs: [{ name: '$digest', internalType: 'bytes32', type: 'bytes32' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: '$input',
+        internalType: 'struct PlugTypesLib.Plugs',
+        type: 'tuple',
+        components: [
+          { name: 'socket', internalType: 'address', type: 'address' },
+          {
+            name: 'plugs',
+            internalType: 'struct PlugTypesLib.Plug[]',
+            type: 'tuple[]',
+            components: [
+              { name: 'target', internalType: 'address', type: 'address' },
+              { name: 'value', internalType: 'uint256', type: 'uint256' },
+              { name: 'data', internalType: 'bytes', type: 'bytes' },
+            ],
+          },
+          { name: 'solver', internalType: 'bytes', type: 'bytes' },
+          { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+        ],
+      },
+    ],
     name: 'getPlugsHash',
-    outputs: [{ name: '$hash', internalType: 'bytes32', type: 'bytes32' }],
+    outputs: [{ name: '$typeHash', internalType: 'bytes32', type: 'bytes32' }],
     stateMutability: 'pure',
   },
   {
@@ -947,14 +1041,6 @@ export const plugVaultSocketAbi = [
   {
     type: 'error',
     inputs: [
-      { name: '$expected', internalType: 'address', type: 'address' },
-      { name: '$reality', internalType: 'address', type: 'address' },
-    ],
-    name: 'CallerInvalid',
-  },
-  {
-    type: 'error',
-    inputs: [
       { name: '$recipient', internalType: 'address', type: 'address' },
       { name: '$value', internalType: 'uint256', type: 'uint256' },
     ],
@@ -963,12 +1049,8 @@ export const plugVaultSocketAbi = [
   { type: 'error', inputs: [], name: 'NewOwnerIsZeroAddress' },
   { type: 'error', inputs: [], name: 'NoHandoverRequest' },
   { type: 'error', inputs: [], name: 'PlugFailed' },
+  { type: 'error', inputs: [], name: 'ProofInvalid' },
   { type: 'error', inputs: [], name: 'Reentrancy' },
-  {
-    type: 'error',
-    inputs: [{ name: '$reality', internalType: 'address', type: 'address' }],
-    name: 'RouterInvalid',
-  },
   {
     type: 'error',
     inputs: [{ name: '$reality', internalType: 'address', type: 'address' }],
@@ -1620,6 +1702,22 @@ export const useReadPlugVaultSocket = /*#__PURE__*/ createUseReadContract({
 })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"domain"`
+ */
+export const useReadPlugVaultSocketDomain = /*#__PURE__*/ createUseReadContract(
+  { abi: plugVaultSocketAbi, functionName: 'domain' },
+)
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"domainHash"`
+ */
+export const useReadPlugVaultSocketDomainHash =
+  /*#__PURE__*/ createUseReadContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'domainHash',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"getEIP712DomainHash"`
  */
 export const useReadPlugVaultSocketGetEip712DomainHash =
@@ -1638,6 +1736,15 @@ export const useReadPlugVaultSocketGetLivePlugsHash =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"getLivePlugsSigner"`
+ */
+export const useReadPlugVaultSocketGetLivePlugsSigner =
+  /*#__PURE__*/ createUseReadContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'getLivePlugsSigner',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"getPlugArrayHash"`
  */
 export const useReadPlugVaultSocketGetPlugArrayHash =
@@ -1653,6 +1760,15 @@ export const useReadPlugVaultSocketGetPlugHash =
   /*#__PURE__*/ createUseReadContract({
     abi: plugVaultSocketAbi,
     functionName: 'getPlugHash',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"getPlugsDigest"`
+ */
+export const useReadPlugVaultSocketGetPlugsDigest =
+  /*#__PURE__*/ createUseReadContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'getPlugsDigest',
   })
 
 /**

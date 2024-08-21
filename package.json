@@ -7,7 +7,7 @@
     "build": "pnpm build:ts && pnpm build:contracts",
     "prebuild:artifacts": "rm -rf artifacts/ && forge build --out='artifacts' --contracts='./src/contracts' --optimize --optimizer-runs=10000 --use=0.8.23",
     "build:artifacts": "pnpm tsx src/lib/functions/artifacts.ts",
-    "build:contracts": "pnpm plug generate && forge fmt && pnpm build:artifacts && npx wagmi generate",
+    "build:contracts": "forge fmt && pnpm build:artifacts && npx wagmi generate",
     "build:etcher": "pnpm tsx src/lib/functions/etcher.ts",
     "build:forge": "forge fmt && forge build --out='artifacts' --contracts='./src/contracts' --optimize --optimizer-runs=10000 --use=0.8.23",
     "build:format": "pnpm prettier --write .",

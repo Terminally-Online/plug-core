@@ -126,9 +126,7 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
     /**
      * See { PlugFactoryInterface.initCodeHash }
      */
-    function initCodeHash(
-        address $implementation
-    )
+    function initCodeHash(address $implementation)
         public
         view
         virtual
