@@ -6,9 +6,9 @@ interface PlugFactoryInterface {
     /**
      * @notice Initialize this implementation of the factory.
      * @param $owner The address of the owner.
-     * @param $baseURI The base URI of the factory.
+     * @param $implementation The implementation of the sockets deployed.
      */
-    function initialize(address $owner, string memory $baseURI, address $implementation) external;
+    function initialize(address $owner, address $implementation) external;
 
     /**
      * @notice Deploy a new Socket and initialize it.
@@ -18,9 +18,7 @@ interface PlugFactoryInterface {
      * @return $alreadyDeployed Whether or not the Socket was already deployed.
      * @return $socket The address of the deployed Socket.
      */
-    function deploy(
-        bytes32 $salt
-    )
+    function deploy(bytes32 $salt)
         external
         payable
         returns (bool $alreadyDeployed, address $socket);

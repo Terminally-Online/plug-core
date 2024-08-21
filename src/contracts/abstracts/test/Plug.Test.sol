@@ -452,7 +452,7 @@ abstract contract TestPlug is TestPlus {
     function deployFactory() internal virtual returns (PlugFactory $factory) {
         vm.etch(PlugEtcherLib.PLUG_FACTORY_ADDRESS, address(new PlugFactory()).code);
         $factory = PlugFactory(payable(PlugEtcherLib.PLUG_FACTORY_ADDRESS));
-        $factory.initialize(factoryOwner, baseURI, address(vaultImplementation));
+        $factory.initialize(factoryOwner, address(vaultImplementation));
     }
 
     function deployTreasury() internal virtual returns (PlugTreasury $treasury) {
@@ -551,9 +551,7 @@ abstract contract TestPlug is TestPlus {
         );
     }
 
-    function createPlugs(
-        PlugTypesLib.Plug[] memory $plugsArray
-    )
+    function createPlugs(PlugTypesLib.Plug[] memory $plugsArray)
         internal
         view
         returns (PlugTypesLib.Plugs memory $plugs)
@@ -569,17 +567,14 @@ abstract contract TestPlug is TestPlus {
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
     {
-        bytes32 plugsHash = $socket.getPlugsHash($plugs);
+        bytes32 digest = $socket.getPlugsDigest($plugs);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPrivateKey, digest);
+        bytes memory signature = abi.encodePacked(r, s, v);
 
-        $livePlugs = PlugTypesLib.LivePlugs({
-            plugs: $plugs,
-            signature: pack(sign(plugsHash, address($socket), signerPrivateKey, false))
-        });
+        $livePlugs = PlugTypesLib.LivePlugs({ plugs: $plugs, signature: signature });
     }
 
-    function createLivePlugs(
-        PlugTypesLib.Plugs memory $plugs
-    )
+    function createLivePlugs(PlugTypesLib.Plugs memory $plugs)
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
@@ -587,9 +582,7 @@ abstract contract TestPlug is TestPlus {
         $livePlugs = createLivePlugs(socket, $plugs);
     }
 
-    function createLivePlugs(
-        PlugTypesLib.Plug[] memory $plugsArray
-    )
+    function createLivePlugs(PlugTypesLib.Plug[] memory $plugsArray)
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
@@ -611,69 +604,6 @@ abstract contract TestPlug is TestPlus {
         PlugTypesLib.Plugs memory plugs =
             createPlugs($plugsArray, $maxPriorityFeePerGas, $maxFeePerGas, $solver);
         $livePlugs = createLivePlugs(socket, plugs);
-    }
-
-    function getExpectedImageHash(
-        address user,
-        uint8 weight,
-        uint16 threshold,
-        uint32 checkpoint
-    )
-        internal
-        pure
-        returns (bytes32 $imageHash)
-    {
-        $imageHash = keccak256(
-            abi.encodePacked(
-                keccak256(
-                    abi.encodePacked(
-                        abi.decode(abi.encodePacked(uint96(weight), user), (bytes32)),
-                        uint256(threshold)
-                    )
-                ),
-                uint256(checkpoint)
-            )
-        );
-    }
-
-    function sign(
-        bytes32 $hash,
-        address $socket,
-        uint256 $userKey,
-        bool $isSign
-    )
-        internal
-        view
-        returns (bytes memory $signature)
-    {
-        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, $socket, $hash));
-
-        subdigest = $isSign ? ECDSA.toEthSignedMessageHash(subdigest) : subdigest;
-
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign($userKey, subdigest);
-        $signature = abi.encodePacked(r, s, v, uint8($isSign ? 2 : 1));
-    }
-
-    function pack(
-        bytes memory $signature,
-        uint8 $weight,
-        uint16 $threshold,
-        uint32 $checkpoint
-    )
-        internal
-        pure
-        returns (bytes memory $packedSignature)
-    {
-        /// @dev Flag for legacy signature
-        uint8 legacySignatureFlag = uint8(0);
-
-        /// @dev Pack the signature w/ flag, weight, threshold, checkpoint
-        $packedSignature =
-            abi.encodePacked($threshold, $checkpoint, legacySignatureFlag, $weight, $signature);
-    }
-
-    function pack(bytes memory $signature) internal pure returns (bytes memory $packedSignature) {
-        $packedSignature = pack($signature, 1, 1, 1);
     }
 }
 

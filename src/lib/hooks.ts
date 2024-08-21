@@ -190,7 +190,6 @@ export const plugFactoryAbi = [
     type: 'function',
     inputs: [
       { name: '$owner', internalType: 'address', type: 'address' },
-      { name: '$baseURI', internalType: 'string', type: 'string' },
       { name: '$implementation', internalType: 'address', type: 'address' },
     ],
     name: 'initialize',
@@ -1049,7 +1048,6 @@ export const plugVaultSocketAbi = [
   { type: 'error', inputs: [], name: 'NewOwnerIsZeroAddress' },
   { type: 'error', inputs: [], name: 'NoHandoverRequest' },
   { type: 'error', inputs: [], name: 'PlugFailed' },
-  { type: 'error', inputs: [], name: 'ProofInvalid' },
   { type: 'error', inputs: [], name: 'Reentrancy' },
   {
     type: 'error',

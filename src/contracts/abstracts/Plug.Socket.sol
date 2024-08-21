@@ -60,9 +60,7 @@ abstract contract PlugSocket is PlugSocketInterface, PlugTypes, ReentrancyGuard 
     /**
      * See {PlugSocketInterface-plug}.
      */
-    function plug(
-        PlugTypesLib.Plugs calldata $plugs
-    )
+    function plug(PlugTypesLib.Plugs calldata $plugs)
         external
         payable
         virtual
@@ -164,9 +162,7 @@ abstract contract PlugSocket is PlugSocketInterface, PlugTypes, ReentrancyGuard 
      * @param $input The LivePlugs object that contains the Plugs object as well as
      *               the signature defining the permission to execute the bundle.
      */
-    function _enforceSignature(
-        PlugTypesLib.LivePlugs calldata $input
-    )
+    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
         internal
         view
         virtual

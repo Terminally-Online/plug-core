@@ -123,11 +123,6 @@ export const contracts = [
                         "internalType": "address"
                     },
                     {
-                        "name": "$baseURI",
-                        "type": "string",
-                        "internalType": "string"
-                    },
-                    {
                         "name": "$implementation",
                         "type": "address",
                         "internalType": "address"
@@ -1628,11 +1623,6 @@ export const contracts = [
             {
                 "type": "error",
                 "name": "PlugFailed",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "ProofInvalid",
                 "inputs": []
             },
             {

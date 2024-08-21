@@ -53,53 +53,22 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
     /**
      * See { PlugEnforce._enforceSignature }
      */
-    function _enforceSignature(
-        PlugTypesLib.LivePlugs calldata $input
-    )
+    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
         internal
         view
         virtual
         override
         returns (bool $allowed)
     {
-        /// @dev The last bit denotes whether it is a standard signature
-        ///      or a merkle proof signature.
-        bytes1 signatureType = $input.signature[0];
-
         /// @dev Utilize a standard signature recovery method that is only designed
         ///      to support one domain and intent at a time.
-        if (signatureType & 0x03 == signatureType) {
-            $allowed = owner() == getPlugsDigest($input.plugs).recover($input.signature);
-        }
-        /// @dev Utilize a merkle proof signature recovery method that holds several
-        ///      domains and intents at a time inside a single signature.
-        else if (signatureType & 0x04 == signatureType) {
-            /// @dev Recover the merkle proof data from the packed signature.
-            (bytes32 root, bytes32[] memory proof, bytes memory signature) =
-                abi.decode($input.signature[1:], (bytes32, bytes32[], bytes));
-
-            /// @dev Ensure the merkle tree contains the data of the signed bundle.
-            if (MerkleProofLib.verify(proof, root, getPlugsHash($input.plugs)) == false) {
-                revert PlugLib.ProofInvalid();
-            }
-
-            /// @dev Calculate the offset needed to extract solely the signature from
-            ///      the packed state of the `signature` data provided.
-            uint256 offset = proof.length * 32 + 161;
-
-            $allowed = owner()
-                == getPlugsDigest($input.plugs).recover(
-                    $input.signature[offset:offset + signature.length]
-                );
-        }
+        $allowed = owner() == getPlugsDigest($input.plugs).recover($input.signature);
     }
 
     /**
      * See { PlugEnforce._enforceSender }
      */
-    function _enforceSender(
-        address $sender
-    )
+    function _enforceSender(address $sender)
         internal
         view
         virtual

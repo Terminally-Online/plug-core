@@ -36,14 +36,7 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
     /**
      * See { PlugFactoryInterface.initialize }
      */
-    function initialize(
-        address $owner,
-        string memory $baseURI,
-        address $implementation
-    )
-        public
-        virtual
-    {
+    function initialize(address $owner, address $implementation) public virtual {
         /// @dev Configure the starting state of the tradable functionatlity
         ///      that enables non-fungible representation of Socket ownership.
         _initializeOwner($owner);
@@ -70,9 +63,7 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
     /**
      * See { PlugFactoryInterface.deploy }
      */
-    function deploy(
-        bytes32 $salt
-    )
+    function deploy(bytes32 $salt)
         public
         payable
         virtual
@@ -128,9 +119,7 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
     /**
      * See { PlugFactoryInterface.initCodeHash }
      */
-    function initCodeHash(
-        address $implementation
-    )
+    function initCodeHash(address $implementation)
         public
         view
         virtual
