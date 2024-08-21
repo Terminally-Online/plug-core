@@ -18,7 +18,9 @@ interface PlugFactoryInterface {
      * @return $alreadyDeployed Whether or not the Socket was already deployed.
      * @return $socket The address of the deployed Socket.
      */
-    function deploy(bytes32 $salt)
+    function deploy(
+        bytes32 $salt
+    )
         external
         payable
         returns (bool $alreadyDeployed, address $socket);

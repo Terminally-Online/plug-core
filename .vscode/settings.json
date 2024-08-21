@@ -1,6 +1,6 @@
 {
-    "solidity-va.hover": true,
-    "solidity-va.debug.parser.showExceptions": true,
-    "solidity-va.whatsNew.disabled": true,
-    "solidity-va.diagnostics.cdili_json.import": true
+	"solidity-va.hover": true,
+	"solidity-va.debug.parser.showExceptions": true,
+	"solidity-va.whatsNew.disabled": true,
+	"solidity-va.diagnostics.cdili_json.import": true
 }

@@ -53,7 +53,9 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
     /**
      * See { PlugEnforce._enforceSignature }
      */
-    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
+    function _enforceSignature(
+        PlugTypesLib.LivePlugs calldata $input
+    )
         internal
         view
         virtual
@@ -95,7 +97,9 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
     /**
      * See { PlugEnforce._enforceSender }
      */
-    function _enforceSender(address $sender)
+    function _enforceSender(
+        address $sender
+    )
         internal
         view
         virtual
