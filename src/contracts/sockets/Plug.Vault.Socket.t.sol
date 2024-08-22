@@ -29,7 +29,7 @@ contract PlugVaultSocketTest is Test {
 
     function testRevert_Initialize_Again() public {
         vm.deal(address(socket), 100 ether);
-        socket.initialize(address(this));
+        socket.initialize(signer, oneClicker);
     }
 
     function test_owner_Implementation() public {

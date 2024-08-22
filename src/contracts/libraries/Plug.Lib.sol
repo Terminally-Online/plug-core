@@ -19,7 +19,7 @@ library PlugLib {
     error SocketAddressInvalid(address $intended, address $socket);
     error SocketAddressEmpty(address $socket);
 
-    error ImplementationInvalid(address $implementation);
+    error SaltInvalid(address $implementation, address $admin);
     error CallerInvalid(address $expected, address $reality);
     error SenderInvalid(address $reality);
     error RouterInvalid(address $reality);

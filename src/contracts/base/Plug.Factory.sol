@@ -54,7 +54,7 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
 
         /// @dev Ensure the implementation is valid.
         if (implementation == address(0) || admin == address(0)) {
-            revert PlugLib.ImplementationInvalid(implementation);
+            revert PlugLib.SaltInvalid(implementation, admin);
         }
 
         /// @dev Create the deployment salt using the nonce and the admin.
@@ -72,7 +72,7 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
 
             /// @dev Initialize the Socket with the ownership proxy pointing
             ///      this factory that is deploying the Socket.
-            PlugSocketInterface($socketAddress).initialize(admin);
+            PlugSocketInterface($socketAddress).initialize(admin, oneClicker);
         }
     }
 

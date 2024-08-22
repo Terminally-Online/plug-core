@@ -7,6 +7,7 @@ import {
     PlugEtcherLib,
     LibClone,
     PlugFactory,
+    PlugLib,
     PlugVaultSocket
 } from "../abstracts/test/Plug.Test.sol";
 
@@ -48,5 +49,22 @@ contract PlugFactoryTest is Test {
         assertEq(address(vault).balance, initialValue);
         (bool alreadyDeployed,) = factory.deploy{ value: initialValue }(salt);
         assertTrue(alreadyDeployed);
+    }
+
+    function testRevert_InvalidImplementation(uint256) public {
+        bytes memory salt = abi.encode(uint16(1738), signer, oneClicker, address(0));
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.SaltInvalid.selector, address(0), signer));
+        factory.deploy(salt);
+    }
+
+    function testRevert_InvalidAdmin(uint256) public {
+        bytes memory salt =
+            abi.encode(uint16(1738), address(0), oneClicker, address(socketImplementation));
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                PlugLib.SaltInvalid.selector, address(socketImplementation), address(0)
+            )
+        );
+        factory.deploy(salt);
     }
 }

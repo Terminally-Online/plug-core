@@ -3,5 +3,5 @@
 pragma solidity 0.8.23;
 
 library PlugAddressesLib {
-    address internal constant PLUG_FACTORY_ADDRESS = 0x00054638068c5C2f12C58995281CaB5f855409f7;
+    address internal constant PLUG_FACTORY_ADDRESS = 0x0036e4A05db3A0f85b192326d864a37Ed2162893;
 }

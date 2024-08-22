@@ -297,15 +297,16 @@ export const plugFactoryAbi = [
     name: 'SocketDeployed',
   },
   { type: 'error', inputs: [], name: 'AlreadyInitialized' },
+  { type: 'error', inputs: [], name: 'NewOwnerIsZeroAddress' },
+  { type: 'error', inputs: [], name: 'NoHandoverRequest' },
   {
     type: 'error',
     inputs: [
       { name: '$implementation', internalType: 'address', type: 'address' },
+      { name: '$admin', internalType: 'address', type: 'address' },
     ],
-    name: 'ImplementationInvalid',
+    name: 'SaltInvalid',
   },
-  { type: 'error', inputs: [], name: 'NewOwnerIsZeroAddress' },
-  { type: 'error', inputs: [], name: 'NoHandoverRequest' },
   { type: 'error', inputs: [], name: 'Unauthorized' },
 ] as const
 
@@ -769,7 +770,10 @@ export const plugVaultSocketAbi = [
   },
   {
     type: 'function',
-    inputs: [{ name: '$owner', internalType: 'address', type: 'address' }],
+    inputs: [
+      { name: '$owner', internalType: 'address', type: 'address' },
+      { name: '$oneClicker', internalType: 'address', type: 'address' },
+    ],
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',

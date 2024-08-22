@@ -248,17 +248,6 @@ export const contracts = [
             },
             {
                 "type": "error",
-                "name": "ImplementationInvalid",
-                "inputs": [
-                    {
-                        "name": "$implementation",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ]
-            },
-            {
-                "type": "error",
                 "name": "NewOwnerIsZeroAddress",
                 "inputs": []
             },
@@ -266,6 +255,22 @@ export const contracts = [
                 "type": "error",
                 "name": "NoHandoverRequest",
                 "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "SaltInvalid",
+                "inputs": [
+                    {
+                        "name": "$implementation",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$admin",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
             },
             {
                 "type": "error",
@@ -1154,6 +1159,11 @@ export const contracts = [
                 "inputs": [
                     {
                         "name": "$owner",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$oneClicker",
                         "type": "address",
                         "internalType": "address"
                     }

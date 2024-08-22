@@ -27,20 +27,19 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
     *         a Socket factory.
     */
     constructor() {
-        initialize(address(1));
+        initialize(address(1), address(1));
     }
 
     /**
-     * @notice Initializes a new Plug Vault Socket.
-     * @param $owner The address of the owner.
+     * See {PlugSocketInterface-initialize}.
      */
-    function initialize(address $owner) public {
+    function initialize(address $owner, address $oneClicker) public {
         _initializeOwner($owner);
 
         /// @dev Automatically permission the primary platform one-clicker.
-        // if ($oneClicker != address(0)) {
-        //     oneClickersToAllowed[$oneClicker] = true;
-        // }
+        if ($oneClicker != address(0)) {
+            oneClickersToAllowed[$oneClicker] = true;
+        }
     }
 
     /**

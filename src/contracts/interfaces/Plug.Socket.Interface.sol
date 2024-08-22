@@ -9,8 +9,9 @@ interface PlugSocketInterface {
     /**
      * @notice Initialize the Socket with the ownership proxy of the Socket.
      * @param $owner The address of the owner.
+     * @param $oneClicker The address of the one clicker.
      */
-    function initialize(address $owner) external;
+    function initialize(address $owner, address $oneClicker) external;
 
     /**
      * @notice Allows anyone to submit a plugs of signed plugs for processing.
