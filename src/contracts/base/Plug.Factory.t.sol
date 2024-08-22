@@ -17,7 +17,9 @@ contract PlugFactoryTest is Test {
         setUpPlug();
     }
 
-    function decodeSalt(bytes calldata $salt)
+    function decodeSalt(
+        bytes calldata $salt
+    )
         external
         pure
         returns (address $admin, address $implementation)
