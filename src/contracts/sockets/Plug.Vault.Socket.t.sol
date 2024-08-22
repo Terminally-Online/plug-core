@@ -12,16 +12,11 @@ import {
     PlugVaultSocket,
     PlugMockEcho
 } from "../abstracts/test/Plug.Test.sol";
+import { Ownable } from "solady/auth/Ownable.sol";
 
 contract PlugVaultSocketTest is Test {
     function setUp() public virtual {
         setUpPlug();
-    }
-
-    function deployVault() internal override returns (PlugVaultSocket $vault) {
-        (, address socketAddress) =
-            factory.deploy(abi.encodePacked(address(this), address(socketImplementation)));
-        $vault = PlugVaultSocket(payable(socketAddress));
     }
 
     function test_name() public {
@@ -42,10 +37,16 @@ contract PlugVaultSocketTest is Test {
     }
 
     function test_owner() public {
-        assertEq(socket.owner(), address(this));
+        assertEq(socket.owner(), signer);
+    }
+
+    function test_transferOwnership() public {
+        vm.prank(signer);
+        socket.transferOwnership(_randomNonZeroAddress());
     }
 
     function testRevert_transferOwnership() public {
+        vm.expectRevert(Ownable.Unauthorized.selector);
         socket.transferOwnership(_randomNonZeroAddress());
     }
 }

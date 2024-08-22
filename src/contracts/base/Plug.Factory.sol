@@ -42,24 +42,23 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
     /**
      * See { PlugFactoryInterface.deploy }
      */
-    function deploy(
-        bytes calldata $salt
-    )
+    function deploy(bytes calldata $salt)
         public
         payable
         virtual
         returns (bool $alreadyDeployed, address $socketAddress)
     {
         /// @dev Recover the packed implementation and admin from the salt.
-        address implementation = address(uint160(uint256(bytes32($salt[0x14:]) >> 96)));
-        address admin = address(uint160(uint256(bytes32($salt[:0x14]) >> 96)));
+        (uint16 nonce, address admin, address oneClicker, address implementation) =
+            abi.decode($salt, (uint16, address, address, address));
 
         /// @dev Ensure the implementation is valid.
         if (implementation == address(0) || admin == address(0)) {
             revert PlugLib.ImplementationInvalid(implementation);
         }
 
-        bytes32 salt = bytes32(bytes20(uint160(admin)));
+        /// @dev Create the deployment salt using the nonce and the admin.
+        bytes32 salt = bytes32(abi.encodePacked(uint16(nonce), bytes20(admin)));
 
         /// @dev Deploy the new vault using a Beacon Proxy pattern.
         ($alreadyDeployed, $socketAddress) =
@@ -94,9 +93,7 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
     /**
      * See { PlugFactoryInterface.initCodeHash }
      */
-    function initCodeHash(
-        address $implementation
-    )
+    function initCodeHash(address $implementation)
         public
         view
         virtual
