@@ -33,8 +33,8 @@ export const contracts = [
                 "inputs": [
                     {
                         "name": "$salt",
-                        "type": "bytes32",
-                        "internalType": "bytes32"
+                        "type": "bytes",
+                        "internalType": "bytes"
                     }
                 ],
                 "outputs": [
@@ -44,7 +44,7 @@ export const contracts = [
                         "internalType": "bool"
                     },
                     {
-                        "name": "$socket",
+                        "name": "$socketAddress",
                         "type": "address",
                         "internalType": "address"
                     }
@@ -69,25 +69,6 @@ export const contracts = [
                 "outputs": [
                     {
                         "name": "$vault",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "implementations",
-                "inputs": [
-                    {
-                        "name": "",
-                        "type": "uint16",
-                        "internalType": "uint16"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "",
                         "type": "address",
                         "internalType": "address"
                     }
@@ -179,24 +160,6 @@ export const contracts = [
             },
             {
                 "type": "function",
-                "name": "setImplementation",
-                "inputs": [
-                    {
-                        "name": "$version",
-                        "type": "uint16",
-                        "internalType": "uint16"
-                    },
-                    {
-                        "name": "$implementation",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
                 "name": "transferOwnership",
                 "inputs": [
                     {
@@ -285,23 +248,12 @@ export const contracts = [
             },
             {
                 "type": "error",
-                "name": "ImplementationAlreadyInitialized",
-                "inputs": [
-                    {
-                        "name": "$version",
-                        "type": "uint16",
-                        "internalType": "uint16"
-                    }
-                ]
-            },
-            {
-                "type": "error",
                 "name": "ImplementationInvalid",
                 "inputs": [
                     {
-                        "name": "$version",
-                        "type": "uint16",
-                        "internalType": "uint16"
+                        "name": "$implementation",
+                        "type": "address",
+                        "internalType": "address"
                     }
                 ]
             },
@@ -916,8 +868,8 @@ export const contracts = [
                                     },
                                     {
                                         "name": "salt",
-                                        "type": "bytes32",
-                                        "internalType": "bytes32"
+                                        "type": "bytes",
+                                        "internalType": "bytes"
                                     }
                                 ]
                             },
@@ -986,8 +938,8 @@ export const contracts = [
                                     },
                                     {
                                         "name": "salt",
-                                        "type": "bytes32",
-                                        "internalType": "bytes32"
+                                        "type": "bytes",
+                                        "internalType": "bytes"
                                     }
                                 ]
                             },
@@ -1123,8 +1075,8 @@ export const contracts = [
                             },
                             {
                                 "name": "salt",
-                                "type": "bytes32",
-                                "internalType": "bytes32"
+                                "type": "bytes",
+                                "internalType": "bytes"
                             }
                         ]
                     }
@@ -1181,8 +1133,8 @@ export const contracts = [
                             },
                             {
                                 "name": "salt",
-                                "type": "bytes32",
-                                "internalType": "bytes32"
+                                "type": "bytes",
+                                "internalType": "bytes"
                             }
                         ]
                     }
@@ -1221,6 +1173,25 @@ export const contracts = [
                     }
                 ],
                 "stateMutability": "pure"
+            },
+            {
+                "type": "function",
+                "name": "oneClickersToAllowed",
+                "inputs": [
+                    {
+                        "name": "oneClicker",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "allowed",
+                        "type": "bool",
+                        "internalType": "bool"
+                    }
+                ],
+                "stateMutability": "view"
             },
             {
                 "type": "function",
@@ -1302,8 +1273,8 @@ export const contracts = [
                                     },
                                     {
                                         "name": "salt",
-                                        "type": "bytes32",
-                                        "internalType": "bytes32"
+                                        "type": "bytes",
+                                        "internalType": "bytes"
                                     }
                                 ]
                             },
@@ -1389,8 +1360,8 @@ export const contracts = [
                             },
                             {
                                 "name": "salt",
-                                "type": "bytes32",
-                                "internalType": "bytes32"
+                                "type": "bytes",
+                                "internalType": "bytes"
                             }
                         ]
                     }
@@ -1722,88 +1693,6 @@ export const contracts = [
                 "inputs": [
                     {
                         "name": "$livePlugs",
-                        "type": "tuple",
-                        "internalType": "struct PlugTypesLib.LivePlugs",
-                        "components": [
-                            {
-                                "name": "plugs",
-                                "type": "tuple",
-                                "internalType": "struct PlugTypesLib.Plugs",
-                                "components": [
-                                    {
-                                        "name": "socket",
-                                        "type": "address",
-                                        "internalType": "address"
-                                    },
-                                    {
-                                        "name": "plugs",
-                                        "type": "tuple[]",
-                                        "internalType": "struct PlugTypesLib.Plug[]",
-                                        "components": [
-                                            {
-                                                "name": "target",
-                                                "type": "address",
-                                                "internalType": "address"
-                                            },
-                                            {
-                                                "name": "value",
-                                                "type": "uint256",
-                                                "internalType": "uint256"
-                                            },
-                                            {
-                                                "name": "data",
-                                                "type": "bytes",
-                                                "internalType": "bytes"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "name": "solver",
-                                        "type": "bytes",
-                                        "internalType": "bytes"
-                                    },
-                                    {
-                                        "name": "salt",
-                                        "type": "bytes32",
-                                        "internalType": "bytes32"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "signature",
-                                "type": "bytes",
-                                "internalType": "bytes"
-                            }
-                        ]
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "$results",
-                        "type": "tuple[]",
-                        "internalType": "struct PlugTypesLib.Result[]",
-                        "components": [
-                            {
-                                "name": "success",
-                                "type": "bool",
-                                "internalType": "bool"
-                            },
-                            {
-                                "name": "result",
-                                "type": "bytes",
-                                "internalType": "bytes"
-                            }
-                        ]
-                    }
-                ],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "plug",
-                "inputs": [
-                    {
-                        "name": "$livePlugs",
                         "type": "tuple[]",
                         "internalType": "struct PlugTypesLib.LivePlugs[]",
                         "components": [
@@ -1846,8 +1735,8 @@ export const contracts = [
                                     },
                                     {
                                         "name": "salt",
-                                        "type": "bytes32",
-                                        "internalType": "bytes32"
+                                        "type": "bytes",
+                                        "internalType": "bytes"
                                     }
                                 ]
                             },
@@ -1864,6 +1753,88 @@ export const contracts = [
                         "name": "$results",
                         "type": "tuple[][]",
                         "internalType": "struct PlugTypesLib.Result[][]",
+                        "components": [
+                            {
+                                "name": "success",
+                                "type": "bool",
+                                "internalType": "bool"
+                            },
+                            {
+                                "name": "result",
+                                "type": "bytes",
+                                "internalType": "bytes"
+                            }
+                        ]
+                    }
+                ],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "plug",
+                "inputs": [
+                    {
+                        "name": "$livePlugs",
+                        "type": "tuple",
+                        "internalType": "struct PlugTypesLib.LivePlugs",
+                        "components": [
+                            {
+                                "name": "plugs",
+                                "type": "tuple",
+                                "internalType": "struct PlugTypesLib.Plugs",
+                                "components": [
+                                    {
+                                        "name": "socket",
+                                        "type": "address",
+                                        "internalType": "address"
+                                    },
+                                    {
+                                        "name": "plugs",
+                                        "type": "tuple[]",
+                                        "internalType": "struct PlugTypesLib.Plug[]",
+                                        "components": [
+                                            {
+                                                "name": "target",
+                                                "type": "address",
+                                                "internalType": "address"
+                                            },
+                                            {
+                                                "name": "value",
+                                                "type": "uint256",
+                                                "internalType": "uint256"
+                                            },
+                                            {
+                                                "name": "data",
+                                                "type": "bytes",
+                                                "internalType": "bytes"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "solver",
+                                        "type": "bytes",
+                                        "internalType": "bytes"
+                                    },
+                                    {
+                                        "name": "salt",
+                                        "type": "bytes",
+                                        "internalType": "bytes"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "signature",
+                                "type": "bytes",
+                                "internalType": "bytes"
+                            }
+                        ]
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "$results",
+                        "type": "tuple[]",
+                        "internalType": "struct PlugTypesLib.Result[]",
                         "components": [
                             {
                                 "name": "success",

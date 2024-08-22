@@ -16,17 +16,11 @@ library PlugLib {
 
     error NotImplemented();
 
-    error ImplementationAlreadyInitialized(uint16 $version);
-    error ImplementationInvalid(uint16 $version);
-
-    error TradingAlreadyInitialized();
-
     error SocketAddressInvalid(address $intended, address $socket);
     error SocketAddressEmpty(address $socket);
 
+    error ImplementationInvalid(address $implementation);
     error CallerInvalid(address $expected, address $reality);
-
-    error ProofInvalid();
     error SenderInvalid(address $reality);
     error RouterInvalid(address $reality);
     error SignatureInvalid();

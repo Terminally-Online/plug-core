@@ -22,52 +22,6 @@ export const plugAbi = [
     inputs: [
       {
         name: '$livePlugs',
-        internalType: 'struct PlugTypesLib.LivePlugs',
-        type: 'tuple',
-        components: [
-          {
-            name: 'plugs',
-            internalType: 'struct PlugTypesLib.Plugs',
-            type: 'tuple',
-            components: [
-              { name: 'socket', internalType: 'address', type: 'address' },
-              {
-                name: 'plugs',
-                internalType: 'struct PlugTypesLib.Plug[]',
-                type: 'tuple[]',
-                components: [
-                  { name: 'target', internalType: 'address', type: 'address' },
-                  { name: 'value', internalType: 'uint256', type: 'uint256' },
-                  { name: 'data', internalType: 'bytes', type: 'bytes' },
-                ],
-              },
-              { name: 'solver', internalType: 'bytes', type: 'bytes' },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
-            ],
-          },
-          { name: 'signature', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
-    ],
-    name: 'plug',
-    outputs: [
-      {
-        name: '$results',
-        internalType: 'struct PlugTypesLib.Result[]',
-        type: 'tuple[]',
-        components: [
-          { name: 'success', internalType: 'bool', type: 'bool' },
-          { name: 'result', internalType: 'bytes', type: 'bytes' },
-        ],
-      },
-    ],
-    stateMutability: 'payable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      {
-        name: '$livePlugs',
         internalType: 'struct PlugTypesLib.LivePlugs[]',
         type: 'tuple[]',
         components: [
@@ -88,7 +42,7 @@ export const plugAbi = [
                 ],
               },
               { name: 'solver', internalType: 'bytes', type: 'bytes' },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'salt', internalType: 'bytes', type: 'bytes' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
@@ -101,6 +55,52 @@ export const plugAbi = [
         name: '$results',
         internalType: 'struct PlugTypesLib.Result[][]',
         type: 'tuple[][]',
+        components: [
+          { name: 'success', internalType: 'bool', type: 'bool' },
+          { name: 'result', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    inputs: [
+      {
+        name: '$livePlugs',
+        internalType: 'struct PlugTypesLib.LivePlugs',
+        type: 'tuple',
+        components: [
+          {
+            name: 'plugs',
+            internalType: 'struct PlugTypesLib.Plugs',
+            type: 'tuple',
+            components: [
+              { name: 'socket', internalType: 'address', type: 'address' },
+              {
+                name: 'plugs',
+                internalType: 'struct PlugTypesLib.Plug[]',
+                type: 'tuple[]',
+                components: [
+                  { name: 'target', internalType: 'address', type: 'address' },
+                  { name: 'value', internalType: 'uint256', type: 'uint256' },
+                  { name: 'data', internalType: 'bytes', type: 'bytes' },
+                ],
+              },
+              { name: 'solver', internalType: 'bytes', type: 'bytes' },
+              { name: 'salt', internalType: 'bytes', type: 'bytes' },
+            ],
+          },
+          { name: 'signature', internalType: 'bytes', type: 'bytes' },
+        ],
+      },
+    ],
+    name: 'plug',
+    outputs: [
+      {
+        name: '$results',
+        internalType: 'struct PlugTypesLib.Result[]',
+        type: 'tuple[]',
         components: [
           { name: 'success', internalType: 'bool', type: 'bool' },
           { name: 'result', internalType: 'bytes', type: 'bytes' },
@@ -150,11 +150,11 @@ export const plugFactoryAbi = [
   },
   {
     type: 'function',
-    inputs: [{ name: '$salt', internalType: 'bytes32', type: 'bytes32' }],
+    inputs: [{ name: '$salt', internalType: 'bytes', type: 'bytes' }],
     name: 'deploy',
     outputs: [
       { name: '$alreadyDeployed', internalType: 'bool', type: 'bool' },
-      { name: '$socket', internalType: 'address', type: 'address' },
+      { name: '$socketAddress', internalType: 'address', type: 'address' },
     ],
     stateMutability: 'payable',
   },
@@ -166,13 +166,6 @@ export const plugFactoryAbi = [
     ],
     name: 'getAddress',
     outputs: [{ name: '$vault', internalType: 'address', type: 'address' }],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    inputs: [{ name: '', internalType: 'uint16', type: 'uint16' }],
-    name: 'implementations',
-    outputs: [{ name: '', internalType: 'address', type: 'address' }],
     stateMutability: 'view',
   },
   {
@@ -225,16 +218,6 @@ export const plugFactoryAbi = [
     name: 'requestOwnershipHandover',
     outputs: [],
     stateMutability: 'payable',
-  },
-  {
-    type: 'function',
-    inputs: [
-      { name: '$version', internalType: 'uint16', type: 'uint16' },
-      { name: '$implementation', internalType: 'address', type: 'address' },
-    ],
-    name: 'setImplementation',
-    outputs: [],
-    stateMutability: 'nonpayable',
   },
   {
     type: 'function',
@@ -316,12 +299,9 @@ export const plugFactoryAbi = [
   { type: 'error', inputs: [], name: 'AlreadyInitialized' },
   {
     type: 'error',
-    inputs: [{ name: '$version', internalType: 'uint16', type: 'uint16' }],
-    name: 'ImplementationAlreadyInitialized',
-  },
-  {
-    type: 'error',
-    inputs: [{ name: '$version', internalType: 'uint16', type: 'uint16' }],
+    inputs: [
+      { name: '$implementation', internalType: 'address', type: 'address' },
+    ],
     name: 'ImplementationInvalid',
   },
   { type: 'error', inputs: [], name: 'NewOwnerIsZeroAddress' },
@@ -648,7 +628,7 @@ export const plugVaultSocketAbi = [
                 ],
               },
               { name: 'solver', internalType: 'bytes', type: 'bytes' },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'salt', internalType: 'bytes', type: 'bytes' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
@@ -684,7 +664,7 @@ export const plugVaultSocketAbi = [
                 ],
               },
               { name: 'solver', internalType: 'bytes', type: 'bytes' },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'salt', internalType: 'bytes', type: 'bytes' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
@@ -751,7 +731,7 @@ export const plugVaultSocketAbi = [
             ],
           },
           { name: 'solver', internalType: 'bytes', type: 'bytes' },
-          { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'salt', internalType: 'bytes', type: 'bytes' },
         ],
       },
     ],
@@ -779,7 +759,7 @@ export const plugVaultSocketAbi = [
             ],
           },
           { name: 'solver', internalType: 'bytes', type: 'bytes' },
-          { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'salt', internalType: 'bytes', type: 'bytes' },
         ],
       },
     ],
@@ -800,6 +780,13 @@ export const plugVaultSocketAbi = [
     name: 'name',
     outputs: [{ name: '$name', internalType: 'string', type: 'string' }],
     stateMutability: 'pure',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'oneClicker', internalType: 'address', type: 'address' }],
+    name: 'oneClickersToAllowed',
+    outputs: [{ name: 'allowed', internalType: 'bool', type: 'bool' }],
+    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -842,7 +829,7 @@ export const plugVaultSocketAbi = [
                 ],
               },
               { name: 'solver', internalType: 'bytes', type: 'bytes' },
-              { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+              { name: 'salt', internalType: 'bytes', type: 'bytes' },
             ],
           },
           { name: 'signature', internalType: 'bytes', type: 'bytes' },
@@ -885,7 +872,7 @@ export const plugVaultSocketAbi = [
             ],
           },
           { name: 'solver', internalType: 'bytes', type: 'bytes' },
-          { name: 'salt', internalType: 'bytes32', type: 'bytes32' },
+          { name: 'salt', internalType: 'bytes', type: 'bytes' },
         ],
       },
     ],
@@ -1147,15 +1134,6 @@ export const useReadPlugFactoryGetAddress = /*#__PURE__*/ createUseReadContract(
 )
 
 /**
- * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"implementations"`
- */
-export const useReadPlugFactoryImplementations =
-  /*#__PURE__*/ createUseReadContract({
-    abi: plugFactoryAbi,
-    functionName: 'implementations',
-  })
-
-/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"initCodeHash"`
  */
 export const useReadPlugFactoryInitCodeHash =
@@ -1242,15 +1220,6 @@ export const useWritePlugFactoryRequestOwnershipHandover =
   })
 
 /**
- * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"setImplementation"`
- */
-export const useWritePlugFactorySetImplementation =
-  /*#__PURE__*/ createUseWriteContract({
-    abi: plugFactoryAbi,
-    functionName: 'setImplementation',
-  })
-
-/**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"transferOwnership"`
  */
 export const useWritePlugFactoryTransferOwnership =
@@ -1318,15 +1287,6 @@ export const useSimulatePlugFactoryRequestOwnershipHandover =
   /*#__PURE__*/ createUseSimulateContract({
     abi: plugFactoryAbi,
     functionName: 'requestOwnershipHandover',
-  })
-
-/**
- * Wraps __{@link useSimulateContract}__ with `abi` set to __{@link plugFactoryAbi}__ and `functionName` set to `"setImplementation"`
- */
-export const useSimulatePlugFactorySetImplementation =
-  /*#__PURE__*/ createUseSimulateContract({
-    abi: plugFactoryAbi,
-    functionName: 'setImplementation',
   })
 
 /**
@@ -1785,6 +1745,15 @@ export const useReadPlugVaultSocketName = /*#__PURE__*/ createUseReadContract({
   abi: plugVaultSocketAbi,
   functionName: 'name',
 })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"oneClickersToAllowed"`
+ */
+export const useReadPlugVaultSocketOneClickersToAllowed =
+  /*#__PURE__*/ createUseReadContract({
+    abi: plugVaultSocketAbi,
+    functionName: 'oneClickersToAllowed',
+  })
 
 /**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link plugVaultSocketAbi}__ and `functionName` set to `"owner"`

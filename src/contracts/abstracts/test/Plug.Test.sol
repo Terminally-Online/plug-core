@@ -399,7 +399,7 @@ abstract contract TestPlus {
 abstract contract TestPlug is TestPlus {
     Vm private constant vm = Vm(_VM_ADDRESS);
 
-    PlugVaultSocket internal vaultImplementation;
+    PlugVaultSocket internal socketImplementation;
 
     PlugMockERC20 internal mockERC20;
     PlugMockERC721 internal mockERC721;
@@ -412,10 +412,11 @@ abstract contract TestPlug is TestPlus {
     PlugMockEcho internal mock;
 
     address internal factoryOwner;
-    string internal baseURI = "https://api.onplug.io/metadata/";
 
     address internal signer;
     uint256 internal signerPrivateKey = 0x12345;
+    address internal oneClicker;
+    uint256 internal oneClickerPrivateKey = 0xa12345;
 
     uint8 internal PLUG_CONDITION = 1;
     uint8 internal PLUG_EXECUTION = 2;
@@ -429,8 +430,9 @@ abstract contract TestPlug is TestPlus {
     function setUpPlug() internal {
         factoryOwner = _randomNonZeroAddress();
         signer = vm.addr(signerPrivateKey);
+        oneClicker = vm.addr(oneClickerPrivateKey);
 
-        vaultImplementation = new PlugVaultSocket();
+        socketImplementation = new PlugVaultSocket();
 
         mockERC20 = new PlugMockERC20();
         mockERC721 = new PlugMockERC721();
@@ -452,7 +454,7 @@ abstract contract TestPlug is TestPlus {
     function deployFactory() internal virtual returns (PlugFactory $factory) {
         vm.etch(PlugEtcherLib.PLUG_FACTORY_ADDRESS, address(new PlugFactory()).code);
         $factory = PlugFactory(payable(PlugEtcherLib.PLUG_FACTORY_ADDRESS));
-        $factory.initialize(factoryOwner, address(vaultImplementation));
+        $factory.initialize(factoryOwner, address(socketImplementation));
     }
 
     function deployTreasury() internal virtual returns (PlugTreasury $treasury) {
@@ -462,7 +464,8 @@ abstract contract TestPlug is TestPlus {
     }
 
     function deployVault() internal virtual returns (PlugVaultSocket $vault) {
-        (, address vaultAddress) = factory.deploy(bytes32(abi.encodePacked(signer, uint96(0))));
+        (, address vaultAddress) =
+            factory.deploy(abi.encodePacked(signer, address(socketImplementation)));
         $vault = PlugVaultSocket(payable(vaultAddress));
     }
 
@@ -520,7 +523,7 @@ abstract contract TestPlug is TestPlus {
         $plugs = PlugTypesLib.Plugs({
             socket: address($socket),
             plugs: $plugsArray,
-            salt: bytes32(block.timestamp),
+            salt: bytes(""),
             solver: $solver
         });
     }
@@ -551,9 +554,7 @@ abstract contract TestPlug is TestPlus {
         );
     }
 
-    function createPlugs(
-        PlugTypesLib.Plug[] memory $plugsArray
-    )
+    function createPlugs(PlugTypesLib.Plug[] memory $plugsArray)
         internal
         view
         returns (PlugTypesLib.Plugs memory $plugs)
@@ -572,13 +573,10 @@ abstract contract TestPlug is TestPlus {
         bytes32 digest = $socket.getPlugsDigest($plugs);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(signerPrivateKey, digest);
         bytes memory signature = abi.encodePacked(r, s, v);
-
         $livePlugs = PlugTypesLib.LivePlugs({ plugs: $plugs, signature: signature });
     }
 
-    function createLivePlugs(
-        PlugTypesLib.Plugs memory $plugs
-    )
+    function createLivePlugs(PlugTypesLib.Plugs memory $plugs)
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
@@ -586,9 +584,7 @@ abstract contract TestPlug is TestPlus {
         $livePlugs = createLivePlugs(socket, $plugs);
     }
 
-    function createLivePlugs(
-        PlugTypesLib.Plug[] memory $plugsArray
-    )
+    function createLivePlugs(PlugTypesLib.Plug[] memory $plugsArray)
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)

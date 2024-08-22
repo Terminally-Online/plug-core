@@ -19,6 +19,8 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
     /// @notice Use the ECDSA library for signature verification.
     using ECDSA for bytes32;
 
+    mapping(address oneClicker => bool allowed) public oneClickersToAllowed;
+
     /*
     * @notice The constructor for the Plug Vault Socket will
     *         initialize to address(1) when not deployed through
@@ -34,6 +36,11 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
      */
     function initialize(address $owner) public {
         _initializeOwner($owner);
+
+        /// @dev Automatically permission the primary platform one-clicker.
+        // if ($oneClicker != address(0)) {
+        //     oneClickersToAllowed[$oneClicker] = true;
+        // }
     }
 
     /**
@@ -53,26 +60,24 @@ contract PlugVaultSocket is PlugSocket, Ownable, Receiver, UUPSUpgradeable {
     /**
      * See { PlugEnforce._enforceSignature }
      */
-    function _enforceSignature(
-        PlugTypesLib.LivePlugs calldata $input
-    )
+    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
         internal
         view
         virtual
         override
         returns (bool $allowed)
     {
-        /// @dev Utilize a standard signature recovery method that is only designed
-        ///      to support one domain and intent at a time.
-        $allowed = owner() == getPlugsDigest($input.plugs).recover($input.signature);
+        /// @dev Recover the signer from the signature that was provided.
+        address signer = getPlugsDigest($input.plugs).recover($input.signature);
+
+        /// @dev Validate that the signer is allowed within context.
+        $allowed = oneClickersToAllowed[signer] || owner() == signer;
     }
 
     /**
      * See { PlugEnforce._enforceSender }
      */
-    function _enforceSender(
-        address $sender
-    )
+    function _enforceSender(address $sender)
         internal
         view
         virtual

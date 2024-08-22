@@ -22,9 +22,6 @@ import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
  * @author @nftchance (chance@onplug.io)
  */
 contract PlugFactory is PlugFactoryInterface, Ownable {
-    /// @dev The mapping of the implementations of the vaults.
-    mapping(uint16 => address) public implementations;
-
     /**
      * @notice Initialize a reference implementation that will not be
      *         with real intent of consumption.
@@ -40,67 +37,41 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
         /// @dev Configure the starting state of the tradable functionatlity
         ///      that enables non-fungible representation of Socket ownership.
         _initializeOwner($owner);
-
-        /// @dev Set the implementation of the first live version.
-        implementations[0] = $implementation;
-    }
-
-    /**
-     * @notice Set the implementation of a new version of the Socket.
-     * @param $version The version of the vault.
-     * @param $implementation The implementation of the vault.
-     */
-    function setImplementation(uint16 $version, address $implementation) public onlyOwner {
-        /// @dev Ensure the implementation for this version has not already been set.
-        if (implementations[$version] != address(0)) {
-            revert PlugLib.ImplementationAlreadyInitialized($version);
-        }
-
-        /// @dev Set the implementation of the vault.
-        implementations[$version] = $implementation;
     }
 
     /**
      * See { PlugFactoryInterface.deploy }
      */
-    function deploy(
-        bytes32 $salt
-    )
+    function deploy(bytes calldata $salt)
         public
         payable
         virtual
-        returns (bool $alreadyDeployed, address $socket)
+        returns (bool $alreadyDeployed, address $socketAddress)
     {
-        /// @dev Recover the version of the Socket being deployed from the end
-        ///      of the salt provided.
-        uint16 version = uint16(uint256($salt));
-
-        /// @dev Determine the address of the implementation provided the salt.
-        address implementation = implementations[version];
+        /// @dev Recover the packed implementation and admin from the salt.
+        address implementation = address(uint160(uint256(bytes32($salt[0x14:]) >> 96)));
+        address admin = address(uint160(uint256(bytes32($salt[:0x14]) >> 96)));
 
         /// @dev Ensure the implementation is valid.
-        if (implementation == address(0)) {
-            revert PlugLib.ImplementationInvalid(version);
+        if (implementation == address(0) || admin == address(0)) {
+            revert PlugLib.ImplementationInvalid(implementation);
         }
 
+        bytes32 salt = bytes32(bytes20(uint160(admin)));
+
         /// @dev Deploy the new vault using a Beacon Proxy pattern.
-        ($alreadyDeployed, $socket) =
-            LibClone.createDeterministicERC1967(msg.value, implementation, $salt);
+        ($alreadyDeployed, $socketAddress) =
+            LibClone.createDeterministicERC1967(msg.value, implementation, salt);
 
         /// @dev If the vault was not already deployed, initialize it.
         if (!$alreadyDeployed) {
-            /// @dev Recover the admin of the Socket by unpacking the signer from the salt.
-            ///      The admin is the first 20 bytes of the salt and nonce is the last
-            ///      12 bytes of the salt.
-            address admin = address(uint160(uint256($salt) >> 96));
-
             /// @dev Emit an event for the creation of the Vault to make
             ///      tracking things easier offchain.
-            emit PlugLib.SocketDeployed(implementation, admin, $salt);
+            emit PlugLib.SocketDeployed(implementation, admin, salt);
 
             /// @dev Initialize the Socket with the ownership proxy pointing
             ///      this factory that is deploying the Socket.
-            PlugSocketInterface($socket).initialize(admin);
+            PlugSocketInterface($socketAddress).initialize(admin);
         }
     }
 
@@ -121,9 +92,7 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
     /**
      * See { PlugFactoryInterface.initCodeHash }
      */
-    function initCodeHash(
-        address $implementation
-    )
+    function initCodeHash(address $implementation)
         public
         view
         virtual

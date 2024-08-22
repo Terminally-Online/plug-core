@@ -1,33 +1,33 @@
 {
   "Plug.Factory.sol": {
-    "initCodeHash": "0x4845f6c40b70d66c2ec7aeeb76b8f728dccfc251e67b237ea3ca1fe0bb701464",
+    "initCodeHash": "0xfff33da2021e414912c46edcf69512de3799c4a2613207c5444d5364b50bbce1",
     "deployment": {
-      "salt": "0x00000000000000000000000000000000000000008214a4723affff3fd9a7bac3",
-      "address": "0x00Cf0443Ff825A021d3978807b42EF580Ec34fE6",
+      "salt": "0x00000000000000000000000000000000000000008f142c3e30fcff3f0f0606b2",
+      "address": "0x00ef82E4D189cdCbc74d48Cf436b76D50E1D54e0",
       "rarity": "0"
     }
   },
   "Plug.sol": {
-    "initCodeHash": "0xbfa062e92a79ca79ea4c4e20ab2352998bbaaf8e0d278d7eef2d77302954c57c",
+    "initCodeHash": "0xe17937323393de9d9b2c12297882d946867a50aa198eaedf472424c7df217050",
     "deployment": {
-      "salt": "0x000000000000000000000000000000000000000024400c1105ceff3f1855b8b7",
-      "address": "0xFbb76Dad3B003eC68F9dceB61Bda8f006D345B1e",
+      "salt": "0x0000000000000000000000000000000000000000765d924f55d7ff3f0f0b8df1",
+      "address": "0xcF7a58a8CCED006DfF4C740025995C66A9BdC0AF",
       "rarity": "0"
     }
   },
   "Plug.Treasury.sol": {
     "initCodeHash": "0x7d42c3847e02299076d60b70e190d832482138b364b44d25398447cea19cfbc6",
     "deployment": {
-      "salt": "0x000000000000000000000000000000000000000011b6eff9eee3ff3f3ed4b63a",
-      "address": "0x00b35Ab3ad8526b1aF6b60Aa0A7c7f276644ED43",
+      "salt": "0x00000000000000000000000000000000000000002af4f73e6ef4ff3fc9f5b4b9",
+      "address": "0x42a10036498b670048e065ad337C027B0574d796",
       "rarity": "0"
     }
   },
   "Plug.Vault.Socket.sol": {
-    "initCodeHash": "0x76d9820e1cdc964c46fa120ccc2c6c1bc9851da0e6ef447e4068b509ea3e5d0a",
+    "initCodeHash": "0x68bf9a3c917060bd9e10324a1b77ae19f367a2b30811f964d2ae8522ae5b6cae",
     "deployment": {
-      "salt": "0x000000000000000000000000000000000000000050700bd33af5ff3f35c32160",
-      "address": "0x00B0eE98aaD828Bc7235754a9Bf0096832c1c3f6",
+      "salt": "0x0000000000000000000000000000000000000000badb9d3bb5fbff3fc9f25544",
+      "address": "0x005134d59D1104FCB324005d0C6A827be9FA8cB0",
       "rarity": "0"
     }
   }

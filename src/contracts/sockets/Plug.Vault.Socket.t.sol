@@ -19,9 +19,9 @@ contract PlugVaultSocketTest is Test {
     }
 
     function deployVault() internal override returns (PlugVaultSocket $vault) {
-        (, address vaultAddress) =
-            factory.deploy(bytes32(abi.encodePacked(address(this), uint96(0))));
-        $vault = PlugVaultSocket(payable(vaultAddress));
+        (, address socketAddress) =
+            factory.deploy(abi.encodePacked(address(this), address(socketImplementation)));
+        $vault = PlugVaultSocket(payable(socketAddress));
     }
 
     function test_name() public {
@@ -37,23 +37,8 @@ contract PlugVaultSocketTest is Test {
         socket.initialize(address(this));
     }
 
-    function testRevert_ReinitializeImplementation() public {
-        vm.expectRevert(
-            abi.encodeWithSelector(PlugLib.ImplementationAlreadyInitialized.selector, uint16(0))
-        );
-        vm.prank(factoryOwner);
-        factory.setImplementation(0, address(vaultImplementation));
-    }
-
-    function testRevert_UninitializedImplementation() public {
-        bytes32 salt = bytes32(abi.encodePacked(address(this), uint80(0), uint16(2)));
-        vm.expectRevert(abi.encodeWithSelector(PlugLib.ImplementationInvalid.selector, uint16(2)));
-        factory.deploy(salt);
-    }
-
     function test_owner_Implementation() public {
-        address owner = vaultImplementation.owner();
-        assertEq(owner, address(1));
+        assertEq(socketImplementation.owner(), address(1));
     }
 
     function test_owner() public {
