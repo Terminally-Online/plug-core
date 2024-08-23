@@ -104,7 +104,9 @@ contract PlugSocket is
     /**
      * See {PlugSocketInterface-plug}.
      */
-    function plug(PlugTypesLib.Plugs calldata $plugs)
+    function plug(
+        PlugTypesLib.Plugs calldata $plugs
+    )
         external
         payable
         virtual
@@ -203,7 +205,9 @@ contract PlugSocket is
      * @param $input The LivePlugs object that contains the Plugs object as well as
      *               the signature defining the permission to execute the bundle.
      */
-    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
+    function _enforceSignature(
+        PlugTypesLib.LivePlugs calldata $input
+    )
         internal
         virtual
         returns (bool $allowed)
