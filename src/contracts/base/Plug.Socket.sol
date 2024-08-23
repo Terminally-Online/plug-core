@@ -8,6 +8,7 @@ import { Ownable } from "solady/auth/Ownable.sol";
 import { Receiver } from "solady/accounts/Receiver.sol";
 import { UUPSUpgradeable } from "solady/utils/UUPSUpgradeable.sol";
 import { ReentrancyGuard } from "solady/utils/ReentrancyGuard.sol";
+import { LibBitmap } from "solady/utils/LibBitmap.sol";
 import { ECDSA } from "solady/utils/ECDSA.sol";
 import { PlugLib, PlugTypesLib } from "../libraries/Plug.Lib.sol";
 
@@ -24,11 +25,17 @@ contract PlugSocket is
     UUPSUpgradeable,
     ReentrancyGuard
 {
+    /// @dev Import the LibBitmap library from Solady
+    using LibBitmap for LibBitmap.Bitmap;
+
     /// @notice Use the ECDSA library for signature verification.
     using ECDSA for bytes32;
 
     /// @dev Mapping of one-clickers to their allowed status.
     mapping(address oneClicker => bool allowed) public oneClickersToAllowed;
+
+    /// @dev Bitmap to track used nonces for each signer
+    LibBitmap.Bitmap private nonces;
 
     /*
     * @notice The constructor for the Plug Vault Socket will
@@ -97,9 +104,7 @@ contract PlugSocket is
     /**
      * See {PlugSocketInterface-plug}.
      */
-    function plug(
-        PlugTypesLib.Plugs calldata $plugs
-    )
+    function plug(PlugTypesLib.Plugs calldata $plugs)
         external
         payable
         virtual
@@ -198,18 +203,24 @@ contract PlugSocket is
      * @param $input The LivePlugs object that contains the Plugs object as well as
      *               the signature defining the permission to execute the bundle.
      */
-    function _enforceSignature(
-        PlugTypesLib.LivePlugs calldata $input
-    )
+    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
         internal
-        view
         virtual
         returns (bool $allowed)
     {
         /// @dev Recover the signer from the signature that was provided.
         address signer = getPlugsDigest($input.plugs).recover($input.signature);
 
-        /// @dev Confirm the Solver provided order has not expired.
+        /// @dev Extract nonce from the salt field (assuming it's the first 12 bytes -- 96 bits).
+        uint256 nonce = uint256(uint96(bytes12($input.plugs.salt)));
+
+        /// @dev Confirm the nonce has not been used before.
+        if (nonces.get(nonce) == true) {
+            revert PlugLib.NonceInvalid();
+        }
+
+        /// @dev Use the nonce.
+        nonces.set(nonce);
 
         /// @dev Validate that the signer is allowed within context.
         $allowed = oneClickersToAllowed[signer] || owner() == signer;

@@ -24,10 +24,10 @@
     }
   },
   "Plug.Socket.sol": {
-    "initCodeHash": "0xec2d6d0a660485c73320ea2299cc76f675f090cba756a582320375c1c699a2bc",
+    "initCodeHash": "0x67f1542ec6b3921fa5356eb869b40e760715c159981b86ff19a6c3865ae811b5",
     "deployment": {
-      "salt": "0x000000000000000000000000000000000000000071c927b75af3ff3f84382121",
-      "address": "0x0013a8Dd0DAe80f084e92772508Db1C7082f50E8",
+      "salt": "0x0000000000000000000000000000000000000000c16164d2e2feff3faf43bf11",
+      "address": "0x00146815C7A90217aCa23b1525aBEF40c1e2545f",
       "rarity": "0"
     }
   }

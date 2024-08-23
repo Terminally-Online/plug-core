@@ -994,6 +994,11 @@ export const contracts = [
             },
             {
                 "type": "error",
+                "name": "NonceInvalid",
+                "inputs": []
+            },
+            {
+                "type": "error",
                 "name": "PlugFailed",
                 "inputs": []
             },

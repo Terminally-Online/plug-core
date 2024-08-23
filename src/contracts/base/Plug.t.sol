@@ -82,6 +82,22 @@ contract PlugTest is Test {
         plug.plug(livePlugs);
     }
 
+    function test_PlugEmptyEcho_Solver_InvalidNonce() public {
+        address solver = _randomNonZeroAddress();
+        vm.deal(solver, 100 ether);
+        vm.deal(address(socket), 100 ether);
+        PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](2);
+        plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
+        plugsArray[1] = createPlug(PLUG_VALUE, PLUG_EXECUTION);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, solver);
+        vm.prank(solver);
+        vm.expectEmit(address(mock));
+        emit EchoInvoked(address(socket), "Hello World");
+        plug.plug(livePlugs);
+        vm.expectRevert(PlugLib.NonceInvalid.selector);
+        plug.plug(livePlugs);
+    }
+
     function testRevert_PlugEmptyEcho_Solver_InvalidSignature() public {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);

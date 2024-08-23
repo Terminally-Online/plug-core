@@ -699,6 +699,7 @@ export const plugSocketAbi = [
   { type: 'error', inputs: [], name: 'AlreadyInitialized' },
   { type: 'error', inputs: [], name: 'NewOwnerIsZeroAddress' },
   { type: 'error', inputs: [], name: 'NoHandoverRequest' },
+  { type: 'error', inputs: [], name: 'NonceInvalid' },
   { type: 'error', inputs: [], name: 'PlugFailed' },
   { type: 'error', inputs: [], name: 'Reentrancy' },
   {
