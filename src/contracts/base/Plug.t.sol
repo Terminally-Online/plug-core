@@ -37,7 +37,7 @@ contract PlugTest is Test {
         plug.plug(livePlugs);
     }
 
-    function test_PlugEmptyEcho_SignerSolver() public {
+    function test_PlugEmptyEcho_Solver() public {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
         PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray);
@@ -46,37 +46,23 @@ contract PlugTest is Test {
         plug.plug(livePlugs);
     }
 
-    function testRevert_PlugEmptyEcho_SignerSolver_InvalidSignature() public {
-        PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
-        plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
-        PlugTypesLib.Plugs memory plugs = createPlugs(plugsArray);
-        bytes32 digest = socket.getPlugsDigest(plugs);
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(0x123456, digest);
-        bytes memory signature = abi.encodePacked(r, s, v);
-        PlugTypesLib.LivePlugs memory livePlugs =
-            PlugTypesLib.LivePlugs({ plugs: plugs, signature: signature });
-        vm.expectRevert(PlugLib.SignatureInvalid.selector);
-        plug.plug(livePlugs);
-    }
-
-    function test_PlugEmptyEcho_ExternalSolver_NotCompensated() public {
+    function test_PlugEmptyEcho_Solver_TreasuryPayment() public {
         address solver = _randomNonZeroAddress();
         vm.deal(solver, 100 ether);
         vm.deal(address(socket), 100 ether);
-        uint256 preBalance = address(solver).balance;
-        PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
+        uint256 preBalance = address(treasury).balance;
+        PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](2);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
-        PlugTypesLib.Plugs memory plugs =
-            createPlugs(plugsArray, uint48(block.timestamp + 3 minutes), solver);
-        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugs);
+        plugsArray[1] = createPlug(PLUG_VALUE, PLUG_EXECUTION);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, solver);
         vm.prank(solver);
         vm.expectEmit(address(mock));
         emit EchoInvoked(address(socket), "Hello World");
         plug.plug(livePlugs);
-        assertEq(preBalance, address(solver).balance);
+        assertTrue(address(treasury).balance > preBalance);
     }
 
-    function testRevert_PlugEmptyEcho_ExternalSolver_CompensationFailure() public {
+    function testRevert_PlugEmptyEcho_Solver_TreasuryPaymentFailure() public {
         address solver = _randomNonZeroAddress();
         vm.deal(solver, 100 ether);
         vm.deal(address(socket), 0);
@@ -96,7 +82,20 @@ contract PlugTest is Test {
         plug.plug(livePlugs);
     }
 
-    function testRevert_PlugEmptyEcho_ExternalSolver_Invalid() public {
+    function testRevert_PlugEmptyEcho_Solver_InvalidSignature() public {
+        PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
+        plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
+        PlugTypesLib.Plugs memory plugs = createPlugs(plugsArray);
+        bytes32 digest = socket.getPlugsDigest(plugs);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(0x123456, digest);
+        bytes memory signature = abi.encodePacked(r, s, v);
+        PlugTypesLib.LivePlugs memory livePlugs =
+            PlugTypesLib.LivePlugs({ plugs: plugs, signature: signature });
+        vm.expectRevert(PlugLib.SignatureInvalid.selector);
+        plug.plug(livePlugs);
+    }
+
+    function testRevert_PlugEmptyEcho_Solver_Invalid() public {
         address solver = _randomNonZeroAddress();
         vm.deal(solver, 100 ether);
         vm.deal(address(socket), 100 ether);
@@ -112,7 +111,7 @@ contract PlugTest is Test {
         plug.plug(livePlugs);
     }
 
-    function testRevert_PlugEmptyEcho_ExternalSolver_Expired() public {
+    function testRevert_PlugEmptyEcho_Solver_Expired() public {
         address solver = _randomNonZeroAddress();
         vm.deal(solver, 100 ether);
         vm.deal(address(socket), 100 ether);
