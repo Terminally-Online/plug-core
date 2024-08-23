@@ -5,7 +5,9 @@ on:
         branches:
             - '**'
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+concurrency:
+    cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.ref }}
 
 env:
     FOUNDRY_PROFILE: ci
@@ -21,7 +23,7 @@ jobs:
               uses: actions/checkout@v4
 
             - name: ⚙️  Setup Action
-              uses: pnpm/action-setup@v3
+              uses: pnpm/action-setup@v4
               with:
                   version: 8
 
@@ -58,19 +60,21 @@ jobs:
               run: pnpm build
 
             - name: 🧹 Lint
-              run: pnpm lint
+              run: pnpm build:lint
 
             - name: 🧪 Run Forge Gas Snapshot
               run: |
                   forge snapshot
 
             - name: 📝 Configure Git Commit
+              if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]' }}
               run: |
                   git config user.name "nftchance"
                   git config user.email "chance@utc24.io"
 
             - name: 📝 Commit Changes
+              if: ${{ github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]' }}
               run: |
                   git add .
                   git diff --staged --quiet || git commit -m "chore: update build artifacts"
-                  git push
+                  git push https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/nftchance/plug-core.git

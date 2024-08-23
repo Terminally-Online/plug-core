@@ -2,111 +2,81 @@
 
 pragma solidity 0.8.23;
 
-import {PlugSocket} from '../abstracts/Plug.Socket.sol';
-import {PlugLib} from '../libraries/Plug.Lib.sol';
-import {LibClone} from 'solady/src/utils/LibClone.sol';
+import { PlugFactoryInterface } from "../interfaces/Plug.Factory.Interface.sol";
+
+import { PlugLib } from "../libraries/Plug.Lib.sol";
+import { LibClone } from "solady/utils/LibClone.sol";
+
+import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 
 /**
  * @title Plug Factory
- * @notice This contract is responsible for deploying new Plug Vaults that can be used
- *         as personal relays for an individual. The owner can execute transactions through
- *         the vaults, and the vaults can be used to store funds and/or NFTs. The vaults
- *         are deployed using the Beacon Proxy pattern, and the owner can upgrade the
- *         implementation at any time.
- * @author @nftchance (chance@utc24.io)
- * @author @vectorized (https://github.com/Vectorized/solady/blob/main/src/accounts/ERC4337Factory.sol)
+ * @notice This contract is responsible for deploying new Plug Sockets that can be used
+ *         as personal accounts for an individual. The Sockets are deployed using the
+ *         Beacon Proxy pattern, and the owner can upgrade the implementation at any time.
+ * @author @nftchance (chance@onplug.io)
  */
-contract PlugFactory {
-	/// @dev The nonce of factory deployments for each user.
-	mapping(address => uint256) public nonce;
+contract PlugFactory is PlugFactoryInterface {
+    /**
+     * See { PlugFactoryInterface.deploy }
+     */
+    function deploy(bytes calldata $salt)
+        public
+        payable
+        virtual
+        returns (bool $alreadyDeployed, address $socketAddress)
+    {
+        /// @dev Recover the packed implementation and admin from the salt.
+        (uint96 nonce, address admin, address oneClicker, address implementation) =
+            abi.decode($salt, (uint96, address, address, address));
 
-	/**
-	 * @notice Deploy a new Plug contract and initialize it.
-	 * @param $admin The admin of the vault.
-	 * @param $salt The salt of the vault.
-	 * @return $alreadyDeployed Whether or not the vault was already deployed.
-	 * @return $vault The address of the deployed vault.
-	 */
-	function deploy(
-		address $implementation,
-		address $admin,
-		bytes32 $salt
-	) public payable virtual returns (bool $alreadyDeployed, address $vault) {
-		/// @dev Make sure the user has provided a valid salt.
-		LibClone.checkStartsWith($salt, $admin);
+        /// @dev Ensure the implementation is valid.
+        if (implementation == address(0) || admin == address(0)) {
+            revert PlugLib.SaltInvalid(implementation, admin);
+        }
 
-		/// @dev Deploy the new vault using a Beacon Proxy pattern.
-		($alreadyDeployed, $vault) = LibClone.createDeterministicERC1967(
-			msg.value,
-			$implementation,
-			$salt
-		);
+        /// @dev Create the deployment salt using the nonce and the admin.
+        bytes32 salt = bytes32(abi.encodePacked(uint96(nonce), bytes20(admin)));
 
-		/// @dev If the vault was not already deployed, initialize it.
-		if (!$alreadyDeployed) {
-			/// @solidity memory-safe-assembly
-			assembly {
-				/// @dev Store the `$admin` argument.
-				mstore(0x14, $admin)
-				/// @dev Store the call data for the `initialize(address)` function.
-				mstore(0x00, 0xc4d66de8000000000000000000000000)
-				if iszero(
-					call(gas(), $vault, 0, 0x10, 0x24, codesize(), 0x00)
-				) {
-					returndatacopy(mload(0x40), 0x00, returndatasize())
-					revert(mload(0x40), returndatasize())
-				}
-			}
+        /// @dev Deploy the new vault using a Beacon Proxy pattern.
+        ($alreadyDeployed, $socketAddress) =
+            LibClone.createDeterministicERC1967(msg.value, implementation, salt);
 
-			/// @dev Emit an event for the creation of the Vault to make tracking
-			///		 things easier offchain.
-			emit PlugLib.SocketDeployed($implementation, $admin, $salt);
-		}
-	}
+        /// @dev If the vault was not already deployed, initialize it.
+        if (!$alreadyDeployed) {
+            /// @dev Emit an event for the creation of the Socket to make
+            ///      tracking things easier offchain.
+            emit PlugLib.SocketDeployed(implementation, admin, salt);
 
-	/**
-	 * @notice Deploy a new Plug contract and initialize it without a manually
-	 *         specified salt being provided.
-	 * @param $admin The admin of the vault.
-	 * @return $alreadyDeployed Whether or not the vault was already deployed.
-	 * @return $vault The address of the deployed vault.
-	 */
-	function deploy(
-		address $implementation,
-		address $admin
-	) public payable virtual returns (bool $alreadyDeployed, address $vault) {
-		bytes32 $salt = bytes32(
-			abi.encodePacked(nonce[msg.sender]++, $admin)
-		);
+            /// @dev Initialize the Socket with the ownership proxy pointing
+            ///      this factory that is deploying the Socket.
+            PlugSocketInterface($socketAddress).initialize(admin, oneClicker);
+        }
+    }
 
-		/// @dev Deploy the new vault using a Beacon Proxy pattern.
-		($alreadyDeployed, $vault) = deploy($implementation, $admin, $salt);
-	}
+    /**
+     * See { PlugFactoryInterface.getAddress }
+     */
+    function getAddress(
+        address $implementation,
+        bytes32 $salt
+    )
+        public
+        view
+        returns (address $vault)
+    {
+        $vault = LibClone.predictDeterministicAddressERC1967($implementation, $salt, address(this));
+    }
 
-	/**
-	 * @notice Predict the address of a new Plug Vault.
-	 * @param $salt The salt of the vault.
-	 * @return $vault The predicted address of the vault.
-	 */
-	function getAddress(
-		address $implementation,
-		bytes32 $salt
-	) public view returns (address $vault) {
-		$vault = LibClone.predictDeterministicAddressERC1967(
-			$implementation,
-			$salt,
-			address(this)
-		);
-	}
-
-	/**
-	 * @notice Get the init code hash of the vaults.
-	 * @dev This is used to mine vanity addresses.
-	 * @return $initCodeHash The init code hash of the vaults.
-	 */
-	function initCodeHash(
-		address $implementation
-	) public view virtual returns (bytes32 $initCodeHash) {
-		$initCodeHash = LibClone.initCodeHashERC1967($implementation);
-	}
+    /**
+     * See { PlugFactoryInterface.initCodeHash }
+     */
+    function initCodeHash(address $implementation)
+        public
+        view
+        virtual
+        returns (bytes32 $initCodeHash)
+    {
+        $initCodeHash = LibClone.initCodeHashERC1967($implementation);
+    }
 }

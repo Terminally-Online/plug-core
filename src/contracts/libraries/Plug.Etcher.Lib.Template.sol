@@ -2,10 +2,34 @@
 
 pragma solidity 0.8.23;
 
-import { ImmutableCreate2Factory } from
-    "../interfaces/Deployment.Create2Factory.Interface.sol";
 import { PlugLib } from "../libraries/Plug.Lib.sol";
-/// @auto INSERT IMPORTS
+/// @notice INSERT IMPORTS
+
+interface ImmutableCreate2Factory {
+    function safeCreate2(
+        bytes32 salt,
+        bytes calldata initCode
+    )
+        external
+        payable
+        returns (address deploymentAddress);
+
+    function findCreate2Address(
+        bytes32 salt,
+        bytes calldata initCode
+    )
+        external
+        view
+        returns (address deploymentAddress);
+
+    function findCreate2AddressViaHash(
+        bytes32 salt,
+        bytes32 initCodeHash
+    )
+        external
+        view
+        returns (address deploymentAddress);
+}
 
 /**
  * @title Plug Etcher Template
@@ -33,11 +57,11 @@ library PlugEtcherLibTemplate {
      * @param $initializationCode The initialization code for the contract.
      * @return $deployment The address of the deployed contract.
      */
-    function _safeCreate2(
+    function safeCreate2(
         bytes32 $salt,
         bytes memory $initializationCode
     )
-        private
+        public
         returns (address $deployment)
     {
         // Canonical address of 0age's immutable create 2 factory.
@@ -54,23 +78,12 @@ library PlugEtcherLibTemplate {
                 let n := mload(ic2fBytecode)
                 mstore(add(m, 0x60), n)
                 for { let i := 0 } lt(i, n) { i := add(0x20, i) } {
-                    mstore(
-                        add(add(m, 0x80), i),
-                        mload(add(add(ic2fBytecode, 0x20), i))
-                    )
+                    mstore(add(add(m, 0x80), i), mload(add(add(ic2fBytecode, 0x20), i)))
                 }
                 let vmAddress := 0x7109709ECfa91a80626fF3989D68f67F5b1DD12D
-                if iszero(
-                    call(
-                        gas(),
-                        vmAddress,
-                        0,
-                        add(m, 0x1c),
-                        add(n, 0x64),
-                        0x00,
-                        0x00
-                    )
-                ) { revert(0, 0) }
+                if iszero(call(gas(), vmAddress, 0, add(m, 0x1c), add(n, 0x64), 0x00, 0x00)) {
+                    revert(0, 0)
+                }
             }
         }
         /// @solidity memory-safe-assembly
@@ -83,13 +96,9 @@ library PlugEtcherLibTemplate {
             mstore(add(m, 0x60), n)
             // prettier-ignore
             for { let i := 0 } lt(i, n) { i := add(i, 0x20) } {
-                mstore(
-                    add(add(m, 0x80), i),
-                    mload(add(add($initializationCode, 0x20), i))
-                )
+                mstore(add(add(m, 0x80), i), mload(add(add($initializationCode, 0x20), i)))
             }
-            if iszero(call(gas(), c2f, 0, add(m, 0x1c), add(n, 0x64), m, 0x20))
-            {
+            if iszero(call(gas(), c2f, 0, add(m, 0x1c), add(n, 0x64), m, 0x20)) {
                 returndatacopy(m, m, returndatasize())
                 revert(m, returndatasize())
             }
@@ -102,11 +111,7 @@ library PlugEtcherLibTemplate {
      * @param $deployment The address to check.
      * @return $result The size of the code at `deployment`.
      */
-    function _extcodesize(address $deployment)
-        private
-        view
-        returns (uint256 $result)
-    {
+    function _extcodesize(address $deployment) private view returns (uint256 $result) {
         /// @solidity memory-safe-assembly
         assembly {
             $result := extcodesize($deployment)

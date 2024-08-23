@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: BUSL-1.1
+//SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.23;
 
@@ -6,27 +6,27 @@ pragma solidity 0.8.23;
 import { PlugTypesLib } from "../abstracts/Plug.Types.sol";
 
 interface PlugSocketInterface {
-    function signer(PlugTypesLib.LivePlugs calldata $livePlugs)
-        external
-        view
-        returns (address $signer);
+    /**
+     * @notice Initialize the Socket with the ownership proxy of the Socket.
+     * @param $owner The address of the owner.
+     * @param $oneClicker The address of the one clicker.
+     */
+    function initialize(address $owner, address $oneClicker) external;
 
     /**
      * @notice Allows anyone to submit a plugs of signed plugs for processing.
      * @notice This version of the function will always be called by the Router.
-     * @param $plugs The Plug bundle to execute.
-     * @param $signer The address of the bundle signer.
-     * @param $gas The gas to execute the plugs.
+     * @param $livePlugs The Plug bundle to execute.
+     * @param $solver The address of the Solver.
      * @return $results The return data of each plug executed.
      */
     function plug(
-        PlugTypesLib.Plugs calldata $plugs,
-        address $signer,
-        uint256 $gas
+        PlugTypesLib.LivePlugs calldata $livePlugs,
+        address $solver
     )
         external
         payable
-        returns (bytes[] memory $results);
+        returns (PlugTypesLib.Result[] memory $results);
 
     /**
      * @notice Allows anyone to submit a plugs of signed plugs for processing.
@@ -37,16 +37,5 @@ interface PlugSocketInterface {
     function plug(PlugTypesLib.Plugs calldata $plugs)
         external
         payable
-        returns (bytes[] memory $results);
-
-    /**
-     * @notice Allows a smart contract to submit a plugs of plugs for processing,
-     *         allowing itself to be the delegate.
-     * @param $plugs The plugs of plugs to execute.
-     * @return $results The return data of each plug executed.
-     */
-    // function plugContract(PlugTypesLib.Plug[] calldata $plugs)
-    //     external
-    //     payable
-    //     returns (bytes[] memory $results);
+        returns (PlugTypesLib.Result[] memory $results);
 }

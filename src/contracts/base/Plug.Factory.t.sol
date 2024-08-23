@@ -2,105 +2,64 @@
 
 pragma solidity 0.8.23;
 
-import { Test } from "../utils/Test.sol";
-
-import { PlugFactory } from "./Plug.Factory.sol";
-import { PlugVaultSocket } from "../sockets/Plug.Vault.Socket.sol";
-
-import { LibClone } from "solady/src/utils/LibClone.sol";
+import {
+    Test, PlugEtcherLib, LibClone, PlugFactory, PlugLib
+} from "../abstracts/test/Plug.Test.sol";
 
 contract PlugFactoryTest is Test {
-    PlugVaultSocket internal implementation;
-    PlugFactory internal factory;
+    event Transfer(address indexed from, address indexed to, uint256 indexed id);
 
     function setUp() public virtual {
-        implementation = new PlugVaultSocket();
-        factory = new PlugFactory();
+        setUpPlug();
+    }
+
+    function test_salt() public {
+        bytes memory salt =
+            abi.encode(uint96(1738), signer, oneClicker, address(socketImplementation));
+
+        /// @dev Decode the details used to deploy the Socket and guard the signature.
+        (
+            uint96 nonce,
+            address adminAddress,
+            address oneClickerAddress,
+            address implementationAddress
+        ) = abi.decode(salt, (uint96, address, address, address));
+
+        assertEq(nonce, uint96(1738));
+        assertEq(adminAddress, signer);
+        assertEq(oneClickerAddress, oneClicker);
+        assertEq(implementationAddress, address(socketImplementation));
+
+        /// @dev Decode the single nonce used to guard the signature.
+        (uint96 singleNonce) = abi.decode(salt, (uint96));
+        assertEq(nonce, singleNonce);
     }
 
     function test_DeployDeterministic(uint256) public {
-        vm.deal(address(this), 100 ether);
-        address owner = _randomNonZeroAddress();
+        vm.deal(address(this), 1000 ether);
         uint256 initialValue = _random() % 100 ether;
-        bytes32 salt = _random() % 8 == 0
-            ? bytes32(_random())
-            : bytes32(uint256(uint96(_random())));
-
-        bool alreadyDeployed;
-        address vault;
-
-        if (uint256(salt) >> 96 != uint160(owner) && uint256(salt) >> 96 != 0) {
-            vm.expectRevert(LibClone.SaltDoesNotStartWith.selector);
-            (alreadyDeployed, vault) = factory.deploy{ value: initialValue }(
-                address(implementation), owner, salt
-            );
-            return;
-        } else {
-            (alreadyDeployed, vault) = factory.deploy{ value: initialValue }(
-                address(implementation), owner, salt
-            );
-        }
-
+        bytes memory salt =
+            abi.encode(uint96(1738), signer, oneClicker, address(socketImplementation));
+        (, address vault) = factory.deploy{ value: initialValue }(salt);
         assertEq(address(vault).balance, initialValue);
-        (, bool isSigner) = PlugVaultSocket(payable(vault)).getAccess(owner);
-        assertEq(isSigner, true);
+        (bool alreadyDeployed,) = factory.deploy{ value: initialValue }(salt);
+        assertTrue(alreadyDeployed);
     }
 
-    function test_RepeatedDeployDeterministic() public {
-        bytes32 salt = bytes32(_random() & uint256(type(uint96).max));
-        address expectedInstance =
-            factory.getAddress(address(implementation), salt);
-        (, address instance) = factory.deploy{ value: 123 }(
-            address(implementation), address(this), salt
+    function testRevert_InvalidImplementation(uint256) public {
+        bytes memory salt = abi.encode(uint96(1738), signer, oneClicker, address(0));
+        vm.expectRevert(abi.encodeWithSelector(PlugLib.SaltInvalid.selector, address(0), signer));
+        factory.deploy(salt);
+    }
+
+    function testRevert_InvalidAdmin(uint256) public {
+        bytes memory salt =
+            abi.encode(uint96(1738), address(0), oneClicker, address(socketImplementation));
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                PlugLib.SaltInvalid.selector, address(socketImplementation), address(0)
+            )
         );
-        assertEq(instance.balance, 123);
-        (bool alreadyDeployed,) = factory.deploy{ value: 456 }(
-            address(implementation), address(this), salt
-        );
-        assertEq(alreadyDeployed, true);
-        factory.deploy(address(implementation), address(this), salt);
-        assertEq(alreadyDeployed, true);
-        assertEq(instance.balance, 123 + 456);
-        assertEq(instance, expectedInstance);
-    }
-
-    function test_RepeatedDeployDeterministic(uint256) public {
-        address owner = _randomNonZeroAddress();
-        bytes32 salt = bytes32(
-            (_random() & uint256(type(uint96).max))
-                | (uint256(uint160(owner)) << 96)
-        );
-        address expectedInstance =
-            factory.getAddress(address(implementation), salt);
-        address notOwner = _randomNonZeroAddress();
-        while (owner == notOwner) notOwner = _randomNonZeroAddress();
-        vm.expectRevert(LibClone.SaltDoesNotStartWith.selector);
-        factory.deploy{ value: 123 }(address(implementation), notOwner, salt);
-        (, address instance) =
-            factory.deploy{ value: 123 }(address(implementation), owner, salt);
-        assertEq(instance.balance, 123);
-        vm.expectRevert(LibClone.SaltDoesNotStartWith.selector);
-        factory.deploy{ value: 123 }(address(implementation), notOwner, salt);
-        (, address redeployedInstance) =
-            factory.deploy{ value: 456 }(address(implementation), owner, salt);
-        assertEq(redeployedInstance, instance);
-        assertEq(instance.balance, 123 + 456);
-        assertEq(expectedInstance, instance);
-    }
-
-    function test_RepeatedDeployDeterministic_NoSalt() public {
-        address owner = _randomNonZeroAddress();
-
-        (bool firstAlreadyDeployed, address firstVault) =
-            factory.deploy{ value: 456 }(address(implementation), owner);
-        assertEq(firstAlreadyDeployed, false);
-        (bool secondAlreadyDeployed, address secondVault) =
-            factory.deploy{ value: 456 }(address(implementation), owner);
-        assertEq(secondAlreadyDeployed, false);
-        assertNotEq(firstVault, secondVault);
-    }
-
-    function test_InitCodeHash() public view {
-        factory.initCodeHash(address(implementation));
+        factory.deploy(salt);
     }
 }

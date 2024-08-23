@@ -2,77 +2,21 @@ import { Contract } from '@/src/lib/types'
 
 export const contractsPath = 'src/contracts'
 
-export const router: Contract = {
-	name: 'Plug.sol',
-	relativePath: '../base/'
-} as const
+const base = (name: string): Contract => ({
+    name,
+    relativePath: '../base/'
+})
 
-export const factory: Contract = {
-	name: 'Plug.Factory.sol',
-	relativePath: '../base/'
-} as const
+export const router = base('Plug.sol')
+export const factory = base('Plug.Factory.sol')
+export const treasury = base('Plug.Treasury.sol')
+export const socket = base('Plug.Socket.sol')
 
-export const baseFee: Contract = { 
-    name: 'Plug.BaseFee.Fuse.sol',
-    relativePath: '../fuses/'
-} as const
-
-export const blockNumber: Contract = { 
-    name: 'Plug.BlockNumber.Fuse.sol',
-    relativePath: '../fuses/'
-} as const
-
-export const clamp: Contract = {
-    name: 'Plug.Clamp.Fuse.sol',
-    relativePath: '../fuses/'
-} as const
-
-export const limitedCalls: Contract = {
-    name: 'Plug.LimitedCalls.Fuse.sol',
-    relativePath: '../fuses/'
-} as const
-
-export const nounsId: Contract = {
-    name: 'Plug.NounsId.Fuse.sol',
-    relativePath: '../fuses/'
-} as const
-
-export const nounsTrait: Contract = {
-    name: 'Plug.NounsTrait.Fuse.sol',
-    relativePath: '../fuses/'
-} as const
-
-export const revocation: Contract = {
-    name: 'Plug.Revocation.Fuse.sol',
-    relativePath: '../fuses/'
-} as const
-
-export const timestamp: Contract = {
-    name: 'Plug.Timestamp.Fuse.sol',
-    relativePath: '../fuses/'
-} as const
-
-export const window: Contract = {
-    name: 'Plug.Window.Fuse.sol',
-    relativePath: '../fuses/'
-} as const
-
-export const vault: Contract = {
-	name: 'Plug.Vault.Socket.sol',
-	relativePath: '../sockets/'
-} as const
-
-export const etchContracts: Array<Contract> = [
-	router,
-	factory,
-    baseFee,
-    blockNumber,
-    clamp,
-    limitedCalls,
-    nounsId,
-    nounsTrait,
-    revocation,
-    timestamp,
-    window,
-    vault
+export const constantContracts: Readonly<Array<Contract>> = [factory] as const
+export const etchContracts: Readonly<Array<Contract>> = [
+    // ! Bases
+    router,
+    factory,
+    treasury,
+    socket
 ] as const
