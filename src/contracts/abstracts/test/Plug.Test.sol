@@ -16,7 +16,7 @@ import { ECDSA } from "solady/utils/ECDSA.sol";
 import { Plug } from "../../base/Plug.sol";
 import { PlugFactory } from "../../base/Plug.Factory.sol";
 import { PlugTreasury } from "../../base/Plug.Treasury.sol";
-import { PlugVaultSocket } from "../../sockets/Plug.Vault.Socket.sol";
+import { PlugSocket } from "../../base/Plug.Socket.sol";
 
 import { PlugMockERC20 } from "../../mocks/Plug.Mock.ERC20.sol";
 import { PlugMockERC721 } from "../../mocks/Plug.Mock.ERC721.sol";
@@ -399,8 +399,6 @@ abstract contract TestPlus {
 abstract contract TestPlug is TestPlus {
     Vm private constant vm = Vm(_VM_ADDRESS);
 
-    PlugVaultSocket internal socketImplementation;
-
     PlugMockERC20 internal mockERC20;
     PlugMockERC721 internal mockERC721;
     PlugMockERC1155 internal mockERC1155;
@@ -408,7 +406,10 @@ abstract contract TestPlug is TestPlus {
     Plug internal plug;
     PlugFactory internal factory;
     PlugTreasury internal treasury;
-    PlugVaultSocket internal socket;
+
+    PlugSocket internal socketImplementation;
+    PlugSocket internal socket;
+
     PlugMockEcho internal mock;
 
     address internal factoryOwner;
@@ -432,8 +433,6 @@ abstract contract TestPlug is TestPlus {
         signer = vm.addr(signerPrivateKey);
         oneClicker = vm.addr(oneClickerPrivateKey);
 
-        socketImplementation = new PlugVaultSocket();
-
         mockERC20 = new PlugMockERC20();
         mockERC721 = new PlugMockERC721();
         mockERC1155 = new PlugMockERC1155();
@@ -441,6 +440,8 @@ abstract contract TestPlug is TestPlus {
         plug = deployPlug();
         factory = deployFactory();
         treasury = deployTreasury();
+
+        socketImplementation = new PlugSocket();
         socket = deployVault();
 
         mock = new PlugMockEcho();
@@ -454,7 +455,6 @@ abstract contract TestPlug is TestPlus {
     function deployFactory() internal virtual returns (PlugFactory $factory) {
         vm.etch(PlugEtcherLib.PLUG_FACTORY_ADDRESS, address(new PlugFactory()).code);
         $factory = PlugFactory(payable(PlugEtcherLib.PLUG_FACTORY_ADDRESS));
-        $factory.initialize(factoryOwner, address(socketImplementation));
     }
 
     function deployTreasury() internal virtual returns (PlugTreasury $treasury) {
@@ -463,10 +463,10 @@ abstract contract TestPlug is TestPlus {
         $treasury.initialize(factoryOwner);
     }
 
-    function deployVault() internal virtual returns (PlugVaultSocket $vault) {
+    function deployVault() internal virtual returns (PlugSocket $vault) {
         (, address vaultAddress) =
             factory.deploy(abi.encode(uint16(0), signer, oneClicker, address(socketImplementation)));
-        $vault = PlugVaultSocket(payable(vaultAddress));
+        $vault = PlugSocket(payable(vaultAddress));
     }
 
     function createPlug(
@@ -554,9 +554,7 @@ abstract contract TestPlug is TestPlus {
         );
     }
 
-    function createPlugs(
-        PlugTypesLib.Plug[] memory $plugsArray
-    )
+    function createPlugs(PlugTypesLib.Plug[] memory $plugsArray)
         internal
         view
         returns (PlugTypesLib.Plugs memory $plugs)
@@ -565,7 +563,7 @@ abstract contract TestPlug is TestPlus {
     }
 
     function createLivePlugs(
-        PlugVaultSocket $socket,
+        PlugSocket $socket,
         PlugTypesLib.Plugs memory $plugs
     )
         internal
@@ -578,9 +576,7 @@ abstract contract TestPlug is TestPlus {
         $livePlugs = PlugTypesLib.LivePlugs({ plugs: $plugs, signature: signature });
     }
 
-    function createLivePlugs(
-        PlugTypesLib.Plugs memory $plugs
-    )
+    function createLivePlugs(PlugTypesLib.Plugs memory $plugs)
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
@@ -588,9 +584,7 @@ abstract contract TestPlug is TestPlus {
         $livePlugs = createLivePlugs(socket, $plugs);
     }
 
-    function createLivePlugs(
-        PlugTypesLib.Plug[] memory $plugsArray
-    )
+    function createLivePlugs(PlugTypesLib.Plug[] memory $plugsArray)
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)

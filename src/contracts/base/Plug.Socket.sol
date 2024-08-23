@@ -3,8 +3,12 @@
 pragma solidity 0.8.23;
 
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
-import { PlugTypes } from "./Plug.Types.sol";
+import { PlugTypes } from "../abstracts/Plug.Types.sol";
+import { Ownable } from "solady/auth/Ownable.sol";
+import { Receiver } from "solady/accounts/Receiver.sol";
+import { UUPSUpgradeable } from "solady/utils/UUPSUpgradeable.sol";
 import { ReentrancyGuard } from "solady/utils/ReentrancyGuard.sol";
+import { ECDSA } from "solady/utils/ECDSA.sol";
 import { PlugLib, PlugTypesLib } from "../libraries/Plug.Lib.sol";
 
 /**
@@ -12,7 +16,28 @@ import { PlugLib, PlugTypesLib } from "../libraries/Plug.Lib.sol";
  * @notice The core contract for the Plug framework extremely execution paths.
  * @author @nftchance (chance@onplug.io)
  */
-abstract contract PlugSocket is PlugSocketInterface, PlugTypes, ReentrancyGuard {
+contract PlugSocket is
+    PlugSocketInterface,
+    PlugTypes,
+    Ownable,
+    Receiver,
+    UUPSUpgradeable,
+    ReentrancyGuard
+{
+    /// @notice Use the ECDSA library for signature verification.
+    using ECDSA for bytes32;
+
+    mapping(address oneClicker => bool allowed) public oneClickersToAllowed;
+
+    /*
+    * @notice The constructor for the Plug Vault Socket will
+    *         initialize to address(1) when not deployed through
+    *         a Socket factory.
+    */
+    constructor() {
+        initialize(address(1), address(1));
+    }
+
     /**
      * @notice Modifier to enforce the signer of the transaction.
      * @dev Apply to this to functions that are designed to execute a bundle
@@ -40,6 +65,18 @@ abstract contract PlugSocket is PlugSocketInterface, PlugTypes, ReentrancyGuard 
     }
 
     /**
+     * See {PlugSocketInterface-initialize}.
+     */
+    function initialize(address $owner, address $oneClicker) public {
+        _initializeOwner($owner);
+
+        /// @dev Automatically permission the primary platform one-clicker.
+        if ($oneClicker != address(0)) {
+            oneClickersToAllowed[$oneClicker] = true;
+        }
+    }
+
+    /**
      * See {PlugSocketInterface-plug}.
      */
     function plug(
@@ -60,9 +97,7 @@ abstract contract PlugSocket is PlugSocketInterface, PlugTypes, ReentrancyGuard 
     /**
      * See {PlugSocketInterface-plug}.
      */
-    function plug(
-        PlugTypesLib.Plugs calldata $plugs
-    )
+    function plug(PlugTypesLib.Plugs calldata $plugs)
         external
         payable
         virtual
@@ -71,6 +106,20 @@ abstract contract PlugSocket is PlugSocketInterface, PlugTypes, ReentrancyGuard 
         returns (PlugTypesLib.Result[] memory $results)
     {
         $results = _plug($plugs, address(0), 0);
+    }
+
+    /**
+     * See { PlugSocket-name }
+     */
+    function name() public pure override returns (string memory $name) {
+        $name = "Plug Vault Socket";
+    }
+
+    /**
+     * See { PlugSocket-version }
+     */
+    function version() public pure override returns (string memory $version) {
+        $version = "0.0.1";
     }
 
     /**
@@ -164,13 +213,18 @@ abstract contract PlugSocket is PlugSocketInterface, PlugTypes, ReentrancyGuard 
      * @param $input The LivePlugs object that contains the Plugs object as well as
      *               the signature defining the permission to execute the bundle.
      */
-    function _enforceSignature(
-        PlugTypesLib.LivePlugs calldata $input
-    )
+    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
         internal
         view
         virtual
-        returns (bool $allowed);
+        returns (bool $allowed)
+    {
+        /// @dev Recover the signer from the signature that was provided.
+        address signer = getPlugsDigest($input.plugs).recover($input.signature);
+
+        /// @dev Validate that the signer is allowed within context.
+        $allowed = oneClickersToAllowed[signer] || owner() == signer;
+    }
 
     /**
      * @notice Confirm that the sender of the transaction is allowed as the Socket
@@ -179,5 +233,19 @@ abstract contract PlugSocket is PlugSocketInterface, PlugTypes, ReentrancyGuard 
      *      sure that only senders intended for this scope are allowed.
      * @param $sender The sender of the transaction.
      */
-    function _enforceSender(address $sender) internal view virtual returns (bool $allowed);
+    function _enforceSender(address $sender) internal view virtual returns (bool $allowed) {
+        $allowed = $sender == owner() || $sender == address(this);
+    }
+
+    /**
+     * See { UUPSUpgradeable._authorizeUpgrade }
+     */
+    function _authorizeUpgrade(address) internal virtual override onlyOwner { }
+
+    /**
+     * See { PlugTrading._guardInitializeOwnership }
+     */
+    function _guardInitializeOwnership() internal pure virtual returns (bool $guard) {
+        $guard = true;
+    }
 }

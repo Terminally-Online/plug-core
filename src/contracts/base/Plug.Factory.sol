@@ -4,47 +4,23 @@ pragma solidity 0.8.23;
 
 import { PlugFactoryInterface } from "../interfaces/Plug.Factory.Interface.sol";
 
-import { PlugLib, PlugTypesLib } from "../libraries/Plug.Lib.sol";
+import { PlugLib } from "../libraries/Plug.Lib.sol";
 import { LibClone } from "solady/utils/LibClone.sol";
-import { Ownable } from "solady/auth/Ownable.sol";
 
 import { PlugSocketInterface } from "../interfaces/Plug.Socket.Interface.sol";
 
 /**
  * @title Plug Factory
  * @notice This contract is responsible for deploying new Plug Sockets that can be used
- *         as personal accounts for an individual. The owner can execute transactions
- *         through the Sockets. The Sockets are deployed using the Beacon Proxy
- *         pattern, and the owner can upgrade the implementation at any time. On top
- *         of being the deployment mechanism for the Sockets, the Factory also manages
- *         the ownership of the Sockets through the ERC721 standard allowing the
- *         Sockets to be traded on any major marketplace with ease.
+ *         as personal accounts for an individual. The Sockets are deployed using the
+ *         Beacon Proxy pattern, and the owner can upgrade the implementation at any time.
  * @author @nftchance (chance@onplug.io)
  */
-contract PlugFactory is PlugFactoryInterface, Ownable {
-    /**
-     * @notice Initialize a reference implementation that will not be
-     *         with real intent of consumption.
-     */
-    constructor() {
-        _initializeOwner(address(1));
-    }
-
-    /**
-     * See { PlugFactoryInterface.initialize }
-     */
-    function initialize(address $owner, address $implementation) public virtual {
-        /// @dev Configure the starting state of the tradable functionatlity
-        ///      that enables non-fungible representation of Socket ownership.
-        _initializeOwner($owner);
-    }
-
+contract PlugFactory is PlugFactoryInterface {
     /**
      * See { PlugFactoryInterface.deploy }
      */
-    function deploy(
-        bytes calldata $salt
-    )
+    function deploy(bytes calldata $salt)
         public
         payable
         virtual
@@ -95,9 +71,7 @@ contract PlugFactory is PlugFactoryInterface, Ownable {
     /**
      * See { PlugFactoryInterface.initCodeHash }
      */
-    function initCodeHash(
-        address $implementation
-    )
+    function initCodeHash(address $implementation)
         public
         view
         virtual

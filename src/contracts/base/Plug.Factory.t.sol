@@ -3,12 +3,7 @@
 pragma solidity 0.8.23;
 
 import {
-    Test,
-    PlugEtcherLib,
-    LibClone,
-    PlugFactory,
-    PlugLib,
-    PlugVaultSocket
+    Test, PlugEtcherLib, LibClone, PlugFactory, PlugLib
 } from "../abstracts/test/Plug.Test.sol";
 
 contract PlugFactoryTest is Test {

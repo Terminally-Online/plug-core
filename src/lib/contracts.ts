@@ -3,31 +3,6 @@ export const contracts = [
         "name": "PlugFactory",
         "abi": [
             {
-                "type": "constructor",
-                "inputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
-                "name": "cancelOwnershipHandover",
-                "inputs": [],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "completeOwnershipHandover",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
                 "type": "function",
                 "name": "deploy",
                 "inputs": [
@@ -95,128 +70,6 @@ export const contracts = [
                 "stateMutability": "view"
             },
             {
-                "type": "function",
-                "name": "initialize",
-                "inputs": [
-                    {
-                        "name": "$owner",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$implementation",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
-                "name": "owner",
-                "inputs": [],
-                "outputs": [
-                    {
-                        "name": "result",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "ownershipHandoverExpiresAt",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "result",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "renounceOwnership",
-                "inputs": [],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "requestOwnershipHandover",
-                "inputs": [],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "transferOwnership",
-                "inputs": [
-                    {
-                        "name": "newOwner",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "event",
-                "name": "OwnershipHandoverCanceled",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
-                "name": "OwnershipHandoverRequested",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
-                "name": "OwnershipTransferred",
-                "inputs": [
-                    {
-                        "name": "oldOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "newOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
                 "type": "event",
                 "name": "SocketDeployed",
                 "inputs": [
@@ -243,21 +96,6 @@ export const contracts = [
             },
             {
                 "type": "error",
-                "name": "AlreadyInitialized",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "NewOwnerIsZeroAddress",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "NoHandoverRequest",
-                "inputs": []
-            },
-            {
-                "type": "error",
                 "name": "SaltInvalid",
                 "inputs": [
                     {
@@ -271,437 +109,11 @@ export const contracts = [
                         "internalType": "address"
                     }
                 ]
-            },
-            {
-                "type": "error",
-                "name": "Unauthorized",
-                "inputs": []
             }
         ]
     },
     {
-        "name": "PlugTreasury",
-        "abi": [
-            {
-                "type": "fallback",
-                "stateMutability": "payable"
-            },
-            {
-                "type": "receive",
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "cancelOwnershipHandover",
-                "inputs": [],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "completeOwnershipHandover",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "execute",
-                "inputs": [
-                    {
-                        "name": "$targets",
-                        "type": "address[]",
-                        "internalType": "address[]"
-                    },
-                    {
-                        "name": "$values",
-                        "type": "uint256[]",
-                        "internalType": "uint256[]"
-                    },
-                    {
-                        "name": "$datas",
-                        "type": "bytes[]",
-                        "internalType": "bytes[]"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "$successes",
-                        "type": "bool[]",
-                        "internalType": "bool[]"
-                    },
-                    {
-                        "name": "$results",
-                        "type": "bytes[]",
-                        "internalType": "bytes[]"
-                    }
-                ],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
-                "name": "initialize",
-                "inputs": [
-                    {
-                        "name": "$owner",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
-                "name": "owner",
-                "inputs": [],
-                "outputs": [
-                    {
-                        "name": "result",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "ownershipHandoverExpiresAt",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "result",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "plugNative",
-                "inputs": [
-                    {
-                        "name": "$target",
-                        "type": "address",
-                        "internalType": "address payable"
-                    },
-                    {
-                        "name": "$data",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "$fee",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "plugNativeToToken",
-                "inputs": [
-                    {
-                        "name": "$tokenIn",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$target",
-                        "type": "address",
-                        "internalType": "address payable"
-                    },
-                    {
-                        "name": "$data",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "$fee",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "plugToken",
-                "inputs": [
-                    {
-                        "name": "$tokenOut",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$target",
-                        "type": "address",
-                        "internalType": "address payable"
-                    },
-                    {
-                        "name": "$data",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "$sell",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "$fee",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "plugTokenToNative",
-                "inputs": [
-                    {
-                        "name": "$tokenOut",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$target",
-                        "type": "address",
-                        "internalType": "address payable"
-                    },
-                    {
-                        "name": "$data",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "$sell",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "$fee",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "plugTokenToToken",
-                "inputs": [
-                    {
-                        "name": "$tokenOut",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$tokenIn",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$target",
-                        "type": "address",
-                        "internalType": "address payable"
-                    },
-                    {
-                        "name": "$data",
-                        "type": "bytes",
-                        "internalType": "bytes"
-                    },
-                    {
-                        "name": "$sell",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    },
-                    {
-                        "name": "$fee",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "renounceOwnership",
-                "inputs": [],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "requestOwnershipHandover",
-                "inputs": [],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "function",
-                "name": "setTargetsAllowed",
-                "inputs": [
-                    {
-                        "name": "$targets",
-                        "type": "address[]",
-                        "internalType": "address[]"
-                    },
-                    {
-                        "name": "$allowed",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "nonpayable"
-            },
-            {
-                "type": "function",
-                "name": "targetToAllowed",
-                "inputs": [
-                    {
-                        "name": "",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [
-                    {
-                        "name": "",
-                        "type": "bool",
-                        "internalType": "bool"
-                    }
-                ],
-                "stateMutability": "view"
-            },
-            {
-                "type": "function",
-                "name": "transferOwnership",
-                "inputs": [
-                    {
-                        "name": "newOwner",
-                        "type": "address",
-                        "internalType": "address"
-                    }
-                ],
-                "outputs": [],
-                "stateMutability": "payable"
-            },
-            {
-                "type": "event",
-                "name": "OwnershipHandoverCanceled",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
-                "name": "OwnershipHandoverRequested",
-                "inputs": [
-                    {
-                        "name": "pendingOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "event",
-                "name": "OwnershipTransferred",
-                "inputs": [
-                    {
-                        "name": "oldOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "newOwner",
-                        "type": "address",
-                        "indexed": true,
-                        "internalType": "address"
-                    }
-                ],
-                "anonymous": false
-            },
-            {
-                "type": "error",
-                "name": "AlreadyInitialized",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "NewOwnerIsZeroAddress",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "NoHandoverRequest",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "PlugFailed",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "Reentrancy",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "TargetInvalid",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "TokenAllowanceInvalid",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "TokenBalanceInvalid",
-                "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "Unauthorized",
-                "inputs": []
-            }
-        ]
-    },
-    {
-        "name": "PlugVaultSocket",
+        "name": "PlugSocket",
         "abi": [
             {
                 "type": "constructor",
@@ -1678,6 +1090,427 @@ export const contracts = [
                         "internalType": "uint256"
                     }
                 ]
+            }
+        ]
+    },
+    {
+        "name": "PlugTreasury",
+        "abi": [
+            {
+                "type": "fallback",
+                "stateMutability": "payable"
+            },
+            {
+                "type": "receive",
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "cancelOwnershipHandover",
+                "inputs": [],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "completeOwnershipHandover",
+                "inputs": [
+                    {
+                        "name": "pendingOwner",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "execute",
+                "inputs": [
+                    {
+                        "name": "$targets",
+                        "type": "address[]",
+                        "internalType": "address[]"
+                    },
+                    {
+                        "name": "$values",
+                        "type": "uint256[]",
+                        "internalType": "uint256[]"
+                    },
+                    {
+                        "name": "$datas",
+                        "type": "bytes[]",
+                        "internalType": "bytes[]"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "$successes",
+                        "type": "bool[]",
+                        "internalType": "bool[]"
+                    },
+                    {
+                        "name": "$results",
+                        "type": "bytes[]",
+                        "internalType": "bytes[]"
+                    }
+                ],
+                "stateMutability": "nonpayable"
+            },
+            {
+                "type": "function",
+                "name": "initialize",
+                "inputs": [
+                    {
+                        "name": "$owner",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "nonpayable"
+            },
+            {
+                "type": "function",
+                "name": "owner",
+                "inputs": [],
+                "outputs": [
+                    {
+                        "name": "result",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
+                "name": "ownershipHandoverExpiresAt",
+                "inputs": [
+                    {
+                        "name": "pendingOwner",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "result",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
+                "name": "plugNative",
+                "inputs": [
+                    {
+                        "name": "$target",
+                        "type": "address",
+                        "internalType": "address payable"
+                    },
+                    {
+                        "name": "$data",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "$fee",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "plugNativeToToken",
+                "inputs": [
+                    {
+                        "name": "$tokenIn",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$target",
+                        "type": "address",
+                        "internalType": "address payable"
+                    },
+                    {
+                        "name": "$data",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "$fee",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "plugToken",
+                "inputs": [
+                    {
+                        "name": "$tokenOut",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$target",
+                        "type": "address",
+                        "internalType": "address payable"
+                    },
+                    {
+                        "name": "$data",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "$sell",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$fee",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "plugTokenToNative",
+                "inputs": [
+                    {
+                        "name": "$tokenOut",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$target",
+                        "type": "address",
+                        "internalType": "address payable"
+                    },
+                    {
+                        "name": "$data",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "$sell",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$fee",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "plugTokenToToken",
+                "inputs": [
+                    {
+                        "name": "$tokenOut",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$tokenIn",
+                        "type": "address",
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "$target",
+                        "type": "address",
+                        "internalType": "address payable"
+                    },
+                    {
+                        "name": "$data",
+                        "type": "bytes",
+                        "internalType": "bytes"
+                    },
+                    {
+                        "name": "$sell",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    },
+                    {
+                        "name": "$fee",
+                        "type": "uint256",
+                        "internalType": "uint256"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "renounceOwnership",
+                "inputs": [],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "requestOwnershipHandover",
+                "inputs": [],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "function",
+                "name": "setTargetsAllowed",
+                "inputs": [
+                    {
+                        "name": "$targets",
+                        "type": "address[]",
+                        "internalType": "address[]"
+                    },
+                    {
+                        "name": "$allowed",
+                        "type": "bool",
+                        "internalType": "bool"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "nonpayable"
+            },
+            {
+                "type": "function",
+                "name": "targetToAllowed",
+                "inputs": [
+                    {
+                        "name": "",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "bool",
+                        "internalType": "bool"
+                    }
+                ],
+                "stateMutability": "view"
+            },
+            {
+                "type": "function",
+                "name": "transferOwnership",
+                "inputs": [
+                    {
+                        "name": "newOwner",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ],
+                "outputs": [],
+                "stateMutability": "payable"
+            },
+            {
+                "type": "event",
+                "name": "OwnershipHandoverCanceled",
+                "inputs": [
+                    {
+                        "name": "pendingOwner",
+                        "type": "address",
+                        "indexed": true,
+                        "internalType": "address"
+                    }
+                ],
+                "anonymous": false
+            },
+            {
+                "type": "event",
+                "name": "OwnershipHandoverRequested",
+                "inputs": [
+                    {
+                        "name": "pendingOwner",
+                        "type": "address",
+                        "indexed": true,
+                        "internalType": "address"
+                    }
+                ],
+                "anonymous": false
+            },
+            {
+                "type": "event",
+                "name": "OwnershipTransferred",
+                "inputs": [
+                    {
+                        "name": "oldOwner",
+                        "type": "address",
+                        "indexed": true,
+                        "internalType": "address"
+                    },
+                    {
+                        "name": "newOwner",
+                        "type": "address",
+                        "indexed": true,
+                        "internalType": "address"
+                    }
+                ],
+                "anonymous": false
+            },
+            {
+                "type": "error",
+                "name": "AlreadyInitialized",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "NewOwnerIsZeroAddress",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "NoHandoverRequest",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "PlugFailed",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "Reentrancy",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "TargetInvalid",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "TokenAllowanceInvalid",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "TokenBalanceInvalid",
+                "inputs": []
+            },
+            {
+                "type": "error",
+                "name": "Unauthorized",
+                "inputs": []
             }
         ]
     },

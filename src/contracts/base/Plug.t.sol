@@ -10,7 +10,6 @@ import {
     PlugEtcherLib,
     PlugFactory,
     Plug,
-    PlugVaultSocket,
     PlugMockEcho
 } from "../abstracts/test/Plug.Test.sol";
 import { ECDSA } from "solady/utils/ECDSA.sol";
