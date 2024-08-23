@@ -18,13 +18,11 @@ interface PlugSocketInterface {
      * @notice This version of the function will always be called by the Router.
      * @param $livePlugs The Plug bundle to execute.
      * @param $solver The address of the Solver.
-     * @param $gas The gas to execute the plugs.
      * @return $results The return data of each plug executed.
      */
     function plug(
         PlugTypesLib.LivePlugs calldata $livePlugs,
-        address $solver,
-        uint256 $gas
+        address $solver
     )
         external
         payable

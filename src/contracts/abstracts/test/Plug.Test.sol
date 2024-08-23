@@ -541,8 +541,6 @@ abstract contract TestPlug is TestPlus {
 
     function createPlugs(
         PlugTypesLib.Plug[] memory $plugsArray,
-        uint96 $maxPriorityFeePerGas,
-        uint96 $maxFeePerGas,
         uint48 $expiration,
         address $solver
     )
@@ -550,11 +548,7 @@ abstract contract TestPlug is TestPlus {
         view
         returns (PlugTypesLib.Plugs memory $plugs)
     {
-        $plugs = createPlugs(
-            address(socket),
-            $plugsArray,
-            abi.encode($maxPriorityFeePerGas, $maxFeePerGas, $expiration, $solver)
-        );
+        $plugs = createPlugs(address(socket), $plugsArray, abi.encode($expiration, $solver));
     }
 
     function createPlugs(PlugTypesLib.Plug[] memory $plugsArray)
@@ -598,21 +592,14 @@ abstract contract TestPlug is TestPlus {
 
     function createLivePlugs(
         PlugTypesLib.Plug[] memory $plugsArray,
-        uint96 $maxPriorityFeePerGas,
-        uint96 $maxFeePerGas,
         address $solver
     )
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
     {
-        PlugTypesLib.Plugs memory plugs = createPlugs(
-            $plugsArray,
-            $maxPriorityFeePerGas,
-            $maxFeePerGas,
-            uint48(block.timestamp + 3 minutes),
-            $solver
-        );
+        PlugTypesLib.Plugs memory plugs =
+            createPlugs($plugsArray, uint48(block.timestamp + 3 minutes), $solver);
         $livePlugs = createLivePlugs(socket, plugs);
     }
 }

@@ -82,8 +82,7 @@ contract PlugSocket is
      */
     function plug(
         PlugTypesLib.LivePlugs calldata $livePlugs,
-        address $solver,
-        uint256 $gas
+        address $solver
     )
         external
         payable
@@ -92,7 +91,7 @@ contract PlugSocket is
         nonReentrant
         returns (PlugTypesLib.Result[] memory $results)
     {
-        $results = _plug($livePlugs.plugs, $solver, $gas);
+        $results = _plug($livePlugs.plugs, $solver);
     }
 
     /**
@@ -106,7 +105,7 @@ contract PlugSocket is
         nonReentrant
         returns (PlugTypesLib.Result[] memory $results)
     {
-        $results = _plug($plugs, address(0), 0);
+        $results = _plug($plugs, address(0));
     }
 
     /**
@@ -127,13 +126,11 @@ contract PlugSocket is
      * @notice Execute a bundle of Plugs.
      * @param $plugs The Plugs to execute containing the bundle and side effects.
      * @param $solver Encoded data defining the Solver and compensation.
-     * @param $gas Snapshot of gas at the start of interaction.
      * @return $results The return data of the plugs.
      */
     function _plug(
         PlugTypesLib.Plugs calldata $plugs,
-        address $solver,
-        uint256 $gas
+        address $solver
     )
         internal
         returns (PlugTypesLib.Result[] memory $results)
@@ -173,8 +170,7 @@ contract PlugSocket is
         /// @dev Pay the Solver for the gas used if it was not open-access.
         if ($plugs.solver.length != 0) {
             /// @dev Unpack the solver data from the encoded Solver data.
-            (uint96 maxPriorityFeePerGas, uint96 maxFeePerGas, uint48 expiration, address solver) =
-                abi.decode($plugs.solver, (uint96, uint96, uint48, address));
+            (uint48 expiration, address solver) = abi.decode($plugs.solver, (uint48, address));
 
             /// @dev Confirm the Solver is allowed to execute the transaction.
             ///      This is done here instead of a modifier so that the gas
@@ -186,25 +182,6 @@ contract PlugSocket is
             /// @dev Confirm the order provided to the Solver has not expired.
             if (expiration < block.timestamp) {
                 revert PlugLib.SolverExpired();
-            }
-
-            /// @dev Calculate the gas price based on the current block.
-            uint256 value = maxPriorityFeePerGas + block.basefee;
-            /// @dev Determine which gas price to use based on if it is a legacy
-            ///      transaction (on a chain that does not support it) or if the
-            ///      the transaction is submit post EIP-1559.
-            value = maxFeePerGas == maxPriorityFeePerGas
-                ? maxFeePerGas
-                : maxFeePerGas < value ? maxFeePerGas : value;
-
-            /// @dev Augment the native gas price with the Solver "gas" fee.
-            value = ($gas - gasleft()) * value;
-
-            /// @dev Transfer the money the Solver is owed and confirm it
-            ///      the transfer is successful.
-            (bool success,) = solver.call{ value: value }("");
-            if (success == false) {
-                revert PlugLib.CompensationFailed(solver, value);
             }
         }
 

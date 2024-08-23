@@ -67,29 +67,13 @@ contract PlugTest is Test {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
         PlugTypesLib.Plugs memory plugs =
-            createPlugs(plugsArray, 0, 0, uint48(block.timestamp + 3 minutes), solver);
+            createPlugs(plugsArray, uint48(block.timestamp + 3 minutes), solver);
         PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugs);
         vm.prank(solver);
         vm.expectEmit(address(mock));
         emit EchoInvoked(address(socket), "Hello World");
         plug.plug(livePlugs);
         assertEq(preBalance, address(solver).balance);
-    }
-
-    function test_PlugEmptyEcho_ExternalSolver_Compensated() public {
-        address solver = _randomNonZeroAddress();
-        vm.deal(solver, 100 ether);
-        vm.deal(address(socket), 100 ether);
-        uint256 preBalance = address(socket).balance;
-        PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](2);
-        plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
-        plugsArray[1] = createPlug(PLUG_VALUE, PLUG_EXECUTION);
-        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, 0.2 ether, 1, solver);
-        vm.prank(solver);
-        vm.expectEmit(address(mock));
-        emit EchoInvoked(address(socket), "Hello World");
-        plug.plug(livePlugs);
-        assertTrue(preBalance - 1 ether > address(socket).balance);
     }
 
     function testRevert_PlugEmptyEcho_ExternalSolver_CompensationFailure() public {
@@ -99,7 +83,7 @@ contract PlugTest is Test {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](2);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
         plugsArray[1] = createPlug(PLUG_VALUE, PLUG_EXECUTION);
-        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, 0.2 ether, 24, solver);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, solver);
         vm.prank(solver);
         vm.expectRevert(
             abi.encodeWithSelector(
@@ -120,7 +104,7 @@ contract PlugTest is Test {
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
         plugsArray[1] = createPlug(PLUG_VALUE, PLUG_EXECUTION);
         PlugTypesLib.Plugs memory plugs =
-            createPlugs(plugsArray, 0, 0, uint48(block.timestamp + 3 minutes), solver);
+            createPlugs(plugsArray, uint48(block.timestamp + 3 minutes), solver);
         PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugs);
         vm.expectRevert(
             abi.encodeWithSelector(PlugLib.SolverInvalid.selector, address(solver), address(this))
@@ -135,7 +119,7 @@ contract PlugTest is Test {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
         PlugTypesLib.Plugs memory plugs =
-            createPlugs(plugsArray, 0, 0, uint48(block.timestamp - 1 minutes), solver);
+            createPlugs(plugsArray, uint48(block.timestamp - 1 minutes), solver);
         PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugs);
         vm.prank(solver);
         vm.expectRevert(PlugLib.SolverExpired.selector);

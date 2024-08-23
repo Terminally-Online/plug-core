@@ -510,7 +510,6 @@ export const plugSocketAbi = [
         ],
       },
       { name: '$solver', internalType: 'address', type: 'address' },
-      { name: '$gas', internalType: 'uint256', type: 'uint256' },
     ],
     name: 'plug',
     outputs: [
@@ -698,14 +697,6 @@ export const plugSocketAbi = [
     name: 'Upgraded',
   },
   { type: 'error', inputs: [], name: 'AlreadyInitialized' },
-  {
-    type: 'error',
-    inputs: [
-      { name: '$recipient', internalType: 'address', type: 'address' },
-      { name: '$value', internalType: 'uint256', type: 'uint256' },
-    ],
-    name: 'CompensationFailed',
-  },
   { type: 'error', inputs: [], name: 'NewOwnerIsZeroAddress' },
   { type: 'error', inputs: [], name: 'NoHandoverRequest' },
   { type: 'error', inputs: [], name: 'PlugFailed' },

@@ -711,11 +711,6 @@ export const contracts = [
                         "name": "$solver",
                         "type": "address",
                         "internalType": "address"
-                    },
-                    {
-                        "name": "$gas",
-                        "type": "uint256",
-                        "internalType": "uint256"
                     }
                 ],
                 "outputs": [
@@ -986,22 +981,6 @@ export const contracts = [
                 "type": "error",
                 "name": "AlreadyInitialized",
                 "inputs": []
-            },
-            {
-                "type": "error",
-                "name": "CompensationFailed",
-                "inputs": [
-                    {
-                        "name": "$recipient",
-                        "type": "address",
-                        "internalType": "address"
-                    },
-                    {
-                        "name": "$value",
-                        "type": "uint256",
-                        "internalType": "uint256"
-                    }
-                ]
             },
             {
                 "type": "error",
