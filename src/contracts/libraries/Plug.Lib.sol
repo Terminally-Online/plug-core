@@ -25,6 +25,7 @@ library PlugLib {
     error RouterInvalid(address $reality);
     error SignatureInvalid();
     error SolverInvalid(address $expected, address $reality);
+    error SolverExpired();
     error TypeInvalid(uint8 $reality);
     error ValueInvalid(address $recipient, uint256 $expected, uint256 $reality);
 

@@ -27,6 +27,7 @@ contract PlugSocket is
     /// @notice Use the ECDSA library for signature verification.
     using ECDSA for bytes32;
 
+    /// @dev Mapping of one-clickers to their allowed status.
     mapping(address oneClicker => bool allowed) public oneClickersToAllowed;
 
     /*
@@ -97,9 +98,7 @@ contract PlugSocket is
     /**
      * See {PlugSocketInterface-plug}.
      */
-    function plug(
-        PlugTypesLib.Plugs calldata $plugs
-    )
+    function plug(PlugTypesLib.Plugs calldata $plugs)
         external
         payable
         virtual
@@ -174,14 +173,19 @@ contract PlugSocket is
         /// @dev Pay the Solver for the gas used if it was not open-access.
         if ($plugs.solver.length != 0) {
             /// @dev Unpack the solver data from the encoded Solver data.
-            (uint96 maxPriorityFeePerGas, uint96 maxFeePerGas, address solver) =
-                abi.decode($plugs.solver, (uint96, uint96, address));
+            (uint96 maxPriorityFeePerGas, uint96 maxFeePerGas, uint48 expiration, address solver) =
+                abi.decode($plugs.solver, (uint96, uint96, uint48, address));
 
             /// @dev Confirm the Solver is allowed to execute the transaction.
             ///      This is done here instead of a modifier so that the gas
             ///      snapshot accounts for the additional gas cost of the require.
             if (solver != $solver) {
                 revert PlugLib.SolverInvalid(solver, $solver);
+            }
+
+            /// @dev Confirm the order provided to the Solver has not expired.
+            if (expiration < block.timestamp) {
+                revert PlugLib.SolverExpired();
             }
 
             /// @dev Calculate the gas price based on the current block.
@@ -215,9 +219,7 @@ contract PlugSocket is
      * @param $input The LivePlugs object that contains the Plugs object as well as
      *               the signature defining the permission to execute the bundle.
      */
-    function _enforceSignature(
-        PlugTypesLib.LivePlugs calldata $input
-    )
+    function _enforceSignature(PlugTypesLib.LivePlugs calldata $input)
         internal
         view
         virtual
@@ -225,6 +227,8 @@ contract PlugSocket is
     {
         /// @dev Recover the signer from the signature that was provided.
         address signer = getPlugsDigest($input.plugs).recover($input.signature);
+
+        /// @dev Confirm the Solver provided order has not expired.
 
         /// @dev Validate that the signer is allowed within context.
         $allowed = oneClickersToAllowed[signer] || owner() == signer;

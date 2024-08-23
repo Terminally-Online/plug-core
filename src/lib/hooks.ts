@@ -716,6 +716,7 @@ export const plugSocketAbi = [
     name: 'SenderInvalid',
   },
   { type: 'error', inputs: [], name: 'SignatureInvalid' },
+  { type: 'error', inputs: [], name: 'SolverExpired' },
   {
     type: 'error',
     inputs: [

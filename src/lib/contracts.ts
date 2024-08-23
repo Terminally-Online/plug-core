@@ -1041,6 +1041,11 @@ export const contracts = [
             },
             {
                 "type": "error",
+                "name": "SolverExpired",
+                "inputs": []
+            },
+            {
+                "type": "error",
                 "name": "SolverInvalid",
                 "inputs": [
                     {

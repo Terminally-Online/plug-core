@@ -1,17 +1,17 @@
 {
   "Plug.Factory.sol": {
-    "initCodeHash": "0x82a38a183917b4d50c44c548671927a344dcc7d775de385ed0dbb0a1c0b2d8d3",
+    "initCodeHash": "0x0d6c814f50da78725bb2734aad21474a74fb91633bbdc0019d85e0d7ca2b6f0c",
     "deployment": {
-      "salt": "0x0000000000000000000000000000000000000000257cd3e37efcff3fa6b29ca4",
-      "address": "0x000023A81f573905c5F52A9d09E298512483B549",
+      "salt": "0x00000000000000000000000000000000000000005679dde3a4b3ff3f4466b90c",
+      "address": "0x003141D027BD7B7b1251fe08E5A48EE9750c202C",
       "rarity": "0"
     }
   },
   "Plug.sol": {
-    "initCodeHash": "0x8322f4f0dd6f4e35bdbcc73f9d5a4374055be3460e5975234de1c300eb0b661c",
+    "initCodeHash": "0x5b58ccc3a36655fb5612e288b2fc05cd511bff0577cb41e46c3189adac67fb70",
     "deployment": {
-      "salt": "0x0000000000000000000000000000000000000000aaabf8aee2fbff3fd0989343",
-      "address": "0x00705ad0876eC9e87b0c133d1e3f12ac99EFee0b",
+      "salt": "0x0000000000000000000000000000000000000000681bf431a3feff3f85ba1cb0",
+      "address": "0x00cf02BC45E9D0D65F834FeA0eCc0a9E8eCf9A8A",
       "rarity": "0"
     }
   },
@@ -32,10 +32,10 @@
     }
   },
   "Plug.Socket.sol": {
-    "initCodeHash": "0xf121294d37515c8b2d30dac04dc467ee7e7b0a06d38a4fa7cd387dd3d1df9458",
+    "initCodeHash": "0xda87e63d5351cec68b302c4e608d075a938a3727cb429293df09d67b406127cc",
     "deployment": {
-      "salt": "0x0000000000000000000000000000000000000000717979be07edff3f5d29b8e9",
-      "address": "0x0034d60f0B445eF03c0bc26ADf7d1e39b2bA913B",
+      "salt": "0x0000000000000000000000000000000000000000bfb9819200fdff3f8447fba3",
+      "address": "0x0031B3919132cDE27eFAee13d47bEA82114510b7",
       "rarity": "0"
     }
   }

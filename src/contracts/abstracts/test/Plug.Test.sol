@@ -465,7 +465,7 @@ abstract contract TestPlug is TestPlus {
 
     function deployVault() internal virtual returns (PlugSocket $vault) {
         (, address vaultAddress) =
-            factory.deploy(abi.encode(uint16(0), signer, oneClicker, address(socketImplementation)));
+            factory.deploy(abi.encode(uint96(0), signer, oneClicker, address(socketImplementation)));
         $vault = PlugSocket(payable(vaultAddress));
     }
 
@@ -517,7 +517,7 @@ abstract contract TestPlug is TestPlus {
         bytes memory $solver
     )
         internal
-        view
+        pure
         returns (PlugTypesLib.Plugs memory $plugs)
     {
         $plugs = PlugTypesLib.Plugs({
@@ -543,6 +543,7 @@ abstract contract TestPlug is TestPlus {
         PlugTypesLib.Plug[] memory $plugsArray,
         uint96 $maxPriorityFeePerGas,
         uint96 $maxFeePerGas,
+        uint48 $expiration,
         address $solver
     )
         internal
@@ -550,13 +551,13 @@ abstract contract TestPlug is TestPlus {
         returns (PlugTypesLib.Plugs memory $plugs)
     {
         $plugs = createPlugs(
-            address(socket), $plugsArray, abi.encode($maxPriorityFeePerGas, $maxFeePerGas, $solver)
+            address(socket),
+            $plugsArray,
+            abi.encode($maxPriorityFeePerGas, $maxFeePerGas, $expiration, $solver)
         );
     }
 
-    function createPlugs(
-        PlugTypesLib.Plug[] memory $plugsArray
-    )
+    function createPlugs(PlugTypesLib.Plug[] memory $plugsArray)
         internal
         view
         returns (PlugTypesLib.Plugs memory $plugs)
@@ -578,9 +579,7 @@ abstract contract TestPlug is TestPlus {
         $livePlugs = PlugTypesLib.LivePlugs({ plugs: $plugs, signature: signature });
     }
 
-    function createLivePlugs(
-        PlugTypesLib.Plugs memory $plugs
-    )
+    function createLivePlugs(PlugTypesLib.Plugs memory $plugs)
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
@@ -588,9 +587,7 @@ abstract contract TestPlug is TestPlus {
         $livePlugs = createLivePlugs(socket, $plugs);
     }
 
-    function createLivePlugs(
-        PlugTypesLib.Plug[] memory $plugsArray
-    )
+    function createLivePlugs(PlugTypesLib.Plug[] memory $plugsArray)
         internal
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
@@ -609,8 +606,13 @@ abstract contract TestPlug is TestPlus {
         view
         returns (PlugTypesLib.LivePlugs memory $livePlugs)
     {
-        PlugTypesLib.Plugs memory plugs =
-            createPlugs($plugsArray, $maxPriorityFeePerGas, $maxFeePerGas, $solver);
+        PlugTypesLib.Plugs memory plugs = createPlugs(
+            $plugsArray,
+            $maxPriorityFeePerGas,
+            $maxFeePerGas,
+            uint48(block.timestamp + 3 minutes),
+            $solver
+        );
         $livePlugs = createLivePlugs(socket, plugs);
     }
 }

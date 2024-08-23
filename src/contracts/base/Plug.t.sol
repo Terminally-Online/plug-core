@@ -66,7 +66,9 @@ contract PlugTest is Test {
         uint256 preBalance = address(solver).balance;
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
-        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, 0, 0, solver);
+        PlugTypesLib.Plugs memory plugs =
+            createPlugs(plugsArray, 0, 0, uint48(block.timestamp + 3 minutes), solver);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugs);
         vm.prank(solver);
         vm.expectEmit(address(mock));
         emit EchoInvoked(address(socket), "Hello World");
@@ -117,10 +119,26 @@ contract PlugTest is Test {
         PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](2);
         plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
         plugsArray[1] = createPlug(PLUG_VALUE, PLUG_EXECUTION);
-        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugsArray, 0, 0, solver);
+        PlugTypesLib.Plugs memory plugs =
+            createPlugs(plugsArray, 0, 0, uint48(block.timestamp + 3 minutes), solver);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugs);
         vm.expectRevert(
             abi.encodeWithSelector(PlugLib.SolverInvalid.selector, address(solver), address(this))
         );
+        plug.plug(livePlugs);
+    }
+
+    function testRevert_PlugEmptyEcho_ExternalSolver_Expired() public {
+        address solver = _randomNonZeroAddress();
+        vm.deal(solver, 100 ether);
+        vm.deal(address(socket), 100 ether);
+        PlugTypesLib.Plug[] memory plugsArray = new PlugTypesLib.Plug[](1);
+        plugsArray[0] = createPlug(PLUG_NO_VALUE, PLUG_EXECUTION);
+        PlugTypesLib.Plugs memory plugs =
+            createPlugs(plugsArray, 0, 0, uint48(block.timestamp - 1 minutes), solver);
+        PlugTypesLib.LivePlugs memory livePlugs = createLivePlugs(plugs);
+        vm.prank(solver);
+        vm.expectRevert(PlugLib.SolverExpired.selector);
         plug.plug(livePlugs);
     }
 }
