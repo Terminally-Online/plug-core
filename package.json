@@ -61,14 +61,14 @@
     "typescript": "~5.4.5"
   },
   "dependencies": {
-    "abitype": "^1.0.2",
+    "abitype": "^1.0.6",
     "commander": "^12.1.0",
     "ethers": "^6.13.2",
     "lucide-react": "^0.446.0",
     "pathe": "^1.1.2",
-    "solady": "^0.0.191",
-    "viem": "^2.9.17",
-    "wagmi": "^2.5.19",
+    "solady": "^0.0.245",
+    "viem": "^2.21.15",
+    "wagmi": "^2.12.16",
     "zod": "^3.23.8"
   },
   "repository": {
